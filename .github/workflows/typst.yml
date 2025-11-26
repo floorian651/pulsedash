@@ -4,10 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "docs/**/*.typ"
+      # On surveille tout le dossier documentation et ses sous-dossiers (**)
+      - "documentation/**/*.typ"
   pull_request:
     paths:
-      - "docs/**/*.typ"
+      - "documentation/**/*.typ"
 
 jobs:
   build:
@@ -17,13 +18,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile all Typst files in documentation/
+      - name: Compile Main Typst file
         uses: lvignoli/typst-action@v1
         with:
-          source_file: docs/*.typ
+          # IMPORTANT : On ne compile QUE le fichier maître.
+          # Il se chargera d'importer les chapitres et les utils.
+          source_file: documentation/main.typ
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4
         with:
           name: typst-docs
-          path: docs/*.pdf
+          # Le PDF généré se trouvera à côté du fichier main.typ
+          path: documentation/main.pdf
