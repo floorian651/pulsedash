@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Compile all Typst files in documentation/
         uses: lvignoli/typst-action@v1
