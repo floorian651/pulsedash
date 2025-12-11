@@ -18,7 +18,7 @@ theme:
 nav:
   - Accueil: index.md
   - Développement:
-    - Conventions: dev/conventions.md
+    - Conventions: dev/gitconventions.md
 
 markdown_extensions:
   - pymdownx.highlight

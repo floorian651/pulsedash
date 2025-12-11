@@ -1,0 +1,18 @@
+{
+  "name": "PuffinIT Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  },
+
+  "remoteUser": "root"
+}
