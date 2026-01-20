@@ -36,7 +36,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. Install act (GitHub Actions runner)
-RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash
+RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash -s -- -b /usr/local/bin
 
 # 5. Personnalisation du terminal (Starship & Alias)
 RUN echo "alias ls='ls -la --color=auto'" >> /root/.bashrc
@@ -47,5 +47,4 @@ RUN curl -sS https://starship.rs/install.sh | sh -s -- -y \
   && echo 'eval "$(starship init bash)"' >> /root/.bashrc
 
 # Copie de la config Starship locale si elle existe
-# (Attention : assure-toi que .config/starship.toml existe localement, sinon cette ligne échouera)
-# COPY .config/starship.toml /root/.config/starship.toml
+COPY .config/starship.toml /root/.config/starship.toml
