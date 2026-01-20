@@ -4,15 +4,40 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-
+  
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    }
+  },
+  
+  // Configuration VS Code
   "customizations": {
     "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black"
+      },
       "extensions": [
         "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
         "yzhang.markdown-all-in-one"
       ]
     }
   },
 
-  "remoteUser": "root"
+  "containerEnv": {
+    "PIP_ROOT_USER_ACTION": "ignore"
+  },
+  
+  "postCreateCommand": "pip install -e .",
+    
+  "remoteUser": "root",
+  
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+  ]
 }
