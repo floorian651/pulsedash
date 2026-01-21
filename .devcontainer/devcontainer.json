@@ -30,7 +30,8 @@
         "ms-python.vscode-pylance",
         "ms-toolsai.jupyter",
         "yzhang.markdown-all-in-one",
-        "SanjulaGanepola.github-local-actions"
+        "SanjulaGanepola.github-local-actions",
+        "shd101wyy.markdown-preview-enhanced"
       ]
     }
   },

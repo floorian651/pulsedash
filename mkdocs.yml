@@ -17,8 +17,14 @@ theme:
 
 nav:
   - Accueil: index.md
+  - Guide utilisateur:
+    - Premiers pas: user/getting-started.md
   - Développement:
+    - Configuration: dev/setup.md
+    - Architecture: dev/architechture.md
+    - CI/CD: dev/ci-cd.md
     - Conventions: dev/gitconventions.md
+    - Contribution: dev/CONTRIBUTING.md
 
 markdown_extensions:
   - pymdownx.highlight
