@@ -4,7 +4,7 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
-  
+
   "features": {
     "ghcr.io/devcontainers/features/git:1": {
       "version": "latest"
@@ -13,9 +13,9 @@
       "enableNonRootDocker": "true",
       "moby": "true"
     }
-    
+
   },
-  
+
   // Configuration VS Code
   "customizations": {
     "vscode": {
@@ -31,7 +31,12 @@
         "ms-toolsai.jupyter",
         "yzhang.markdown-all-in-one",
         "SanjulaGanepola.github-local-actions",
-        "shd101wyy.markdown-preview-enhanced"
+        "shd101wyy.markdown-preview-enhanced",
+        "usernamehw.errorlens",
+        "PKief.material-icon-theme",
+        "KevinRose.vsc-python-indent",
+        "mhutchie.git-graph",
+        "esbenp.prettier-vscode"
       ]
     }
   },
@@ -39,8 +44,8 @@
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
   },
-  
+
   "postCreateCommand": "pip install -e .",
-    
+
   "mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
 }
