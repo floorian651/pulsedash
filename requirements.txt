@@ -1,0 +1,9 @@
+mkdocs
+mkdocs-material
+mkdocs-awesome-pages-plugin
+mkdocs-literate-nav
+mkdocs-minify-plugin
+mkdocs-git-revision-date-localized-plugin
+pre_commit
+black
+isort

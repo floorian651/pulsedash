@@ -1,36 +1,18 @@
 # wave project
 
-A scaffolded software project repository with MkDocs documentation, Material theme, and automated GitHub Pages deployment.
+A software engineering project repository with MkDocs documentation, Material theme, and automated GitHub Pages deployment.
 
-## 🚀 Quick Start
+## Fonctionnalités prévues
 
-### Manual Setup
 
-If you prefer to set up manually:
+## Démarrage rapide
 
-1. **Install dependencies:**
-   ```bash
-   pip install mkdocs-material
-   ```
 
-2. **Preview locally:**
-   ```bash
-   mkdocs serve
-   ```
-   Visit http://127.0.0.1:8000 in your browser
+### Documentation (MkDocs)
 
-3. **Build the site:**
-   ```bash
-   mkdocs build
-   ```
+## Tests
 
-4. **Deploy to GitHub Pages:**
-   ```bash
-   mkdocs gh-deploy
-   ```
-   Or simply push to the main branch - GitHub Actions will deploy automatically!
-
-## 📂 Project Structure
+## Structure du projet
 
 ```
 .
@@ -48,7 +30,7 @@ If you prefer to set up manually:
 └── README.md                   # This file
 ```
 
-## 🔧 Configuration
+## Configuration
 
 The `mkdocs.yml` configuration includes:
 
@@ -63,7 +45,7 @@ The `mkdocs.yml` configuration includes:
   - Search suggestions
   - Search highlighting
 
-## 🚢 Deployment
+## Deployment
 
 ### Automatic Deployment
 
@@ -74,13 +56,7 @@ Pushing to the `main` or `master` branch automatically triggers the GitHub Actio
 4. Builds the documentation
 5. Deploys to the `gh-pages` branch
 
-### Manual Deployment
-
-```bash
-mkdocs gh-deploy --force
-```
-
-## 📖 Documentation Pages
+## Documentation Pages
 
 - **Home** (`docs/index.md`) - Dashboard-style overview with quick links
 - **Development Conventions** (`docs/dev/conventions.md`) - Comprehensive guide covering:
@@ -90,7 +66,7 @@ mkdocs gh-deploy --force
   - Pull request guidelines
   - Code review best practices
 
-## 🛠️ Customization
+## Customization
 
 ### Adding New Pages
 
@@ -109,4 +85,3 @@ Edit `mkdocs.yml` to customize:
 ## 📝 License
 
 This is a test project for MkDocs workflow testing.
-

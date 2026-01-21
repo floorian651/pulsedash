@@ -1,0 +1,51 @@
+{
+  "name": "PuffinIT Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    }
+
+  },
+
+  // Configuration VS Code
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "black"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "yzhang.markdown-all-in-one",
+        "SanjulaGanepola.github-local-actions",
+        "shd101wyy.markdown-preview-enhanced",
+        "usernamehw.errorlens",
+        "PKief.material-icon-theme",
+        "KevinRose.vsc-python-indent",
+        "mhutchie.git-graph",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+
+  "containerEnv": {
+    "PIP_ROOT_USER_ACTION": "ignore"
+  },
+
+  "postCreateCommand": "pip install -e .",
+
+  "mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
+}
