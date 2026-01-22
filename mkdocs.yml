@@ -2,9 +2,31 @@ site_name: Wawe game
 site_description: Software project documentation
 site_author: PuffinIT
 
+# Lien vers le dépôt (ajoute un bouton "Editer cette page" et l'icone GitHub/GitLab)
+repo_url: https://github.com/floorian651/wavr
+repo_name: Wave
+
 theme:
   name: material
   language: fr
+  # Ajout d'un logo et favicon (à placer dans docs/assets/)
+  # logo: assets/logo.png
+  # favicon: assets/favicon.png
+  palette:
+    # Mode clair par défaut
+    - scheme: default
+      primary: indigo
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: Passer au mode sombre
+    # Mode sombre
+    - scheme: slate
+      primary: indigo
+      accent: lime
+      toggle:
+        icon: material/weather-sunny
+        name: Passer au mode clair
   features:
     - navigation.tabs
     - navigation.tabs.sticky
@@ -14,26 +36,44 @@ theme:
     - toc.follow
     - search.suggest
     - search.highlight
+    - search.share
+    - content.code.copy # Bouton copier sur les blocs de code
 
 nav:
   - Accueil: index.md
   - Guide utilisateur:
     - Premiers pas: user/getting-started.md
   - Développement:
-    - Configuration: dev/setup.md
-    - Architecture: dev/architechture.md
-    - CI/CD: dev/ci-cd.md
-    - Conventions: dev/gitconventions.md
-    - Contribution: dev/CONTRIBUTING.md
+    - Contribution: dev/CONTRIBUTING.md # Souvent mieux en premier pour les devs
+    - Installation: dev/setup.md
+    - Architecture: dev/architechture.md # Note: voir correction ci-dessous
+    - Workflow Git: dev/gitconventions.md
+    - CI/CD & Pipeline:
+      - Concepts CI/CD: dev/ci-cd.md
+      - Pipeline détails: dev/pipeline.md # Ajouté car visible dans ton image
 
 markdown_extensions:
-  - pymdownx.highlight
-  - pymdownx.superfences
-  - pymdownx.tabbed
   - admonition
-  - tables
+  - abbr
   - attr_list
   - md_in_html
+  - tables
+  - pymdownx.details # Pour faire des blocs "spoiler" ou repliables
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences: # CRUCIAL pour les diagrammes (Mermaid)
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
 
 plugins:
   - search
+  - awesome-pages
