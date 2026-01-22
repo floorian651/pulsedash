@@ -23,6 +23,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && update-ca-certificates \
     && git lfs install
 
+RUN apt-get update && apt-get install -y locales && \
+    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales
+
+# Définit la variable par défaut
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+
 # 2. Installation de .NET SDK 8.0 (Pour le C# d'Unity)
 RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
