@@ -1,19 +1,25 @@
 FROM python:3.12-slim-bookworm
 
 ENV PATH="/usr/local/bin:${PATH}"
-# Empêche Python d'écrire des fichiers .pyc
 ENV PYTHONDONTWRITEBYTECODE=1
-# Force le buffer stdout/stderr à être flushé immédiatement
 ENV PYTHONUNBUFFERED=1
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 
 WORKDIR /workspaces/wavr
 
-# 1. Installation des dépendances système de base + Git LFS + Prérequis .NET
+# 1. Installation des dépendances système + Git LFS
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    make \
+    gawk \
+    less \
+    locales \
+    bash-completion \
     git \
     git-lfs \
     build-essential \
     curl \
+    procps \
     wget \
     ca-certificates \
     openssh-client \
@@ -23,7 +29,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && update-ca-certificates \
     && git lfs install
 
-# 2. Installation de .NET SDK 8.0 (Pour le C# d'Unity)
+# 2. Configuration des locales
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen en_US.UTF-8
+
+# 3. Installation de .NET SDK 8.0
 RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
@@ -31,20 +41,32 @@ RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod
     && apt-get install -y dotnet-sdk-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Installation des librairies Python
+# 4. Installation de Starship
+RUN curl -sS https://starship.rs/install.sh | sh -s -- -y
+
+# 5. Installation de ble.sh
+RUN git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git /tmp/ble.sh && \
+    make -C /tmp/ble.sh install PREFIX=/usr/local && \
+    rm -rf /tmp/ble.sh
+
+# 6. Configuration du shell (ble.sh puis Starship)
+RUN echo '# Fix variable USER pour ble.sh' >> /etc/bash.bashrc && \
+    echo '[ -z "$USER" ] && export USER=$(id -un)' >> /etc/bash.bashrc && \
+    echo '# Activer bash-completion' >> /etc/bash.bashrc && \
+    echo '[ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion' >> /etc/bash.bashrc && \
+    echo '# Activer ble.sh' >> /etc/bash.bashrc && \
+    echo 'source /usr/local/share/blesh/ble.sh' >> /etc/bash.bashrc && \
+    echo '# Activer Starship' >> /etc/bash.bashrc && \
+    echo 'eval "$(starship init bash)"' >> /etc/bash.bashrc && \
+    echo "alias ls='ls -la --color=auto'" >> /etc/bash.bashrc
+
+# 7. Configuration Starship
+RUN mkdir -p /root/.config
+COPY .config/starship.toml /root/.config/starship.toml
+
+# 8. Installation des librairies Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. Install act (GitHub Actions runner)
+# 9. Installation de act (GitHub Actions runner)
 RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash -s -- -b /usr/local/bin
-
-# 5. Personnalisation du terminal (Starship & Alias)
-RUN echo "alias ls='ls -la --color=auto'" >> /root/.bashrc
-
-# Installation de Starship
-RUN curl -sS https://starship.rs/install.sh | sh -s -- -y \
-  && mkdir -p /root/.config \
-  && echo 'eval "$(starship init bash)"' >> /root/.bashrc
-
-# Copie de la config Starship locale si elle existe
-COPY .config/starship.toml /root/.config/starship.toml
