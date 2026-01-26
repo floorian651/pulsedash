@@ -45,7 +45,7 @@
     "PIP_ROOT_USER_ACTION": "ignore"
   },
 
-  "postCreateCommand": "pip install -e .",
+  "postCreateCommand": "pip install -e ."
 
-  "mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
+  //"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
 }
