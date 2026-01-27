@@ -36,7 +36,8 @@
         "PKief.material-icon-theme",
         "KevinRose.vsc-python-indent",
         "mhutchie.git-graph",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-dotnettools.csdevkit"
       ]
     }
   },
