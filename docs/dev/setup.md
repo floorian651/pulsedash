@@ -1,4 +1,4 @@
-# Etape 1 : Installation de Git sur votre machine
+# Étape 1 : Installation de Git sur votre machine
 Windows
 
 Linux
