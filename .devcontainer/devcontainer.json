@@ -36,7 +36,8 @@
         "PKief.material-icon-theme",
         "KevinRose.vsc-python-indent",
         "mhutchie.git-graph",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-dotnettools.csdevkit"
       ]
     }
   },
@@ -45,7 +46,7 @@
     "PIP_ROOT_USER_ACTION": "ignore"
   },
 
-  "postCreateCommand": "pip install -e .",
+  "postCreateCommand": "pip install -e ."
 
-  "mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
+  //"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
 }
