@@ -316,3 +316,6 @@ unity/[Mm]emoryCaptures/
 unity/[Uu]serSettings/
 unity/*.sln
 unity/*.csproj
+
+unity/*.slnx
+unity/.vscode/
