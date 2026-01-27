@@ -14,7 +14,7 @@ https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe?utm_s
 # Cloner le projet
 Via HTTPS
 ```bash
-git clone
+git clone https://github.com/floorian651/wavr.git
 ```
 
 Via SSH
