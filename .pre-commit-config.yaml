@@ -4,11 +4,16 @@ repos:
     hooks:
     -   id: check-yaml
         args: ['--unsafe']
+        # Évite que check-yaml ne tente d'analyser les faux YAML d'Unity
+        exclude: ^unity/|.*\.asset$|.*\.unity$|.*\.meta$
     -   id: end-of-file-fixer
-        exclude: ^unity/.*
+        # Empêche de modifier la fin des fichiers Unity (crucial pour TagManager)
+        exclude: ^unity/|.*\.asset$|.*\.unity$|.*\.meta$
     -   id: trailing-whitespace
-        exclude: ^unity/.*
+        # Empêche de supprimer des espaces dans les fichiers de config Unity
+        exclude: ^unity/|.*\.asset$|.*\.unity$|.*\.meta$
 -   repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
     -   id: black
+        exclude: ^unity/
