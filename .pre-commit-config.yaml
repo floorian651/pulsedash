@@ -5,7 +5,9 @@ repos:
     -   id: check-yaml
         args: ['--unsafe']
     -   id: end-of-file-fixer
+        exclude: ^unity/.*
     -   id: trailing-whitespace
+        exclude: ^unity/.*
 -   repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
