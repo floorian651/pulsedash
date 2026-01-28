@@ -2,7 +2,7 @@ import os
 import librosa
 import numpy as np
 
-from pipeline.processors.parser import save_to_json
+from processors.parser import save_to_json
 
 fichier_audio = "assets/Darude.mp3"
 
