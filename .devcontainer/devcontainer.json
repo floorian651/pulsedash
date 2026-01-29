@@ -25,17 +25,36 @@
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
-        "python.formatting.provider": "black"
+        "python.formatting.provider": "black",
+        "dotnet.defaultSolution": "disable",
+        "dotnet.dotnetPath": "/usr/share/dotnet/dotnet"
       },
       "extensions": [
         "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "yzhang.markdown-all-in-one",
+        "SanjulaGanepola.github-local-actions",
+        "shd101wyy.markdown-preview-enhanced",
         "usernamehw.errorlens",
-        "esbenp.prettier-vscode"
+        "PKief.material-icon-theme",
+        "KevinRose.vsc-python-indent",
+        "mhutchie.git-graph",
+        "esbenp.prettier-vscode",
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp"
       ]
     }
   },
 
+  "remoteEnv": {
+    "DOTNET_ROOT": "/usr/share/dotnet",
+    "PATH": "${containerEnv:PATH}:/usr/share/dotnet"
+  },
+
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
-  }
+  },
+
+  "postCreateCommand": "pip install -e ."
 }
