@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /workspaces/wavr
 
+#Fix pour enlever le repo yarn qui fait planter le dl des images docker-compose (pitié)
+RUN rm -f /etc/apt/sources.list.d/yarn.list
+
 # 1. Installation des dépendances système + Git LFS
 RUN apt-get update && apt-get install -y --no-install-recommends \
     make \

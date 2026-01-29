@@ -55,6 +55,6 @@
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
   },
-
+  "runServices": ["app", "db", "redis", "minio", "celery"],
   "postCreateCommand": "pip install -e ."
 }
