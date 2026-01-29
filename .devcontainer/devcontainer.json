@@ -3,7 +3,7 @@
 
   "dockerComposeFile": ["../docker-compose.yml"],
 
-  "service": "app",
+  "service": "dev",
   "workspaceFolder": "/workspaces/wavr",
 
   "features": {
@@ -55,6 +55,6 @@
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
   },
-  "runServices": ["app", "db", "redis", "minio", "celery"],
-  "postCreateCommand": "pip install -e ."
+  "runServices": ["db", "redis", "minio"],
+  "shutdownAction": "stopCompose"
 }

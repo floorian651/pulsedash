@@ -1,69 +1,40 @@
-version: "3.9"
-
 services:
-  app:
+  dev:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: wavr_app
-    command: sleep infinity
-    env_file:
-      - .env
-    environment:
-      PYTHONPATH: /workspaces/wavr
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: ${REDIS_URL}
-      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      dockerfile: Dockerfile.dev
     volumes:
       - .:/workspaces/wavr
+    command: sleep infinity
     depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      minio:
-        condition: service_started
+      - db
+      - redis
+      - minio
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     ports:
-      - "${APP_PORT}:8000"
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - db
+      - redis
+      - minio
 
   celery:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: wavr_celery
-    command: sleep infinity
-    env_file:
-      - .env
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      REDIS_URL: ${REDIS_URL}
-      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
-      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-    volumes:
-      - .:/workspaces/wavr
+      dockerfile: Dockerfile.backend
+    command: celery -A backend.celery_app worker -l info
+    env_file: .env
     depends_on:
-      redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-
-  redis:
-    image: redis:7
-    container_name: wavr_redis
-    ports:
-      - "${REDIS_PORT}:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+      - redis
+      - db
 
   db:
     image: postgres:15
-    container_name: wavr_db
     env_file:
       - .env
     environment:
@@ -72,29 +43,26 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
-    ports:
-      - "${POSTGRES_PORT}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7
+
   minio:
-    image: minio/minio:latest
-    container_name: wavr_minio
+    image: minio/minio
     command: server /data --console-address ":9001"
     env_file:
       - .env
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    volumes:
-      - minio_data:/data
     ports:
       - "9000:9000"
       - "9001:9001"
+    volumes:
+      - minio-data:/data
 
 volumes:
   pgdata:
-  minio_data:
+  minio-data:
