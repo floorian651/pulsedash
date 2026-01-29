@@ -13,12 +13,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4712733039035875882, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4712733039035875882, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_Materials.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4712733039035875882, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5421893359464809365, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_Name
-      value: OldHole Variant
+      value: Hole
       objectReference: {fileID: 0}
     - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_LocalPosition.x
