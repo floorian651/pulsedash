@@ -1,10 +1,14 @@
-FROM python:3.12-slim-bookworm
+FROM mcr.microsoft.com/devcontainers/python:3.12-bookworm
 
 ENV PATH="/usr/local/bin:${PATH}"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
+
+WORKDIR /app
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /workspaces/wavr
 
@@ -32,14 +36,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # 2. Configuration des locales
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen en_US.UTF-8
-
-# 3. Installation de .NET SDK 8.0
-RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
-    && dpkg -i packages-microsoft-prod.deb \
-    && rm packages-microsoft-prod.deb \
-    && apt-get update \
-    && apt-get install -y dotnet-sdk-8.0 \
-    && rm -rf /var/lib/apt/lists/*
 
 # 4. Installation de Starship
 RUN curl -sS https://starship.rs/install.sh | sh -s -- -y
