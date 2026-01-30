@@ -319,3 +319,5 @@ unity/*.csproj
 
 unity/*.slnx
 unity/.vscode/
+
+resultat/
