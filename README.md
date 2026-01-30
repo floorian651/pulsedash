@@ -1,87 +1,75 @@
-# wave project
+# WAVR - Audio Rhythm Analysis Engine
 
-A software engineering project repository with MkDocs documentation, Material theme, and automated GitHub Pages deployment.
+A full-stack audio analysis and rhythm detection system combining Python signal processing with Unity game integration.
 
-## Fonctionnalités prévues
+## Project Overview
 
+WAVR is an audio analysis engine that extracts musical features from audio files and exports them for real-time integration in Unity games. The pipeline analyzes rhythm, tempo, energy, and musical structure to drive interactive gameplay.
 
-## Démarrage rapide
+### Key Features
 
+- **Audio Feature Extraction**: Tempo/BPM detection, beat tracking, energy analysis, spectral analysis
+- **Rhythm Processing**: Beat quantization, smoothing, threshold detection
+- **Multi-format Support**: Works with MP3, WAV, and other audio formats
+- **FastAPI Backend**: RESTful API for file uploads and analysis requests
+- **Asynchronous Processing**: Celery workers for distributed audio processing
+- **Unity Integration**: Exports analysis results as JSON for Unity `StreamingAssets`
+- **Docker Setup**: Complete dev container environment with Python and .NET SDK
 
-### Documentation (MkDocs)
+## Documentation
 
-## Tests
+Full documentation available at: [https://floorian651.github.io/wavr/](https://floorian651.github.io/wavr/)
 
-## Structure du projet
+## Quick Start
 
+### Prerequisites
+
+- Docker & Docker Compose
+- VS Code with Dev Containers extension (or local Python 3.9+)
+
+### Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/floorian651/wavr.git
+
+# Open in dev container (VS Code)
+# Command Palette > Dev Containers: Reopen in Container
 ```
-.
-├── src/                        # Source code
-├── docs/                       # Documentation
-│   ├── assets/                 # Static assets (images, CSS, etc.)
-│   ├── dev/                    # Development guides
-│   │   └── conventions.md      # Gitflow & commit conventions
-│   ├── arch/                   # Architecture documentation
-│   └── index.md                # Homepage (dashboard)
-├── .github/
-│   └── workflows/
-│       └── docs.yml            # GitHub Actions deployment workflow
-├── mkdocs.yml                  # MkDocs configuration
-└── README.md                   # This file
+
+### Running the Pipeline
+
+```bash
+# Run audio analysis on a file
+python -m src.pipeline.main
+
+# Or use FastAPI server
+uvicorn src.api.main:app --reload
+
+# Check results
+cat resultat/analyse_rythme.json
 ```
 
-## Configuration
+## Technology Stack
 
-The `mkdocs.yml` configuration includes:
+- **Backend**: Python 3, FastAPI, Celery
+- **Audio Processing**: librosa, numpy, scipy
+- **Client**: Unity 2022+, C#
+- **Infrastructure**: Docker, Docker Compose
+- **Database**: PostgreSQL, Redis
+- **Storage**: MinIO
+- **CI/CD**: GitHub Actions
 
-- **Theme**: Material for MkDocs
-- **Language**: French (fr)
-- **Features**:
-  - Navigation tabs (sticky)
-  - Navigation sections
-  - Navigation expand
-  - Back to top button
-  - TOC following
-  - Search suggestions
-  - Search highlighting
+## Testing
 
-## Deployment
+```bash
+# Run tests with coverage
+pytest tests/
 
-### Automatic Deployment
+# View coverage report
+coverage report
+```
 
-Pushing to the `main` or `master` branch automatically triggers the GitHub Actions workflow that:
-1. Checks out the code
-2. Sets up Python
-3. Installs MkDocs and dependencies
-4. Builds the documentation
-5. Deploys to the `gh-pages` branch
+## Docker & Dev Container
 
-## Documentation Pages
-
-- **Home** (`docs/index.md`) - Dashboard-style overview with quick links
-- **Development Conventions** (`docs/dev/conventions.md`) - Comprehensive guide covering:
-  - Git Flow workflow
-  - Conventional Commits specification
-  - Branch naming conventions
-  - Pull request guidelines
-  - Code review best practices
-
-## Customization
-
-### Adding New Pages
-
-1. Create a markdown file in the `docs/` directory
-2. Add it to the `nav` section in `mkdocs.yml`
-3. Build or serve to see changes
-
-### Changing Theme Settings
-
-Edit `mkdocs.yml` to customize:
-- Colors and fonts
-- Navigation features
-- Markdown extensions
-- Plugins
-
-## 📝 License
-
-This is a test project for MkDocs workflow testing.
+The project includes a pre-configured dev container.
