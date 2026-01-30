@@ -1,29 +1,33 @@
 {
   "name": "PuffinIT Dev Container",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
+
+  "dockerComposeFile": ["../docker-compose.yml"],
+
+  "service": "dev",
+  "workspaceFolder": "/workspaces/wavr",
 
   "features": {
     "ghcr.io/devcontainers/features/git:1": {
       "version": "latest"
     },
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "version": "8.0"
+    },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "enableNonRootDocker": "true",
       "moby": "true"
     }
-
   },
 
-  // Configuration VS Code
   "customizations": {
     "vscode": {
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
-        "python.formatting.provider": "black"
+        "python.formatting.provider": "black",
+        "dotnet.defaultSolution": "disable",
+        "dotnet.dotnetPath": "/usr/share/dotnet/dotnet"
       },
       "extensions": [
         "ms-python.python",
@@ -37,16 +41,20 @@
         "KevinRose.vsc-python-indent",
         "mhutchie.git-graph",
         "esbenp.prettier-vscode",
-        "ms-dotnettools.csdevkit"
+        "ms-dotnettools.csdevkit",
+        "ms-dotnettools.csharp"
       ]
     }
+  },
+
+  "remoteEnv": {
+    "DOTNET_ROOT": "/usr/share/dotnet",
+    "PATH": "${containerEnv:PATH}:/usr/share/dotnet"
   },
 
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
   },
-
-  "postCreateCommand": "pip install -e ."
-
-  //"mounts": ["source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"]
+  "runServices": ["db", "redis", "minio"],
+  "shutdownAction": "stopCompose"
 }
