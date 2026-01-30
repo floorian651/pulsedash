@@ -1,6 +1,6 @@
-mkdocs
-mkdocs-material
-mkdocs-awesome-pages-plugin
-mkdocs-git-revision-date-localized-plugin
-mkdocs-literate-nav
-mkdocs-minify-plugin
+mkdocs==1.6.1
+mkdocs-material==9.7.1
+mkdocs-awesome-pages-plugin==2.10.1
+mkdocs-git-revision-date-localized-plugin==1.5.1
+mkdocs-literate-nav==0.6.2
+mkdocs-minify-plugin==0.8.0
