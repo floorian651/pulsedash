@@ -53,8 +53,6 @@
       
     
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -788,77 +786,7 @@
 
   <h1>Architecture</h1>
 
-<pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Roboto', 'fontSize': '14px'}, 'flowchart': { 'curve': 'monotoneX' } } }%%
-flowchart LR
-  subgraph Client [ Zone Client ]
-    Unity(["fa:fa-gamepad Unity Client"])
-  end
 
-  subgraph API_Service [ Service Web ]
-    API["fa:fa-server FastAPI"]
-  end
-
-  subgraph Broker_Backend [ Broker &amp; État ]
-    Redis[("fa:fa-memory Redis (broker)")]
-    Postgres[("fa:fa-database PostgreSQL")]
-  end
-
-  subgraph Workers [ Traitement Asynchrone ]
-    Worker1{{"fa:fa-cogs Worker A"}}
-    Worker2{{"fa:fa-cogs Worker B"}}
-    Beat{{"fa:fa-clock Beat"}}
-  end
-
-  subgraph Storage [ Stockage Fichiers ]
-    MinIO[("fa:fa-hdd MinIO")]
-  end
-
-  Unity --&gt;|"HTTP POST"| API
-  API --&gt;|"enqueue"| Redis
-  API -.-&gt;|"direct (opt)"| Worker1
-  Beat --&gt;|"schedule"| Redis
-  Redis --&gt;|"deliver"| Worker1
-  Redis --&gt;|"deliver"| Worker2
-  Worker1 --&gt;|"pipeline"| MinIO
-  Worker2 --&gt;|"pipeline"| MinIO
-  Worker1 --&gt;|"meta"| Postgres
-  Worker2 --&gt;|"meta"| Postgres
-  API --&gt;|"read"| Postgres
-  API --&gt;|"serve"| MinIO</code></pre>
-<pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Fira Code, Consolas, Monaco, monospace', 'fontSize': '13px'}, 'flowchart': { 'curve': 'basis' } } }%%
-flowchart TD
-  subgraph Host [ Machine Hôte ]
-    DockerEngine["fa:fa-docker Docker Engine"]
-
-    subgraph ComposeStack [ Stack Docker Compose ]
-        direction TB
-
-        subgraph Compute [ Compute ]
-            app["fa:fa-server app (uvicorn)"]
-            worker{{"fa:fa-cogs celery_worker"}}
-        end
-
-        subgraph DataServices [ Data Services ]
-            redis[("fa:fa-memory redis")]
-            db[("fa:fa-database postgres")]
-            minio[("fa:fa-hdd minio")]
-        end
-    end
-
-    Volumes[("fa:fa-folder-open Volumes Persistants")]
-  end
-
-  DockerEngine -.-&gt;|"gère"| ComposeStack
-
-  app --&gt;|"TCP :6379"| redis
-  app --&gt;|"TCP :5432"| db
-  app --&gt;|"TCP :9000"| minio
-
-  worker --&gt;|"TCP :6379"| redis
-  worker --&gt;|"TCP :9000"| minio
-
-  db ===|"mount"| Volumes
-  minio ===|"mount"| Volumes</code></pre>
 
 
 
