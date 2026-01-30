@@ -321,3 +321,4 @@ unity/*.slnx
 unity/.vscode/
 
 resultat/
+.secrets
