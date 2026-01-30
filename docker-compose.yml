@@ -27,7 +27,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
-    command: celery -A backend.celery_app worker -l info
+    command: celery worker -l info
     env_file: .env
     depends_on:
       - redis
