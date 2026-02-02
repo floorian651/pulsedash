@@ -14,12 +14,16 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 879779eb70f9b1854b40f9f2b13630ab, type: 2}
     - target: {fileID: 1661879771127950703, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
       propertyPath: m_Name
-      value: Wall Variant
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 2794976375391306934, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 879779eb70f9b1854b40f9f2b13630ab, type: 2}
+    - target: {fileID: 3759393957644323623, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: a0797e8096ebf52acacefa46a2364317, type: 2}
     - target: {fileID: 4354214378166508288, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.4551182
