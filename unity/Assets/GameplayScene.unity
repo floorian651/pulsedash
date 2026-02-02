@@ -127,6 +127,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1315796165658337992, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315796165658337992, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
+      propertyPath: m_LinearDamping
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1315796165658337992, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
+      propertyPath: m_AngularDamping
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4716906348771368151, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 651823f4979e071d4a57c53a0f804453, type: 2}
+    - target: {fileID: 5004169579175224869, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7113973792849887574, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -183,7 +203,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5004169579175224869, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7113973792849887574, guid: 1f59fb752a89c37579ab2db5e24ec4f5, type: 3}
