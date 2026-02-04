@@ -35,7 +35,7 @@ pre_commit
 black
 isort
 
-fastapi
+fastapi[standard]
 uvicorn[standard]
 python-multipart
 
