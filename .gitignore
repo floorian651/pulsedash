@@ -322,3 +322,6 @@ unity/.vscode/
 
 resultat/
 .secrets
+unity/Packages/*
+!unity/Packages/manifest.json
+!unity/Packages/packages-lock.json
