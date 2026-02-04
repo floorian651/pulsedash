@@ -1,4 +1,6 @@
-
+using UnityEngine.UI;
+using UnityEngine;
+using TMPro;
 public static class Bouton
 {   
 
@@ -44,14 +46,12 @@ public static class Bouton
         return button;
     }
 
-    public static Button CreateMusicButton(Transform parent, AudioSource source, AudioClip clip)
+    public static Button CreateMusicButton(Transform parent)
 {   
-        Button btn = CreateButton(parent, "▶ Jouer", () => {}); 
+        Button btn = CreateButton(parent, "Jouer", () => {}); 
 
         MusicButton mb = btn.gameObject.AddComponent<MusicButton>(); 
-        mb.source = source; 
-        mb.clip = clip; 
-
+  
         return btn;
 }
 

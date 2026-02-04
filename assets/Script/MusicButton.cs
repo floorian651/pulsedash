@@ -4,9 +4,6 @@ using TMPro;
 
 public class MusicButton : MonoBehaviour
 {
-    public AudioSource source;
-    public AudioClip clip;
-
     private bool estEnLecture = false;
     private TMP_Text texteBouton;
 
@@ -27,17 +24,17 @@ public class MusicButton : MonoBehaviour
         if (!estEnLecture)
         {
             // Si la musique n'est pas en train de jouer
-            if (!source.isPlaying){
+            if (!MenuGenerator.audioSource.isPlaying){
                 Debug.Log("Jouer le son!");
-                source.Play();}
+                MenuGenerator.audioSource.Play();}
             else
-                source.UnPause();
+                MenuGenerator.audioSource.UnPause();
 
             texteBouton.text = "Pause";
         }
         else
         {
-            source.Pause();
+            MenuGenerator.audioSource.Pause();
             texteBouton.text = "Jouer";
         }
 
