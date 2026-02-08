@@ -143,14 +143,14 @@ public class PlaylistManager : MonoBehaviour
                     yield return null;    
 
                 Debug.Log("Le morceau est fini!");            
-
+/*
             }
             else
                 {   
                     trackNext = toutesLesMusiques.Find(t => t.order == 0);
                     Debug.Log("Fin de la playlist! Donc reprend au début de la playlist!");
                     
-                }
+                }*/
                 
                 trackactuel = trackNext;
 
@@ -163,6 +163,7 @@ public class PlaylistManager : MonoBehaviour
                 Debug.Log("Jouer musique " +trackactuel.title);
 
         }
+        trackactuel = trackNext;}
         Debug.Log("PROBLEME!");
         }
     IEnumerator PlayNextWhenFinished(AudioClip nextClip)
