@@ -56,9 +56,10 @@ public class MenuGenerator : MonoBehaviour
 
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
     //yield return null; // attendre 1 frame
-    PlaylistUI.AfficherBoutonPlaylist(leftMenu, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftMenu, playlistName =>
     {   
-        PopupManager.ShowMusiquesPlaylistPopup(audioCache.clips,playlistName);
+        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, mainContent);
+        //PopupManager.ShowMusiquesPlaylistPopup(audioCache.clips,playlistName);
     });
 
     // Créer le bouton pour créer une playlist sous la forme d'une pop up 

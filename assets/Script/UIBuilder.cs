@@ -165,6 +165,82 @@ public static class UIBuilder
 
     return go.transform;
 }
+    public static void ShowMusiquesPlaylistInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
+    {
+
+    // Conteneur principal pour la playlist
+
+    // ScrollRect
+    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
+    scrollGO.transform.SetParent(mainContent.transform, false);
+
+    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
+    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
+    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
+    scrollRT.offsetMin = Vector2.zero;
+    scrollRT.offsetMax = Vector2.zero;
+    scrollRT.sizeDelta = new Vector2(400, 40);
+
+
+    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
+    scroll.horizontal = false;
+
+    // Viewport
+    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
+    viewportGO.transform.SetParent(scrollGO.transform, false);
+    viewportGO.GetComponent<Image>().color = new Color(1, 1, 1, 0.05f);
+
+    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
+    viewportRT.anchorMin = Vector2.zero;
+    viewportRT.anchorMax = Vector2.one;
+    viewportRT.offsetMin = Vector2.zero;
+    viewportRT.offsetMax = Vector2.zero;
+    
+
+    scroll.viewport = viewportRT;
+
+    // Content
+    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+    contentGO.transform.SetParent(viewportGO.transform, false);
+
+    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+    layout.childControlHeight = true;
+    layout.childForceExpandHeight = false;
+    layout.childControlWidth = true;
+    layout.childForceExpandWidth = true;
+    layout.spacing = 10;
+
+    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
+    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+
+    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
+    contentRT.anchorMin = new Vector2(0, 1);
+    contentRT.anchorMax = new Vector2(1, 1);
+    contentRT.pivot = new Vector2(0.5f, 1);
+    contentRT.anchoredPosition = Vector2.zero;
+    contentRT.offsetMin = new Vector2(0, 0);
+    contentRT.offsetMax = new Vector2(0, 0);
+    
+
+
+    scroll.content = contentRT;
+
+    // Génération des boutons de playlists
+    PlaylistUI.AfficherMusiquesParPlaylist(clips,playlistName,contentRT );
+
+    //Ajout des boutons next et before pour gérer la playlist
+    /*PlaylistManager pm = FindObjectOfType<PlaylistManager>();
+    if (pm != null)
+    {   Sprite buttonSprite = Resources.Load<Sprite>("png_violet");
+        Button nextBtn = Bouton.CreateButton(contentRT, "Next", buttonSprite, () => pm.Next(playlistName));
+        Button prevBtn = Bouton.CreateButton(contentRT, "Before", buttonSprite, () => pm.Previous(playlistName));
+    }*/
+    
+}
+
+
     public static  TextMeshProUGUI CreerTexte(Transform parent)
     {
         GameObject texteGO = new GameObject("Texte", typeof(TextMeshProUGUI));

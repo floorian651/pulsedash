@@ -71,12 +71,13 @@ public static class PlaylistUI
         });
     }
 
-   public static void AfficherBoutonPlaylist(Transform resultsContainer, Action<string> onClick)
+   public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, Action<string> onClick)
 {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
     if (pm != null) {
         List<Playlist> toutesLesPlaylists = pm.playlists;
+        
 
     foreach (Transform child in resultsContainer)
         UnityEngine.Object.Destroy(child.gameObject);
@@ -126,6 +127,53 @@ public static class PlaylistUI
     {
         onClick?.Invoke(playlist.name);
     });
+
+    // Création du bouton secondaire (ex: supprimer ou action)
+    GameObject lancerPlaylistButtonGO = new GameObject("lancerPlaylistButton", typeof(RectTransform));
+    lancerPlaylistButtonGO.transform.SetParent(boutonGO.transform, false);
+
+    Button lancerPlaylistBtn = lancerPlaylistButtonGO.AddComponent<Button>();
+    Image lancerPlaylistImg = lancerPlaylistButtonGO.AddComponent<Image>();
+    lancerPlaylistImg.color = new Color(0.6f, 0, 1f, 1f); // rouge semi-transparent par exemple
+
+    // Taille et position du bouton secondaire (en haut à droite du bouton principal)
+    RectTransform lancerPlaylistRT = lancerPlaylistButtonGO.GetComponent<RectTransform>();
+    lancerPlaylistRT.anchorMin = new Vector2(1, 1); // coin supérieur droit
+    lancerPlaylistRT.anchorMax = new Vector2(1, 1);
+    lancerPlaylistRT.pivot = new Vector2(1, 1);
+    lancerPlaylistRT.sizeDelta = new Vector2(20, 20); // taille du petit bouton
+    lancerPlaylistRT.anchoredPosition = new Vector2(-5, -5); // léger décalage vers l'intérieur
+
+    GameObject textlancerPlaylist = new GameObject("Text", typeof(RectTransform));
+    textlancerPlaylist.transform.SetParent(lancerPlaylistBtn.transform, false);
+
+    TextMeshProUGUI txtlancerPlaylist = textlancerPlaylist.AddComponent<TextMeshProUGUI>();
+    txtlancerPlaylist.text = ">"; // symbole play
+    txtlancerPlaylist.fontSize = 20;
+    txtlancerPlaylist.alignment = TextAlignmentOptions.Center;
+    txtlancerPlaylist.color = Color.white;
+
+    RectTransform txtRTlancerPlaylist = textlancerPlaylist.GetComponent<RectTransform>();
+    txtRTlancerPlaylist.anchorMin = Vector2.zero;
+    txtRTlancerPlaylist.anchorMax = Vector2.one;
+    txtRTlancerPlaylist.offsetMin = Vector2.zero;
+    txtRTlancerPlaylist.offsetMax = Vector2.zero;
+
+
+    Playlist playlist_recherche = pm.GetPlaylist(playlist.name);
+
+    //Récupérer la liste de toutes les musiques de la playlist sélectionnée
+    List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+    
+
+    // Action du bouton secondaire
+    lancerPlaylistBtn.onClick.AddListener(() =>
+    {
+        Debug.Log("Lancer la playlist: " + playlist.name);
+        Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
+        pm.LancerPlaylist(playlist.name, track, clips,TracktoutesLesMusiques);
+    });
+
 }
     }}
 
@@ -188,7 +236,7 @@ public static class PlaylistUI
         addBtnGO.transform.SetParent(boutonGO.transform, false);
 
         Image addImg = addBtnGO.AddComponent<Image>();
-        addImg.color = new Color(0.3f, 0.8f, 0.3f, 0.9f);
+        addImg.color = new Color(0.7f, 0f, 1f, 1f);
 
         Button addBtn = addBtnGO.AddComponent<Button>();
 
