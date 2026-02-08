@@ -30,7 +30,7 @@ public class SliderMusique : MonoBehaviour
 
     void OnSliderChanged(float value)
     {   
-        Debug.Log("Position curseur : "+value);
+        //Debug.Log("Position curseur : "+value);
 
         utilisateurChangeValeur = true;
 

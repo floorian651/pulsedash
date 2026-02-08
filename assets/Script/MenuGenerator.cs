@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI; //slider
 using System.Collections; // IEnumerator
+using TMPro;   // indispensable pour TextMeshProUGUI
+
 
 public class MenuGenerator : MonoBehaviour
 {
     public AudioCache audioCache;
     public static AudioSource audioSource;
+
+    public static TextMeshProUGUI messageText; 
     public Slider sliderPrefab;
     private AudioClip clipMusique;  
 
@@ -28,6 +32,8 @@ public class MenuGenerator : MonoBehaviour
 
     // Générer le main content
     Transform mainContent = UIBuilder.CreateMainContent(panel);
+
+    messageText = UIBuilder.CreerTexte(mainContent);
 
     // Créer un curseur pour la musique 
     SliderMusiqueFactory.Create(mainContent, sliderPrefab);
@@ -70,7 +76,7 @@ public class MenuGenerator : MonoBehaviour
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar);
     searchUI.Init(audioCache.clips);
-
+    
     
 
     

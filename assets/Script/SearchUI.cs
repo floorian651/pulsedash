@@ -60,7 +60,21 @@ public class SearchUI
             MenuGenerator.audioSource.clip = clip;
             
             PopupManager.Show("Musique sélectionnée : " + clip.name);
-        });
+
+            // modifier le texte dans le mainContent
+            MenuGenerator.messageText.text = "Musique sélectionnée : " + clip.name;
+            if (MenuGenerator.messageText != null)
+            {
+                MenuGenerator.messageText.text = "Musique sélectionnée : " + clip.name;
+            }
+            else
+            {
+                Debug.LogError("messageText n'est pas encore initialisé");
+            }
+
+                        
+
+});
 
         // Redimensionner le bouton principal pour le menu déroulant
         LayoutElement le = btn.gameObject.GetComponent<LayoutElement>();

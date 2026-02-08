@@ -219,9 +219,7 @@ public static class PlaylistUI
         {   
             pm.LancerPlaylist(nomplaylist, track, clips,TracktoutesLesMusiques);
          
-            PopupManager.Show("Musique sélectionnée : " + track.title);
         });
-
         // --- LISTENER DU BOUTON AJOUT À PLAYLIST ---
         addBtn.onClick.AddListener(() =>
     {   

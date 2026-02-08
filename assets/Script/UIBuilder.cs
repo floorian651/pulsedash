@@ -47,7 +47,7 @@ public static class UIBuilder
     RectTransform panelRT = panelGO.GetComponent<RectTransform>();
 
     Image panelImage = panelGO.GetComponent<Image>();
-    panelImage.color = Color.purple; //new Color(0, 0, 0, 0.4f);
+    panelImage.color =  new Color(0.78f, 0.65f, 0.88f, 1f); //new Color(0, 0, 0, 0.4f);
 
     panelRT.anchorMin = Vector2.zero;
     panelRT.anchorMax = Vector2.one;
@@ -70,11 +70,14 @@ public static class UIBuilder
     rt.anchorMax = new Vector2(1, 1);
     rt.pivot = new Vector2(0.5f, 1);
     rt.sizeDelta = new Vector2(0, 50);
-    rt.anchoredPosition = Vector2.zero;
+    //rt.anchoredPosition = Vector2.zero;
+    rt.anchoredPosition = new Vector2(0, -10);
 
-    // Ajouter un fond gris
+
+    // Ajouter un fond 
     Image bgImage = topBarGO.AddComponent<Image>();
-    bgImage.color = Color.purple;
+    bgImage.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
     HorizontalLayoutGroup layout = topBarGO.AddComponent<HorizontalLayoutGroup>();
@@ -96,7 +99,8 @@ public static class UIBuilder
     RectTransform rt = go.GetComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = Color.purple; 
+    Image.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+
 
     // Ancré à gauche, sous la TopBar
     rt.anchorMin = new Vector2(0, 0);
@@ -133,7 +137,8 @@ public static class UIBuilder
     RectTransform rt = go.GetComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = Color.purple; 
+    Image.color = new Color(0.75f, 0.65f, 0.9f, 1f); // Lavande
+
 
     rt.anchorMin = new Vector2(0, 0);
     rt.anchorMax = new Vector2(1, 1);
@@ -160,7 +165,33 @@ public static class UIBuilder
 
     return go.transform;
 }
+    public static  TextMeshProUGUI CreerTexte(Transform parent)
+    {
+        GameObject texteGO = new GameObject("Texte", typeof(TextMeshProUGUI));
+        texteGO.transform.SetParent(parent.transform, false);
 
+        TextMeshProUGUI texteTMP = texteGO.GetComponent<TextMeshProUGUI>();
+
+        // Texte par défaut
+        texteTMP.text = "Bienvenue!";
+        texteTMP.fontSize = 20;
+        texteTMP.alignment = TextAlignmentOptions.Center;
+        texteTMP.color = Color.white;
+        texteTMP.enableWordWrapping = true;
+        texteTMP.overflowMode = TextOverflowModes.Overflow;
+
+
+        // Stretch dans le parent
+        RectTransform rt = texteGO.GetComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        rt.sizeDelta = new Vector2(300, 50);
+
+        return texteTMP;
+    }
 
     // Créer le conteneur dans le conteneur topbar pour faire en sorte que le menu déroulant soit en dessous de la barre de recherche
     public static Transform CreateSearchContainer(Transform parent)
@@ -171,10 +202,11 @@ public static class UIBuilder
     RectTransform rt = go.AddComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = Color.purple; 
+    Image.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+
 
     LayoutElement le = go.AddComponent<LayoutElement>();
-    le.preferredWidth = 450;
+    le.preferredWidth = 500;
 
     VerticalLayoutGroup vlg = go.AddComponent<VerticalLayoutGroup>();
     vlg.childControlWidth = false;
@@ -185,6 +217,9 @@ public static class UIBuilder
 
     return go.transform;
 }
+
+    
+    
 
 
 // Créer la barre de recherche

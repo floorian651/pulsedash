@@ -103,47 +103,79 @@ public class PlaylistManager : MonoBehaviour
         public List<Playlist> playlists;
     }
 
-    public void LancerPlaylist(string nomplaylist, Track track, List<AudioClip> clips, List<Track> toutesLesMusiques)
+    public void LancerPlaylist(string nomplaylist, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
-    // Récupérer le clip correspondant au track sélectionné
-    AudioClip clip = SearchUI.RechercherClip(track.title, clips);
+    StartCoroutine(RoutinePlaylist(nomplaylist, trackactuel, clips, toutesLesMusiques));
+}   
+    IEnumerator RoutinePlaylist(string nomplaylist, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
+    {   
+        AudioClip clip = SearchUI.RechercherClip(trackactuel.title, clips);
 
-    int orderTrack = track.order;
+        // Attribuer au clip static le clip récupéré
+        MenuGenerator.audioSource.clip = clip;
 
-    // Attribuer au clip static le clip récupéré
-    MenuGenerator.audioSource.clip = clip;
+        Debug.Log("Musique de la playlist sélectionnée : "+ trackactuel.title);
+        PopupManager.Show(trackactuel.title +" sélectionnée");
+        
+        MenuGenerator.messageText.text = trackactuel.title;
+        //MenuGenerator.audioSource.Play();        
 
-    // Récupérer le track de la musique suivante
-    Track trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
-    Track trackBefore = toutesLesMusiques.Find(t => t.order == orderTrack - 1);
-    
-    // Passe automatiquement à la musique suivante de la playlist 
-    if (trackNext != null)
-    {
-        // Rechercher le clip correspondant
-        AudioClip nextClip = SearchUI.RechercherClip(trackNext.title, clips);
-        Debug.Log("Prochaine musique de la playlist sélectionnée : "+ trackNext.title);
+        // attendre que la musique est commencée
 
-        // Exemple : quand la musique actuelle est terminée, jouer la suivante
-        StartCoroutine(PlayNextWhenFinished(nextClip));
-    }
-    else
+        while (!MenuGenerator.audioSource.isPlaying)
+            yield return null;
+
+        while (trackactuel != null )
         {
-            Debug.Log("Fin de la playlist");
+            //Récupérer le numérdo du track
+            int orderTrack = trackactuel.order;
+
+            // Récupérer le track de la musique suivante
+            Track trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
+
+            // Passe automatiquement à la musique suivante de la playlist 
+            if (trackNext != null)
+            {
+                Debug.Log("Prochaine musique de la playlist sélectionnée : "+ trackNext.title);
+
+                // Attendre la fin réelle du morceau
+                while (MenuGenerator.audioSource.isPlaying)//|| MenuGenerator.audioSource.time < MenuGenerator.audioSource.clip.length)
+                    yield return null;    
+
+                Debug.Log("Le morceau est fini!");            
+
+            }
+            else
+                {   
+                    trackNext = toutesLesMusiques.Find(t => t.order == 0);
+                    Debug.Log("Fin de la playlist! Donc reprend au début de la playlist!");
+                    
+                }
+                
+                trackactuel = trackNext;
+
+                PopupManager.Show(trackactuel.title +" sélectionnée");
+                MenuGenerator.messageText.text = trackactuel.title;
+
+                clip = SearchUI.RechercherClip(trackactuel.title, clips);
+                MenuGenerator.audioSource.clip = clip;
+                MenuGenerator.audioSource.Play();
+                Debug.Log("Jouer musique " +trackactuel.title);
+
         }
-}
+        Debug.Log("PROBLEME!");
+        }
     IEnumerator PlayNextWhenFinished(AudioClip nextClip)
 {
-    AudioSource src = MenuGenerator.audioSource;
 
     // Attendre la fin réelle du morceau
-    while (src.isPlaying || src.time < src.clip.length)
+    while (MenuGenerator.audioSource.isPlaying || MenuGenerator.audioSource.time < MenuGenerator.audioSource.clip.length)
         yield return null;
 
     Debug.Log("Fin réelle du morceau détectée");
 
-    src.clip = nextClip;
-    src.Play();
+    MenuGenerator.audioSource.clip = nextClip;
+    MenuGenerator.audioSource.Play();
 }
 
 
