@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI; //slider
 using System.Collections; // IEnumerator
-using TMPro;   // indispensable pour TextMeshProUGUI
+using TMPro;  // indispensable pour TextMeshProUGUI
 
 
 public class MenuGenerator : MonoBehaviour
@@ -31,15 +31,17 @@ public class MenuGenerator : MonoBehaviour
     Transform panel = UIBuilder.CreatePanel();
 
     // Générer le main content
-    Transform mainContent = UIBuilder.CreateMainContent(panel);
+    //Transform mainContent = UIBuilder.CreateMainContent(panel);
 
-    messageText = UIBuilder.CreerTexte(mainContent);
+    Transform leftContent = UIBuilder.CreateLeftContent(panel);
+
+    messageText = UIBuilder.CreerTexte(leftContent);
 
     // Créer un curseur pour la musique 
-    SliderMusiqueFactory.Create(mainContent, sliderPrefab);
+    SliderMusiqueFactory.Create(leftContent, sliderPrefab);
 
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
-    Bouton.CreateMusicButton(mainContent); 
+    Bouton.CreateMusicButton(leftContent); 
 
 
     // Générer le left menu
@@ -54,11 +56,13 @@ public class MenuGenerator : MonoBehaviour
     // Charger tous les fichiers mp3 déjà dans le cache
     yield return StartCoroutine(audioCache.LoadAllCachedMusic());
 
+    Transform rightContent = UIBuilder.CreateRightContent(panel);
+
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
     //yield return null; // attendre 1 frame
     PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftMenu, playlistName =>
     {   
-        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, mainContent);
+        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContent);
         //PopupManager.ShowMusiquesPlaylistPopup(audioCache.clips,playlistName);
     });
 

@@ -66,6 +66,7 @@ public static class UIBuilder
 
     // Configurer le RectTransform
     RectTransform rt = topBarGO.GetComponent<RectTransform>();
+    // anchorMin=(0,1), anchorMax=(1,1),
     rt.anchorMin = new Vector2(0, 1);
     rt.anchorMax = new Vector2(1, 1);
     rt.pivot = new Vector2(0.5f, 1);
@@ -102,7 +103,7 @@ public static class UIBuilder
     Image.color = new Color(0.78f, 0.65f, 0.88f, 1f);
 
 
-    // Ancré à gauche, sous la TopBar
+    // Ancré à gauche, sous la TopBar anchorMin=(0,0), anchorMax=(0,1)
     rt.anchorMin = new Vector2(0, 0);
     rt.anchorMax = new Vector2(0, 1);
     rt.pivot = new Vector2(0, 1);
@@ -165,6 +166,62 @@ public static class UIBuilder
 
     return go.transform;
 }
+public static Transform CreateLeftContent(Transform parent)
+{
+    GameObject go = new GameObject("LeftContent", typeof(RectTransform));
+    go.transform.SetParent(parent, false);
+
+    RectTransform rt = go.GetComponent<RectTransform>();
+    rt.anchorMin = new Vector2(0, 0.2f);  // 20% du bas
+    rt.anchorMax = new Vector2(0.7f, 0.8f); // 70% largeur, 80% du haut
+    rt.pivot = new Vector2(0, 1);          // pivot en haut à gauche
+    rt.anchoredPosition = Vector2.zero;
+
+    // Image de fond (optionnel)
+    Image img = go.AddComponent<Image>();
+    img.color = new Color(0.75f, 0.65f, 0.9f, 1f); // lavande
+
+    // Layout vertical pour empiler des éléments
+    var layout = go.AddComponent<VerticalLayoutGroup>();
+    layout.childControlHeight = false;
+    layout.childControlWidth = false;
+    layout.childForceExpandHeight = false;
+    layout.childForceExpandWidth = false;
+    layout.spacing = 10;
+    layout.childAlignment = TextAnchor.UpperCenter;
+
+    return go.transform;
+}
+
+public static Transform CreateRightContent(Transform parent)
+{
+    GameObject go = new GameObject("RightContent", typeof(RectTransform));
+    go.transform.SetParent(parent, false);
+
+    RectTransform rt = go.GetComponent<RectTransform>();
+    rt.anchorMin = new Vector2(0.7f, 0.2f); // commence à 70% du parent
+    rt.anchorMax = new Vector2(1, 0.8f);   // jusqu’à 100% largeur
+    rt.pivot = new Vector2(0, 1);
+    rt.anchoredPosition = Vector2.zero;
+
+
+    // Image de fond (optionnel)
+    Image img = go.AddComponent<Image>();
+    img.color = new Color(0.75f, 0.65f, 0.9f, 1f); 
+
+    // Layout vertical
+    var layout = go.AddComponent<VerticalLayoutGroup>();
+    layout.childControlHeight = false;
+    layout.childControlWidth = false;
+    layout.childForceExpandHeight = false;
+    layout.childForceExpandWidth = false;
+    layout.spacing = 10;
+    layout.childAlignment = TextAnchor.UpperCenter;
+
+
+    return go.transform;
+}
+
     public static void ShowMusiquesPlaylistInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
     {
 
