@@ -13,10 +13,6 @@
       
       
       
-        <link rel="prev" href="../../changelog/">
-      
-      
-        <link rel="next" href="../../dev/CONTRIBUTING/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>Premiers pas - Wawe game</title>
+        <title>API PulseDash - Wawe game</title>
       
     
     
@@ -79,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#specifications-de-lapi" class="md-skip">
+          Aller au contenu
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -111,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Premiers pas
+              API PulseDash
             
           </span>
         </div>
@@ -278,13 +279,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../user/getting-started/" class="md-tabs__link">
           
   
   
@@ -304,7 +303,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev/CONTRIBUTING/" class="md-tabs__link">
+        <a href="../CONTRIBUTING/" class="md-tabs__link">
           
   
   
@@ -452,31 +451,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -494,7 +490,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -509,17 +505,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user/getting-started/" class="md-nav__link">
         
   
   
@@ -535,7 +524,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -609,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/CONTRIBUTING/" class="md-nav__link">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -637,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/setup/" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -665,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -693,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/gitconventions.md" class="md-nav__link">
+      <a href="../gitconventions.md" class="md-nav__link">
         
   
   
@@ -775,7 +763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/ci-cd/" class="md-nav__link">
+      <a href="../ci-cd/" class="md-nav__link">
         
   
   
@@ -803,7 +791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/pipeline/" class="md-nav__link">
+      <a href="../pipeline/" class="md-nav__link">
         
   
   
@@ -856,6 +844,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -875,7 +865,8 @@
   
 
 
-  <h1>Premiers pas</h1>
+<h1 id="specifications-de-lapi">Spécifications de l'API</h1>
+<p>Cette page décrit l'API HTTP du backend <strong>PulseDash</strong>. L'API est construite avec <strong>FastAPI</strong> et expose actuellement un endpoint d'analyse audio.</p>
 
 
 
@@ -883,7 +874,8 @@
 
 
 
-
+  
+  
 
 
 

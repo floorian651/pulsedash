@@ -16,7 +16,7 @@
         <link rel="prev" href="../setup/">
       
       
-        <link rel="next" href="../gitconventions/">
+        <link rel="next" href="../ci-cd/">
       
       
         
@@ -78,6 +78,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Aller au contenu
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -241,6 +246,44 @@
   
   
   
+    <li class="md-tabs__item">
+      <a href="../../game/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  PulseDash
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
     
     
       <li class="md-tabs__item">
@@ -362,6 +405,60 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../game/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PulseDash
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -378,10 +475,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -399,8 +496,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -470,10 +567,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -491,8 +588,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -572,6 +669,24 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -589,6 +704,123 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-logique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture logique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture logique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-des-composants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rôles des composants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flux-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flux principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-de-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture de déploiement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture de déploiement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reseaux-et-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseaux et ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#init-themevariables-fontfamily-fira-code-consolas-monaco-monospace-fontsize-13px-flowchart-curve-basis-flowchart-td-subgraph-host-machine-hote-dockerenginefafa-docker-docker-engine-subgraph-composestack-stack-docker-compose-direction-tb-subgraph-compute-compute-appfafa-server-app-uvicorn-workerfafa-cogs-celery_worker-end-subgraph-dataservices-data-services-redisfafa-memory-redis-dbfafa-database-postgres-miniofafa-hdd-minio-end-end-volumesfafa-folder-open-volumes-persistants-end-dockerengine-gere-composestack-app-tcp-6379-redis-app-tcp-5432-db-app-tcp-9000-minio-worker-tcp-6379-redis-worker-tcp-9000-minio-db-mount-volumes-minio-mount-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        %%{init: {'themeVariables': { 'fontFamily': 'Fira Code, Consolas, Monaco, monospace', 'fontSize': '13px'}, 'flowchart': { 'curve': 'basis' } } }%% flowchart TD subgraph Host [ Machine Hôte ] DockerEngine["fa:fa-docker Docker Engine"] subgraph ComposeStack [ Stack Docker Compose ] direction TB subgraph Compute [ Compute ] app["fa:fa-server app (uvicorn)"] worker{{"fa:fa-cogs celery_worker"}} end subgraph DataServices [ Data Services ] redis[("fa:fa-memory redis")] db[("fa:fa-database postgres")] minio[("fa:fa-hdd minio")] end end Volumes[("fa:fa-folder-open Volumes Persistants")] end DockerEngine -.-&gt;|"gère"| ComposeStack app --&gt;|"TCP :6379"| redis app --&gt;|"TCP :5432"| db app --&gt;|"TCP :9000"| minio worker --&gt;|"TCP :6379"| redis worker --&gt;|"TCP :9000"| minio db ===|"mount"| Volumes minio ===|"mount"| Volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -601,7 +833,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gitconventions/" class="md-nav__link">
+      <a href="../gitconventions.md" class="md-nav__link">
         
   
   
@@ -647,10 +879,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_5" >
         
           
-          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_5" id="__nav_5_5_label" tabindex="">
             
   
   
@@ -668,8 +900,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -768,6 +1000,114 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-logique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture logique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture logique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-des-composants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rôles des composants
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flux-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flux principal
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture-de-deploiement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture de déploiement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture de déploiement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reseaux-et-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réseaux et ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#init-themevariables-fontfamily-fira-code-consolas-monaco-monospace-fontsize-13px-flowchart-curve-basis-flowchart-td-subgraph-host-machine-hote-dockerenginefafa-docker-docker-engine-subgraph-composestack-stack-docker-compose-direction-tb-subgraph-compute-compute-appfafa-server-app-uvicorn-workerfafa-cogs-celery_worker-end-subgraph-dataservices-data-services-redisfafa-memory-redis-dbfafa-database-postgres-miniofafa-hdd-minio-end-end-volumesfafa-folder-open-volumes-persistants-end-dockerengine-gere-composestack-app-tcp-6379-redis-app-tcp-5432-db-app-tcp-9000-minio-worker-tcp-6379-redis-worker-tcp-9000-minio-db-mount-volumes-minio-mount-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        %%{init: {'themeVariables': { 'fontFamily': 'Fira Code, Consolas, Monaco, monospace', 'fontSize': '13px'}, 'flowchart': { 'curve': 'basis' } } }%% flowchart TD subgraph Host [ Machine Hôte ] DockerEngine["fa:fa-docker Docker Engine"] subgraph ComposeStack [ Stack Docker Compose ] direction TB subgraph Compute [ Compute ] app["fa:fa-server app (uvicorn)"] worker{{"fa:fa-cogs celery_worker"}} end subgraph DataServices [ Data Services ] redis[("fa:fa-memory redis")] db[("fa:fa-database postgres")] minio[("fa:fa-hdd minio")] end end Volumes[("fa:fa-folder-open Volumes Persistants")] end DockerEngine -.-&gt;|"gère"| ComposeStack app --&gt;|"TCP :6379"| redis app --&gt;|"TCP :5432"| db app --&gt;|"TCP :9000"| minio worker --&gt;|"TCP :6379"| redis worker --&gt;|"TCP :9000"| minio db ===|"mount"| Volumes minio ===|"mount"| Volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -786,8 +1126,27 @@
   
 
 
-  <h1>Architecture</h1>
-
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h2 id="architecture">Architecture</h2>
+<p>Ce document décrit l'architecture logique et l'architecture de déploiement du projet. Les schémas ci‑dessous montrent le flux principal entre le client Unity, l'API FastAPI, le broker Redis, les workers asynchrones, et les services de stockage et de base de données.</p>
+<h2 id="architecture-logique">Architecture logique</h2>
+<h3 id="roles-des-composants">Rôles des composants</h3>
+<ul>
+<li><strong>Client Unity</strong> : envoie les requêtes (ex. upload, paramètres d'analyse) et consomme les résultats.</li>
+<li><strong>API FastAPI</strong> : point d'entrée HTTP. Valide les requêtes, déclenche le traitement asynchrone, et sert les résultats.</li>
+<li><strong>Redis (broker)</strong> : file d'attente pour les tâches Celery, assurant le découplage entre API et workers.</li>
+<li><strong>Workers Celery</strong> : exécutent les pipelines de traitement (analyse, transformation, génération de métadonnées).</li>
+<li><strong>PostgreSQL</strong> : stocke les métadonnées, états des jobs et résultats structurés.</li>
+<li><strong>MinIO</strong> : stockage objet des fichiers d'entrée/sortie (ex. artefacts, exports, ressources).</li>
+<li><strong>Beat</strong> : ordonnance les tâches planifiées (jobs récurrents, nettoyage, re‑traitements).</li>
+</ul>
+<h3 id="flux-principal">Flux principal</h3>
+<ol>
+<li>Le <strong>client Unity</strong> envoie une requête HTTP à l'<strong>API</strong>.</li>
+<li>L'<strong>API</strong> enregistre la requête et la <strong>met en file</strong> via <strong>Redis</strong>.</li>
+<li>Les <strong>workers</strong> consomment la tâche, exécutent le pipeline, stockent les artefacts dans <strong>MinIO</strong> et les métadonnées dans <strong>PostgreSQL</strong>.</li>
+<li>L'<strong>API</strong> récupère et sert les résultats au client (lecture en base et fichiers via MinIO).</li>
+</ol>
 <pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Roboto', 'fontSize': '14px'}, 'flowchart': { 'curve': 'monotoneX' } } }%%
 flowchart LR
   subgraph Client [ Zone Client ]
@@ -825,6 +1184,105 @@ flowchart LR
   Worker2 --&gt;|"meta"| Postgres
   API --&gt;|"read"| Postgres
   API --&gt;|"serve"| MinIO</code></pre>
+<h2 id="architecture-de-deploiement">Architecture de déploiement</h2>
+<h3 id="principes">Principes</h3>
+<ul>
+<li>Les services sont <strong>conteneurisés</strong> et orchestrés via <strong>Docker Compose</strong>.</li>
+<li>L'API et les workers partagent le broker Redis et le stockage objet MinIO.</li>
+<li>Les volumes persistants garantissent la durabilité des données (PostgreSQL et MinIO).</li>
+</ul>
+<h3 id="reseaux-et-ports">Réseaux et ports</h3>
+<ul>
+<li><strong>Redis</strong> : port 6379 (broker Celery)</li>
+<li><strong>PostgreSQL</strong> : port 5432 (métadonnées)</li>
+<li><strong>MinIO</strong> : port 9000 (stockage objet)</li>
+</ul>
+<h1 id="init-themevariables-fontfamily-fira-code-consolas-monaco-monospace-fontsize-13px-flowchart-curve-basis-flowchart-td-subgraph-host-machine-hote-dockerenginefafa-docker-docker-engine-subgraph-composestack-stack-docker-compose-direction-tb-subgraph-compute-compute-appfafa-server-app-uvicorn-workerfafa-cogs-celery_worker-end-subgraph-dataservices-data-services-redisfafa-memory-redis-dbfafa-database-postgres-miniofafa-hdd-minio-end-end-volumesfafa-folder-open-volumes-persistants-end-dockerengine-gere-composestack-app-tcp-6379-redis-app-tcp-5432-db-app-tcp-9000-minio-worker-tcp-6379-redis-worker-tcp-9000-minio-db-mount-volumes-minio-mount-volumes"><pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Fira Code, Consolas, Monaco, monospace', 'fontSize': '13px'}, 'flowchart': { 'curve': 'basis' } } }%%
+flowchart TD
+  subgraph Host [ Machine Hôte ]
+    DockerEngine["fa:fa-docker Docker Engine"]
+
+    subgraph ComposeStack [ Stack Docker Compose ]
+        direction TB
+
+        subgraph Compute [ Compute ]
+            app["fa:fa-server app (uvicorn)"]
+            worker{{"fa:fa-cogs celery_worker"}}
+        end
+
+        subgraph DataServices [ Data Services ]
+            redis[("fa:fa-memory redis")]
+            db[("fa:fa-database postgres")]
+            minio[("fa:fa-hdd minio")]
+        end
+    end
+
+    Volumes[("fa:fa-folder-open Volumes Persistants")]
+  end
+
+  DockerEngine -.-&gt;|"gère"| ComposeStack
+
+  app --&gt;|"TCP :6379"| redis
+  app --&gt;|"TCP :5432"| db
+  app --&gt;|"TCP :9000"| minio
+
+  worker --&gt;|"TCP :6379"| redis
+  worker --&gt;|"TCP :9000"| minio
+
+  db ===|"mount"| Volumes
+  minio ===|"mount"| Volumes</code></pre></h1>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>origin/main
+<pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Roboto', 'fontSize': '14px'}, 'flowchart': { 'curve': 'monotoneX' } } }%%
+flowchart LR
+  subgraph Client [ Zone Client ]
+    Unity(["fa:fa-gamepad Unity Client"])
+  end
+
+  subgraph API_Service [ Service Web ]
+    API["fa:fa-server FastAPI"]
+  end
+
+  subgraph Broker_Backend [ Broker &amp; État ]
+    Redis[("fa:fa-memory Redis (broker)")]
+    Postgres[("fa:fa-database PostgreSQL")]
+  end
+
+  subgraph Workers [ Traitement Asynchrone ]
+    Worker1{{"fa:fa-cogs Worker A"}}
+    Worker2{{"fa:fa-cogs Worker B"}}
+    Beat{{"fa:fa-clock Beat"}}
+  end
+
+  subgraph Storage [ Stockage Fichiers ]
+    MinIO[("fa:fa-hdd MinIO")]
+  end
+
+  Unity --&gt;|"HTTP POST"| API
+  API --&gt;|"enqueue"| Redis
+  API -.-&gt;|"direct (opt)"| Worker1
+  Beat --&gt;|"schedule"| Redis
+  Redis --&gt;|"deliver"| Worker1
+  Redis --&gt;|"deliver"| Worker2
+  Worker1 --&gt;|"pipeline"| MinIO
+  Worker2 --&gt;|"pipeline"| MinIO
+  Worker1 --&gt;|"meta"| Postgres
+  Worker2 --&gt;|"meta"| Postgres
+  API --&gt;|"read"| Postgres
+  API --&gt;|"serve"| MinIO</code></pre></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <pre class="mermaid"><code>%%{init: {'themeVariables': { 'fontFamily': 'Fira Code, Consolas, Monaco, monospace', 'fontSize': '13px'}, 'flowchart': { 'curve': 'basis' } } }%%
 flowchart TD
   subgraph Host [ Machine Hôte ]

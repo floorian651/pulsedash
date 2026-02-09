@@ -13,10 +13,6 @@
       
       
       
-        <link rel="prev" href="../../changelog/">
-      
-      
-        <link rel="next" href="../../dev/CONTRIBUTING/">
       
       
         
@@ -27,7 +23,7 @@
     
     
       
-        <title>Premiers pas - Wawe game</title>
+        <title>Schéma des données - Wawe game</title>
       
     
     
@@ -79,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#schema-des-donnees" class="md-skip">
+          Aller au contenu
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -111,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Premiers pas
+              Schéma des données
             
           </span>
         </div>
@@ -278,13 +279,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../user/getting-started/" class="md-tabs__link">
           
   
   
@@ -304,7 +303,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../dev/CONTRIBUTING/" class="md-tabs__link">
+        <a href="../CONTRIBUTING/" class="md-tabs__link">
           
   
   
@@ -452,31 +451,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -494,7 +490,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -509,17 +505,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user/getting-started/" class="md-nav__link">
         
   
   
@@ -535,7 +524,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -609,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/CONTRIBUTING/" class="md-nav__link">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -637,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/setup/" class="md-nav__link">
+      <a href="../setup/" class="md-nav__link">
         
   
   
@@ -665,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -693,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/gitconventions.md" class="md-nav__link">
+      <a href="../gitconventions.md" class="md-nav__link">
         
   
   
@@ -775,7 +763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/ci-cd/" class="md-nav__link">
+      <a href="../ci-cd/" class="md-nav__link">
         
   
   
@@ -803,7 +791,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/pipeline/" class="md-nav__link">
+      <a href="../pipeline/" class="md-nav__link">
         
   
   
@@ -856,6 +844,77 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resultat-danalyse-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résultat d’analyse (JSON)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Résultat d’analyse (JSON)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reponse-api-analyze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Réponse API /analyze
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stockage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stockage
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -875,7 +934,54 @@
   
 
 
-  <h1>Premiers pas</h1>
+<p>TEMPORAIRE A MODIFIER (créé le 02/02/2026)</p>
+<h1 id="schema-des-donnees">Schéma des données</h1>
+<p>Cette page décrit les formats de données produits et consommés par PulseDash. Le schéma est centré sur l’analyse rythmique et les artefacts JSON exportés.</p>
+<h2 id="resultat-danalyse-json">Résultat d’analyse (JSON)</h2>
+<p>Le pipeline produit un fichier JSON (par défaut <code>resultat/analyse_rythme.json</code>).</p>
+<h3 id="structure">Structure</h3>
+<ul>
+<li><strong>key</strong> <em>(string)</em> : tonalité détectée (ex. <code>A#</code>, <code>C</code>, <code>F#</code>).</li>
+<li><strong>tempo</strong> <em>(number)</em> : tempo en BPM.</li>
+<li><strong>beats</strong> <em>(array)</em> : liste des beats détectés.</li>
+<li><strong>timing</strong> <em>(number)</em> : timestamp en secondes.</li>
+<li><strong>puissance</strong> <em>(number)</em> : intensité du beat (0–1 environ, dépend de l’analyse).</li>
+<li><strong>durée</strong> <em>(number)</em> : durée totale de l’audio en secondes.</li>
+</ul>
+<h3 id="exemple">Exemple</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A#&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;tempo&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">127.4</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;beats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.48</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.32</span><span class="p">},</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.96</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.41</span><span class="p">}</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">&quot;durée&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">182.7</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="reponse-api-analyze">Réponse API <code>/analyze</code></h2>
+<p>L’API renvoie un objet enveloppé dans <code>result</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;resultat_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;resultat/analyse_rythme.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A#&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;tempo&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">127.4</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">&quot;beats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p">{</span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.48</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.32</span><span class="p">},</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p">{</span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.96</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.41</span><span class="p">}</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">&quot;duree&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">182.7</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
+</code></pre></div>
+<blockquote>
+<p>ℹ️ Selon l’évolution du pipeline, des champs additionnels peuvent être ajoutés. Les consommateurs Unity doivent ignorer les champs inconnus.</p>
+</blockquote>
+<h2 id="stockage">Stockage</h2>
+<ul>
+<li><strong>MinIO</strong> : fichiers d’entrée/sortie (artefacts d’analyse).</li>
+<li><strong>PostgreSQL</strong> : métadonnées et état des jobs (prévu).</li>
+</ul>
 
 
 
@@ -883,7 +989,8 @@
 
 
 
-
+  
+  
 
 
 
