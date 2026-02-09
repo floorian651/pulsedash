@@ -44,7 +44,8 @@ public class GenerateurNiveau : MonoBehaviour
                 // Décider du type d'obstacle en fonction de la puissance
                 GameObject obstaclePrefab = DecideBlockType(data.beats[i].puissance);
                 Vector3 obstaclePos = new Vector3(i * spacing, obstaclePrefab.transform.position.y + obstaclePrefab.transform.localScale.y/2, 2);
-                GameObject obstacle = Instantiate(obstaclePrefab, obstaclePos, Quaternion.identity);
+                Quaternion obstacleOrientation = Quaternion.Euler(0, 90, 0);
+                GameObject obstacle = Instantiate(obstaclePrefab, obstaclePos, obstacleOrientation);
                 obstacle.transform.parent = this.transform;
             }
         }
