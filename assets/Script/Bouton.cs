@@ -4,7 +4,7 @@ using TMPro;
 public static class Bouton
 {   
 
-    public static Button CreateButton(Transform parent, string text, UnityEngine.Events.UnityAction action)
+    public static Button CreateButton(Transform parent, string text, UnityEngine.Vector2 size, UnityEngine.Events.UnityAction action)
     {
         // GameObject du bouton
         GameObject buttonGO = new GameObject(text + "Button");
@@ -24,8 +24,8 @@ public static class Bouton
         rt.pivot = new Vector2(0.5f, 0);
 
         LayoutElement le = buttonGO.AddComponent<LayoutElement>();
-        le.preferredWidth = 80;
-        le.preferredHeight = 70;
+        le.preferredWidth = size.x;
+        le.preferredHeight = size.y;
 
         // Texte TMP
         GameObject textGO = new GameObject("Text");
@@ -48,7 +48,7 @@ public static class Bouton
 
     public static Button CreateMusicButton(Transform parent)
 {   
-        Button btn = CreateButton(parent, "Jouer", () => {}); 
+        Button btn = CreateButton(parent, "Jouer",new UnityEngine.Vector2(90,40), () => {}); 
 
         MusicButton mb = btn.gameObject.AddComponent<MusicButton>(); 
   

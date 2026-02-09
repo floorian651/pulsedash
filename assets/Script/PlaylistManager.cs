@@ -11,6 +11,12 @@ public class PlaylistManager : MonoBehaviour
 
     private string savePath; //chemin
 
+    public bool forceNext = false;
+    public bool forcePrevious = false;
+
+    public bool stopCurrentTrack = false;
+
+
 
     void Start()
     {
@@ -103,22 +109,25 @@ public class PlaylistManager : MonoBehaviour
         public List<Playlist> playlists;
     }
 
-    public void LancerPlaylist(string nomplaylist, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
+    public void OnNextPressed()
+    {
+        forceNext = true;
+        stopCurrentTrack = true;
+    }
+
+    public void OnPreviousPressed()
+    {
+        forcePrevious = true;
+        stopCurrentTrack = true;
+    }
+    public void LancerPlaylist( Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
-    StartCoroutine(RoutinePlaylist(nomplaylist, trackactuel, clips, toutesLesMusiques));
+    StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
 }   
+    /*
     IEnumerator RoutinePlaylist(string nomplaylist, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
     {   
-        AudioClip clip = SearchUI.RechercherClip(trackactuel.title, clips);
-
-        // Attribuer au clip static le clip récupéré
-        MenuGenerator.audioSource.clip = clip;
-
-        Debug.Log("Musique de la playlist sélectionnée : "+ trackactuel.title);
-        PopupManager.Show(trackactuel.title +" sélectionnée");
-        
-        MenuGenerator.messageText.text = trackactuel.title;
-        //MenuGenerator.audioSource.Play();        
+        PlayTrack(trackactuel, clips, false);  
 
         // attendre que la musique est commencée
 
@@ -130,42 +139,139 @@ public class PlaylistManager : MonoBehaviour
             //Récupérer le numérdo du track
             int orderTrack = trackactuel.order;
 
+            Track trackNext = null;
+
             // Récupérer le track de la musique suivante
-            Track trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
 
-            // Passe automatiquement à la musique suivante de la playlist 
-            if (trackNext != null)
-            {
-                Debug.Log("Prochaine musique de la playlist sélectionnée : "+ trackNext.title);
+            switch (mode)
+                {
+                    case PlayMode.Normal:
+                        Debug.Log("Mode normal");
+                        trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
 
-                // Attendre la fin réelle du morceau
-                while (MenuGenerator.audioSource.isPlaying)//|| MenuGenerator.audioSource.time < MenuGenerator.audioSource.clip.length)
-                    yield return null;    
+                         if (trackNext != null)
+                        {                               
+                            Debug.Log("Prochaine musique de la playlist sélectionnée : "+ trackNext.title);
 
-                Debug.Log("Le morceau est fini!");            
-/*
-            }
-            else
-                {   
-                    trackNext = toutesLesMusiques.Find(t => t.order == 0);
-                    Debug.Log("Fin de la playlist! Donc reprend au début de la playlist!");
-                    
-                }*/
-                
-                trackactuel = trackNext;
+                            // Attendre la fin réelle du morceau
+                            while (MenuGenerator.audioSource.isPlaying)
+                                yield return null;    
 
-                PopupManager.Show(trackactuel.title +" sélectionnée");
-                MenuGenerator.messageText.text = trackactuel.title;
+                            Debug.Log("Le morceau est fini!");                   
+                        }
+                        break;
 
-                clip = SearchUI.RechercherClip(trackactuel.title, clips);
-                MenuGenerator.audioSource.clip = clip;
-                MenuGenerator.audioSource.Play();
-                Debug.Log("Jouer musique " +trackactuel.title);
+                    case PlayMode.Next:
+                        Debug.Log("Mode next");
+                        
+                        trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
+                        if (trackNext == null)
+                        {  PopupManager.Show("Fin de la playlist");
+                        }
+                        break;
 
-        }
-        trackactuel = trackNext;}
+                    case PlayMode.Previous:
+                        Debug.Log("Mode previous");
+                        if (orderTrack > 0)
+                        {
+                            trackNext = toutesLesMusiques.Find(t => t.order == orderTrack - 1);   
+                        }                        
+                        break;
+
+                    default:
+                        Debug.Log("Autre valeur");
+                        break;
+                }   
+
+                mode = PlayMode.Normal;     
+                trackactuel = trackNext;       
+                if (trackactuel != null)
+                    {                                
+                    PlayTrack(trackactuel, clips, true);
+                    }}
         Debug.Log("PROBLEME!");
         }
+    */
+    IEnumerator RoutinePlaylist(
+    Track trackActuel,
+    List<AudioClip> clips,
+    List<Track> toutesLesMusiques
+)
+{
+    while (trackActuel != null)
+    {
+        PlayTrack(trackActuel, clips, true);
+
+        // attendre fin OU action utilisateur
+        while (MenuGenerator.audioSource.isPlaying && !stopCurrentTrack)
+            yield return null;
+
+        MenuGenerator.audioSource.Stop();
+
+        int order = trackActuel.order;
+        Track nextTrack = null;
+
+        if (forceNext)
+        {
+            nextTrack = toutesLesMusiques.Find(t => t.order == order + 1);
+
+            if (nextTrack == null)
+            {
+                PopupManager.Show("Fin de la playlist");
+                break;
+            }
+        }
+        else if (forcePrevious)
+        {
+            if (order > 0)
+                nextTrack = toutesLesMusiques.Find(t => t.order == order - 1);
+            else
+                nextTrack = trackActuel; // rester sur le premier
+        }
+        else
+        {
+            // fin normale
+            nextTrack = toutesLesMusiques.Find(t => t.order == order + 1);
+
+            if (nextTrack == null)
+            {
+                PopupManager.Show("Fin de la playlist");
+                break;
+            }
+        }
+
+        // reset flags
+        forceNext = false;
+        forcePrevious = false;
+        stopCurrentTrack = false;
+
+        trackActuel = nextTrack;
+    }
+
+    Debug.Log("Fin de la playlist");
+}
+
+    public void PlayTrack(Track trackactuel, List<AudioClip> clips, bool aJouer)
+    {   
+        // Affichages pour le nouveau trackactuel
+        PopupManager.Show(trackactuel.title +" sélectionnée");
+        MenuGenerator.messageText.text = trackactuel.title;
+
+        // Chercher le clip correspondant
+        AudioClip clip = SearchUI.RechercherClip(trackactuel.title, clips);
+
+        // Attribuer le clip trouvé à l'audio source
+        MenuGenerator.audioSource.clip = clip;
+
+        if (aJouer)
+        {
+            // Jouer la musique
+        MenuGenerator.audioSource.Play();
+        Debug.Log("Jouer musique " +trackactuel.title);
+        }
+        
+    }
+
     IEnumerator PlayNextWhenFinished(AudioClip nextClip)
 {
 

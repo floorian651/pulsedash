@@ -55,7 +55,7 @@ public class SearchUI
     foreach (var clip in resultats)
     {
         // --- BOUTON PRINCIPAL ---
-        Button btn = Bouton.CreateButton(resultsContainer, clip.name, () =>
+        Button btn = Bouton.CreateButton(resultsContainer, clip.name, new UnityEngine.Vector2(80, 70), () =>
         {
             MenuGenerator.audioSource.clip = clip;
             
@@ -90,7 +90,7 @@ public class SearchUI
         txt.fontSize = 15;
 
         // --- BOUTON “+” AJOUT À PLAYLIST ---
-        Button addBtn = Bouton.CreateButton(btn.transform, "+", () =>
+        Button addBtn = Bouton.CreateButton(btn.transform, "+",new UnityEngine.Vector2(80,70), () =>
         {
             PopupManager.ShowPlaylistPopup(clip.name);
         });

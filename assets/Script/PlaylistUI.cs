@@ -171,7 +171,7 @@ public static class PlaylistUI
     {
         Debug.Log("Lancer la playlist: " + playlist.name);
         Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
-        pm.LancerPlaylist(playlist.name, track, clips,TracktoutesLesMusiques);
+        pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
     });
 
 }
@@ -265,7 +265,7 @@ public static class PlaylistUI
 
         btn.onClick.AddListener(() =>
         {   
-            pm.LancerPlaylist(nomplaylist, track, clips,TracktoutesLesMusiques);
+            pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
          
         });
         // --- LISTENER DU BOUTON AJOUT À PLAYLIST ---

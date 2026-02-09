@@ -179,7 +179,7 @@ public static class UIBuilder
     scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
     scrollRT.offsetMin = Vector2.zero;
     scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(400, 40);
+    scrollRT.sizeDelta = new Vector2(400, 100);
 
 
     ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
@@ -230,13 +230,18 @@ public static class UIBuilder
     // Génération des boutons de playlists
     PlaylistUI.AfficherMusiquesParPlaylist(clips,playlistName,contentRT );
 
+    PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
+    if (pm == null) return;
+    
     //Ajout des boutons next et before pour gérer la playlist
-    /*PlaylistManager pm = FindObjectOfType<PlaylistManager>();
-    if (pm != null)
-    {   Sprite buttonSprite = Resources.Load<Sprite>("png_violet");
-        Button nextBtn = Bouton.CreateButton(contentRT, "Next", buttonSprite, () => pm.Next(playlistName));
-        Button prevBtn = Bouton.CreateButton(contentRT, "Before", buttonSprite, () => pm.Previous(playlistName));
-    }*/
+    Playlist playlist_recherche = pm.GetPlaylist(playlistName);
+
+    //Récupérer la liste de toutes les musiques de la playlist sélectionnée
+    List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+      
+        Button nextBtn = Bouton.CreateButton(contentRT, "Next",new UnityEngine.Vector2(90,40), () => pm.OnNextPressed());
+        Button prevBtn = Bouton.CreateButton(contentRT, "Before", new UnityEngine.Vector2(90,40), () => pm.OnPreviousPressed());
+    
     
 }
 
