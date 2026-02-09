@@ -174,9 +174,9 @@ Ou utilisez la palette de commandes :
 ### En ligne de commande
 
 ```bash
-# Une fois dans le dossier du projet, utiliser make par exemple :
-make infra ..
-make aide
+# Une fois dans le dossier wavr
+docker-compose up -d app
+docker-compose exec -it app /bin/bash
 ```
 
 ## Vérification de l'installation

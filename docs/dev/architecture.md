@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Architecture
 
 Ce document décrit l'architecture logique et l'architecture de déploiement du projet. Les schémas ci‑dessous montrent le flux principal entre le client Unity, l'API FastAPI, le broker Redis, les workers asynchrones, et les services de stockage et de base de données.
@@ -111,6 +112,8 @@ flowchart TD
   db ===|"mount"| Volumes
   minio ===|"mount"| Volumes
 ```
+=======
+>>>>>>> origin/main
 ```mermaid
 %%{init: {'themeVariables': { 'fontFamily': 'Roboto', 'fontSize': '14px'}, 'flowchart': { 'curve': 'monotoneX' } } }%%
 flowchart LR

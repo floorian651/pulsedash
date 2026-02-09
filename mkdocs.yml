@@ -49,9 +49,8 @@ nav:
   - Développement:
     - Contribution: dev/CONTRIBUTING.md
     - Installation: dev/setup.md
-    - API FastAPI: dev/api.md
-    - Schéma des données: dev/data-schema.md
     - Architecture: dev/architecture.md
+    - Workflow Git: dev/gitconventions.md
     - CI/CD & Pipeline:
       - Concepts CI/CD: dev/ci-cd.md
       - Pipeline détails: dev/pipeline.md
