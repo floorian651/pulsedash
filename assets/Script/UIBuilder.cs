@@ -239,8 +239,8 @@ public static class UIBuilder
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
       
-        Button nextBtn = Bouton.CreateButton(contentRT, "Next",new UnityEngine.Vector2(90,40), () => pm.OnNextPressed());
-        Button prevBtn = Bouton.CreateButton(contentRT, "Before", new UnityEngine.Vector2(90,40), () => pm.OnPreviousPressed());
+        Button nextBtn = Bouton.CreateButton(mainContent, "Next",new UnityEngine.Vector2(90,40), () => pm.OnNextPressed());
+        Button prevBtn = Bouton.CreateButton(mainContent, "Before", new UnityEngine.Vector2(90,40), () => pm.OnPreviousPressed());
     
     
 }
