@@ -28,7 +28,7 @@ public class GenerateurNiveau : MonoBehaviour
         // On génère une base de sol avant les beats
         for(int i = 0; i < 10; i++)
         {
-            Vector3 pos = new Vector3(i * spacing * (-1)-1, 0, 2);
+            Vector3 pos = new Vector3(2, 0, i * spacing * (-1)-1);
             GameObject newBlock = Instantiate(GroundPrefab, pos, Quaternion.identity);
             newBlock.transform.parent = this.transform;
         }
@@ -36,15 +36,15 @@ public class GenerateurNiveau : MonoBehaviour
         for (int i = 0; i < data.beats.Length; i++)
         {
             // Pose du sol à chaque Beat
-            Vector3 pos = new Vector3(i * spacing, 0, 2);
+            Vector3 pos = new Vector3(2, 0, i * spacing -1);
             GameObject newBlock = Instantiate(GroundPrefab, pos, Quaternion.identity);
             
             newBlock.transform.parent = this.transform;
             if(data.beats[i].puissance > 3.0f){
                 // Décider du type d'obstacle en fonction de la puissance
                 GameObject obstaclePrefab = DecideBlockType(data.beats[i].puissance);
-                Vector3 obstaclePos = new Vector3(i * spacing, obstaclePrefab.transform.position.y + obstaclePrefab.transform.localScale.y/2, 2);
-                Quaternion obstacleOrientation = Quaternion.Euler(0, 90, 0);
+                Vector3 obstaclePos = new Vector3(2, obstaclePrefab.transform.position.y + obstaclePrefab.transform.localScale.y/2, i * spacing-1);
+                Quaternion obstacleOrientation = Quaternion.Euler(0, 0, 0);
                 GameObject obstacle = Instantiate(obstaclePrefab, obstaclePos, obstacleOrientation);
                 obstacle.transform.parent = this.transform;
             }
