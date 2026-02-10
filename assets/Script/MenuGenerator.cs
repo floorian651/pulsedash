@@ -33,21 +33,25 @@ public class MenuGenerator : MonoBehaviour
     // Générer le main content
     //Transform mainContent = UIBuilder.CreateMainContent(panel);
 
-    Transform leftContent = UIBuilder.CreateLeftContent(panel);
+    //Transform leftContent = UIBuilder.CreateLeftContent(panel);
+    Transform middleArea = UIconteneur.CreateMiddleArea(panel, 80f);
+    Transform leftContainer = UIconteneur.CreateLeftContainer(middleArea);
+    Transform centerContainer = UIconteneur.CreateCenterContainer(middleArea);
+    Transform rightContainer = UIconteneur.CreateRightContainer(middleArea);
 
-    messageText = UIBuilder.CreerTexte(leftContent);
+    messageText = UIBuilder.CreerTexte(centerContainer);
 
     // Créer un curseur pour la musique 
-    SliderMusiqueFactory.Create(leftContent, sliderPrefab);
+    SliderMusiqueFactory.Create(centerContainer, sliderPrefab);
 
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
-    Bouton.CreateMusicButton(leftContent); 
+    Bouton.CreateMusicButton(centerContainer); 
 
 
     // Générer le left menu
-    Transform leftMenu = UIBuilder.CreateLeftMenu(panel);
+    //Transform leftMenu = UIBuilder.CreateLeftMenu(panel);
 
-    
+   
     
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
@@ -56,19 +60,19 @@ public class MenuGenerator : MonoBehaviour
     // Charger tous les fichiers mp3 déjà dans le cache
     yield return StartCoroutine(audioCache.LoadAllCachedMusic());
 
-    Transform rightContent = UIBuilder.CreateRightContent(panel);
-
+    //Transform rightContent = UIBuilder.CreateRightContent(panel);
+    
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
     //yield return null; // attendre 1 frame
-    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftMenu, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistName =>
     {   
-        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContent);
+        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContainer);
         //PopupManager.ShowMusiquesPlaylistPopup(audioCache.clips,playlistName);
     });
 
     // Créer le bouton pour créer une playlist sous la forme d'une pop up 
     //yield return null; // attendre 1 frame
-    PlaylistUI.CreateButtonCreerPlaylist(leftMenu, (playlistName) =>
+    PlaylistUI.CreateButtonCreerPlaylist(leftContainer, (playlistName) =>
 {
     PlaylistManager pm = FindObjectOfType<PlaylistManager>();
     if (pm != null)

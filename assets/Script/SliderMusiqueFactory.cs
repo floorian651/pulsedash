@@ -29,7 +29,7 @@ public static class SliderMusiqueFactory
         rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = new Vector2(0,50);
-        rt.sizeDelta = new Vector2(250, 30);
+        rt.sizeDelta = new Vector2(125, 30);
 
         return sm;
     }

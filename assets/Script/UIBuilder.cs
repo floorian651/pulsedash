@@ -84,7 +84,8 @@ public static class UIBuilder
     HorizontalLayoutGroup layout = topBarGO.AddComponent<HorizontalLayoutGroup>();
     layout.childControlWidth = true;
     layout.childForceExpandWidth = false;
-    layout.childAlignment = TextAnchor.MiddleRight;
+    layout.childAlignment = TextAnchor.MiddleLeft;
+
     layout.spacing = 20;
     layout.padding = new RectOffset(20, 20, 10, 10);
 
@@ -107,13 +108,16 @@ public static class UIBuilder
     rt.anchorMin = new Vector2(0, 0);
     rt.anchorMax = new Vector2(0, 1);
     rt.pivot = new Vector2(0, 1);
+    
 
-    // Largeur fixe
-    rt.sizeDelta = new Vector2(250, 0);
-
+    
     // ESPACEMENT AVEC LA TOPBAR
     float topBarHeight = 100f;
     float spacing = 100f; // espace souhaité
+    float menuWidth = 160f; // ← largeur souhaitée
+
+    // Largeur fixe
+    rt.sizeDelta = new Vector2(menuWidth, 0);
 
     rt.offsetMin = new Vector2(0, 0);
     rt.offsetMax = new Vector2(250, -(topBarHeight + spacing));
@@ -173,7 +177,7 @@ public static Transform CreateLeftContent(Transform parent)
 
     RectTransform rt = go.GetComponent<RectTransform>();
     rt.anchorMin = new Vector2(0, 0.2f);  // 20% du bas
-    rt.anchorMax = new Vector2(0.7f, 0.8f); // 70% largeur, 80% du haut
+    rt.anchorMax = new Vector2(0.5f, 0.6f); // 50% largeur, 60% du haut
     rt.pivot = new Vector2(0, 1);          // pivot en haut à gauche
     rt.anchoredPosition = Vector2.zero;
 
@@ -236,7 +240,7 @@ public static Transform CreateRightContent(Transform parent)
     scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
     scrollRT.offsetMin = Vector2.zero;
     scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(400, 100);
+    scrollRT.sizeDelta = new Vector2(200, 100);
 
 
     ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
@@ -283,10 +287,17 @@ public static Transform CreateRightContent(Transform parent)
 
 
     scroll.content = contentRT;
-
+    ClearContainer(contentRT);
+    
     // Génération des boutons de playlists
     PlaylistUI.AfficherMusiquesParPlaylist(clips,playlistName,contentRT );
 
+    BoutonNextBeforeInContainer(clips,playlistName,mainContent);
+
+
+    }
+ public static void BoutonNextBeforeInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
+    {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
     if (pm == null) return;
     
@@ -296,12 +307,19 @@ public static Transform CreateRightContent(Transform parent)
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
       
-        Button nextBtn = Bouton.CreateButton(mainContent, "Next",new UnityEngine.Vector2(90,40), () => pm.OnNextPressed());
-        Button prevBtn = Bouton.CreateButton(mainContent, "Before", new UnityEngine.Vector2(90,40), () => pm.OnPreviousPressed());
+        Button nextBtn = Bouton.CreateButton(mainContent, "Next",new UnityEngine.Vector2(30,40), () => pm.OnNextPressed());
+        Button prevBtn = Bouton.CreateButton(mainContent, "Before", new UnityEngine.Vector2(30,40), () => pm.OnPreviousPressed());
     
-    
+    }
+    public static void ClearContainer(Transform container)
+{
+    // On parcourt tous les enfants
+    for (int i = container.childCount - 1; i >= 0; i--)
+    {
+        GameObject child = container.GetChild(i).gameObject;
+        Object.Destroy(child); // détruit l'objet
+    }
 }
-
 
     public static  TextMeshProUGUI CreerTexte(Transform parent)
     {
