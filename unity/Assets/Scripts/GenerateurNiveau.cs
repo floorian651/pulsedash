@@ -23,22 +23,11 @@ public class GenerateurNiveau : MonoBehaviour
 
         ClearLevel();
 
-        // On génère un peu de sol avant les beats pour que le joueur puisse démarrer
-        for(int i = 0; i < 10; i++)
-        {
-            Vector3 pos = new Vector3(2, 0, i * spacing * (-1)-1);
-            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-            newGround.transform.parent = this.transform;
-        }
-
         for (int i = 0; i < data.beats.Length; i++)
         {
 
-            if(data.beats[i].puissance > 3.0f){
-                // Décider du type d'obstacle en fonction de la puissance
-                Vector3 obstaclePos = new Vector3(2, 0, i * spacing-1);
-                CreateObstacle(data.beats[i], obstaclePos);
-            }
+            Vector3 obstaclePos = new Vector3(2, 0, i * spacing-1);
+            CreateObstacle(data.beats[i], obstaclePos);
         }
     }
 
