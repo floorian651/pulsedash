@@ -8,7 +8,7 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
-    public float spacing = 3.0f;
+    public float vitesse = 3.0f;
 
     [ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
     public void GenerateLevel()
@@ -23,10 +23,24 @@ public class GenerateurNiveau : MonoBehaviour
 
         ClearLevel();
 
+        // On génère un peu de sol avant les beats pour que le joueur puisse démarrer
+        for(int i = 0; i < 10; i++)
+        {
+            Vector3 pos = new Vector3(2, 0, i * spacing * (-1)-1);
+            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
+            newGround.transform.parent = this.transform;
+        }
+
         for (int i = 0; i < data.beats.Length; i++)
         {
 
-            Vector3 obstaclePos = new Vector3(2, 0, i * spacing-1);
+        
+            // Pose du sol à chaque Beat
+            Vector3 pos = new Vector3(2, 0, data.beats[i].timing * vitesse);
+            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
+            newGround.transform.parent = this.transform;
+
+            Vector3 obstaclePos = new Vector3(2, 0, data.beats[i].timing * vitesse);
             CreateObstacle(data.beats[i], obstaclePos);
         }
     }
