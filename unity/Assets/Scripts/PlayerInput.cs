@@ -8,7 +8,7 @@ public class PlayerMovementE5 : MonoBehaviour
 
     Vector3 jump;
     float moveRight = 2f;
-    float moveUp = 20f;
+    float moveUp = 30f;
     float forwardSpeed = 3f;
     float maxSpeed = 5f;
     float currentLeftSpeed;
