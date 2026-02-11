@@ -4,12 +4,10 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     public GameObject GroundPrefab; // Préfab du sol
-    public GameObject HardObstaclePrefab; // Préfab pour obstacle difficile
-    public GameObject MediumObstaclePrefab; // Préfab pour obstacle de difficulté moyenne
-    public GameObject EasyObstaclePrefab; // Préfab pour obstacle de difficulté facile
-    public int width = 7; 
-    public int depth = 7;
-    
+    public GameObject obstacleLevel4; // Préfab pour obstacle difficile
+    public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
+    public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
+    public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     public float spacing = 3.0f;
 
     [ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
@@ -25,28 +23,27 @@ public class GenerateurNiveau : MonoBehaviour
 
         ClearLevel();
 
-        // On génère une base de sol avant les beats
+        // On génère un peu de sol avant les beats pour que le joueur puisse démarrer
         for(int i = 0; i < 10; i++)
         {
             Vector3 pos = new Vector3(2, 0, i * spacing * (-1)-1);
-            GameObject newBlock = Instantiate(GroundPrefab, pos, Quaternion.identity);
-            newBlock.transform.parent = this.transform;
+            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
+            newGround.transform.parent = this.transform;
         }
 
         for (int i = 0; i < data.beats.Length; i++)
         {
             // Pose du sol à chaque Beat
             Vector3 pos = new Vector3(2, 0, i * spacing -1);
-            GameObject newBlock = Instantiate(GroundPrefab, pos, Quaternion.identity);
+            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
+            newGround.transform.parent = this.transform;
+
             
-            newBlock.transform.parent = this.transform;
+
             if(data.beats[i].puissance > 3.0f){
                 // Décider du type d'obstacle en fonction de la puissance
-                GameObject obstaclePrefab = DecideBlockType(data.beats[i].puissance);
-                Vector3 obstaclePos = new Vector3(2, obstaclePrefab.transform.position.y + obstaclePrefab.transform.localScale.y/2, i * spacing-1);
-                Quaternion obstacleOrientation = Quaternion.Euler(0, 0, 0);
-                GameObject obstacle = Instantiate(obstaclePrefab, obstaclePos, obstacleOrientation);
-                obstacle.transform.parent = this.transform;
+                Vector3 obstaclePos = new Vector3(2, 0, i * spacing-1);
+                CreateObstacle(data.beats[i], obstaclePos);
             }
         }
     }
@@ -60,19 +57,32 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
-    private GameObject DecideBlockType(float puissance)
+    private void CreateObstacle(Beat beat, Vector3 position)
     {
-        if(puissance > 8.0f)
+        if(beat.puissance < 2.0f)
         {
-            return HardObstaclePrefab;
+            return; // Pas d'obstacle pour les beats faibles
         }
-        else if(puissance > 5.0f)
+
+        GameObject obstacle;
+
+        if(beat.puissance < 3.5f)
         {
-            return MediumObstaclePrefab;
+            obstacle = Instantiate(obstacleLevel1, position, Quaternion.identity); // Obstacle très facile pour les beats faibles
+        }
+        else if(beat.puissance < 5.5f)
+        {
+            obstacle = Instantiate(obstacleLevel2, position, Quaternion.identity); // Obstacle facile pour les beats modérés
+        }
+        else if(beat.puissance < 7.5f)
+        {
+            obstacle = Instantiate(obstacleLevel3, position, Quaternion.identity); // Obstacle difficile pour les beats très forts
         }
         else
         {
-            return EasyObstaclePrefab;
+            obstacle = Instantiate(obstacleLevel4, position, Quaternion.identity); // Obstacle très difficile pour les beats très forts
         }
+
+        obstacle.transform.parent = this.transform;
     }
 }
