@@ -33,10 +33,6 @@ public class GenerateurNiveau : MonoBehaviour
 
         for (int i = 0; i < data.beats.Length; i++)
         {
-            // Pose du sol à chaque Beat
-            Vector3 pos = new Vector3(2, 0, i * spacing -1);
-            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-            newGround.transform.parent = this.transform;
 
             if(data.beats[i].puissance > 3.0f){
                 // Décider du type d'obstacle en fonction de la puissance
