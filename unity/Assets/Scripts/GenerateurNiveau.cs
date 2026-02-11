@@ -38,8 +38,6 @@ public class GenerateurNiveau : MonoBehaviour
             GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
             newGround.transform.parent = this.transform;
 
-            
-
             if(data.beats[i].puissance > 3.0f){
                 // Décider du type d'obstacle en fonction de la puissance
                 Vector3 obstaclePos = new Vector3(2, 0, i * spacing-1);
