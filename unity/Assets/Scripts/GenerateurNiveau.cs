@@ -23,23 +23,16 @@ public class GenerateurNiveau : MonoBehaviour
 
         ClearLevel();
 
-        // On génère un peu de sol avant les beats pour que le joueur puisse démarrer
-        for(int i = 0; i < 10; i++)
+        // On génère tout le sol
+        for(int i = -10; i < data.beats.Length; i++)
         {
-            Vector3 pos = new Vector3(2, 0, i * spacing * (-1)-1);
+            Vector3 pos = new Vector3(2, 0, i * vitesse);
             GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
             newGround.transform.parent = this.transform;
         }
 
         for (int i = 0; i < data.beats.Length; i++)
         {
-
-        
-            // Pose du sol à chaque Beat
-            Vector3 pos = new Vector3(2, 0, data.beats[i].timing * vitesse);
-            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-            newGround.transform.parent = this.transform;
-
             Vector3 obstaclePos = new Vector3(2, 0, data.beats[i].timing * vitesse);
             CreateObstacle(data.beats[i], obstaclePos);
         }
