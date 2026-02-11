@@ -49,22 +49,22 @@ public class GenerateurNiveau : MonoBehaviour
 
     private void CreateObstacle(Beat beat, Vector3 position)
     {
-        if(beat.puissance < 2.0f)
+        if(beat.puissance < 2.5f)
         {
             return; // Pas d'obstacle pour les beats faibles
         }
 
         GameObject obstacle;
 
-        if(beat.puissance < 3.5f)
+        if(beat.puissance < 5.5f)
         {
             obstacle = Instantiate(obstacleLevel1, position, Quaternion.identity); // Obstacle très facile pour les beats faibles
         }
-        else if(beat.puissance < 5.5f)
+        else if(beat.puissance < 11.0f)
         {
             obstacle = Instantiate(obstacleLevel2, position, Quaternion.identity); // Obstacle facile pour les beats modérés
         }
-        else if(beat.puissance < 7.5f)
+        else if(beat.puissance < 15.0f)
         {
             obstacle = Instantiate(obstacleLevel3, position, Quaternion.identity); // Obstacle difficile pour les beats très forts
         }
