@@ -32,6 +32,8 @@ services:
     depends_on:
       - redis
       - db
+    environment:
+      - CELERY_BROKER_URL=redis://redis:${REDIS_PORT}/0
 
   db:
     image: postgres:15
