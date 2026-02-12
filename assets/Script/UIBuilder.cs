@@ -47,7 +47,7 @@ public static class UIBuilder
     RectTransform panelRT = panelGO.GetComponent<RectTransform>();
 
     Image panelImage = panelGO.GetComponent<Image>();
-    panelImage.color =  new Color(0.78f, 0.65f, 0.88f, 1f); //new Color(0, 0, 0, 0.4f);
+    panelImage.color =  new Color(0.85f, 0.82f, 0.95f, 1f);  
 
     panelRT.anchorMin = Vector2.zero;
     panelRT.anchorMax = Vector2.one;
@@ -77,7 +77,7 @@ public static class UIBuilder
 
     // Ajouter un fond 
     Image bgImage = topBarGO.AddComponent<Image>();
-    bgImage.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+    bgImage.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
 
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
@@ -101,7 +101,7 @@ public static class UIBuilder
     RectTransform rt = go.GetComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
 
 
     // Ancré à gauche, sous la TopBar anchorMin=(0,0), anchorMax=(0,1)
@@ -142,7 +142,7 @@ public static class UIBuilder
     RectTransform rt = go.GetComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.75f, 0.65f, 0.9f, 1f); // Lavande
+    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f);  // Lavande
 
 
     rt.anchorMin = new Vector2(0, 0);
@@ -227,7 +227,11 @@ public static Transform CreateRightContent(Transform parent)
 }
 
     public static void ShowMusiquesPlaylistInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
+    {   
+        foreach (Transform child in mainContent)
     {
+        UnityEngine.Object.Destroy(child.gameObject);
+    }
 
     // Conteneur principal pour la playlist
 
@@ -358,7 +362,7 @@ public static Transform CreateRightContent(Transform parent)
     RectTransform rt = go.AddComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.78f, 0.65f, 0.88f, 1f);
+    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();

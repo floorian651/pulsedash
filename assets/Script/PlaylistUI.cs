@@ -23,7 +23,7 @@ public static class PlaylistUI
 
         // ----- Image du bouton -----
         Image img = go.AddComponent<Image>();
-        img.color = new Color(0.75f, 0.5f, 1f, 1f);
+        img.color = new Color(0.55f, 0.35f, 0.85f, 1f);
 
 
         // ----- Bouton UI -----
@@ -99,7 +99,7 @@ public static class PlaylistUI
 
     Button btn = boutonGO.AddComponent<Button>();
     Image img = boutonGO.AddComponent<Image>();
-    img.color = new Color(1, 1, 1, 0.2f);
+    img.color = new Color(0.40f, 0.55f, 0.95f, 1f);
 
     
     // Texte
@@ -134,7 +134,7 @@ public static class PlaylistUI
 
     Button lancerPlaylistBtn = lancerPlaylistButtonGO.AddComponent<Button>();
     Image lancerPlaylistImg = lancerPlaylistButtonGO.AddComponent<Image>();
-    lancerPlaylistImg.color = new Color(0.6f, 0, 1f, 1f); // rouge semi-transparent par exemple
+    lancerPlaylistImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); // rouge semi-transparent par exemple
 
     // Taille et position du bouton secondaire (en haut à droite du bouton principal)
     RectTransform lancerPlaylistRT = lancerPlaylistButtonGO.GetComponent<RectTransform>();
@@ -202,7 +202,7 @@ public static class PlaylistUI
 
         Button btn = boutonGO.AddComponent<Button>();
         Image img = boutonGO.AddComponent<Image>();
-        img.color = new Color(1, 1, 1, 0.2f);
+        img.color = new Color(0.55f, 0.35f, 0.85f, 1f); 
 
         LayoutElement le = boutonGO.AddComponent<LayoutElement>();
         le.preferredHeight = 30; 
@@ -236,7 +236,7 @@ public static class PlaylistUI
         addBtnGO.transform.SetParent(boutonGO.transform, false);
 
         Image addImg = addBtnGO.AddComponent<Image>();
-        addImg.color = new Color(0.7f, 0f, 1f, 1f);
+        addImg.color = new Color(0.55f, 0.35f, 0.85f, 1f); 
 
         Button addBtn = addBtnGO.AddComponent<Button>();
 

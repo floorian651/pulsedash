@@ -29,7 +29,7 @@ public class PopupManager : MonoBehaviour
         rt.sizeDelta = new Vector2(300, 60);
 
         Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(0, 0, 0, 0.75f);
+        bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
 
         TextMeshProUGUI txt = new GameObject("Text")
             .AddComponent<TextMeshProUGUI>();
@@ -69,7 +69,7 @@ public class PopupManager : MonoBehaviour
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
         Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(0, 0, 0, 0.6f);
+        bg.color = new Color(0.12f, 0.10f, 0.25f, 1f);
         RectTransform rt = popupGO.GetComponent<RectTransform>();
         rt.anchorMin = Vector2.zero;
         rt.anchorMax = Vector2.one;
@@ -196,6 +196,44 @@ public class PopupManager : MonoBehaviour
             popupGO = null;
             onConfirm?.Invoke(name);
         });
+
+           // ----- Bouton de fermeture -----
+    GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
+    closeBtnGO.transform.SetParent(container.transform, false);
+
+    RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
+    closeRT.anchorMin = new Vector2(1, 1);
+    closeRT.anchorMax = new Vector2(1, 1);
+    closeRT.pivot = new Vector2(1, 1);
+    closeRT.sizeDelta = new Vector2(30, 30);
+    closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
+
+    Button closeBtn = closeBtnGO.AddComponent<Button>();
+    Image closeImg = closeBtnGO.AddComponent<Image>();
+    closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f);
+
+    // Texte "X"
+    GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
+    closeTextGO.transform.SetParent(closeBtnGO.transform, false);
+
+    TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
+    closeTxt.text = "X";
+    closeTxt.fontSize = 24;
+    closeTxt.alignment = TextAlignmentOptions.Center;
+    closeTxt.color = Color.white;
+
+    RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
+    closeTxtRT.anchorMin = Vector2.zero;
+    closeTxtRT.anchorMax = Vector2.one;
+    closeTxtRT.offsetMin = Vector2.zero;
+    closeTxtRT.offsetMax = Vector2.zero;
+
+    // Action du bouton
+    closeBtn.onClick.AddListener(() =>
+    {
+        UnityEngine.Object.Destroy(popupGO);
+    });
+
     }
 
 
@@ -233,6 +271,44 @@ public static void ShowPlaylistPopup(string trackName)
 
     Image contBg = container.AddComponent<Image>();
     contBg.color = new Color(1, 1, 1, 0.95f);
+    
+       // ----- Bouton de fermeture -----
+        GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
+        closeBtnGO.transform.SetParent(container.transform, false);
+
+        RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
+        closeRT.anchorMin = new Vector2(1, 1);
+        closeRT.anchorMax = new Vector2(1, 1);
+        closeRT.pivot = new Vector2(1, 1);
+        closeRT.sizeDelta = new Vector2(30, 30);
+        closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
+
+        Button closeBtn = closeBtnGO.AddComponent<Button>();
+        Image closeImg = closeBtnGO.AddComponent<Image>();
+        closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); 
+
+        // Texte "X"
+        GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
+        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
+
+        TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
+        closeTxt.text = "X";
+        closeTxt.fontSize = 24;
+        closeTxt.alignment = TextAlignmentOptions.Center;
+        closeTxt.color = Color.white;
+
+        RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
+        closeTxtRT.anchorMin = Vector2.zero;
+        closeTxtRT.anchorMax = Vector2.one;
+        closeTxtRT.offsetMin = Vector2.zero;
+        closeTxtRT.offsetMax = Vector2.zero;
+
+        // Action du bouton
+        closeBtn.onClick.AddListener(() =>
+        {
+            UnityEngine.Object.Destroy(popupGO);
+        });
+
 
     // ScrollRect
     GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
@@ -350,7 +426,7 @@ closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
 
 Button closeBtn = closeBtnGO.AddComponent<Button>();
 Image closeImg = closeBtnGO.AddComponent<Image>();
-closeImg.color = new Color(1, 0.3f, 0.3f, 1f); // rouge clair
+closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); 
 
 // Texte "X"
 GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
@@ -440,6 +516,57 @@ closeBtn.onClick.AddListener(() =>
     }*/
     
 }
+
+private static void CreateCloseButton(Transform parent)
+{
+    // Création du bouton
+    GameObject buttonGO = new GameObject("CloseButton",
+        typeof(RectTransform),
+        typeof(Image),
+        typeof(Button));
+
+    buttonGO.transform.SetParent(parent, false);
+
+    RectTransform rt = buttonGO.GetComponent<RectTransform>();
+    rt.sizeDelta = new Vector2(30, 30);
+    rt.anchorMin = new Vector2(1, 1);
+    rt.anchorMax = new Vector2(1, 1);
+    rt.pivot = new Vector2(1, 1);
+    rt.anchoredPosition = new Vector2(-10, -10); // Décalage du coin
+
+    Image img = buttonGO.GetComponent<Image>();
+    img.color = new Color(0.40f, 0.55f, 0.95f, 1f);
+
+    Button btn = buttonGO.GetComponent<Button>();
+    btn.onClick.AddListener(() =>
+    {
+        if (popupGO != null)
+        {
+            UnityEngine.Object.Destroy(popupGO);
+            popupGO = null;
+        }
+    });
+
+    // Texte "X"
+    GameObject textGO = new GameObject("Text",
+        typeof(RectTransform),
+        typeof(Text));
+
+    textGO.transform.SetParent(buttonGO.transform, false);
+
+    RectTransform textRT = textGO.GetComponent<RectTransform>();
+    textRT.anchorMin = Vector2.zero;
+    textRT.anchorMax = Vector2.one;
+    textRT.offsetMin = Vector2.zero;
+    textRT.offsetMax = Vector2.zero;
+
+    Text txt = textGO.GetComponent<Text>();
+    txt.text = "X";
+    txt.alignment = TextAnchor.MiddleCenter;
+    txt.color = Color.white;
+    txt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+}
+
 
 }
 
