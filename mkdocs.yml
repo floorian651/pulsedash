@@ -42,6 +42,8 @@ theme:
 
 nav:
   - Accueil: index.md
+  - PulseDash: game.md
+  - Changelog: changelog.md
   - Guide utilisateur:
     - Premiers pas: user/getting-started.md
   - Développement:
