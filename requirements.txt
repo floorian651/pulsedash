@@ -53,5 +53,6 @@ numpy
 scipy
 
 pydantic
+pydantic-settings
 requests
 loguru
