@@ -11,6 +11,8 @@ COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 WORKDIR /workspaces/wavr
+ENV PYTHONPATH=/workspaces/wavr
+
 
 #Fix pour enlever le repo yarn qui fait planter le dl des images docker-compose (pitié)
 RUN rm -f /etc/apt/sources.list.d/yarn.list
