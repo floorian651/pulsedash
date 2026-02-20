@@ -42,7 +42,8 @@
         "mhutchie.git-graph",
         "esbenp.prettier-vscode",
         "ms-dotnettools.csdevkit",
-        "ms-dotnettools.csharp"
+        "ms-dotnettools.csharp",
+        "humao.rest-client"
       ]
     }
   },
