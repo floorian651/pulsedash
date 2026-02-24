@@ -124,79 +124,8 @@ public class PlaylistManager : MonoBehaviour
 {
     StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
 }   
-    /*
-    IEnumerator RoutinePlaylist(string nomplaylist, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
-    {   
-        PlayTrack(trackactuel, clips, false);  
-
-        // attendre que la musique est commencée
-
-        while (!MenuGenerator.audioSource.isPlaying)
-            yield return null;
-
-        while (trackactuel != null )
-        {
-            //Récupérer le numérdo du track
-            int orderTrack = trackactuel.order;
-
-            Track trackNext = null;
-
-            // Récupérer le track de la musique suivante
-
-            switch (mode)
-                {
-                    case PlayMode.Normal:
-                        Debug.Log("Mode normal");
-                        trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
-
-                         if (trackNext != null)
-                        {                               
-                            Debug.Log("Prochaine musique de la playlist sélectionnée : "+ trackNext.title);
-
-                            // Attendre la fin réelle du morceau
-                            while (MenuGenerator.audioSource.isPlaying)
-                                yield return null;    
-
-                            Debug.Log("Le morceau est fini!");                   
-                        }
-                        break;
-
-                    case PlayMode.Next:
-                        Debug.Log("Mode next");
-                        
-                        trackNext = toutesLesMusiques.Find(t => t.order == orderTrack + 1);
-                        if (trackNext == null)
-                        {  PopupManager.Show("Fin de la playlist");
-                        }
-                        break;
-
-                    case PlayMode.Previous:
-                        Debug.Log("Mode previous");
-                        if (orderTrack > 0)
-                        {
-                            trackNext = toutesLesMusiques.Find(t => t.order == orderTrack - 1);   
-                        }                        
-                        break;
-
-                    default:
-                        Debug.Log("Autre valeur");
-                        break;
-                }   
-
-                mode = PlayMode.Normal;     
-                trackactuel = trackNext;       
-                if (trackactuel != null)
-                    {                                
-                    PlayTrack(trackactuel, clips, true);
-                    }}
-        Debug.Log("PROBLEME!");
-        }
-    */
-    IEnumerator RoutinePlaylist(
-    Track trackActuel,
-    List<AudioClip> clips,
-    List<Track> toutesLesMusiques
-)
+   
+    IEnumerator RoutinePlaylist(Track trackActuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
     while (trackActuel != null)
     {

@@ -65,7 +65,8 @@ public static class PlaylistUI
                 PopupManager.Show("Nom invalide !");
                 return;
             }
-
+            // Si l'action onPlaylistCreated est non null faire onPlaylistCreated(playlistName)
+            // dans MenuGenerator onPlaylistCreated correspond à créer un objet Playlist et le sauvegarder
             onPlaylistCreated?.Invoke(playlistName);
             PopupManager.Show("Playlist créée : " + playlistName);
         });
@@ -82,7 +83,7 @@ public static class PlaylistUI
     foreach (Transform child in resultsContainer)
         UnityEngine.Object.Destroy(child.gameObject);
 
-
+    // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
     foreach (var playlist in toutesLesPlaylists)
 {
     GameObject boutonGO = new GameObject("PlaylistButton", typeof(RectTransform));
@@ -95,7 +96,6 @@ public static class PlaylistUI
     boutonGO.transform.SetParent(resultsContainer, false);
 
     RectTransform btnRT = boutonGO.GetComponent<RectTransform>();
-    //btnRT.sizeDelta = new Vector2(180, 30);
 
     Button btn = boutonGO.AddComponent<Button>();
     Image img = boutonGO.AddComponent<Image>();
@@ -122,7 +122,9 @@ public static class PlaylistUI
     txtRT.offsetMax = new Vector2(-10, -5);
 
     Debug.Log("Playlist : "+ playlist.name);
-
+    
+    // Si onClick non null alors onClick(playlist.name) est appelé
+    // onClick dans MenuGenerator correspond à afficher la liste des musiques de la playist playlist.name
     btn.onClick.AddListener(() =>
     {
         onClick?.Invoke(playlist.name);
@@ -206,7 +208,6 @@ public static class PlaylistUI
 
         LayoutElement le = boutonGO.AddComponent<LayoutElement>();
         le.preferredHeight = 30; 
-        //le.preferredWidth = 100;
         le.flexibleWidth = 1;
 
 
@@ -247,7 +248,7 @@ public static class PlaylistUI
         addRT.sizeDelta = new Vector2(30, 0);
         addRT.anchoredPosition = new Vector2(-5, 0);
 
-        // Texte du bouton +
+        // Texte du bouton -
         GameObject addTextGO = new GameObject("Text");
         addTextGO.transform.SetParent(addBtnGO.transform, false);
         TextMeshProUGUI addTxt = addTextGO.AddComponent<TextMeshProUGUI>();
@@ -268,7 +269,7 @@ public static class PlaylistUI
             pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
          
         });
-        // --- LISTENER DU BOUTON AJOUT À PLAYLIST ---
+        // --- LISTENER DU BOUTON ENLEVER À PLAYLIST ---
         addBtn.onClick.AddListener(() =>
     {   
         pm.RemoveTrackFromPlaylist(nomplaylist, track.title);

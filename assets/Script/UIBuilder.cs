@@ -14,10 +14,10 @@ public static class UIBuilder
 {   
     Debug.Log("Création du panel activé!!!");
 
-    // 1. Chercher un Canvas existant
+    // Chercher un Canvas existant
     Canvas canvas = Object.FindObjectOfType<Canvas>();
 
-    // 2. S'il n'existe pas, on en crée un proprement
+    //  S'il n'existe pas, on en crée un
     if (canvas == null)
     {
         GameObject canvasGO = new GameObject("Canvas", 
@@ -32,7 +32,7 @@ public static class UIBuilder
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
     }
 
-    // 3. Créer l’EventSystem si nécessaire
+    // Créer l’EventSystem si nécessaire
     if (Object.FindObjectOfType<EventSystem>() == null)
     {
         GameObject eventSystem = new GameObject("EventSystem");
@@ -40,7 +40,7 @@ public static class UIBuilder
         eventSystem.AddComponent<StandaloneInputModule>();
     }
 
-    // 4. Créer le panel
+    // Créer le panel
     GameObject panelGO = new GameObject("MenuPanel", typeof(RectTransform), typeof(Image));
     panelGO.transform.SetParent(canvas.transform, false);
 
@@ -91,141 +91,6 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
-
-
-    public static Transform CreateLeftMenu(Transform parent)
-{
-    GameObject go = new GameObject("LeftMenu", typeof(RectTransform));
-    go.transform.SetParent(parent, false);
-
-    RectTransform rt = go.GetComponent<RectTransform>();
-
-    Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
-
-
-    // Ancré à gauche, sous la TopBar anchorMin=(0,0), anchorMax=(0,1)
-    rt.anchorMin = new Vector2(0, 0);
-    rt.anchorMax = new Vector2(0, 1);
-    rt.pivot = new Vector2(0, 1);
-    
-
-    
-    // ESPACEMENT AVEC LA TOPBAR
-    float topBarHeight = 100f;
-    float spacing = 100f; // espace souhaité
-    float menuWidth = 160f; // ← largeur souhaitée
-
-    // Largeur fixe
-    rt.sizeDelta = new Vector2(menuWidth, 0);
-
-    rt.offsetMin = new Vector2(0, 0);
-    rt.offsetMax = new Vector2(250, -(topBarHeight + spacing));
-
-    // Layout vertical interne
-    VerticalLayoutGroup layout = go.AddComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = true;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = true;
-    layout.childForceExpandWidth = true;
-    layout.spacing = 10;
-    layout.childAlignment = TextAnchor.UpperCenter;
-
-    return go.transform;
-}
-
-    public static Transform CreateMainContent(Transform parent)
-{   
-    GameObject go = new GameObject("MainContent", typeof(RectTransform));
-    go.transform.SetParent(parent, false);
-
-    RectTransform rt = go.GetComponent<RectTransform>();
-
-    Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f);  // Lavande
-
-
-    rt.anchorMin = new Vector2(0, 0);
-    rt.anchorMax = new Vector2(1, 1);
-    rt.pivot = new Vector2(0, 1);
-
-    // Décalage pour éviter la top bar et le menu gauche
-    rt.offsetMin = new Vector2(250, 0);   // marge gauche = largeur du menu
-    rt.offsetMax = new Vector2(0, -150);   // marge haut = hauteur top bar
-
-    //  Layout pour empiler les éléments
-    var layout = go.AddComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = false;   // le bouton contrôle sa hauteur
-    layout.childControlWidth = false;    // le bouton contrôle sa largeur
-    layout.childForceExpandHeight = false;
-    layout.childForceExpandWidth = false;
-
-    layout.spacing = 10;
-    layout.childAlignment = TextAnchor.MiddleCenter;
-
-    //  Ajustement automatique de la hauteur
-    var fitter = go.AddComponent<ContentSizeFitter>();
-    //fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-    //fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
-    return go.transform;
-}
-public static Transform CreateLeftContent(Transform parent)
-{
-    GameObject go = new GameObject("LeftContent", typeof(RectTransform));
-    go.transform.SetParent(parent, false);
-
-    RectTransform rt = go.GetComponent<RectTransform>();
-    rt.anchorMin = new Vector2(0, 0.2f);  // 20% du bas
-    rt.anchorMax = new Vector2(0.5f, 0.6f); // 50% largeur, 60% du haut
-    rt.pivot = new Vector2(0, 1);          // pivot en haut à gauche
-    rt.anchoredPosition = Vector2.zero;
-
-    // Image de fond (optionnel)
-    Image img = go.AddComponent<Image>();
-    img.color = new Color(0.75f, 0.65f, 0.9f, 1f); // lavande
-
-    // Layout vertical pour empiler des éléments
-    var layout = go.AddComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandHeight = false;
-    layout.childForceExpandWidth = false;
-    layout.spacing = 10;
-    layout.childAlignment = TextAnchor.UpperCenter;
-
-    return go.transform;
-}
-
-public static Transform CreateRightContent(Transform parent)
-{
-    GameObject go = new GameObject("RightContent", typeof(RectTransform));
-    go.transform.SetParent(parent, false);
-
-    RectTransform rt = go.GetComponent<RectTransform>();
-    rt.anchorMin = new Vector2(0.7f, 0.2f); // commence à 70% du parent
-    rt.anchorMax = new Vector2(1, 0.8f);   // jusqu’à 100% largeur
-    rt.pivot = new Vector2(0, 1);
-    rt.anchoredPosition = Vector2.zero;
-
-
-    // Image de fond (optionnel)
-    Image img = go.AddComponent<Image>();
-    img.color = new Color(0.75f, 0.65f, 0.9f, 1f); 
-
-    // Layout vertical
-    var layout = go.AddComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandHeight = false;
-    layout.childForceExpandWidth = false;
-    layout.spacing = 10;
-    layout.childAlignment = TextAnchor.UpperCenter;
-
-
-    return go.transform;
-}
-
     public static void ShowMusiquesPlaylistInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
         foreach (Transform child in mainContent)
@@ -288,8 +153,6 @@ public static Transform CreateRightContent(Transform parent)
     contentRT.offsetMin = new Vector2(0, 0);
     contentRT.offsetMax = new Vector2(0, 0);
     
-
-
     scroll.content = contentRT;
     ClearContainer(contentRT);
     
@@ -377,9 +240,6 @@ public static Transform CreateRightContent(Transform parent)
 
     return go.transform;
 }
-
-    
-    
 
 
 // Créer la barre de recherche

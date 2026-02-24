@@ -25,12 +25,6 @@ public static Transform CreateMiddleArea(Transform parent, float topBarHeight)
     // Layout horizontal pour gérer gauche / centre / droite
     HorizontalLayoutGroup layout = middleGO.AddComponent<HorizontalLayoutGroup>();
     layout.childAlignment = TextAnchor.MiddleCenter;
-    //layout.childControlWidth = false;
-    //layout.childForceExpandWidth = false;
-    //layout.childControlHeight = true;
-    //layout.childForceExpandHeight = true;
-    //layout.childControlWidth = true;
-    //layout.childForceExpandWidth = true;
     layout.spacing = 30;
     layout.padding = new RectOffset(20, 20, 20, 20);
 

@@ -31,8 +31,7 @@ public class PopupManager : MonoBehaviour
         Image bg = popupGO.AddComponent<Image>();
         bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
 
-        TextMeshProUGUI txt = new GameObject("Text")
-            .AddComponent<TextMeshProUGUI>();
+        TextMeshProUGUI txt = new GameObject("Text").AddComponent<TextMeshProUGUI>();
         txt.transform.SetParent(popupGO.transform, false);
         txt.text = message;
         txt.fontSize = 20;
@@ -236,7 +235,7 @@ public class PopupManager : MonoBehaviour
 
     }
 
-
+// Pop up avec le nom des playlist pour ajouter le clip trackName à l'une des playlists
 public static void ShowPlaylistPopup(string trackName)
 {
     // Détruire l'ancien popup
@@ -376,147 +375,6 @@ public static void ShowPlaylistPopup(string trackName)
         }
     });
 }
-
-
-public static void ShowMusiquesPlaylistPopup(List<AudioClip> clips,string playlistName)
-{
-    // Détruire l'ancien popup
-    if (popupGO != null)
-        UnityEngine.Object.Destroy(popupGO);
-
-    // Création du popup
-    popupGO = new GameObject("PlaylistPopup", typeof(RectTransform));
-    popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
-
-    Image bg = popupGO.AddComponent<Image>();
-    bg.color = new Color(0, 0, 0, 0.6f);
-
-    RectTransform rt = popupGO.GetComponent<RectTransform>();
-    rt.anchorMin = Vector2.zero;
-    rt.anchorMax = Vector2.one;
-    rt.offsetMin = Vector2.zero;
-    rt.offsetMax = Vector2.zero;
-
-    // Conteneur
-    GameObject container = new GameObject("Container", typeof(RectTransform));
-    container.transform.SetParent(popupGO.transform, false);
-
-    RectTransform contRT = container.GetComponent<RectTransform>();
-    contRT.sizeDelta = new Vector2(300, 300);
-    contRT.anchoredPosition = Vector2.zero;
-    contRT.anchorMin = new Vector2(0.5f, 0.5f);
-    contRT.anchorMax = new Vector2(0.5f, 0.5f);
-    contRT.pivot = new Vector2(0.5f, 0.5f);
-    contRT.anchoredPosition = Vector2.zero;
-
-
-    Image contBg = container.AddComponent<Image>();
-    contBg.color = new Color(1, 1, 1, 0.95f);
-
-    // ----- Bouton de fermeture -----
-GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
-closeBtnGO.transform.SetParent(container.transform, false);
-
-RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
-closeRT.anchorMin = new Vector2(1, 1);
-closeRT.anchorMax = new Vector2(1, 1);
-closeRT.pivot = new Vector2(1, 1);
-closeRT.sizeDelta = new Vector2(30, 30);
-closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
-
-Button closeBtn = closeBtnGO.AddComponent<Button>();
-Image closeImg = closeBtnGO.AddComponent<Image>();
-closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); 
-
-// Texte "X"
-GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
-closeTextGO.transform.SetParent(closeBtnGO.transform, false);
-
-TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
-closeTxt.text = "X";
-closeTxt.fontSize = 24;
-closeTxt.alignment = TextAlignmentOptions.Center;
-closeTxt.color = Color.white;
-
-RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
-closeTxtRT.anchorMin = Vector2.zero;
-closeTxtRT.anchorMax = Vector2.one;
-closeTxtRT.offsetMin = Vector2.zero;
-closeTxtRT.offsetMax = Vector2.zero;
-
-// Action du bouton
-closeBtn.onClick.AddListener(() =>
-{
-    UnityEngine.Object.Destroy(popupGO);
-});
-
-
-    // ScrollRect
-    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
-    scrollGO.transform.SetParent(container.transform, false);
-
-    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
-    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
-    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
-    scrollRT.offsetMin = Vector2.zero;
-    scrollRT.offsetMax = Vector2.zero;
-
-    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
-    scroll.horizontal = false;
-
-    // Viewport
-    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
-    viewportGO.transform.SetParent(scrollGO.transform, false);
-
-    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
-    viewportRT.anchorMin = Vector2.zero;
-    viewportRT.anchorMax = Vector2.one;
-    viewportRT.offsetMin = Vector2.zero;
-    viewportRT.offsetMax = Vector2.zero;
-
-    scroll.viewport = viewportRT;
-
-    // Content
-    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
-    contentGO.transform.SetParent(viewportGO.transform, false);
-
-    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = true;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = true;
-    layout.childForceExpandWidth = true;
-    layout.spacing = 10;
-
-    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
-    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
-
-    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
-    contentRT.anchorMin = new Vector2(0, 1);
-    contentRT.anchorMax = new Vector2(1, 1);
-    contentRT.pivot = new Vector2(0.5f, 1);
-    contentRT.anchoredPosition = Vector2.zero;
-    contentRT.offsetMin = new Vector2(0, 0);
-    contentRT.offsetMax = new Vector2(0, 0);
-    
-
-
-    scroll.content = contentRT;
-
-    // Génération des boutons de playlists
-    PlaylistUI.AfficherMusiquesParPlaylist(clips,playlistName,contentRT );
-
-    //Ajout des boutons next et before pour gérer la playlist
-    /*PlaylistManager pm = FindObjectOfType<PlaylistManager>();
-    if (pm != null)
-    {   Sprite buttonSprite = Resources.Load<Sprite>("png_violet");
-        Button nextBtn = Bouton.CreateButton(contentRT, "Next", buttonSprite, () => pm.Next(playlistName));
-        Button prevBtn = Bouton.CreateButton(contentRT, "Before", buttonSprite, () => pm.Previous(playlistName));
-    }*/
-    
-}
-
 private static void CreateCloseButton(Transform parent)
 {
     // Création du bouton

@@ -12,9 +12,6 @@ public static class Bouton
 
         // Image NECESSAIRE au Button, mais sans sprite
         Image img = buttonGO.AddComponent<Image>();
-        /*
-        img.sprite = Resources.Load<Sprite>("UI/RoundedButton"); // ton sprite
-        img.type = Image.Type.Sliced; // IMPORTANT*/
         
         img.color = new Color(0.55f, 0.35f, 0.85f, 1f);  // violet clair
 

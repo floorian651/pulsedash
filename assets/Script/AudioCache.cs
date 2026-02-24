@@ -21,37 +21,12 @@ public class AudioCache : MonoBehaviour
         string localPath = Path.Combine(Application.persistentDataPath, fileName);
 
         if (!File.Exists(localPath))
-        {   /*
-            Debug.Log("Chargement depuis le cache : " + localPath);
-            yield return StartCoroutine(LoadLocalFile(localPath));*/
+        {   
             Debug.Log("Téléchargement depuis Jamendo : " + url);
             yield return StartCoroutine(DownloadAndCache(url, localPath));
-        }/*
-        else
-        {
-            Debug.Log("Téléchargement depuis Jamendo : " + url);
-            yield return StartCoroutine(DownloadAndCache(url, localPath));
-        }*/
-    }
-    /*
-    IEnumerator LoadLocalFile(string path)
-    {
-        using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file://" + path, AudioType.MPEG))
-        {
-            yield return req.SendWebRequest();
-
-            if (req.result == UnityWebRequest.Result.Success)
-            {
-                MenuGenerator.audioSource.clip = DownloadHandlerAudioClip.GetContent(req);
-                Debug.LogError("Chargement réussi");
-            }
-            else
-            {
-                Debug.LogError("Erreur chargement local : " + req.error);
-            }
         }
-    }*/
-
+    }
+    
     IEnumerator DownloadAndCache(string url, string localPath)
     {
         using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))

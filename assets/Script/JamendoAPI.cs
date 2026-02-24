@@ -17,7 +17,7 @@ public class JamendoResponse {
 
 public class JamendoAPI : MonoBehaviour
 {
-    public string clientID = "ac3af075"; // Mets ta clé ici
+    public string clientID = "ac3af075"; //  clé ici
 
     public IEnumerator GetTrackByGenre(string genre, System.Action<JamendoTrack[]> callback)
 

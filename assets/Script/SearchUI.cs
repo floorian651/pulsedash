@@ -70,9 +70,7 @@ public class SearchUI
             else
             {
                 Debug.LogError("messageText n'est pas encore initialisé");
-            }
-
-                        
+            }       
 
 });
 
