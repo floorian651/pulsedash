@@ -9,6 +9,12 @@ using System.Collections.Generic;
 public class AudioCache : MonoBehaviour
 {
     public List<AudioClip> clips = new List<AudioClip>();
+    private Context Context;
+
+    void Awake()
+    {
+        Context = Object.FindObjectOfType<Context>();
+    }
 
 
     public void LoadMusic(string url, string fileName)
@@ -36,7 +42,10 @@ public class AudioCache : MonoBehaviour
             if (req.result == UnityWebRequest.Result.Success)
             {
                 AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
-                MenuGenerator.audioSource.clip = clip;
+                if (Context != null && Context.TryGetAudioSource(out AudioSource source))
+                {
+                    source.clip = clip;
+                }
 
                 byte[] data = req.downloadHandler.data;
                 File.WriteAllBytes(localPath, data);

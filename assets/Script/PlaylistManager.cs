@@ -8,6 +8,7 @@ using System.Linq;
 public class PlaylistManager : MonoBehaviour
 {
     public List<Playlist> playlists = new List<Playlist>(); // Liste des playlist
+    private Context Context;
 
     private string savePath; //chemin
 
@@ -23,6 +24,22 @@ public class PlaylistManager : MonoBehaviour
         Debug.Log("PlaylistManager peut start!");
         savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
         LoadPlaylists();
+    }
+
+    private bool TryGetAudioSource(out AudioSource source)
+    {
+        if (Context == null)
+        {
+            Context = Object.FindObjectOfType<Context>();
+        }
+
+        if (Context != null)
+        {
+            return Context.TryGetAudioSource(out source);
+        }
+
+        source = null;
+        return false;
     }
 
     // Créer une playlist
@@ -122,20 +139,32 @@ public class PlaylistManager : MonoBehaviour
     }
     public void LancerPlaylist( Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
+    if (trackactuel == null)
+    {
+        PopupManager.Show("Playlist vide");
+        return;
+    }
+
     StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
 }   
    
     IEnumerator RoutinePlaylist(Track trackActuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
+    if (!TryGetAudioSource(out AudioSource source))
+    {
+        Debug.LogError("Context ou AudioSource introuvable.");
+        yield break;
+    }
+
     while (trackActuel != null)
     {
         PlayTrack(trackActuel, clips, true);
 
         // attendre fin OU action utilisateur
-        while (MenuGenerator.audioSource.isPlaying && !stopCurrentTrack)
+        while (source.isPlaying && !stopCurrentTrack)
             yield return null;
 
-        MenuGenerator.audioSource.Stop();
+        source.Stop();
 
         int order = trackActuel.order;
         Track nextTrack = null;
@@ -182,20 +211,32 @@ public class PlaylistManager : MonoBehaviour
 
     public void PlayTrack(Track trackactuel, List<AudioClip> clips, bool aJouer)
     {   
+        if (!TryGetAudioSource(out AudioSource source))
+        {
+            Debug.LogError("Context ou AudioSource introuvable.");
+            return;
+        }
+
         // Affichages pour le nouveau trackactuel
         PopupManager.Show(trackactuel.title +" sélectionnée");
-        MenuGenerator.messageText.text = trackactuel.title;
+        Context.SetMessage(trackactuel.title);
 
         // Chercher le clip correspondant
         AudioClip clip = SearchUI.RechercherClip(trackactuel.title, clips);
+        if (clip == null)
+        {
+            PopupManager.Show("Clip introuvable : " + trackactuel.title);
+            Debug.LogError("Clip introuvable : " + trackactuel.title);
+            return;
+        }
 
         // Attribuer le clip trouvé à l'audio source
-        MenuGenerator.audioSource.clip = clip;
+        source.clip = clip;
 
         if (aJouer)
         {
             // Jouer la musique
-        MenuGenerator.audioSource.Play();
+        source.Play();
         Debug.Log("Jouer musique " +trackactuel.title);
         }
         
@@ -203,15 +244,19 @@ public class PlaylistManager : MonoBehaviour
 
     IEnumerator PlayNextWhenFinished(AudioClip nextClip)
 {
+    if (!TryGetAudioSource(out AudioSource source))
+    {
+        yield break;
+    }
 
     // Attendre la fin réelle du morceau
-    while (MenuGenerator.audioSource.isPlaying || MenuGenerator.audioSource.time < MenuGenerator.audioSource.clip.length)
+    while (source.isPlaying || source.time < source.clip.length)
         yield return null;
 
     Debug.Log("Fin réelle du morceau détectée");
 
-    MenuGenerator.audioSource.clip = nextClip;
-    MenuGenerator.audioSource.Play();
+    source.clip = nextClip;
+    source.Play();
 }
 
 

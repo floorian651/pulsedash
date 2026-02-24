@@ -7,11 +7,9 @@ using TMPro;  // indispensable pour TextMeshProUGUI
 public class MenuGenerator : MonoBehaviour
 {
     public AudioCache audioCache;
-    public static AudioSource audioSource;
-
-    public static TextMeshProUGUI messageText; 
+    private AudioSource audioSource;
+    private Context Context;
     public Slider sliderPrefab;
-    private AudioClip clipMusique;  
 
     
     void Start()
@@ -19,6 +17,12 @@ public class MenuGenerator : MonoBehaviour
         // Créer un gameobject AudioSource
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
+        
+        Context = gameObject.GetComponent<Context>();
+        if (Context == null)
+        {
+            Context = gameObject.AddComponent<Context>();
+        }
 
         StartCoroutine(InitMenu());
     }
@@ -36,10 +40,11 @@ public class MenuGenerator : MonoBehaviour
     Transform centerContainer = UIconteneur.CreateCenterContainer(middleArea);
     Transform rightContainer = UIconteneur.CreateRightContainer(middleArea);
 
-    messageText = UIBuilder.CreerTexte(centerContainer);
+    TextMeshProUGUI messageText = UIBuilder.CreerTexte(centerContainer);
+    Context.Initialize(audioSource, messageText);
 
     // Créer un curseur pour la musique 
-    SliderMusiqueFactory.Create(centerContainer, sliderPrefab);
+    SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
 
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
     Bouton.CreateMusicButton(centerContainer); 
@@ -70,7 +75,7 @@ public class MenuGenerator : MonoBehaviour
 });
 
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
-    SearchUI searchUI = SearchUI.Create(topBar);
+    SearchUI searchUI = SearchUI.Create(topBar, Context);
     searchUI.Init(audioCache.clips);
     
     

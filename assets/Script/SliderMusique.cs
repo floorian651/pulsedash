@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class SliderMusique : MonoBehaviour
 {
     public Slider slider;
+    public Context Context;
 
     private bool utilisateurChangeValeur = false;
 
@@ -17,13 +18,13 @@ public class SliderMusique : MonoBehaviour
 
     void Update()
     {
-        if (MenuGenerator.audioSource.clip == null)
+        if (Context == null || !Context.TryGetAudioSource(out AudioSource source) || source.clip == null)
             return;
 
         // Si l'utilisateur n'est PAS en train de déplacer le curseur
         if (!utilisateurChangeValeur)
         {
-            slider.value = MenuGenerator.audioSource.time / MenuGenerator.audioSource.clip.length;
+            slider.value = source.time / source.clip.length;
         }
 
     }
@@ -34,10 +35,10 @@ public class SliderMusique : MonoBehaviour
 
         utilisateurChangeValeur = true;
 
-        if (MenuGenerator.audioSource.clip != null)
+        if (Context != null && Context.TryGetAudioSource(out AudioSource source) && source.clip != null)
         {
-            MenuGenerator.audioSource.time = value * MenuGenerator.audioSource.clip.length;
-            Debug.Log("Temps : "+ MenuGenerator.audioSource.time);
+            source.time = value * source.clip.length;
+            Debug.Log("Temps : " + source.time);
         }
 
         utilisateurChangeValeur = false;

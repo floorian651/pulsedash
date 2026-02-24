@@ -7,10 +7,11 @@ using System.Linq;
 public class SearchUI
 {
     private List<AudioClip> musiques;
+    private Context Context;
     // Zone pour afficher les résultats du menu déroulant 
     private Transform resultsContainer;
 
-    public static SearchUI Create(Transform parent)
+    public static SearchUI Create(Transform parent, Context context)
     {
         // Conteneur vertical 
         Transform searchContainer = UIBuilder.CreateSearchContainer(parent);
@@ -20,6 +21,7 @@ public class SearchUI
 
         SearchUI ui = new SearchUI();
         ui.resultsContainer = scroll;
+        ui.Context = context;
 
         searchBar.onValueChanged.AddListener(ui.OnSearch);
 
@@ -57,15 +59,17 @@ public class SearchUI
         // --- BOUTON PRINCIPAL ---
         Button btn = Bouton.CreateButton(resultsContainer, clip.name, new UnityEngine.Vector2(80, 70), () =>
         {
-            MenuGenerator.audioSource.clip = clip;
+            if (Context != null && Context.TryGetAudioSource(out AudioSource source))
+            {
+                source.clip = clip;
+            }
             
             PopupManager.Show("Musique sélectionnée : " + clip.name);
 
             // modifier le texte dans le mainContent
-            MenuGenerator.messageText.text = "Musique sélectionnée : " + clip.name;
-            if (MenuGenerator.messageText != null)
+            if (Context != null && Context.MessageText != null)
             {
-                MenuGenerator.messageText.text = "Musique sélectionnée : " + clip.name;
+                Context.SetMessage("Musique sélectionnée : " + clip.name);
             }
             else
             {

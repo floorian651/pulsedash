@@ -8,9 +8,7 @@ using System.Linq;
 
 public static class SliderMusiqueFactory
 {
-    public static SliderMusique Create(
-        Transform parent,
-        Slider sliderPrefab)
+    public static SliderMusique Create(Transform parent, Slider sliderPrefab, Context Context)
     {
         Transform existing = parent.Find(sliderPrefab.name + "(Clone)");
     if (existing != null)
@@ -22,6 +20,7 @@ public static class SliderMusiqueFactory
 
         SliderMusique sm = slider.gameObject.AddComponent<SliderMusique>();
         sm.slider = slider;
+        sm.Context = Context;
 
         // Placement (optionnel si déjà géré par le prefab)
         RectTransform rt = slider.GetComponent<RectTransform>();

@@ -7,9 +7,12 @@ public class MusicButton : MonoBehaviour
 {
     //private bool estEnLecture = false;
     private TMP_Text texteBouton;
+    private Context Context;
 
     void Start()
     {
+        Context = Object.FindObjectOfType<Context>();
+
         // Récupérer le texte du bouton
         texteBouton = GetComponentInChildren<TMP_Text>();
 
@@ -22,9 +25,9 @@ public class MusicButton : MonoBehaviour
 
     void Update()
     {   
-        if (MenuGenerator.audioSource == null) return;
+        if (Context == null || !Context.TryGetAudioSource(out AudioSource source)) return;
 
-        if (MenuGenerator.audioSource.isPlaying)
+        if (source.isPlaying)
         {
             texteBouton.text = "Pause";
         }
@@ -36,23 +39,24 @@ public class MusicButton : MonoBehaviour
 
     void ToggleMusic()
     {   
+            if (Context == null || !Context.TryGetAudioSource(out AudioSource source)) return;
         
             // Si la musique n'est pas en train de jouer
-            if (!MenuGenerator.audioSource.isPlaying){
+            if (!source.isPlaying){
                 Debug.Log("Jouer le son!");
 
                 // Si la musique avait déjà commencé on reprend où elle avait été arrêtée
-                if (MenuGenerator.audioSource.time > 0f){
-                    MenuGenerator.audioSource.UnPause();}   
+                if (source.time > 0f){
+                    source.UnPause();}   
 
                 // Lancer la musique 
                 else {
-                    MenuGenerator.audioSource.Play();
+                    source.Play();
             }
                 
                 texteBouton.text = "Pause";}
             else{
-                MenuGenerator.audioSource.Pause();
+                source.Pause();
                 texteBouton.text = "Jouer";}
 
     }
