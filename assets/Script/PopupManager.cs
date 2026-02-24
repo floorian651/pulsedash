@@ -197,41 +197,7 @@ public class PopupManager : MonoBehaviour
         });
 
            // ----- Bouton de fermeture -----
-    GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
-    closeBtnGO.transform.SetParent(container.transform, false);
-
-    RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
-    closeRT.anchorMin = new Vector2(1, 1);
-    closeRT.anchorMax = new Vector2(1, 1);
-    closeRT.pivot = new Vector2(1, 1);
-    closeRT.sizeDelta = new Vector2(30, 30);
-    closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
-
-    Button closeBtn = closeBtnGO.AddComponent<Button>();
-    Image closeImg = closeBtnGO.AddComponent<Image>();
-    closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f);
-
-    // Texte "X"
-    GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
-    closeTextGO.transform.SetParent(closeBtnGO.transform, false);
-
-    TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
-    closeTxt.text = "X";
-    closeTxt.fontSize = 24;
-    closeTxt.alignment = TextAlignmentOptions.Center;
-    closeTxt.color = Color.white;
-
-    RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
-    closeTxtRT.anchorMin = Vector2.zero;
-    closeTxtRT.anchorMax = Vector2.one;
-    closeTxtRT.offsetMin = Vector2.zero;
-    closeTxtRT.offsetMax = Vector2.zero;
-
-    // Action du bouton
-    closeBtn.onClick.AddListener(() =>
-    {
-        UnityEngine.Object.Destroy(popupGO);
-    });
+        CreateCloseButton(container.transform);
 
     }
 
@@ -272,41 +238,7 @@ public static void ShowPlaylistPopup(string trackName)
     contBg.color = new Color(1, 1, 1, 0.95f);
     
        // ----- Bouton de fermeture -----
-        GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
-        closeBtnGO.transform.SetParent(container.transform, false);
-
-        RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
-        closeRT.anchorMin = new Vector2(1, 1);
-        closeRT.anchorMax = new Vector2(1, 1);
-        closeRT.pivot = new Vector2(1, 1);
-        closeRT.sizeDelta = new Vector2(30, 30);
-        closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
-
-        Button closeBtn = closeBtnGO.AddComponent<Button>();
-        Image closeImg = closeBtnGO.AddComponent<Image>();
-        closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); 
-
-        // Texte "X"
-        GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
-        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
-
-        TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
-        closeTxt.text = "X";
-        closeTxt.fontSize = 24;
-        closeTxt.alignment = TextAlignmentOptions.Center;
-        closeTxt.color = Color.white;
-
-        RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
-        closeTxtRT.anchorMin = Vector2.zero;
-        closeTxtRT.anchorMax = Vector2.one;
-        closeTxtRT.offsetMin = Vector2.zero;
-        closeTxtRT.offsetMax = Vector2.zero;
-
-        // Action du bouton
-        closeBtn.onClick.AddListener(() =>
-        {
-            UnityEngine.Object.Destroy(popupGO);
-        });
+    CreateCloseButton(container.transform);
 
 
     // ScrollRect
@@ -316,8 +248,8 @@ public static void ShowPlaylistPopup(string trackName)
     RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
     scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
     scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
-    scrollRT.offsetMin = Vector2.zero;
-    scrollRT.offsetMax = Vector2.zero;
+    scrollRT.offsetMin = new Vector2(0, 10); // marge bas 
+    scrollRT.offsetMax = new Vector2(0, -30); // marge haut
 
     ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
     scroll.horizontal = false;
@@ -375,55 +307,44 @@ public static void ShowPlaylistPopup(string trackName)
         }
     });
 }
-private static void CreateCloseButton(Transform parent)
-{
-    // Création du bouton
-    GameObject buttonGO = new GameObject("CloseButton",
-        typeof(RectTransform),
-        typeof(Image),
-        typeof(Button));
-
-    buttonGO.transform.SetParent(parent, false);
-
-    RectTransform rt = buttonGO.GetComponent<RectTransform>();
-    rt.sizeDelta = new Vector2(30, 30);
-    rt.anchorMin = new Vector2(1, 1);
-    rt.anchorMax = new Vector2(1, 1);
-    rt.pivot = new Vector2(1, 1);
-    rt.anchoredPosition = new Vector2(-10, -10); // Décalage du coin
-
-    Image img = buttonGO.GetComponent<Image>();
-    img.color = new Color(0.40f, 0.55f, 0.95f, 1f);
-
-    Button btn = buttonGO.GetComponent<Button>();
-    btn.onClick.AddListener(() =>
+    private static void CreateCloseButton(Transform parent)
     {
-        if (popupGO != null)
+        GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
+        closeBtnGO.transform.SetParent(parent, false);
+
+        RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
+        closeRT.anchorMin = new Vector2(1, 1);
+        closeRT.anchorMax = new Vector2(1, 1);
+        closeRT.pivot = new Vector2(1, 1);
+        closeRT.sizeDelta = new Vector2(30, 30);
+        closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
+
+        Button closeBtn = closeBtnGO.AddComponent<Button>();
+        Image closeImg = closeBtnGO.AddComponent<Image>();
+        closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f);
+
+        // Texte "X"
+        GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
+        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
+
+        TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
+        closeTxt.text = "X";
+        closeTxt.fontSize = 24;
+        closeTxt.alignment = TextAlignmentOptions.Center;
+        closeTxt.color = Color.white;
+
+        RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
+        closeTxtRT.anchorMin = Vector2.zero;
+        closeTxtRT.anchorMax = Vector2.one;
+        closeTxtRT.offsetMin = Vector2.zero;
+        closeTxtRT.offsetMax = Vector2.zero;
+
+        // Action du bouton
+        closeBtn.onClick.AddListener(() =>
         {
             UnityEngine.Object.Destroy(popupGO);
-            popupGO = null;
+        });
         }
-    });
-
-    // Texte "X"
-    GameObject textGO = new GameObject("Text",
-        typeof(RectTransform),
-        typeof(Text));
-
-    textGO.transform.SetParent(buttonGO.transform, false);
-
-    RectTransform textRT = textGO.GetComponent<RectTransform>();
-    textRT.anchorMin = Vector2.zero;
-    textRT.anchorMax = Vector2.one;
-    textRT.offsetMin = Vector2.zero;
-    textRT.offsetMax = Vector2.zero;
-
-    Text txt = textGO.GetComponent<Text>();
-    txt.text = "X";
-    txt.alignment = TextAnchor.MiddleCenter;
-    txt.color = Color.white;
-    txt.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-}
 
 
 }
