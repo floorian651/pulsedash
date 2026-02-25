@@ -1,12 +1,18 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class Dragon : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
-    public float rotationSpeed = 3f;
-
     public float distanceSol = 3f;
+
+    public float distJoueur = 60f;
+
+    public float rayon = 360f;
+
+    public Rigidbody fireball;
 
 
     Animator anim;
@@ -14,6 +20,8 @@ public class Dragon : MonoBehaviour
 
     bool isGrounded = true; 
     float direction = 1; // Vers la droite par défaut
+
+    bool estEnAttaque = false;
 
     void Start()
     {
@@ -29,15 +37,43 @@ public class Dragon : MonoBehaviour
         // Détecter la présence du sol
         if (!DetecterSol()){
             Pivoter();
+            Debug.Log("Changer direction");
         }
             
         // Animation de vol
-        anim.SetBool("isFlying", true);
+        anim.SetTrigger("isFlying");
 
-        // Avance automatique selon l'axe x
-        transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
+        if (DetecterJoueur() && !estEnAttaque)
+        {   
+            Debug.Log("Joueur détecté");
+
+            transform.rotation = Quaternion.Euler(0,180,0);
+            
+            anim.SetTrigger("isAttacking");
+
+            estEnAttaque = true;
+
+            StartCoroutine(attendreXFrame(130));
+
+            Rigidbody p = Instantiate(fireball, transform.position, transform.rotation);
+            p.linearVelocity = transform.forward * (moveSpeed+2f) ;
+        }
+        else
+        {
+            // Animation de vol
+            anim.SetTrigger("isFlying");
+
+            // Avance automatique selon l'axe x
+            transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
+            Debug.Log("Je vole");
+        }
 
         
+    }
+
+    IEnumerator attendreXFrame(float nombreFrame)
+    {
+        for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
     }
 
     bool DetecterSol(){
@@ -48,12 +84,34 @@ public class Dragon : MonoBehaviour
         // Infos de collision 
         RaycastHit hit;
 
-        // Ray vers le sol 
-        bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol);
+        // Récupérer le layermask
+        LayerMask mask = LayerMask.GetMask("sol");
 
-        if (solTouche && hit.collider.CompareTag("sol"))
-        {      
-            Debug.DrawRay(prochainePosition, Vector3.down * distanceSol, Color.yellow);
+        // Ray vers le sol 
+        bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol+20, mask);
+        Debug.DrawRay(prochainePosition, Vector3.down * (distanceSol+20), Color.yellow);
+        Debug.Log("Hit");
+
+        return solTouche;         
+
+    }
+
+    bool DetecterJoueur(){
+
+        // Position du joueur en approche
+        Vector3 positionJoueur = transform.position + Vector3.back;
+
+        // Infos de collision 
+        RaycastHit hit;
+
+        // Ray vers le sol 
+        bool joueurDetecte = Physics.SphereCast(positionJoueur, rayon, Vector3.back, out hit,  distJoueur+10);
+        
+        if (joueurDetecte && hit.collider.CompareTag("Player"))
+        {   
+            // Dragon pivote vers le joueur
+            //transform.rotation = Quaternion.Euler(0,0,0);
+            Debug.DrawRay(positionJoueur, Vector3.back * (distJoueur+10), Color.red);
             Debug.Log("Hit");
             return true;
             
@@ -63,6 +121,7 @@ public class Dragon : MonoBehaviour
         }
 
     }
+
 
     void Pivoter(){
         rb.linearVelocity = Vector3.zero;
@@ -90,7 +149,7 @@ public class Dragon : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Mort si joueur
-        if (collision.gameObject.CompareTag("joueur"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             Mourir();
         }
@@ -102,4 +161,13 @@ public class Dragon : MonoBehaviour
         moveSpeed = 0;
         rb.linearVelocity = Vector3.zero;
     }
+
+    public void FinAttaque()
+{
+    estEnAttaque = false;
+    transform.rotation = Quaternion.Euler(0,90,0);
+    direction = 1; // Vers la droite
+    Debug.Log("FinAttaque!");
+}
+
 }
