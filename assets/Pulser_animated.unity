@@ -580,8 +580,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dragon
   moveSpeed: 5
   distanceSol: 3
-  distJoueur: 5
+  distJoueur: 30
   rayon: 3
+  player: {fileID: 1096525011}
   fireball: {fileID: 8735253722056665202, guid: 633d0aac6d21cfd48a916763b4637ad2, type: 3}
 --- !u!1001 &1096525009
 PrefabInstance:

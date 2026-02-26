@@ -12,11 +12,15 @@ public class Dragon : MonoBehaviour
 
     public float rayon = 360f;
 
+    public Transform player;
+
     public Rigidbody fireball;
 
 
     Animator anim;
     Rigidbody rb;
+
+    float xJ, yJ, zJ;
 
     bool isGrounded = true; 
     float direction = 1; // Vers la droite par défaut
@@ -32,8 +36,12 @@ public class Dragon : MonoBehaviour
         transform.position = new Vector3(0,distanceSol,0);
     }
 
-    void Update()
+
+     void Update()
     {   
+        // Récupérer les coordonnées du Joueur 
+        RecupererCoordJoueur();
+
         // Détecter la présence du sol
         if (!DetecterSol()){
             Pivoter();
@@ -43,26 +51,17 @@ public class Dragon : MonoBehaviour
         // Animation de vol
         anim.SetTrigger("isFlying");
 
-        if (DetecterJoueur() && !estEnAttaque)
+        if (JoueurDetecte() && !estEnAttaque)
         {   
             Debug.Log("Joueur détecté");
 
-            transform.rotation = Quaternion.Euler(0,180,0);
-            
-            anim.SetTrigger("isAttacking");
+            LancerAttaque();
 
-            estEnAttaque = true;
-
-            StartCoroutine(attendreXFrame(130));
-
-            Rigidbody p = Instantiate(fireball, transform.position, transform.rotation);
-            p.linearVelocity = transform.forward * (moveSpeed+2f) ;
+            // Déplacer le dragon pour qu'il soit le plus possible face au joueur
+            MoveDragonAttaque();            
         }
         else
         {
-            // Animation de vol
-            anim.SetTrigger("isFlying");
-
             // Avance automatique selon l'axe x
             transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
             Debug.Log("Je vole");
@@ -71,9 +70,14 @@ public class Dragon : MonoBehaviour
         
     }
 
-    IEnumerator attendreXFrame(float nombreFrame)
+
+    IEnumerator TirerApresXFrame(float nombreFrame)
     {
         for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
+
+        // Créer une boule de feu
+        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1,0), transform.rotation);
+        p.linearVelocity = transform.forward * (moveSpeed+2f) ;
     }
 
     bool DetecterSol(){
@@ -95,33 +99,6 @@ public class Dragon : MonoBehaviour
         return solTouche;         
 
     }
-
-    bool DetecterJoueur(){
-
-        // Position du joueur en approche
-        Vector3 positionJoueur = transform.position + Vector3.back;
-
-        // Infos de collision 
-        RaycastHit hit;
-
-        // Ray vers le sol 
-        bool joueurDetecte = Physics.SphereCast(positionJoueur, rayon, Vector3.back, out hit,  distJoueur+10);
-        
-        if (joueurDetecte && hit.collider.CompareTag("Player"))
-        {   
-            // Dragon pivote vers le joueur
-            //transform.rotation = Quaternion.Euler(0,0,0);
-            Debug.DrawRay(positionJoueur, Vector3.back * (distJoueur+10), Color.red);
-            Debug.Log("Hit");
-            return true;
-            
-        }
-        else {
-            return false;
-        }
-
-    }
-
 
     void Pivoter(){
         rb.linearVelocity = Vector3.zero;
@@ -169,5 +146,73 @@ public class Dragon : MonoBehaviour
     direction = 1; // Vers la droite
     Debug.Log("FinAttaque!");
 }
+
+    public float Hypo()
+    {
+        return (Mathf.Sqrt(Mathf.Pow(transform.position.x - xJ,2) +Mathf.Pow(transform.position.z - zJ,2)));
+    }
+
+    public float Angle(float hyp)
+    {
+        float dz = transform.position.z - zJ;
+
+        return Mathf.Asin(dz/hyp)* Mathf.Rad2Deg;;
+    }
+
+    public void LancerAttaque()
+    {   
+        // Récupérer la distance entre le joueur et le dragon
+        float hyp = Hypo();
+
+        // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
+        transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
+
+        // Lancer l'animation d'attaque
+        anim.SetTrigger("isAttacking");
+
+        estEnAttaque = true;
+
+        // Attendre 130 frames pour créer les boules de feu
+        StartCoroutine(TirerApresXFrame(100));
+
+        
+
+    }
+
+    public void MoveDragonAttaque()
+    {
+
+            if(xJ > transform.position.x)
+            {   
+                Debug.Log("Vers la droite");
+                direction = 1;
+                transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
+            }
+            if(xJ < transform.position.x)
+            {   
+                Debug.Log("Vers la gauche");
+                direction = -1;
+                transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
+            }
+        
+    }
+
+    void RecupererCoordJoueur(){
+        Vector3 pos = player.position;
+        xJ = pos.x;
+        yJ = pos.y;
+        zJ = pos.z;
+
+    }
+
+    public bool JoueurDetecte()
+    {   
+        // Distance selon z entre le dragon et le joueur
+        float dz = transform.position.z - zJ;
+
+        // Joueur est détecté si il n'a pas encore dépassé le dragon    
+        return dz>0 && dz< distJoueur;
+    }
+
 
 }
