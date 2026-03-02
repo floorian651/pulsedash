@@ -34,6 +34,14 @@ Rendre le bucket "music" en publique (a l'upload, pas très sécurisé)
 mc anonymous set public local/musique
 ```
 
+Installer mc (selon chatGPT):
+```shell
+curl -O https://dl.min.io/client/mc/release/linux-amd64/mc #télécharge le binaire
+chmod +x mc #le rend exécutable
+sudo mv mc /usr/local/bin/ #le mettre au bon endroit (le PATH)
+mc --version #vérifier que tout c'est bien passé
+```
+
 ### Avec des requêtes HTTP (nécessite une API, et que le bucket soit publique)
 Récupérer la musique "seven" du serveur MinIO au répertoire courant
 ```shell
