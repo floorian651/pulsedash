@@ -34,11 +34,16 @@ public class Dragon : MonoBehaviour
 
         // Point de départ
         transform.position = new Vector3(0,distanceSol,0);
+
+        // Forcer la position du dragon par rapport au sol
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
+
     }
 
 
      void Update()
     {   
+
         // Récupérer les coordonnées du Joueur 
         RecupererCoordJoueur();
 
@@ -70,14 +75,14 @@ public class Dragon : MonoBehaviour
         
     }
 
-
     IEnumerator TirerApresXFrame(float nombreFrame)
     {
         for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
 
         // Créer une boule de feu
-        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1,0), transform.rotation);
+        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1,-1), transform.rotation);
         p.linearVelocity = transform.forward * (moveSpeed+2f) ;
+        Debug.Log("Boule de feu tirée");
     }
 
     bool DetecterSol(){
@@ -169,11 +174,13 @@ public class Dragon : MonoBehaviour
 
         // Lancer l'animation d'attaque
         anim.SetTrigger("isAttacking");
+        Debug.Log("Animation d'attaque");
 
         estEnAttaque = true;
 
-        // Attendre 130 frames pour créer les boules de feu
+        // Attendre 1000 frames pour créer les boules de feu
         StartCoroutine(TirerApresXFrame(100));
+        
 
         
 

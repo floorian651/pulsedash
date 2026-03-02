@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272b0b0dceae9c84f910a7c57ef4217c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dragon
-  moveSpeed: 2
+  moveSpeed: 5
   distanceSol: 3
   distJoueur: 30
   rayon: 3
@@ -763,8 +763,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSubWaySurfer
   forwardSpeed: 2
-  sideSpeed: 5
-  jumpForce: 10
+  sideSpeed: 2
+  jumpForce: 7
   maxSideSpeed: 5
 --- !u!1 &1415272296
 GameObject:
