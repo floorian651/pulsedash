@@ -24,6 +24,16 @@ Uploader la musique "Darude" du répertoire courant vers le serveur MinIO
 mc cp Darude.mp3 local/music
 ```
 
+Rendre le bucket "music" en publique (au téléchargement)
+```shell
+mc anonymous set download local/musique
+```
+
+Rendre le bucket "music" en publique (a l'upload, pas très sécurisé)
+```shell
+mc anonymous set public local/musique
+```
+
 ### Avec des requêtes HTTP (nécessite une API, et que le bucket soit publique)
 Récupérer la musique "seven" du serveur MinIO au répertoire courant
 ```shell
