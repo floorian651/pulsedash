@@ -4,11 +4,14 @@ using UnityEngine.UI;
 public class EnergyBar : MonoBehaviour
 {
     private Slider energySlider;
-    public float decreaseSpeed = 5f;
+    public float decreaseSpeed = 1f;
 
     void Awake()
     {
         energySlider = GetComponent<Slider>();
+        energySlider.maxValue = 100;
+        energySlider.value = 100;
+        energySlider.interactable = false;
     }
 
     void Update()
