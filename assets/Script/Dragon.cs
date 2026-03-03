@@ -6,11 +6,11 @@ public class Dragon : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
+    public float fallSpeed = 20f;
+
     public float distanceSol = 3f;
 
     public float distJoueur = 60f;
-
-    public float rayon = 360f;
 
     public Transform player;
 
@@ -26,6 +26,8 @@ public class Dragon : MonoBehaviour
     float direction = 1; // Vers la droite par défaut
 
     bool estEnAttaque = false;
+
+    bool estMort = false;
 
     void Start()
     {
@@ -43,33 +45,38 @@ public class Dragon : MonoBehaviour
 
      void Update()
     {   
+        if (!estMort){
+            // Récupérer les coordonnées du Joueur 
+            RecupererCoordJoueur();
 
-        // Récupérer les coordonnées du Joueur 
-        RecupererCoordJoueur();
+            // Détecter la présence du sol
+            if (!DetecterSol()){
+                Pivoter();
+                Debug.Log("Changer direction");
+            }
+                
+            // Animation de vol
+            anim.SetTrigger("isFlying");
 
-        // Détecter la présence du sol
-        if (!DetecterSol()){
-            Pivoter();
-            Debug.Log("Changer direction");
-        }
-            
-        // Animation de vol
-        anim.SetTrigger("isFlying");
+            if (JoueurDetecte() && !estEnAttaque)
+            {   
+                Debug.Log("Joueur détecté");
 
-        if (JoueurDetecte() && !estEnAttaque)
-        {   
-            Debug.Log("Joueur détecté");
+                LancerAttaque();
 
-            LancerAttaque();
-
-            // Déplacer le dragon pour qu'il soit le plus possible face au joueur
-            MoveDragonAttaque();            
-        }
+                // Déplacer le dragon pour qu'il soit le plus possible face au joueur
+                MoveDragonAttaque();            
+            }
+            else
+            {
+                // Avance automatique selon l'axe x
+                transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
+                Debug.Log("Je vole");
+            }}
         else
         {
-            // Avance automatique selon l'axe x
-            transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
-            Debug.Log("Je vole");
+            Debug.Log("Dragon mort");
+            
         }
 
         
@@ -137,11 +144,25 @@ public class Dragon : MonoBehaviour
         }
     }
 
+    IEnumerator SupprimerCollider(){
+        // Enlever contrainte de distance par rapport au sol
+        rb.constraints = RigidbodyConstraints.None;
+        Debug.Log("Commencer la chute");
+        while(transform.position.y > 0.5f){
+            transform.position += new Vector3(0,-1,0) * Time.deltaTime * fallSpeed;
+            yield return null;}
+        Debug.Log("Suppression du collider");
+        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+    }
+
     public void Mourir()
-    {
+    {   
+        estMort = true; 
+        
+        StartCoroutine(SupprimerCollider());
+
         anim.SetTrigger("mort");
-        moveSpeed = 0;
-        rb.linearVelocity = Vector3.zero;
     }
 
     public void FinAttaque()
@@ -171,6 +192,7 @@ public class Dragon : MonoBehaviour
 
         // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
         transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
+        Debug.Log("Dragon pivote de "+Angle(hyp));
 
         // Lancer l'animation d'attaque
         anim.SetTrigger("isAttacking");
