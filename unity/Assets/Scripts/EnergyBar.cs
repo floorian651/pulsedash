@@ -9,9 +9,12 @@ public class EnergyBar : MonoBehaviour
     void Awake()
     {
         energySlider = GetComponent<Slider>();
-        energySlider.maxValue = 100;
-        energySlider.value = 100;
-        energySlider.interactable = false;
+        if (energySlider != null)
+        {
+            energySlider.maxValue = 100;
+            energySlider.value = 100;
+            energySlider.interactable = false;
+        }
     }
 
     void Update()
