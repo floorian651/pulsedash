@@ -89,7 +89,7 @@ public class Dragon : MonoBehaviour
         for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
 
         // Créer une boule de feu
-        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1,-1), transform.rotation);
+        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1.5f,-1), transform.rotation);
         p.linearVelocity = transform.forward * (moveSpeed+2f) ;
         Debug.Log("Boule de feu tirée");
     }
@@ -108,7 +108,7 @@ public class Dragon : MonoBehaviour
         // Ray vers le sol 
         bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol+20, mask);
         Debug.DrawRay(prochainePosition, Vector3.down * (distanceSol+20), Color.yellow);
-        Debug.Log("Hit");
+        Debug.Log("Hit sol");
 
         return solTouche;         
 
@@ -208,8 +208,7 @@ public class Dragon : MonoBehaviour
         estEnAttaque = true;
 
         // Attendre 1000 frames pour créer les boules de feu
-        StartCoroutine(TirerApresXFrame(100));
-        
+        StartCoroutine(TirerApresXFrame(50));    
 
         
 

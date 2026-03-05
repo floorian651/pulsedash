@@ -108,7 +108,7 @@ public class Dragon : MonoBehaviour
         // Ray vers le sol 
         bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol+20, mask);
         Debug.DrawRay(prochainePosition, Vector3.down * (distanceSol+20), Color.yellow);
-        Debug.Log("Hit");
+        Debug.Log("Hit sol");
 
         return solTouche;         
 
