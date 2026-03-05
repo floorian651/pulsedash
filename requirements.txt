@@ -56,3 +56,5 @@ pydantic
 pydantic-settings
 requests
 loguru
+
+minio
