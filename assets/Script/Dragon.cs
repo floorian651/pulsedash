@@ -16,6 +16,8 @@ public class Dragon : MonoBehaviour
 
     public Rigidbody fireball;
 
+    public Rigidbody bonus;
+
 
     Animator anim;
     Rigidbody rb;
@@ -163,6 +165,11 @@ public class Dragon : MonoBehaviour
         StartCoroutine(SupprimerCollider());
 
         anim.SetTrigger("mort");
+
+        // Mettre des bonus
+        for (int i = 0; i < 5; i++){
+            Rigidbody p = Instantiate(bonus, new Vector3(0,5,10*i),  Quaternion.Euler(-90,0,0));
+        }
     }
 
     public void FinAttaque()
