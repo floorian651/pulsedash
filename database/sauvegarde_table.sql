@@ -22,6 +22,22 @@ CREATE TABLE public.playlist (
 );
 
 
+-- public."user" definition
+
+-- Drop table
+
+-- DROP TABLE public."user";
+
+CREATE TABLE public."user" (
+	id varchar NOT NULL,
+	username varchar NULL,
+	email varchar NULL,
+	"password" varchar NULL,
+	is_active bool NULL,
+	CONSTRAINT user_pk PRIMARY KEY (id)
+);
+
+
 -- public.track definition
 
 -- Drop table
@@ -34,4 +50,17 @@ CREATE TABLE public.track (
 	playlist varchar NULL,
 	CONSTRAINT track_music_fk FOREIGN KEY (title) REFERENCES public.music(title),
 	CONSTRAINT track_playlist_fk FOREIGN KEY (playlist) REFERENCES public.playlist("name")
+);
+
+
+-- public.jobs definition
+
+-- Drop table
+
+-- DROP TABLE public.jobs;
+
+CREATE TABLE public.jobs (
+	id varchar NOT NULL,
+	CONSTRAINT jobs_pk PRIMARY KEY (id),
+	CONSTRAINT jobs_user_fk FOREIGN KEY (id) REFERENCES public."user"(id)
 );
