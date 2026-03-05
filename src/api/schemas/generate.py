@@ -1,0 +1,1 @@
+# payload du POST /generate

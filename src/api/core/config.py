@@ -1,24 +1,25 @@
-from pydantic import Field
-from pydantic_settings import BaseSettings
 from functools import lru_cache
+
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    # -----------------------------
+    # ---------------------------------------------------------
     # Application
-    # -----------------------------
-    APP_NAME: str = "Wavr API"
+    # ---------------------------------------------------------
+    APP_NAME: str = Field(default="PulseDash API")
     API_V1_PREFIX: str = "/api/v1"
-    DEBUG: bool = True
+    DEBUG: bool = Field(default=False)
 
-    # -----------------------------
+    # ---------------------------------------------------------
     # Database (PostgreSQL)
-    # -----------------------------
-    POSTGRES_HOST: str = "postgres"
+    # ---------------------------------------------------------
+    POSTGRES_HOST: str
     POSTGRES_PORT: int = 5432
-    POSTGRES_USER: str = "wavr"
-    POSTGRES_PASSWORD: str = "wavr"
-    POSTGRES_DB: str = "wavr"
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
 
     @property
     def DATABASE_URL(self) -> str:
@@ -28,21 +29,21 @@ class Settings(BaseSettings):
             f"{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
 
-    # -----------------------------
-    # Minio (S3 compatible)
-    # -----------------------------
-    MINIO_ENDPOINT: str = "minio:9000"
-    MINIO_ACCESS_KEY: str = "minio"
-    MINIO_SECRET_KEY: str = "minio123"
+    # ---------------------------------------------------------
+    # Minio
+    # ---------------------------------------------------------
+    MINIO_ENDPOINT: str
+    MINIO_ACCESS_KEY: str
+    MINIO_SECRET_KEY: str
     MINIO_SECURE: bool = False
 
     MINIO_AUDIO_BUCKET: str = "audio"
     MINIO_LEVEL_BUCKET: str = "levels"
 
-    # -----------------------------
-    # Celery / Redis
-    # -----------------------------
-    REDIS_HOST: str = "redis"
+    # ---------------------------------------------------------
+    # Redis / Celery
+    # ---------------------------------------------------------
+    REDIS_HOST: str
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
 
@@ -54,26 +55,29 @@ class Settings(BaseSettings):
     def CELERY_RESULT_BACKEND(self) -> str:
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
 
-    # -----------------------------
+    # ---------------------------------------------------------
     # Jamendo API
-    # -----------------------------
-    JAMENDO_CLIENT_ID: str = Field(..., description="Jamendo API client ID")
+    # ---------------------------------------------------------
+    JAMENDO_CLIENT_ID: str
 
-    # -----------------------------
+    # ---------------------------------------------------------
     # Security
-    # -----------------------------
-    JWT_SECRET_KEY: str = "super-secret-key"
+    # ---------------------------------------------------------
+    JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60
 
-    # -----------------------------
+    # ---------------------------------------------------------
     # CORS
-    # -----------------------------
-    CORS_ORIGINS: list[str] = ["*"]
+    # ---------------------------------------------------------
+    CORS_ORIGINS: str = "*"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # ---------------------------------------------------------
+    # Pydantic Settings
+    # ---------------------------------------------------------
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
 
 @lru_cache

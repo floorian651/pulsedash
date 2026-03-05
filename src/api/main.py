@@ -1,29 +1,81 @@
-from fastapi import FastAPI, UploadFile, File
-from src.pipeline.main import main as run_pipeline
+# Le point d’entrée de l’API.
 
-app = FastAPI()
+#     crée l’application FastAPI
+
+#     configure CORS
+
+#     initialise la DB
+
+#     monte les routers
+
+#     expose WebSocket /ws/jobs/{job_id}
+
+# C’est le fichier à lancer avec Uvicorn.
+
+# from fastapi import FastAPI, File, UploadFile
+
+# from src.pipeline.main import main as run_pipeline
+
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
+
+from src.api.core.config import get_settings
+from src.api.db.session import init_engine
+from src.api.routers import generate, jobs
+from src.api.utils.websocket_manager import WebSocketManager
+
+settings = get_settings()
+ws_manager = WebSocketManager()
 
 
-@app.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
-    content = await file.read()
-    temp_path = "/tmp/input_audio.mp3"
-    with open(temp_path, "wb") as f:
-        f.write(content)
+def create_app() -> FastAPI:
+    app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
 
-    # Appel de ton pipeline Python
-    result = run_pipeline(temp_path)
+    # ---------------------------------------------------------
+    # CORS
+    # ---------------------------------------------------------
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[o.strip() for o in settings.CORS_ORIGINS.split(",")],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
-    return {"result": result}
+    # ---------------------------------------------------------
+    # Database init
+    # ---------------------------------------------------------
+    init_engine(settings.DATABASE_URL)
+
+    # ---------------------------------------------------------
+    # Routers
+    # ---------------------------------------------------------
+    app.include_router(
+        generate.router, prefix=settings.API_V1_PREFIX, tags=["generate"]
+    )
+
+    app.include_router(jobs.router, prefix=settings.API_V1_PREFIX, tags=["jobs"])
+
+    # ---------------------------------------------------------
+    # Healthcheck
+    # ---------------------------------------------------------
+    @app.get("/")
+    async def healthcheck():
+        return {"status": "ok", "app": settings.APP_NAME}
+
+    # ---------------------------------------------------------
+    # WebSocket: suivi des jobs
+    # ---------------------------------------------------------
+    @app.websocket("/ws/jobs/{job_id}")
+    async def job_ws(websocket: WebSocket, job_id: str):
+        await ws_manager.connect(job_id, websocket)
+        try:
+            while True:
+                await websocket.receive_text()  # on garde la connexion ouverte
+        except WebSocketDisconnect:
+            ws_manager.disconnect(job_id, websocket)
+
+    return app
 
 
-def analyze_audio(path: str):
-    """
-    Analyse un fichier audio et retourne un résultat exploitable par l'API.
-    """
-    # Ici tu appelles ton vrai pipeline
-    # Exemple : result = run_full_pipeline(path)
-    # Pour l'instant on met un placeholder
-    result = {"message": f"Analyse terminée pour {path}"}
-
-    return result
+app = create_app()

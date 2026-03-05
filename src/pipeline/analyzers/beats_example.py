@@ -1,7 +1,7 @@
 """Beat detection and strength analysis."""
 
-import numpy as np
 import librosa
+import numpy as np
 
 
 def analyze_beats(y: np.ndarray, sr: int) -> dict:

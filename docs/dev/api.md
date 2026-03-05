@@ -53,3 +53,25 @@ flowchart TD
     Unity -->|"download level"| Minio
 
 ```
+# lancer l'api
+```bash
+uvicorn src.api.main:app --reload
+```
+
+# doc générée par swagger UI
+```bash
+http://127.0.0.1:8000/docs#/
+```
+# endpoint generate
+
+```bash
+curl -X POST http://localhost:8000/api/v1/generate
+```
+
+![architecture api v0](../../assets/image.png)
+
+# lancer celery
+```bash
+set -a && source .env && set +a
+celery -A src.api.core.celery_app worker --loglevel=info
+```
