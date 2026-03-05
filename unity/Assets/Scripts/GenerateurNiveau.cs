@@ -9,6 +9,7 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     public float vitesse = 3.0f;
+    public float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
 
     [ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
     public void GenerateLevel()
@@ -27,6 +28,10 @@ public class GenerateurNiveau : MonoBehaviour
         for(int i = -10; i < data.beats.Length; i++)
         {
             Vector3 pos = new Vector3(2, 0, i * vitesse);
+            if(data.beats[i].puissance < 2.5f)
+            {
+                pos.y = groundHeight - 0.5f; // Sol plus bas pour les beats faibles
+            }
             GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
             newGround.transform.parent = this.transform;
         }
@@ -34,7 +39,7 @@ public class GenerateurNiveau : MonoBehaviour
         for (int i = 0; i < data.beats.Length; i++)
         {
             Vector3 obstaclePos = new Vector3(2, 0, data.beats[i].timing * vitesse);
-            CreateObstacle(data.beats[i], obstaclePos);
+            //CreateObstacle(data.beats[i], obstaclePos);
         }
     }
 
