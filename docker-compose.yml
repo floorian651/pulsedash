@@ -29,8 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     working_dir: /workspaces/wavr
-    volumes:
-      - .:/workspaces/wavr
+    user: "${UID:-1000}:${GID:-1000}"
     command: celery -A src.api.core.celery_app worker -l info
     env_file: .env
     depends_on:
