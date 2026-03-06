@@ -221,7 +221,7 @@ public class Dragon : MonoBehaviour
         estEnAttaque = true;
 
         // Attendre 1000 frames pour créer les boules de feu
-        StartCoroutine(TirerApresXFrame(50));    
+        StartCoroutine(TirerApresXFrame(25));    
 
         
 
