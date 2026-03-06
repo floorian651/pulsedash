@@ -28,10 +28,14 @@ public class GenerateurNiveau : MonoBehaviour
         for(int i = -10; i < data.beats.Length; i++)
         {
             Vector3 pos = new Vector3(2, 0, i * vitesse);
-            if(data.beats[i].puissance < 2.5f)
+            if(i < 0)
             {
-                pos.y = groundHeight - 0.5f; // Sol plus bas pour les beats faibles
+                pos.y = groundHeight; // Sol normal pour les beats avant le début de la musique
             }
+            else{
+                pos.y = groundHeight + ((data.beats[i].puissance - 2.5f) / 5.0f); // Sol plus haut pour les beats plus puissants
+            }
+            
             GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
             newGround.transform.parent = this.transform;
         }
