@@ -64,10 +64,12 @@ public class Dragon : MonoBehaviour
             {   
                 Debug.Log("Joueur détecté");
 
-                LancerAttaque();
+                //LancerAttaque();
 
                 // Déplacer le dragon pour qu'il soit le plus possible face au joueur
-                MoveDragonAttaque();            
+                MoveDragonAttaque();
+
+                LancerAttaque();            
             }
             else
             {
@@ -198,7 +200,18 @@ public class Dragon : MonoBehaviour
         float hyp = Hypo();
 
         // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
-        transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
+        if (direction == 1)
+        {   Debug.Log("Joueur à droite");
+            // Si le joueur est à droite sur l'écran
+            transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
+        }
+        else
+        {   
+            Debug.Log("Joueur à gauche");
+            // Si le joueur est à gauche sur l'écran
+            transform.rotation= Quaternion.Euler(0,90+ Angle(hyp)+90,0);
+        }
+        
         Debug.Log("Dragon pivote de "+Angle(hyp));
 
         // Lancer l'animation d'attaque
