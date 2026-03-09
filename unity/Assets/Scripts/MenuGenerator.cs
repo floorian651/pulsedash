@@ -52,6 +52,7 @@ public class MenuGenerator : MonoBehaviour
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
 
     if(sceneloader != null){
+        Debug.Log("Créer bouton lancer jeu");
         // Créer un bouton pour lancer la scene du gameplay 
         Bouton.CreateButton(centerContainer, "Lancer jeu",new UnityEngine.Vector2(90,40),  () =>
     {   
