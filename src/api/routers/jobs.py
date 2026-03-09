@@ -1,24 +1,31 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from db.models import Job
-from src.api.db.session import get_session
+from ..db.models import Job
+from ..db.session import get_session
+from ..services.storage import StorageService
 
-router = APIRouter()
+router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
-@router.get("/jobs/{job_id}")
-async def get_job(job_id: str, db: Session = Depends(get_session)):
-    # Chercher le job dans la BDD par son ID
+@router.get("/{job_id}")
+async def get_job_status(job_id: str, db: Session = Depends(get_session)):
+    # 1. Chercher le job
     job = db.query(Job).filter(Job.id == job_id).first()
 
-    # Si le job n'existe pas, on renvoie une erreur 404 à Unity
     if not job:
         raise HTTPException(status_code=404, detail="Job non trouvé")
 
-    # On renvoie les vraies infos de la BDD
-    return {
+    # 2. Préparation de la réponse de base
+    response = {
         "job_id": job.id,
         "state": job.state,
         "progress": job.progress,
-        "created_at": job.created_at,
+        "result_url": None,
     }
+
+    # 3. Si le job est terminé, on génère une URL de téléchargement MinIO
+    if job.state == "completed" and job.result_path:
+        storage = StorageService(bucket_type="audio")  # Ou "levels" selon ton choix
+        response["result_url"] = storage.get_download_url(job.result_path)
+
+    return response
