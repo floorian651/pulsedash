@@ -1,4 +1,3 @@
-# api/db/models/Music.py
 from sqlalchemy import Column, String, Float
 from .base import Base
 

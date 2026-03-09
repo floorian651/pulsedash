@@ -42,7 +42,7 @@ python-multipart
 celery
 redis
 
-sqlalchemy
+SQLAlchemy
 psycopg2-binary
 alembic
 
