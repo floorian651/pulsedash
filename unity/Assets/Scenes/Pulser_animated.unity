@@ -540,6 +540,9 @@ MonoBehaviour:
   player: {fileID: 1379229926}
   fireball: {fileID: 8735253722056665202, guid: 633d0aac6d21cfd48a916763b4637ad2, type: 3}
   bonus: {fileID: 4999995473475738257, guid: 2b02933f38b071145979d923c41a809d, type: 3}
+  modeStatic: 1
+  timer_tir: 2
+  positionX: 0
 --- !u!1001 &1379229920
 PrefabInstance:
   m_ObjectHideFlags: 0

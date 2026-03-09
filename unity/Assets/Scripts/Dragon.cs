@@ -18,6 +18,12 @@ public class Dragon : MonoBehaviour
 
     public Rigidbody bonus;
 
+    public bool modeStatic = true;
+
+    public float timer_tir = 5f;
+
+    public float positionX = 0;
+
 
     Animator anim;
     Rigidbody rb;
@@ -31,23 +37,42 @@ public class Dragon : MonoBehaviour
 
     bool estMort = false;
 
+    float compt_frames = 0f;
+
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
         // Point de départ
-        transform.position = new Vector3(0,distanceSol,0);
+        if(modeStatic){
+            transform.position = new Vector3(positionX,distanceSol,0);
+            
+        }
+        else {
+            transform.position = new Vector3(0,distanceSol,0);
+        }
+             
 
         // Forcer la position du dragon par rapport au sol
         rb.constraints = RigidbodyConstraints.FreezePositionY;
+
+        if(modeStatic){
+            rb.constraints |= RigidbodyConstraints.FreezePositionX;
+        
+        }
+
+        anim.SetBool("modeStatic",modeStatic);
 
     }
 
 
      void Update()
     {   
-        if (!estMort){
+        // incrémenter le compteur de frames
+        compt_frames += Time.deltaTime;
+
+        if (!estMort && !modeStatic){
             // Récupérer les coordonnées du Joueur 
             RecupererCoordJoueur();
 
@@ -77,22 +102,54 @@ public class Dragon : MonoBehaviour
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
                 Debug.Log("Je vole");
             }}
-        else
+        else if (modeStatic && compt_frames>= timer_tir){
+            ModeStatic();
+            compt_frames = 0f;
+        }
+        else if (estMort)
         {
             Debug.Log("Dragon mort");
             
         }
 
+
         
+    }
+
+    void LateUpdate()
+{
+    if (modeStatic)
+    {
+        Vector3 cible = new Vector3(positionX, distanceSol, 0);
+        transform.position = Vector3.Lerp(transform.position, cible, 0.2f);
+    }
+}
+
+
+    public void ModeStatic(){
+
+        // Lancer l'animation d'attaque
+        anim.SetTrigger("isAttacking");
+        Debug.Log("Animation d'attaque");
+        StartCoroutine(TirerApresXFrame(25));    
     }
 
     IEnumerator TirerApresXFrame(float nombreFrame)
     {
         for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
-
+        float x, z;
         // Créer une boule de feu
-        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(0,1.5f,-1), transform.rotation);
-        p.linearVelocity = transform.forward * (moveSpeed+2f) ;
+        if(!modeStatic){
+            x =0;
+            z = -1;
+        }
+        else {
+            x = -1;
+            z = 0;
+        }
+        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,1.5f,z), transform.rotation);
+        
+        p.linearVelocity = transform.forward * (moveSpeed+2f);
         Debug.Log("Boule de feu tirée");
     }
 
