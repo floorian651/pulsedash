@@ -9,6 +9,7 @@ public class PlayerSubWaySurfer : MonoBehaviour
 
     Animator anim;
     Rigidbody rb;
+    AudioSource audioSource;
 
     bool isGrounded = true; 
 
@@ -17,6 +18,13 @@ public class PlayerSubWaySurfer : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+        // Récupérer la musique sélectionnée dans la scene d'avant
+        if(SessionData.Instance.audioSource !=null){
+            Debug.Log("AudioSource chargé");
+            SessionData.Instance.audioSource.Play();
+        } 
+        
     }
 
     void Update()

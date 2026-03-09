@@ -69,7 +69,7 @@ public class SearchUI
             // modifier le texte dans le mainContent
             if (Context != null && Context.MessageText != null)
             {
-                Context.SetMessage("Musique sélectionnée : " + clip.name);
+                Context.SetMessage(clip.name);
             }
             else
             {

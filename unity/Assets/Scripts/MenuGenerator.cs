@@ -49,6 +49,22 @@ public class MenuGenerator : MonoBehaviour
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
     Bouton.CreateMusicButton(centerContainer); 
 
+    SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+
+    if(sceneloader != null){
+        // Créer un bouton pour lancer la scene du gameplay 
+        Bouton.CreateButton(centerContainer, "Lancer jeu",new UnityEngine.Vector2(90,40),  () =>
+    {   
+        if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
+        {
+            Debug.Log("Audiosource chargé pour la prochaine scène");
+            SessionData.Instance.audioSource = source;
+        }
+        sceneloader.LoadSceneByName("Pulser_animated");
+    }); 
+
+    }
+   
     
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
