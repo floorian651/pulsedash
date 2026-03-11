@@ -199,10 +199,22 @@ public class Dragon : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Mort si joueur
-        if (collision.gameObject.CompareTag("Player"))
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    Mourir();
+        //}
+
+        if((collision.contacts[0].normal.y < -0.5) && collision.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Dragon doit mourir car ce prend quelque par le haut");
             Mourir();
         }
+
+        foreach (ContactPoint contact in collision.contacts)
+    {
+            Debug.Log("Point : " + contact.point);
+            Debug.Log("Normal : " + contact.normal);
+    }
     }
 
     IEnumerator SupprimerCollider(){

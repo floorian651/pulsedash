@@ -522,7 +522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edf59b0b46af5874bbb45ae2dee18a21, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.27
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: edf59b0b46af5874bbb45ae2dee18a21, type: 3}
       propertyPath: m_LocalPosition.z
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dragon
   moveSpeed: 5
   fallSpeed: 20
-  distanceSol: 3
+  distanceSol: 0
   distJoueur: 30
   player: {fileID: 1379229926}
   fireball: {fileID: 8735253722056665202, guid: 633d0aac6d21cfd48a916763b4637ad2, type: 3}
@@ -742,7 +742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 435e056fb4855d0479dccd3b876494e4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -35
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 435e056fb4855d0479dccd3b876494e4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -844,7 +844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSubWaySurfer
   forwardSpeed: 5
   sideSpeed: 5
-  jumpForce: 7
+  jumpForce: 30
   maxSideSpeed: 5
 --- !u!136 &1379229924
 CapsuleCollider:
