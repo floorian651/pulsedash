@@ -1,0 +1,17 @@
+@baseUrl = http://localhost:8000
+
+### Healthcheck
+GET {{baseUrl}}/
+
+### POST /api/v1/generate
+POST {{baseUrl}}/api/v1/generate
+
+### GET /api/v1/jobs/{job_id}
+GET {{baseUrl}}/api/v1/jobs/123
+
+### WebSocket (à installer plus tard)
+# ws://localhost:8000/ws/jobs/123
+
+### Docs
+# GET {{baseUrl}}/docs
+# $BROWSER {{baseUrl}}/docs
