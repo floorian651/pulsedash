@@ -19,11 +19,7 @@ public class PlayerSubWaySurfer : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        // Récupérer la musique sélectionnée dans la scene d'avant
-        if(SessionData.Instance.audioSource !=null){
-            Debug.Log("AudioSource chargé");
-            SessionData.Instance.audioSource.Play();
-        } 
+    
         
     }
 
