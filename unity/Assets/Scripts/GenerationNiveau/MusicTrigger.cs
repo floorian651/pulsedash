@@ -1,26 +1,25 @@
 using UnityEngine;
-using System.Collections; // Pour IEnumerator et WaitForSeconds (coroutines)
 
 public class Trigger : MonoBehaviour
 {
     public AudioSource musicSource; // Source audio de la musique
     private bool musicStarted = false;
+    public float delaiAvantMusique = 2.0f;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!musicStarted && other.CompareTag("Player"))
         {
             musicStarted = true;
-            StartCoroutine(jouerMusiqueAvecDelai());
-        }
-    }
 
-    private IEnumerator jouerMusiqueAvecDelai()
-    {
-        // Pause de 2 secondes avant de lancer la musique
-        yield return new WaitForSeconds(2f);
-        
-        // Lancer la musique
-        musicSource.Play();
+            // 1. On lit l'heure exacte de la carte son au moment du déclenchement
+            double heureActuelle = AudioSettings.dspTime;
+
+            // 2. On calcule l'heure exacte à laquelle la musique DOIT démarrer
+            double heureDepartMusique = heureActuelle + delaiAvantMusique;
+
+            // 3. On donne l'ordre à l'AudioSource de se lancer pile à cette heure-là
+            musicSource.PlayScheduled(heureDepartMusique);
+        }
     }
 }
