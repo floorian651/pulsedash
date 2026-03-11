@@ -1,6 +1,7 @@
 {
   "name": "PuffinIT Dev Container",
-
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true,
   "dockerComposeFile": ["../docker-compose.yml"],
 
   "service": "dev",
