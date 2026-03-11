@@ -100,8 +100,9 @@ public class GenerateurNiveau : MonoBehaviour
         }
         else{
             // On récupère l'intervalle de beats correspondant au chunk à générer
-            List<Beat> beatsInChunk = data.getBeatsInInterval(nbChunksGeneres * chunkSize, (nbChunksGeneres + 1) * chunkSize);
-            Debug.Log("Chunk: " + nbChunksGeneres);
+            float tempsDebutChunk = nbChunksGeneres * 0.25f;
+            float tempsFinChunk = (nbChunksGeneres + 1) * 0.25f;
+            List<Beat> beatsInChunk = data.getBeatsInInterval(tempsDebutChunk, tempsFinChunk);
             
             // On récuère la puissance maximale dans l'intervalle
             float puissanceMax = 0f;
