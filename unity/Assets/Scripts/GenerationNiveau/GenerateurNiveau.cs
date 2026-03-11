@@ -7,9 +7,11 @@ public class GenerateurNiveau : MonoBehaviour
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     private float vitesse; // Sera init quand on l'aura
-
+    private float offsetZ; // Distance avant le début de la musique pour commencer à générer les chunk (parce que délai avant début musique)
     private MusicData data; // Contiendra les données du fichier JSON
     private float chunkSize; // Taille d'un chunk du niveau (sera déterminé par la vitesse du joueur)
+    private int espaceEntreObstacles = 4; // Combien de chunks vides entre les obstacles
+    private int chunksDepuisDernierObstacle = 0; // Compteur de chunks depuis le dernier obstacle, pour espacer les obstacles
     private int nbChunksGeneres = 0; // Compteur du nombre de chunks générés, pour éviter de générer des chunks trop loin
     public GameObject GroundPrefab; // Préfab du sol
     public GameObject obstacleLevel4; // Préfab pour obstacle difficile
@@ -24,6 +26,7 @@ public class GenerateurNiveau : MonoBehaviour
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
+        offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
 
         // On récupère les données du fichier JSON
 
@@ -41,14 +44,12 @@ public class GenerateurNiveau : MonoBehaviour
         ClearLevel();
 
         // On génère le sol avant le niveau (de -10 à 0) pour éviter les problèmes de synchro au début du niveau+
-        for(int i = -10; i < 0; i++)
-        {
-            Vector3 pos = new Vector3(3, 0, i * vitesse);
-            pos.y = groundHeight;
-            
-            GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-            newGround.transform.parent = this.transform;
-        }
+        Vector3 pos = new Vector3(0, groundHeight, -15);
+        Vector3 scale = new Vector3(3, 1, 30+offsetZ*2);// On met l'offset *2 puisque ça aggrandit du milieu
+        GroundPrefab.transform.localScale = scale;
+        
+        GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
+        newGround.transform.parent = this.transform;
 
         loadChunks();
     }
@@ -91,39 +92,46 @@ public class GenerateurNiveau : MonoBehaviour
 
     private void chooseChunk()
     {
-        // On récupère l'intervalle de beats correspondant au chunk à générer
-        List<Beat> beatsInChunk = data.getBeatsInInterval(nbChunksGeneres * chunkSize, (nbChunksGeneres + 1) * chunkSize);
-        Debug.Log("Chunk: " + nbChunksGeneres);
-        
-        // On récuère la puissance maximale dans l'intervalle
-        float puissanceMax = 0f;
-        foreach(Beat beat in beatsInChunk)
-        {
-            if(beat.puissance > puissanceMax)
-                puissanceMax = beat.puissance;
-        }
-
-        // En fonction de la puissance maximale, on choisit l'action correspondante
-        GameObject obstacle;
-
-        if(puissanceMax < 2.5f)
+        if(chunksDepuisDernierObstacle < espaceEntreObstacles)
         {
             generateChunk(GroundPrefab);
+            chunksDepuisDernierObstacle++;
+            return;
         }
-        else if(puissanceMax < 5f)
-        {
-            generateChunk(obstacleLevel3);
+        else{
+            // On récupère l'intervalle de beats correspondant au chunk à générer
+            List<Beat> beatsInChunk = data.getBeatsInInterval(nbChunksGeneres * chunkSize, (nbChunksGeneres + 1) * chunkSize);
+            Debug.Log("Chunk: " + nbChunksGeneres);
+            
+            // On récuère la puissance maximale dans l'intervalle
+            float puissanceMax = 0f;
+            foreach(Beat beat in beatsInChunk)
+            {
+                if(beat.puissance > puissanceMax)
+                    puissanceMax = beat.puissance;
+            }
+
+            if(puissanceMax < 2.5f)
+            {
+                generateChunk(GroundPrefab);
+            }
+            else if(puissanceMax < 7f)
+            {
+                generateChunk(obstacleLevel3);
+                chunksDepuisDernierObstacle = 0;
+            }
+            else
+            {
+                generateChunk(obstacleLevel4);
+                chunksDepuisDernierObstacle = 0;
         }
-        else
-        {
-            generateChunk(obstacleLevel1);
         }
     }
 
     private void generateChunk(GameObject obstacle)
     {
         // On génère le chunk à la position correspondante
-        Vector3 pos = new Vector3(0, 0, nbChunksGeneres * chunkSize);
+        Vector3 pos = new Vector3(0, 0, offsetZ + nbChunksGeneres * chunkSize); // On oublie pas l'offset pour que les chunks commencent à être générés avant le début de la musique
         Vector3 scale = new Vector3(3, 1, chunkSize);
         obstacle.transform.localScale = scale;
         
