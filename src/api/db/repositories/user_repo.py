@@ -1,3 +1,8 @@
+from sqlalchemy.orm import Session
+
+from src.api.db.models import User
+
+
 def create_user(db: Session, email: str, password: str) -> User:
     user = User(email=email, password=password)
     db.add(user)
