@@ -47,4 +47,14 @@ public class PlayerMovementE5 : MonoBehaviour
 
         rb.linearVelocity = Vector3.ClampMagnitude(velocity, maxSpeed);
     }
+
+    // Getters and Setters de vitesse (vroom)
+    public float GetSpeed()
+    {
+        return forwardSpeed;
+    }
+    public void SetSpeed(float newSpeed)
+    {
+        forwardSpeed = newSpeed;
+    }
 }

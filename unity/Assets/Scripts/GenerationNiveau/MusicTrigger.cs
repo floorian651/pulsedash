@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections; // Pour IEnumerator et WaitForSeconds (coroutines)
 
 public class Trigger : MonoBehaviour
 {
@@ -10,8 +11,16 @@ public class Trigger : MonoBehaviour
         if (!musicStarted && other.CompareTag("Player"))
         {
             musicStarted = true;
-            sleep(2000); // Pause de 2sec avant de lancer la musique
-            musicSource.Play();
+            StartCoroutine(jouerMusiqueAvecDelai());
         }
+    }
+
+    private IEnumerator jouerMusiqueAvecDelai()
+    {
+        // Pause de 2 secondes avant de lancer la musique
+        yield return new WaitForSeconds(2f);
+        
+        // Lancer la musique
+        musicSource.Play();
     }
 }

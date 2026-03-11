@@ -1,31 +1,47 @@
 using UnityEngine;
+using System.Collections.Generic; // Pour List
 
 public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
+    private int randomSeed; // Graine aléatoire pour la génération du niveau.
+    public GameObject player; // Référence au joueur pour récupérer sa vitesse
+    private float vitesse; // Sera init quand on l'aura
+
+    private MusicData data; // Contiendra les données du fichier JSON
+    private float chunkSize; // Taille d'un chunk du niveau (sera déterminé par la vitesse du joueur)
+    private int nbChunksGeneres = 0; // Compteur du nombre de chunks générés, pour éviter de générer des chunks trop loin
     public GameObject GroundPrefab; // Préfab du sol
     public GameObject obstacleLevel4; // Préfab pour obstacle difficile
     public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
-    public float vitesse = 3.0f;
-    public float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
+    private float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
 
     [ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
     public void GenerateLevel()
     {
+        // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
+        vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
+        chunkSize = vitesse * 0.5f; // On définit la taille d'un chunk comme étant la distance parcourue par le joueur en 0.5 secondes
+
+        // On récupère les données du fichier JSON
 
         TextAsset jsonFile = Resources.Load<TextAsset>("analyse_rythme");
         if (jsonFile == null) {
             Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
             return;
         }
-        MusicData data = JsonUtility.FromJson<MusicData>(jsonFile.text);
+        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
 
+        // Permet de générer une graine aléatoire de facon déterministe
+        randomSeed = (int)data.duration;
+
+        // On nettoie le niveau avant de générer les nouveaux éléments
         ClearLevel();
 
-        // On génère tout le sol
-        for(int i = -10; i < data.beats.Length; i++)
+        // On génère le sol avant le niveau (de -10 à 0) pour éviter les problèmes de synchro au début du niveau+
+        for(int i = -10; i < 0; i++)
         {
             Vector3 pos = new Vector3(2, 0, i * vitesse);
             pos.y = groundHeight;
@@ -36,8 +52,7 @@ public class GenerateurNiveau : MonoBehaviour
 
         for (int i = 0; i < data.beats.Length; i++)
         {
-            Vector3 obstaclePos = new Vector3(2, 0, data.beats[i].timing * vitesse);
-            CreateObstacle(data.beats[i], obstaclePos);
+            generateChunks();
         }
     }
 
@@ -50,32 +65,44 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
-    private void CreateObstacle(Beat beat, Vector3 position)
+    /** Permet à partir d'un beat de décider quel action le joueur doit faire
+    * Et donc de générer l'obstacle correspondant, à la bonne position
+     */
+    // private void decideChunk(Beat beat)
+    // {
+    //     GameObject obstacle;
+
+    //     if(beat.puissance < 2.5f)
+    //     {
+    //         obstacle = Instantiate(GroundPrefab, position, Quaternion.identity);
+    //     }
+
+
+    //     obstacle.transform.parent = this.transform;
+    // }
+
+    private void generateChunks()
     {
-        if(beat.puissance < 2.5f)
+        // On va parcourir les chunk à générer
+        nbChunksGeneres = 0;
+        while(nbChunksGeneres * chunkSize < data.duration * vitesse)
         {
-            return; // Pas d'obstacle pour les beats faibles
+            chooseChunk();
+            nbChunksGeneres++;
         }
-
-        GameObject obstacle;
-
-        if(beat.puissance < 5.5f)
-        {
-            obstacle = Instantiate(obstacleLevel1, position, Quaternion.identity); // Obstacle très facile pour les beats faibles
-        }
-        else if(beat.puissance < 11.0f)
-        {
-            obstacle = Instantiate(obstacleLevel2, position, Quaternion.identity); // Obstacle facile pour les beats modérés
-        }
-        else if(beat.puissance < 15.0f)
-        {
-            obstacle = Instantiate(obstacleLevel3, position, Quaternion.identity); // Obstacle difficile pour les beats très forts
-        }
-        else
-        {
-            obstacle = Instantiate(obstacleLevel4, position, Quaternion.identity); // Obstacle très difficile pour les beats très forts
-        }
-
-        obstacle.transform.parent = this.transform;
     }
+
+    private void chooseChunk()
+    {
+        // On récupère l'intervalle de beats correspondant au chunk à générer
+        List<Beat> beatsInChunk = data.getBeatsInInterval(nbChunksGeneres * chunkSize, (nbChunksGeneres + 1) * chunkSize);
+        Debug.Log("Chunk: " + nbChunksGeneres);
+        
+        foreach(Beat beat in beatsInChunk)
+        {
+            Debug.Log("Puissance: " + beat.puissance);
+        }
+    }
+
+
 }
