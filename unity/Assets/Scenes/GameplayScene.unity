@@ -101715,6 +101715,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8339ebc729e0dfdd2b4f17933f66d070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementE5
+--- !u!136 &1398016391
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398016379}
+  m_Material: {fileID: 13400000, guid: 651823f4979e071d4a57c53a0f804453, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.9
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.9, z: 0}
 --- !u!1 &1398256896
 GameObject:
   m_ObjectHideFlags: 0
@@ -156077,7 +156100,7 @@ PrefabInstance:
     - target: {fileID: 3075801003196827885, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 13400000, guid: 651823f4979e071d4a57c53a0f804453, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 7178396207551336123, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -156148,12 +156171,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5050742552551995384, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+    - {fileID: 3075801003196827885, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1398016390}
+    - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1398016391}
   m_SourcePrefab: {fileID: 100100000, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
