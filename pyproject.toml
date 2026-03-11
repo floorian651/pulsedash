@@ -2,13 +2,31 @@
 name = "wavr"
 version = "0.0.1"
 dependencies = [
-    # dépendances ici
-    # "requests>=2.31.0",
-    "numpy"
+    "alembic",
+    "boto3",
+    "celery",
+    "fastapi[standard]",
+    "librosa",
+    "loguru",
+    "minio",
+    "numpy",
+    "psycopg2-binary",
+    "pydantic",
+    "pydantic-settings",
+    "python-multipart",
+    "redis",
+    "requests",
+    "scipy",
+    "SQLAlchemy",
+    "uvicorn[standard]"
 ]
 
 [tool.setuptools]
-packages = ["src"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
 
 
 [tool.pytest.ini_options]
