@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - obstacle
   - sol
+  - obstacle
   - pulser
   layers:
   - Default
