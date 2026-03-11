@@ -9,8 +9,14 @@ class StorageService:
         settings = get_settings()
 
         # Initialisation du client MinIO
+        endpoint = settings.MINIO_ENDPOINT
+        if endpoint.startswith("http://"):
+            endpoint = endpoint[len("http://") :]
+        elif endpoint.startswith("https://"):
+            endpoint = endpoint[len("https://") :]
+
         self.client = Minio(
-            settings.MINIO_ENDPOINT,
+            endpoint,
             access_key=settings.MINIO_ACCESS_KEY,
             secret_key=settings.MINIO_SECRET_KEY,
             secure=settings.MINIO_SECURE,
