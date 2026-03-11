@@ -29,4 +29,5 @@ app.conf.update(
     result_serializer="json",
     timezone=os.getenv("TZ", "UTC"),
     enable_utc=True,
+    include=["src.api.services.tasks"],
 )
