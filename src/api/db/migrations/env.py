@@ -10,10 +10,8 @@ from alembic import context
 sys.path.insert(0, abspath(dirname(dirname(dirname(dirname(__file__))))))
 
 # 2. Import de tes paramètres et de tes modèles
-from api.core.config import get_settings
-from api.db.models import (
-    Base,
-)  # L'import de Base ici contient TOUS tes modèles (User, Job, Music, etc.)
+from src.api.core.config import get_settings
+from src.api.db.models import Base
 
 # Cet objet permet de configurer le logger d'Alembic
 config = context.config
