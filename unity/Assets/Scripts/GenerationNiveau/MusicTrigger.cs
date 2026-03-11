@@ -9,8 +9,9 @@ public class Trigger : MonoBehaviour
     {
         if (!musicStarted && other.CompareTag("Player"))
         {
-            musicSource.Play();
             musicStarted = true;
+            sleep(2000); // Pause de 2sec avant de lancer la musique
+            musicSource.Play();
         }
     }
 }
