@@ -24,7 +24,7 @@ RUN rm -f /etc/apt/sources.list.d/yarn.list \
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen en_US.UTF-8
 
-# Copy project files (si nécessaire pour build)
+# Copy project files
 COPY . /workspaces/wavr
 
 ARG APP_USER=app
