@@ -81,7 +81,10 @@ public static class PlaylistUI
         
 
     foreach (Transform child in resultsContainer)
-        UnityEngine.Object.Destroy(child.gameObject);
+        if (child.name != "CreateButtonCreerPlaylist"){
+            UnityEngine.Object.Destroy(child.gameObject);
+        }
+        
 
     // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
     foreach (var playlist in toutesLesPlaylists)

@@ -88,8 +88,16 @@ public class MenuGenerator : MonoBehaviour
     {
         pm.CreatePlaylist(playlistName);
 
+        // Rafraîchir l’affichage des playlists
+        PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistName =>
+        {
+            UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContainer);
+        });
+
+
     }
 });
+
 
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar, Context);

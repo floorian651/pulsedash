@@ -11,18 +11,23 @@ public class MusiqueManager : MonoBehaviour
     public JamendoAPI jamendoAPI;
     public AudioCache audioCache;
 
+    public bool load = false;
+
     public string genre = "Mettre le style";
 
     public string title = "Mettre le titre";
 
     // Télécharger les musiques selon le genre ou le titre
     void Awake()
-    {
-        StartCoroutine(jamendoAPI.GetTrackByGenre(genre, OnTrackReceived));
+    {   
+        if (load){
 
-        StartCoroutine(jamendoAPI.SearchTrackByTitle(title, OnTrackReceived));
+            StartCoroutine(jamendoAPI.GetTrackByGenre(genre, OnTrackReceived));
+
+            StartCoroutine(jamendoAPI.SearchTrackByTitle(title, OnTrackReceived));
         
-        Debug.Log("Télécharger des musiques selon le genre et le titre");
+            Debug.Log("Télécharger des musiques selon le genre et le titre");
+        }        
 
     }
 
