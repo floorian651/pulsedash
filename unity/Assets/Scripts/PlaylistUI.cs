@@ -9,6 +9,16 @@ using System.Linq;
 
 public static class PlaylistUI
 {
+    private static TMP_FontAsset LoadMontserratFont()
+    {
+        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Montserrat-Regular SDF");
+        if (font == null)
+        {
+            font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+        }
+        return font;
+    }
+
     public static void CreateButtonCreerPlaylist(Transform parent, Action<string> onPlaylistCreated)
     {   
         Debug.Log("Création du bouton pour créer les playlists");
@@ -45,9 +55,7 @@ public static class PlaylistUI
         txt.alignment = TextAlignmentOptions.Center;
         txt.color = Color.white;
 
-        // Assigner un font par défaut pour TMP si nécessaire
-        if (txt.font == null)
-            txt.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+        txt.font = LoadMontserratFont();
 
         // ----- Listener pour le popup -----
         btn.onClick.AddListener(() =>
@@ -71,8 +79,7 @@ public static class PlaylistUI
             PopupManager.Show("Playlist créée : " + playlistName);
         });
     }
-
-   public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, Action<string> onClick)
+    public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, GameObject playlistItemPrefab, Action<string> onClick)
 {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
@@ -81,6 +88,7 @@ public static class PlaylistUI
         
 
     foreach (Transform child in resultsContainer)
+    
         if (child.name != "CreateButtonCreerPlaylist"){
             UnityEngine.Object.Destroy(child.gameObject);
         }
@@ -89,98 +97,43 @@ public static class PlaylistUI
     // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
     foreach (var playlist in toutesLesPlaylists)
 {
-    GameObject boutonGO = new GameObject("PlaylistButton", typeof(RectTransform));
+    GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
+    Button btn = boutonGO.GetComponent<Button>();
 
-    LayoutElement le = boutonGO.AddComponent<LayoutElement>();
-    le.preferredHeight = 40;
-    le.minHeight = 40;
+    TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+    if (label != null)
+    {
+        label.text = playlist.name;
+    }
 
-
-    boutonGO.transform.SetParent(resultsContainer, false);
-
-    RectTransform btnRT = boutonGO.GetComponent<RectTransform>();
-
-    Button btn = boutonGO.AddComponent<Button>();
-    Image img = boutonGO.AddComponent<Image>();
-    img.color = new Color(0.40f, 0.55f, 0.95f, 1f);
-
-    
-    // Texte
-    GameObject textGO = new GameObject("Text", typeof(RectTransform));
-    textGO.transform.SetParent(boutonGO.transform, false);
-
-    TextMeshProUGUI txt = textGO.AddComponent<TextMeshProUGUI>();
-    txt.text = playlist.name;
-    txt.fontSize = 15;
-    txt.color = Color.black;
-    txt.alignment = TextAlignmentOptions.MidlineLeft;
-    txt.textWrappingMode = TextWrappingModes.NoWrap;
-    txt.overflowMode = TextOverflowModes.Ellipsis;
-
-
-    RectTransform txtRT = textGO.GetComponent<RectTransform>();
-    txtRT.anchorMin = Vector2.zero;
-    txtRT.anchorMax = Vector2.one;
-    txtRT.offsetMin = new Vector2(10, 5);
-    txtRT.offsetMax = new Vector2(-10, -5);
-
-    Debug.Log("Playlist : "+ playlist.name);
-    
-    // Si onClick non null alors onClick(playlist.name) est appelé
-    // onClick dans MenuGenerator correspond à afficher la liste des musiques de la playist playlist.name
     btn.onClick.AddListener(() =>
     {
         onClick?.Invoke(playlist.name);
     });
 
-    // Création du bouton secondaire (ex: supprimer ou action)
-    GameObject lancerPlaylistButtonGO = new GameObject("lancerPlaylistButton", typeof(RectTransform));
-    lancerPlaylistButtonGO.transform.SetParent(boutonGO.transform, false);
-
-    Button lancerPlaylistBtn = lancerPlaylistButtonGO.AddComponent<Button>();
-    Image lancerPlaylistImg = lancerPlaylistButtonGO.AddComponent<Image>();
-    lancerPlaylistImg.color = new Color(0.40f, 0.55f, 0.95f, 1f); // rouge semi-transparent par exemple
-
-    // Taille et position du bouton secondaire (en haut à droite du bouton principal)
-    RectTransform lancerPlaylistRT = lancerPlaylistButtonGO.GetComponent<RectTransform>();
-    lancerPlaylistRT.anchorMin = new Vector2(1, 1); // coin supérieur droit
-    lancerPlaylistRT.anchorMax = new Vector2(1, 1);
-    lancerPlaylistRT.pivot = new Vector2(1, 1);
-    lancerPlaylistRT.sizeDelta = new Vector2(20, 20); // taille du petit bouton
-    lancerPlaylistRT.anchoredPosition = new Vector2(-5, -5); // léger décalage vers l'intérieur
-
-    GameObject textlancerPlaylist = new GameObject("Text", typeof(RectTransform));
-    textlancerPlaylist.transform.SetParent(lancerPlaylistBtn.transform, false);
-
-    TextMeshProUGUI txtlancerPlaylist = textlancerPlaylist.AddComponent<TextMeshProUGUI>();
-    txtlancerPlaylist.text = ">"; // symbole play
-    txtlancerPlaylist.fontSize = 20;
-    txtlancerPlaylist.alignment = TextAlignmentOptions.Center;
-    txtlancerPlaylist.color = Color.white;
-
-    RectTransform txtRTlancerPlaylist = textlancerPlaylist.GetComponent<RectTransform>();
-    txtRTlancerPlaylist.anchorMin = Vector2.zero;
-    txtRTlancerPlaylist.anchorMax = Vector2.one;
-    txtRTlancerPlaylist.offsetMin = Vector2.zero;
-    txtRTlancerPlaylist.offsetMax = Vector2.zero;
-
-
     Playlist playlist_recherche = pm.GetPlaylist(playlist.name);
+    if (playlist_recherche == null)
+    {
+        continue;
+    }
 
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
     
+    Button lancerPlaylistBtn = boutonGO.transform.Find("ChevronButton")?.GetComponent<Button>();
+
 
     // Action du bouton secondaire
-    lancerPlaylistBtn.onClick.AddListener(() =>
+    if (lancerPlaylistBtn != null)
     {
-        Debug.Log("Lancer la playlist: " + playlist.name);
-        Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
-        pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
-    });
-
-}
-    }}
+        lancerPlaylistBtn.onClick.AddListener(() =>
+        {
+            Debug.Log("Lancer la playlist: " + playlist.name);
+            Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
+            pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
+        });
+    }
+}}}
 
     public static void AfficherMusiquesParPlaylist(List<AudioClip> clips, string nomplaylist, Transform resultsContainer)
 {   
@@ -222,6 +175,7 @@ public static class PlaylistUI
         txt.fontSize = 15;
         txt.color = Color.black;
         txt.alignment = TextAlignmentOptions.MidlineLeft;
+        txt.font = LoadMontserratFont();
 
         txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         txt.overflowMode = TextOverflowModes.Ellipsis; // ajoute "..." si trop long
@@ -248,7 +202,7 @@ public static class PlaylistUI
         addRT.anchorMin = new Vector2(1, 0);
         addRT.anchorMax = new Vector2(1, 1);
         addRT.pivot = new Vector2(1, 0.5f);
-        addRT.sizeDelta = new Vector2(30, 0);
+        addRT.sizeDelta = new Vector2(24, 0);
         addRT.anchoredPosition = new Vector2(-5, 0);
 
         // Texte du bouton -
@@ -256,9 +210,10 @@ public static class PlaylistUI
         addTextGO.transform.SetParent(addBtnGO.transform, false);
         TextMeshProUGUI addTxt = addTextGO.AddComponent<TextMeshProUGUI>();
         addTxt.text = "-";
-        addTxt.fontSize = 20;
+        addTxt.fontSize = 16;
         addTxt.color = Color.white;
         addTxt.alignment = TextAlignmentOptions.Center;
+        addTxt.font = LoadMontserratFont();
         txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         txt.overflowMode = TextOverflowModes.Ellipsis; 
         RectTransform addTxtRT = addTextGO.GetComponent<RectTransform>();
