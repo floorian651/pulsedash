@@ -9,7 +9,6 @@ using System.Linq;
 
 public static class PlaylistUI
 {
-<<<<<<< HEAD
     private static TMP_FontAsset LoadMontserratFont()
     {
         TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Montserrat-Regular SDF");
@@ -20,8 +19,6 @@ public static class PlaylistUI
         return font;
     }
 
-=======
->>>>>>> main
     public static void CreateButtonCreerPlaylist(Transform parent, Action<string> onPlaylistCreated)
     {   
         Debug.Log("Création du bouton pour créer les playlists");
@@ -58,13 +55,7 @@ public static class PlaylistUI
         txt.alignment = TextAlignmentOptions.Center;
         txt.color = Color.white;
 
-<<<<<<< HEAD
         txt.font = LoadMontserratFont();
-=======
-        // Assigner un font par défaut pour TMP si nécessaire
-        if (txt.font == null)
-            txt.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
->>>>>>> main
 
         // ----- Listener pour le popup -----
         btn.onClick.AddListener(() =>
@@ -88,12 +79,7 @@ public static class PlaylistUI
             PopupManager.Show("Playlist créée : " + playlistName);
         });
     }
-<<<<<<< HEAD
     public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, GameObject playlistItemPrefab, Action<string> onClick)
-=======
-
-   public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, Action<string> onClick)
->>>>>>> main
 {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
@@ -102,15 +88,11 @@ public static class PlaylistUI
         
 
     foreach (Transform child in resultsContainer)
-<<<<<<< HEAD
     
         if (child.name != "CreateButtonCreerPlaylist"){
             UnityEngine.Object.Destroy(child.gameObject);
         }
         
-=======
-        UnityEngine.Object.Destroy(child.gameObject);
->>>>>>> main
 
     // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
     foreach (var playlist in toutesLesPlaylists)

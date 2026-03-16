@@ -7,10 +7,7 @@ TagManager:
   - obstacle
   - sol
   - pulser
-<<<<<<< HEAD
-=======
   - Bonus
->>>>>>> main
   layers:
   - Default
   - TransparentFX

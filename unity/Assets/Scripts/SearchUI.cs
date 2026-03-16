@@ -10,10 +10,8 @@ public class SearchUI
     private Context Context;
     // Zone pour afficher les résultats du menu déroulant 
     private Transform resultsContainer;
-<<<<<<< HEAD
+
     private GameObject playlistItemPrefab;
-=======
->>>>>>> main
 
     public static SearchUI Create(Transform parent, Context context)
     {
@@ -32,17 +30,10 @@ public class SearchUI
         return ui;
     }
 
-<<<<<<< HEAD
     public void Init(List<AudioClip> clips, GameObject playlistItemPrefab)
     {
         musiques = clips;
         this.playlistItemPrefab = playlistItemPrefab;
-=======
-    public void Init(List<AudioClip> clips)
-    {
-        musiques = clips;
->>>>>>> main
-    }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
 {
@@ -105,11 +96,9 @@ public class SearchUI
         // --- BOUTON “+” AJOUT À PLAYLIST ---
         Button addBtn = Bouton.CreateButton(btn.transform, "+",new UnityEngine.Vector2(80,70), () =>
         {
-<<<<<<< HEAD
+
             PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
-=======
-            PopupManager.ShowPlaylistPopup(clip.name);
->>>>>>> main
+
         });
 
         RectTransform addRT = addBtn.GetComponent<RectTransform>();
