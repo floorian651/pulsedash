@@ -11,7 +11,9 @@ public class MusiqueManager : MonoBehaviour
     public JamendoAPI jamendoAPI;
     public AudioCache audioCache;
 
+
     public bool load = false;
+
 
     public string genre = "Mettre le style";
 
@@ -19,6 +21,7 @@ public class MusiqueManager : MonoBehaviour
 
     // Télécharger les musiques selon le genre ou le titre
     void Awake()
+
     {   
         if (load){
 
@@ -28,6 +31,7 @@ public class MusiqueManager : MonoBehaviour
         
             Debug.Log("Télécharger des musiques selon le genre et le titre");
         }        
+
 
     }
 

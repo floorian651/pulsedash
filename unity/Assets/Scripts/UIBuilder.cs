@@ -30,9 +30,11 @@ public static class UIBuilder
 
         CanvasScaler scaler = canvasGO.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
         scaler.referenceResolution = new Vector2(900f, 600f);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         scaler.matchWidthOrHeight = 0.5f;
+
     }
 
     // Créer l’EventSystem si nécessaire
@@ -374,3 +376,4 @@ public static TMP_InputField CreateSearchBar(Transform parent)
     return contentGO.transform; // parent pour ajouter les éléments
 }
 }
+

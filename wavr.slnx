@@ -1,2 +1,6 @@
 ﻿<Solution>
+<<<<<<< HEAD
+=======
+  <Project Path="Assembly-CSharp.csproj" />
+>>>>>>> main
 </Solution>

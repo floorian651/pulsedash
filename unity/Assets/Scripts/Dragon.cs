@@ -103,6 +103,7 @@ public class Dragon : MonoBehaviour
                 Debug.Log("Je vole");
             }}
         else if (modeStatic && compt_frames>= timer_tir && !estMort){
+
             ModeStatic();
             compt_frames = 0f;
         }
@@ -148,7 +149,7 @@ public class Dragon : MonoBehaviour
             z = 0;
         }
         Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,0.5f,z), transform.rotation);
-        
+
         p.linearVelocity = transform.forward * (moveSpeed+2f);
         Debug.Log("Boule de feu tirée");
     }
@@ -199,10 +200,7 @@ public class Dragon : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Mort si joueur
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    Mourir();
-        //}
+
 
         if((collision.contacts[0].normal.y < -0.5) && collision.gameObject.CompareTag("Player"))
         {
@@ -215,6 +213,7 @@ public class Dragon : MonoBehaviour
             Debug.Log("Point : " + contact.point);
             Debug.Log("Normal : " + contact.normal);
     }
+
     }
 
     IEnumerator SupprimerCollider(){

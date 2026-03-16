@@ -52,22 +52,24 @@ public class MenuGenerator : MonoBehaviour
     SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
 
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
+
     //Bouton.CreateMusicButton(centerContainer); 
     GameObject playPauseGO = Object.Instantiate(playPauseButtonPrefab, centerContainer);
     Button playPauseBtn = playPauseGO.GetComponent<Button>();
     MusicButton mb = playPauseGO.GetComponent<MusicButton>();
     if (mb == null) { mb = playPauseGO.AddComponent<MusicButton>(); }
 
-
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
 
     if(sceneloader != null){
         Debug.Log("Créer bouton lancer jeu");
         // Créer un bouton pour lancer la scene du gameplay 
+
         GameObject launchGameGO = Object.Instantiate(launchGameButtonPrefab, centerContainer);
         Button launchGameBtn = launchGameGO.GetComponent<Button>();
         launchGameBtn.onClick.AddListener(() =>
 {
+
         if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
@@ -86,11 +88,11 @@ public class MenuGenerator : MonoBehaviour
 
     
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
+
     PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
     {
         UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContainer);
     });
-
 
     // Créer le bouton pour créer une playlist sous la forme d'une pop up 
     PlaylistUI.CreateButtonCreerPlaylist(leftContainer, (playlistName) =>
@@ -114,6 +116,7 @@ public class MenuGenerator : MonoBehaviour
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar, Context);
     searchUI.Init(audioCache.clips, playlistItemPrefab);
+
     
     
 

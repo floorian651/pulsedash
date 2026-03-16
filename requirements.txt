@@ -35,14 +35,14 @@ pre_commit
 black
 isort
 
-fastapi
+fastapi[standard]
 uvicorn[standard]
 python-multipart
 
 celery
 redis
 
-sqlalchemy
+SQLAlchemy
 psycopg2-binary
 alembic
 
@@ -53,5 +53,8 @@ numpy
 scipy
 
 pydantic
+pydantic-settings
 requests
 loguru
+
+minio
