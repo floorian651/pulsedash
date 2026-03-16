@@ -13,6 +13,7 @@ public class MenuGenerator : MonoBehaviour
 
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
+    public GameObject launchGameButtonPrefab;
 
 
     
@@ -63,8 +64,10 @@ public class MenuGenerator : MonoBehaviour
     if(sceneloader != null){
         Debug.Log("Créer bouton lancer jeu");
         // Créer un bouton pour lancer la scene du gameplay 
-        Bouton.CreateButton(centerContainer, "Lancer jeu",new UnityEngine.Vector2(90,40),  () =>
-    {   
+        GameObject launchGameGO = Object.Instantiate(launchGameButtonPrefab, centerContainer);
+        Button launchGameBtn = launchGameGO.GetComponent<Button>();
+        launchGameBtn.onClick.AddListener(() =>
+{
         if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
