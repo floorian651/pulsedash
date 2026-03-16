@@ -53,7 +53,7 @@
     "DOTNET_ROOT": "/usr/share/dotnet",
     "PATH": "${containerEnv:PATH}:/usr/share/dotnet"
   },
-
+  "postStartCommand": "sudo chown root:docker /var/run/docker-host.sock 2>/dev/null; sudo usermod -aG docker vscode 2>/dev/null; sudo chmod 660 /var/run/docker-host.sock 2>/dev/null || true",
   "containerEnv": {
     "PIP_ROOT_USER_ACTION": "ignore"
   },
