@@ -102,7 +102,7 @@ public class Dragon : MonoBehaviour
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
                 Debug.Log("Je vole");
             }}
-        else if (modeStatic && compt_frames>= timer_tir){
+        else if (modeStatic && compt_frames>= timer_tir && !estMort){
             ModeStatic();
             compt_frames = 0f;
         }
@@ -141,13 +141,13 @@ public class Dragon : MonoBehaviour
         // Créer une boule de feu
         if(!modeStatic){
             x =0;
-            z = -1;
+            z = -0.05f;
         }
         else {
-            x = -1;
+            x = 0.05f;
             z = 0;
         }
-        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,1.5f,z), transform.rotation);
+        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,0.5f,z), transform.rotation);
         
         p.linearVelocity = transform.forward * (moveSpeed+2f);
         Debug.Log("Boule de feu tirée");
