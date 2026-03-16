@@ -79,7 +79,6 @@ public class Dragon : MonoBehaviour
             // Détecter la présence du sol
             if (!DetecterSol()){
                 Pivoter();
-                Debug.Log("Changer direction");
             }
                 
             // Animation de vol
@@ -87,8 +86,6 @@ public class Dragon : MonoBehaviour
 
             if (JoueurDetecte() && !estEnAttaque)
             {   
-                Debug.Log("Joueur détecté");
-
                 //LancerAttaque();
 
                 // Déplacer le dragon pour qu'il soit le plus possible face au joueur
@@ -100,7 +97,6 @@ public class Dragon : MonoBehaviour
             {
                 // Avance automatique selon l'axe x
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
-                Debug.Log("Je vole");
             }}
         else if (modeStatic && compt_frames>= timer_tir){
             ModeStatic();
@@ -109,7 +105,6 @@ public class Dragon : MonoBehaviour
         else if (estMort)
         {
             Debug.Log("Dragon mort");
-            
         }
 
 
@@ -130,7 +125,6 @@ public class Dragon : MonoBehaviour
 
         // Lancer l'animation d'attaque
         anim.SetTrigger("isAttacking");
-        Debug.Log("Animation d'attaque");
         StartCoroutine(TirerApresXFrame(25));    
     }
 
@@ -150,7 +144,6 @@ public class Dragon : MonoBehaviour
         Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,1.5f,z), transform.rotation);
         
         p.linearVelocity = transform.forward * (moveSpeed+2f);
-        Debug.Log("Boule de feu tirée");
     }
 
     bool DetecterSol(){
@@ -167,7 +160,6 @@ public class Dragon : MonoBehaviour
         // Ray vers le sol 
         bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol+20, mask);
         Debug.DrawRay(prochainePosition, Vector3.down * (distanceSol+20), Color.yellow);
-        Debug.Log("Hit sol");
 
         return solTouche;         
 
@@ -208,11 +200,9 @@ public class Dragon : MonoBehaviour
     IEnumerator SupprimerCollider(){
         // Enlever contrainte de distance par rapport au sol
         rb.constraints = RigidbodyConstraints.None;
-        Debug.Log("Commencer la chute");
         while(transform.position.y > 0.5f){
             transform.position += new Vector3(0,-1,0) * Time.deltaTime * fallSpeed;
             yield return null;}
-        Debug.Log("Suppression du collider");
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Collider>().enabled = false;
     }
@@ -236,7 +226,6 @@ public class Dragon : MonoBehaviour
     estEnAttaque = false;
     transform.rotation = Quaternion.Euler(0,90,0);
     direction = 1; // Vers la droite
-    Debug.Log("FinAttaque!");
 }
 
     public float Hypo()
@@ -258,22 +247,19 @@ public class Dragon : MonoBehaviour
 
         // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
         if (direction == 1)
-        {   Debug.Log("Joueur à droite");
+        {   
             // Si le joueur est à droite sur l'écran
             transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
         }
         else
         {   
-            Debug.Log("Joueur à gauche");
             // Si le joueur est à gauche sur l'écran
             transform.rotation= Quaternion.Euler(0,90+ Angle(hyp)+90,0);
         }
         
-        Debug.Log("Dragon pivote de "+Angle(hyp));
 
         // Lancer l'animation d'attaque
         anim.SetTrigger("isAttacking");
-        Debug.Log("Animation d'attaque");
 
         estEnAttaque = true;
 
@@ -289,13 +275,11 @@ public class Dragon : MonoBehaviour
 
             if(xJ > transform.position.x)
             {   
-                Debug.Log("Vers la droite");
                 direction = 1;
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
             }
             if(xJ < transform.position.x)
             {   
-                Debug.Log("Vers la gauche");
                 direction = -1;
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
             }

@@ -25,7 +25,7 @@ public class EnergyBar : MonoBehaviour
         }
     }
 
-    void Damage(float damage)
+    public void Damage(float damage)
     {
         if (energySlider.value - damage > 0)
         {
@@ -37,7 +37,7 @@ public class EnergyBar : MonoBehaviour
         }
     }
 
-    void Heal(float heal)
+    public void Heal(float heal)
     {
         if (energySlider.value + heal < 100)
         {

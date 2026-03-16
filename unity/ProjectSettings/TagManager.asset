@@ -8,11 +8,12 @@ TagManager:
   - sol
   - pulser
   - Bonus
+  - Hole
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - sol

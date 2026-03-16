@@ -11,7 +11,7 @@ public class Fireball : MonoBehaviour
 
     Animator anim;
 
-    bool isGrounded = true; 
+    // bool isGrounded = true; 
 
     void Start()
     {
