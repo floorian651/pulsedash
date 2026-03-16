@@ -34,6 +34,7 @@ public class SearchUI
     {
         musiques = clips;
         this.playlistItemPrefab = playlistItemPrefab;
+    }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
 {
