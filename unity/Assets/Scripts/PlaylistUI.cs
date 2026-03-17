@@ -19,44 +19,19 @@ public static class PlaylistUI
         return font;
     }
 
-    public static void CreateButtonCreerPlaylist(Transform parent, Action<string> onPlaylistCreated)
+    public static void CreateButtonCreerPlaylist(GameObject averageButtonPrefab, Transform parent, Action<string> onPlaylistCreated)
     {   
         Debug.Log("Création du bouton pour créer les playlists");
 
-        // ----- Créer le bouton -----
-        GameObject go = new GameObject("CreateButtonCreerPlaylist", typeof(RectTransform));
-        go.transform.SetParent(parent, false);
+        GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);
+        Button btn = boutonGO.GetComponent<Button>();
 
-        LayoutElement le = go.AddComponent<LayoutElement>();
-        le.preferredHeight = 30;
-        le.preferredWidth = 75;
-
-        // ----- Image du bouton -----
-        Image img = go.AddComponent<Image>();
-        img.color = new Color(0.55f, 0.35f, 0.85f, 1f);
-
-
-        // ----- Bouton UI -----
-        Button btn = go.AddComponent<Button>();
-
-        // ----- Texte du bouton -----
-        GameObject textGO = new GameObject("Text", typeof(RectTransform));
-        textGO.transform.SetParent(go.transform, false);
-
-        RectTransform textRT = textGO.GetComponent<RectTransform>();
-        textRT.anchorMin = Vector2.zero;
-        textRT.anchorMax = Vector2.one;
-        textRT.offsetMin = new Vector2(10, 5);
-        textRT.offsetMax = new Vector2(-10, -5);
-
-        TextMeshProUGUI txt = textGO.AddComponent<TextMeshProUGUI>();
-        txt.text = "Créer une playlist";
-        txt.fontSize = 16;
-        txt.alignment = TextAlignmentOptions.Center;
-        txt.color = Color.white;
-
-        txt.font = LoadMontserratFont();
-
+        TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+        if (label != null)
+        {
+            label.text = "Créer playlist";
+        }
+        
         // ----- Listener pour le popup -----
         btn.onClick.AddListener(() =>
         {
@@ -88,8 +63,7 @@ public static class PlaylistUI
         
 
     foreach (Transform child in resultsContainer)
-    
-        if (child.name != "CreateButtonCreerPlaylist"){
+        if (!child.CompareTag("AverageButton")){
             UnityEngine.Object.Destroy(child.gameObject);
         }
         

@@ -169,4 +169,48 @@ public static class GenerateStylishUIPrefabs
         PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
     }
+    private static void CreateAverageButton(Sprite sprite, TMP_FontAsset font)
+    {
+        var root = new GameObject("AverageButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button), typeof(LayoutElement));
+        var rt = root.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(140, 44);
+
+        var image = root.GetComponent<Image>();
+        image.sprite = sprite;
+        image.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+        image.color = new Color(0.18f, 0.69f, 0.68f, 1f); // teal
+
+        var button = root.GetComponent<Button>();
+        button.transition = Selectable.Transition.ColorTint;
+        var colors = button.colors;
+        colors.normalColor = image.color;
+        colors.highlightedColor = new Color(0.21f, 0.78f, 0.76f, 1f);
+        colors.pressedColor = new Color(0.14f, 0.56f, 0.55f, 1f);
+        colors.selectedColor = colors.highlightedColor;
+        colors.colorMultiplier = 1f;
+        button.colors = colors;
+
+        var layout = root.GetComponent<LayoutElement>();
+        layout.preferredWidth = 140f;
+        layout.preferredHeight = 44f;
+
+        var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        label.transform.SetParent(root.transform, false);
+        var labelRt = label.GetComponent<RectTransform>();
+        labelRt.anchorMin = Vector2.zero;
+        labelRt.anchorMax = Vector2.one;
+        labelRt.offsetMin = new Vector2(12, 6);
+        labelRt.offsetMax = new Vector2(-12, -6);
+
+        var tmp = label.GetComponent<TextMeshProUGUI>();
+        tmp.text ="";
+        tmp.font = font;
+        tmp.fontSize = 18f;
+        tmp.color = Color.white;
+        tmp.alignment = TextAlignmentOptions.Center;
+
+        var path = Path.Combine(PrefabFolder, "AverageButton.prefab").Replace("\\", "/");
+        PrefabUtility.SaveAsPrefabAsset(root, path);
+        Object.DestroyImmediate(root);
+    }
 }

@@ -14,6 +14,7 @@ public class MenuGenerator : MonoBehaviour
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
     public GameObject launchGameButtonPrefab;
+    public GameObject averageButtonPrefab;
 
 
     
@@ -95,7 +96,7 @@ public class MenuGenerator : MonoBehaviour
     });
 
     // Créer le bouton pour créer une playlist sous la forme d'une pop up 
-    PlaylistUI.CreateButtonCreerPlaylist(leftContainer, (playlistName) =>
+    PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, (playlistName) =>
 {
     PlaylistManager pm = FindObjectOfType<PlaylistManager>();
     if (pm != null)
