@@ -22,7 +22,12 @@ public static class PlaylistUI
     public static void CreateButtonCreerPlaylist(GameObject averageButtonPrefab, Transform parent, Action<string> onPlaylistCreated)
     {   
         Debug.Log("Création du bouton pour créer les playlists");
-
+        Bouton.CreateButtonEditor( parent, averageButtonPrefab, "Créer playlist", () =>
+        {
+            OpenCreatePlaylistPopup(onPlaylistCreated);
+        });
+        
+        /*
         GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);
         Button btn = boutonGO.GetComponent<Button>();
 
@@ -36,7 +41,7 @@ public static class PlaylistUI
         btn.onClick.AddListener(() =>
         {
             OpenCreatePlaylistPopup(onPlaylistCreated);
-        });
+        });*/
     }
 
     private static void OpenCreatePlaylistPopup(Action<string> onPlaylistCreated)

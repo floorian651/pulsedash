@@ -54,6 +54,21 @@ public static class Bouton
         MusicButton mb = btn.gameObject.AddComponent<MusicButton>(); 
   
         return btn;
+}   
+    public static Button CreateButtonEditor(Transform parent, GameObject averageButtonPrefab, string text, UnityEngine.Events.UnityAction action){
+        
+        GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);
+        Button btn = boutonGO.GetComponent<Button>();
+
+        TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+        if (label != null)
+        {
+            label.text = text;
+        }
+        
+        btn.onClick.AddListener(action);
+
+        return btn;
 }
 
 }
