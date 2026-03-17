@@ -92,7 +92,7 @@ public class MenuGenerator : MonoBehaviour
 
     PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContainer);
+        UIBuilder.ShowMusiquesPlaylistInContainer( averageButtonPrefab, audioCache.clips, playlistName, rightContainer);
     });
 
     // Créer le bouton pour créer une playlist sous la forme d'une pop up 
@@ -106,7 +106,7 @@ public class MenuGenerator : MonoBehaviour
         // Rafraîchir l’affichage des playlists
         PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
         {
-            UIBuilder.ShowMusiquesPlaylistInContainer(audioCache.clips, playlistName, rightContainer);
+            UIBuilder.ShowMusiquesPlaylistInContainer( averageButtonPrefab, audioCache.clips, playlistName, rightContainer);
         });
 
 

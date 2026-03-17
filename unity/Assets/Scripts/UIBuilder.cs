@@ -96,7 +96,7 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
-    public static void ShowMusiquesPlaylistInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
         foreach (Transform child in mainContent)
     {
@@ -164,11 +164,11 @@ public static class UIBuilder
     // Génération des boutons de playlists
     PlaylistUI.AfficherMusiquesParPlaylist(clips,playlistName,contentRT );
 
-    BoutonNextBeforeInContainer(clips,playlistName,mainContent);
+    BoutonNextBeforeInContainer(averageButtonPrefab,clips,playlistName,mainContent);
 
 
     }
- public static void BoutonNextBeforeInContainer(List<AudioClip> clips, string playlistName, Transform mainContent)
+ public static void BoutonNextBeforeInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
     if (pm == null) return;
@@ -179,8 +179,9 @@ public static class UIBuilder
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
       
-        Button nextBtn = Bouton.CreateButton(mainContent, "Next",new UnityEngine.Vector2(30,40), () => pm.OnNextPressed());
-        Button prevBtn = Bouton.CreateButton(mainContent, "Before", new UnityEngine.Vector2(30,40), () => pm.OnPreviousPressed());
+        Button nextBtn = Bouton.CreateButtonEditor(mainContent, averageButtonPrefab, "Next", () => pm.OnNextPressed());
+        
+        Button prevBtn = Bouton.CreateButtonEditor(mainContent, averageButtonPrefab, "Next", () => pm.OnPreviousPressed());
     
     }
     public static void ClearContainer(Transform container)
