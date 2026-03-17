@@ -27,21 +27,6 @@ public static class PlaylistUI
             OpenCreatePlaylistPopup(onPlaylistCreated);
         });
         
-        /*
-        GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);
-        Button btn = boutonGO.GetComponent<Button>();
-
-        TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
-        if (label != null)
-        {
-            label.text = "Créer playlist";
-        }
-        
-        // ----- Listener pour le popup -----
-        btn.onClick.AddListener(() =>
-        {
-            OpenCreatePlaylistPopup(onPlaylistCreated);
-        });*/
     }
 
     private static void OpenCreatePlaylistPopup(Action<string> onPlaylistCreated)
@@ -139,7 +124,7 @@ public static class PlaylistUI
 
         Button btn = boutonGO.AddComponent<Button>();
         Image img = boutonGO.AddComponent<Image>();
-        img.color = new Color(0.55f, 0.35f, 0.85f, 1f); 
+        img.color = new Color32(0x4D, 0x88, 0xFF, 0xFF);
 
         LayoutElement le = boutonGO.AddComponent<LayoutElement>();
         le.preferredHeight = 30; 
@@ -173,7 +158,7 @@ public static class PlaylistUI
         addBtnGO.transform.SetParent(boutonGO.transform, false);
 
         Image addImg = addBtnGO.AddComponent<Image>();
-        addImg.color = new Color(0.55f, 0.35f, 0.85f, 1f); 
+        addImg.color = new Color32(0x4D, 0x88, 0xFF, 0xFF);
 
         Button addBtn = addBtnGO.AddComponent<Button>();
 

@@ -52,7 +52,8 @@ public static class UIBuilder
     RectTransform panelRT = panelGO.GetComponent<RectTransform>();
 
     Image panelImage = panelGO.GetComponent<Image>();
-    panelImage.color =  new Color(0.85f, 0.82f, 0.95f, 1f);  
+    panelImage.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+
 
     panelRT.anchorMin = Vector2.zero;
     panelRT.anchorMax = Vector2.one;
@@ -82,7 +83,7 @@ public static class UIBuilder
 
     // Ajouter un fond 
     Image bgImage = topBarGO.AddComponent<Image>();
-    bgImage.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
+    bgImage.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
 
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
@@ -123,7 +124,8 @@ public static class UIBuilder
     // Viewport
     GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
     viewportGO.transform.SetParent(scrollGO.transform, false);
-    viewportGO.GetComponent<Image>().color = new Color(1, 1, 1, 0.05f);
+    viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+
 
     RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
     viewportRT.anchorMin = Vector2.zero;
@@ -168,7 +170,7 @@ public static class UIBuilder
 
 
     }
- public static void BoutonNextBeforeInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void BoutonNextBeforeInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
     if (pm == null) return;
@@ -178,10 +180,22 @@ public static class UIBuilder
 
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+
+    // Conteneur horizontal pour aligner Avant / Après sur la même hauteur
+    GameObject navGO = new GameObject("NavButtons", typeof(RectTransform));
+    navGO.transform.SetParent(mainContent, false);
+
+    HorizontalLayoutGroup hlg = navGO.AddComponent<HorizontalLayoutGroup>();
+    hlg.childAlignment = TextAnchor.MiddleCenter;
+    hlg.spacing = 10;
+    hlg.childForceExpandWidth = false;
+    hlg.childForceExpandHeight = false;
+
+    LayoutElement navLE = navGO.AddComponent<LayoutElement>();
+    navLE.preferredHeight = 40;
       
-        Button nextBtn = Bouton.CreateButtonEditor(mainContent, averageButtonPrefab, "Next", () => pm.OnNextPressed());
-        
-        Button prevBtn = Bouton.CreateButtonEditor(mainContent, averageButtonPrefab, "Next", () => pm.OnPreviousPressed());
+    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "Avant", () => pm.OnPreviousPressed());
+    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "Après", () => pm.OnNextPressed());
     
     }
     public static void ClearContainer(Transform container)
@@ -205,7 +219,7 @@ public static class UIBuilder
         texteTMP.text = "Bienvenue!";
         texteTMP.fontSize = 20;
         texteTMP.alignment = TextAlignmentOptions.Center;
-        texteTMP.color = Color.white;
+        texteTMP.color = new Color(0.918f, 0.937f, 0.969f, 1f);
         texteTMP.enableWordWrapping = true;
         texteTMP.overflowMode = TextOverflowModes.Overflow;
 
@@ -231,7 +245,7 @@ public static class UIBuilder
     RectTransform rt = go.AddComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = new Color(0.85f, 0.82f, 0.95f, 1f); 
+    Image.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();
@@ -265,7 +279,8 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         rt.anchoredPosition = new Vector2(-150, -30);
 
         Image bg = go.AddComponent<Image>();
-        bg.color = new Color(1, 1, 1, 0.9f);
+        bg.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
 
@@ -287,7 +302,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
         TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
         text.fontSize = 15;
-        text.color = Color.black;
+        text.color = new Color(0.918f, 0.937f, 0.969f, 1f);
         text.alignment = TextAlignmentOptions.MidlineLeft;
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
@@ -305,7 +320,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         TMP_Text placeholder = placeholderGO.AddComponent<TextMeshProUGUI>();
         placeholder.text = "Rechercher...";
         placeholder.fontSize = 15;
-        placeholder.color = new Color(0, 0, 0, 0.5f);
+        placeholder.color = new Color(1f, 1f, 1f, 0.08f);
         placeholder.alignment = TextAlignmentOptions.MidlineLeft;
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
@@ -347,7 +362,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
     viewportRT.offsetMin = Vector2.zero;
     viewportRT.offsetMax = Vector2.zero;
 
-    viewportGO.GetComponent<Image>().color = new Color(1, 1, 1, 0.05f);
+    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
     viewportGO.GetComponent<Mask>().showMaskGraphic = false;
 
     scroll.viewport = viewportRT;

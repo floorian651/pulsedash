@@ -57,6 +57,15 @@ public class MenuGenerator : MonoBehaviour
     //Bouton.CreateMusicButton(centerContainer); 
     GameObject playPauseGO = Object.Instantiate(playPauseButtonPrefab, centerContainer);
     Button playPauseBtn = playPauseGO.GetComponent<Button>();
+    Image playPauseImg = playPauseGO.GetComponent<Image>();
+    if (playPauseImg == null)
+    {
+        playPauseImg = playPauseGO.GetComponentInChildren<Image>();
+    }
+    if (playPauseImg != null)
+    {
+        playPauseImg.color = new Color32(0xAA, 0x00, 0xFF, 0xFF);
+    }
     MusicButton mb = playPauseGO.GetComponent<MusicButton>();
     if (mb == null) { mb = playPauseGO.AddComponent<MusicButton>(); }
 
@@ -68,6 +77,15 @@ public class MenuGenerator : MonoBehaviour
 
         GameObject launchGameGO = Object.Instantiate(launchGameButtonPrefab, centerContainer);
         Button launchGameBtn = launchGameGO.GetComponent<Button>();
+        Image launchGameImg = launchGameGO.GetComponent<Image>();
+        if (launchGameImg == null)
+        {
+            launchGameImg = launchGameGO.GetComponentInChildren<Image>();
+        }
+        if (launchGameImg != null)
+        {
+            launchGameImg.color = new Color32(0xAA, 0x99, 0xFF, 0xFF);
+        }
         launchGameBtn.onClick.AddListener(() =>
 {
 
@@ -80,8 +98,6 @@ public class MenuGenerator : MonoBehaviour
     }); 
 
     }
-   
-    
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
     // Charger tous les fichiers mp3 déjà dans le cache
@@ -108,19 +124,12 @@ public class MenuGenerator : MonoBehaviour
         {
             UIBuilder.ShowMusiquesPlaylistInContainer( averageButtonPrefab, audioCache.clips, playlistName, rightContainer);
         });
-
-
     }
 });
-
 
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar, Context);
     searchUI.Init(audioCache.clips, playlistItemPrefab);
 
-    
-    
-
-    
 }
 }
