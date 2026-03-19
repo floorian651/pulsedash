@@ -47,6 +47,10 @@ COPY .config/starship.toml /root/.config/starship.toml
 # 9. Installation de act (GitHub Actions runner)
 RUN curl -s https://raw.githubusercontent.com/nektos/act/master/install.sh | bash -s -- -b /usr/local/bin
 
+# 10. Installation de mc (MinIO Client)
+RUN curl -fsSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc \
+    && chmod +x /usr/local/bin/mc
+
 
 # Dépendances Python (librairies uniquement)
 COPY requirements.txt /tmp/requirements.txt

@@ -1,7 +1,7 @@
 """Tempo and rhythm analysis."""
 
-import numpy as np
 import librosa
+import numpy as np
 
 
 def analyze_tempo(y: np.ndarray, sr: int) -> dict:

@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch
       objectReference: {fileID: 0}
+    - target: {fileID: 2225591538742030244, guid: f459cc124ebd6474fbfd7f6999d76296, type: 3}
+      propertyPath: m_TagString
+      value: obstacle
+      objectReference: {fileID: 0}
     - target: {fileID: 2239230550367121465, guid: f459cc124ebd6474fbfd7f6999d76296, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

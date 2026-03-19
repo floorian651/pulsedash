@@ -1,7 +1,7 @@
 """Spectral and harmonic structure analysis including key detection."""
 
-import numpy as np
 import librosa
+import numpy as np
 
 
 def analyze_key(y: np.ndarray, sr: int) -> dict:
