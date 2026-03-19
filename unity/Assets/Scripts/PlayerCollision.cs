@@ -2,40 +2,27 @@ using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour
 {
-    public EnergyBar energyBar;
+    [SerializeField] private Player player;
 
-    void Start()
+    void Awake()
     {
-        energyBar = FindAnyObjectByType<EnergyBar>();
+        player = GetComponent<Player>();
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision detectee avec " + collision.gameObject.name + ", de tag " + collision.gameObject.tag);
+        Debug.Log("Collions avec " + collision.gameObject.name + " de tag " + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("obstacle"))
         {
-            energyBar.Damage(10f);
-            Debug.Log("10 de degats");
+            if (player != null)
+            {
+                Debug.Log("Dommages pris");
+                player.TakeDamage(10f);
+            }
+            else
+            {
+                Debug.LogError("Player component not found on this GameObject!");
+            }
         }
     }
-
-    // void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     if (collision.gameObject.tag == "obstacle") { 
-    //         // If colliding with obstacle, execute this block
-    //         energyBar.Damage (10);
-    //         Debug.Log("10 de degats");
-    //     }
-    //     // if (!invul && collision.gameObject.tag == "obstacle") { 
-    //     //     // If colliding with obstacle, execute this block
-    //     //     energyBar.Damage (10);
-    //     //     invul = true; //player is invulnerable
-    //     //     StartCoroutine (InvulWait ());
-    //     // }
-    // }
-    // // private IEnumerator InvulWait() {
-    // // 	animator.SetTrigger ("Hit"); //play hit animation
-    // // 	yield return new WaitForSeconds (1); //invul time
-    // // 	invul = false;
-    // // }
 }

@@ -1,3 +1,4 @@
+using System.Security;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,27 +26,10 @@ public class EnergyBar : MonoBehaviour
         }
     }
 
-    public void Damage(float damage)
+    public void SetEnergy(float value)
     {
-        if (energySlider.value - damage > 0)
-        {
-            energySlider.value -= damage;
-        }
-        else
-        {
-            energySlider.value = 0;
-        }
-    }
+        if (energySlider == null) return;
 
-    public void Heal(float heal)
-    {
-        if (energySlider.value + heal < 100)
-        {
-            energySlider.value += heal;
-        }
-        else
-        {
-            energySlider.value = 100;
-        }
+        energySlider.value = value;
     }
 }
