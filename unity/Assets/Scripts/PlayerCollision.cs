@@ -18,6 +18,7 @@ public class PlayerCollision : MonoBehaviour
             {
                 Debug.Log("Dommages pris");
                 player.TakeDamage(1f);
+                Destroy(collision.gameObject);
             }
             else
             {
