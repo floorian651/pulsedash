@@ -101431,7 +101431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   energy: 100
-  energyBar: {fileID: 0}
+  energyBar: {fileID: 497494768}
 --- !u!1 &1403222096
 GameObject:
   m_ObjectHideFlags: 0
@@ -156149,10 +156149,10 @@ PrefabInstance:
       addedObject: {fileID: 1398016391}
     - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1398016395}
+      addedObject: {fileID: 1398016399}
     - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1398016399}
+      addedObject: {fileID: 1398016395}
   m_SourcePrefab: {fileID: 100100000, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
