@@ -11,12 +11,10 @@ public class PlayerCollision : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collions avec " + collision.gameObject.name + " de tag " + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("obstacle"))
         {
             if (player != null)
             {
-                Debug.Log("Dommages pris");
                 player.TakeDamage(1f);
                 Destroy(collision.gameObject);
             }
