@@ -45,7 +45,7 @@ public class GenerateurNiveau : MonoBehaviour
 
         // On génère le sol avant le niveau (de -10 à 0) pour éviter les problèmes de synchro au début du niveau+
         Vector3 pos = new Vector3(0, groundHeight, -15);
-        Vector3 scale = new Vector3(3, 1, 30+offsetZ*2);// On met l'offset *2 puisque ça aggrandit du milieu
+        Vector3 scale = new Vector3(6, 1, 30+offsetZ*2);// On met l'offset *2 puisque ça aggrandit du milieu
         GroundPrefab.transform.localScale = scale;
         
         GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
@@ -133,7 +133,7 @@ public class GenerateurNiveau : MonoBehaviour
     {
         // On génère le chunk à la position correspondante
         Vector3 pos = new Vector3(0, 0, offsetZ + nbChunksGeneres * chunkSize); // On oublie pas l'offset pour que les chunks commencent à être générés avant le début de la musique
-        Vector3 scale = new Vector3(3, 1, chunkSize);
+        Vector3 scale = new Vector3(6, 1, chunkSize);
         obstacle.transform.localScale = scale;
         
         GameObject newObstacle = Instantiate(obstacle, pos, Quaternion.identity);
