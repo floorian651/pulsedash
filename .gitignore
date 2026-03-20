@@ -246,3 +246,7 @@ resultat/
 unity/Packages/*
 !unity/Packages/manifest.json
 !unity/Packages/packages-lock.json
+
+# Unity ProjectSettings explicitly excluded from version control
+unity/ProjectSettings/PackageManagerSettings.asset
+unity/ProjectSettings/TimelineSettings.asset

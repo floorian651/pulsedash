@@ -7,7 +7,6 @@ using System.Collections.Generic;
 
 public class PopupManager : MonoBehaviour
 {
-    
     private static GameObject popupGO;
 
     public static void Show(string message)
@@ -202,7 +201,7 @@ public class PopupManager : MonoBehaviour
     }
 
 // Pop up avec le nom des playlist pour ajouter le clip trackName à l'une des playlists
-public static void ShowPlaylistPopup(string trackName)
+public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemPrefab)
 {
     // Détruire l'ancien popup
     if (popupGO != null)
@@ -294,7 +293,7 @@ public static void ShowPlaylistPopup(string trackName)
     scroll.content = contentRT;
 
     // Génération des boutons de playlists
-    PlaylistUI.AfficherBoutonPlaylist(null, contentRT, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(null, contentRT, playlistItemPrefab, playlistName =>
     {
         PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 

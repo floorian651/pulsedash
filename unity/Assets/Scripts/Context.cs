@@ -28,4 +28,13 @@ public class Context : MonoBehaviour
             messageText.text = message;
         }
     }
+
+    public string GetMessage()
+    {
+        if (messageText != null)
+        {
+            return messageText.text;
+        }
+        else return null;
+    }
 }

@@ -9,6 +9,7 @@ public class PlayerSubWaySurfer : MonoBehaviour
 
     Animator anim;
     Rigidbody rb;
+    AudioSource audioSource;
 
     bool isGrounded = true; 
 
@@ -17,6 +18,9 @@ public class PlayerSubWaySurfer : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+
+    
+        
     }
 
     void Update()

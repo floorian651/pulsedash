@@ -7,6 +7,8 @@ TagManager:
   - obstacle
   - sol
   - pulser
+  - Bonus
+  - AverageButton
   layers:
   - Default
   - TransparentFX
