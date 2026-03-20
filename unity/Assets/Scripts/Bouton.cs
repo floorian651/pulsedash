@@ -13,7 +13,7 @@ public static class Bouton
         // Image NECESSAIRE au Button, mais sans sprite
         Image img = buttonGO.AddComponent<Image>();
         
-        img.color = new Color(1f, 0.710f, 0.278f, 1f);  // accent or (palette 3)
+        img.color = new Color(0.78f, 0.80f, 0.82f, 1f);
 
         Button button = buttonGO.AddComponent<Button>();
         button.targetGraphic = img;

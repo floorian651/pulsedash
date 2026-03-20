@@ -94,7 +94,7 @@ public class MenuGenerator : MonoBehaviour
             Debug.Log("Audiosource chargé pour la prochaine scène");
             SessionData.Instance.audioSource = source;
         }
-        sceneloader.LoadSceneByName("Pulser_animated");
+        sceneloader.LoadSceneByName("Pulser_animated"); // Remplacer par GameplayScene 
     }); 
 
     }
