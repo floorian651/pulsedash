@@ -194,8 +194,8 @@ public static class UIBuilder
     LayoutElement navLE = navGO.AddComponent<LayoutElement>();
     navLE.preferredHeight = 40;
       
-    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "Avant", () => pm.OnPreviousPressed());
-    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "Après", () => pm.OnNextPressed());
+    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "<<", () => pm.OnPreviousPressed());
+    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, ">>", () => pm.OnNextPressed());
     
     }
     public static void ClearContainer(Transform container)
