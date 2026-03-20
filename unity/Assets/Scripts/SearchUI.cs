@@ -11,6 +11,8 @@ public class SearchUI
     // Zone pour afficher les résultats du menu déroulant 
     private Transform resultsContainer;
 
+    private GameObject playlistItemPrefab;
+
     public static SearchUI Create(Transform parent, Context context)
     {
         // Conteneur vertical 
@@ -28,9 +30,10 @@ public class SearchUI
         return ui;
     }
 
-    public void Init(List<AudioClip> clips)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab)
     {
         musiques = clips;
+        this.playlistItemPrefab = playlistItemPrefab;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
@@ -94,7 +97,9 @@ public class SearchUI
         // --- BOUTON “+” AJOUT À PLAYLIST ---
         Button addBtn = Bouton.CreateButton(btn.transform, "+",new UnityEngine.Vector2(80,70), () =>
         {
-            PopupManager.ShowPlaylistPopup(clip.name);
+
+            PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
+
         });
 
         RectTransform addRT = addBtn.GetComponent<RectTransform>();
