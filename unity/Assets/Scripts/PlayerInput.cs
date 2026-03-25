@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMovementE5 : MonoBehaviour
 {
-    Animator anim;
-
     Rigidbody rb;
     Animator anim;
 
