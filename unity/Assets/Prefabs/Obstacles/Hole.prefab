@@ -32,18 +32,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hole
       objectReference: {fileID: 0}
-    - target: {fileID: 5421893359464809365, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
-      propertyPath: m_TagString
-      value: obstacle
-      objectReference: {fileID: 0}
-    - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

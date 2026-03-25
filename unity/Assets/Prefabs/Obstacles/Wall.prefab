@@ -16,10 +16,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
-    - target: {fileID: 1661879771127950703, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
-      propertyPath: m_TagString
-      value: obstacle
-      objectReference: {fileID: 0}
     - target: {fileID: 2794976375391306934, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
