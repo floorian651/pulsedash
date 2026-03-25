@@ -46,7 +46,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_LocalPosition.x
+<<<<<<< HEAD:unity/Assets/Prefabs/Old/Obstacles/Hole.prefab
       value: 1.31232
+=======
+<<<<<<< HEAD
+      value: 0
+=======
+      value: 1.31232
+>>>>>>> afae48a181ae9225e9bb322e92af92d807ef4c3c
+>>>>>>> toMerge:unity/Assets/Prefabs/Obstacles/Hole.prefab
       objectReference: {fileID: 0}
     - target: {fileID: 8551709803122695135, guid: 2a9d74718e1ea044699a7ca37c276264, type: 3}
       propertyPath: m_LocalPosition.y

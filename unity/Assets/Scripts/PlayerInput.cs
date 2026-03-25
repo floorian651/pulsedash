@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerMovementE5 : MonoBehaviour
 {
-    Rigidbody rb;
     Animator anim;
+
+    Rigidbody rb;
 
     Vector3 jump;
     public float distanceEntreLigne = 2.0f;
