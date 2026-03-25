@@ -23,4 +23,28 @@ public class EnergyBar : MonoBehaviour
 
         energySlider.value = value;
     }
+
+    void Damage(float damage)
+    {
+        if (energySlider.value - damage > 0)
+        {
+            energySlider.value -= damage;
+        }
+        else
+        {
+            energySlider.value = 0;
+        }
+    }
+
+    void Heal(float heal)
+    {
+        if (energySlider.value + heal < 100)
+        {
+            energySlider.value += heal;
+        }
+        else
+        {
+            energySlider.value = 100;
+        }
+    }
 }

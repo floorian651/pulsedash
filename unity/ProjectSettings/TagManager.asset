@@ -9,6 +9,7 @@ TagManager:
   - pulser
   - Bonus
   - Hole
+  - AverageButton
   layers:
   - Default
   - TransparentFX
