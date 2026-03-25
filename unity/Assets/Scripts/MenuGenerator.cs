@@ -30,10 +30,12 @@ public class MenuGenerator : MonoBehaviour
             Context = gameObject.AddComponent<Context>();
         }
 
-        StartCoroutine(InitMenu());
+        //StartCoroutine(InitMenu());
+        InitMenu();
     }
 
-    IEnumerator InitMenu()
+    //IEnumerator 
+    void InitMenu()
 {       
     Debug.Log("Créer le panel");
 
@@ -101,8 +103,8 @@ public class MenuGenerator : MonoBehaviour
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
     // Charger tous les fichiers mp3 déjà dans le cache
-    yield return StartCoroutine(audioCache.LoadAllCachedMusic());
-
+    //yield return StartCoroutine(audioCache.LoadAllCachedMusic());
+    audioCache.LoadAllMusicTestUtilisateur();
     
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
 
