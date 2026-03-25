@@ -615,7 +615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateurNiveau
   player: {fileID: 1398016379}
-  analyse_rythme: seven
+  analyse_rythme: 
   GroundPrefab: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
   obstacleLevel4: {fileID: 0}
   obstacleLevel3: {fileID: 4322738609258709913, guid: 30adcfd473cf5b24ba7ceb320c7d975c, type: 3}

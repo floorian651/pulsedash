@@ -94,8 +94,11 @@ public class MenuGenerator : MonoBehaviour
         if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
-            SessionData.Instance.audioSource = source;
+            //SessionData.Instance.audioSource = source;
+            SessionData.Instance.titre = source.clip.name;
+            Debug.Log(SessionData.Instance.titre);
         }
+
         sceneloader.LoadSceneByName("GameplayScene"); // Remplacer par GameplayScene 
     }); 
 

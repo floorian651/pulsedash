@@ -26,11 +26,10 @@ public class GenerateurNiveau : MonoBehaviour
     void Start(){
         GenerateLevel();
     }
-
     public void GenerateLevel()
     {   
         // On récupére le titre de la musique
-        analyse_rythme = SessionData.Instance.audioSource.clip.name;
+        analyse_rythme = SessionData.Instance.titre;
         Debug.Log(analyse_rythme);
 
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles

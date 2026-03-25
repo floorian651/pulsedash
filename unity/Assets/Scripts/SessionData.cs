@@ -5,7 +5,8 @@ public class SessionData : MonoBehaviour
     public static SessionData Instance;
     public int score;
     public string playerName;
-    public AudioSource audioSource;
+    //public AudioSource audioSource;
+    public string titre;
 
 
     void Awake()

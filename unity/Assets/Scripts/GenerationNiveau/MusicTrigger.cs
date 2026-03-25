@@ -17,9 +17,12 @@ public class Trigger : MonoBehaviour
 
             // 2. On calcule l'heure exacte à laquelle la musique DOIT démarrer
             double heureDepartMusique = heureActuelle + delaiAvantMusique;
-
+            // Récupérer l'audio source 
+            
             // 3. On donne l'ordre à l'AudioSource de se lancer pile à cette heure-là
+            musicSource.clip = Resources.Load<AudioClip>("Musique/" + SessionData.Instance.titre);
             musicSource.PlayScheduled(heureDepartMusique);
+
         }
     }
 }
