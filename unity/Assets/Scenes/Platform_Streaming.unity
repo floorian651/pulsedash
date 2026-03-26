@@ -214,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SessionData
   score: 0
   playerName: 
-  audioSource: {fileID: 0}
+  titre: 
 --- !u!1 &572241376
 GameObject:
   m_ObjectHideFlags: 0

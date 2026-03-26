@@ -31,8 +31,8 @@ public class GenerateurNiveau : MonoBehaviour
     public void GenerateLevel()
     {   
         // On récupére le titre de la musique
-        analyse_rythme = SessionData.Instance.titre;
-        //analyse_rythme="seven";
+        //analyse_rythme = SessionData.Instance.titre;
+        analyse_rythme="seven";
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
@@ -142,10 +142,11 @@ public class GenerateurNiveau : MonoBehaviour
     {
         // On génère le chunk à la position correspondante
         Vector3 pos = new Vector3(0, 0, offsetZ + nbChunksGeneres * chunkSize); // On oublie pas l'offset pour que les chunks commencent à être générés avant le début de la musique
-        Vector3 scale = new Vector3(6, 1, chunkSize);
-        obstacle.transform.localScale = scale;
+        //Vector3 scale = new Vector3(6, 1, chunkSize);
         
-        GameObject newObstacle = Instantiate(obstacle, pos, Quaternion.identity);
+        
+        GameObject newObstacle = Instantiate(obstacle, pos, obstacle.transform.rotation);
+        //newObstacle.transform.localScale = scale;
         newObstacle.transform.parent = this.transform;
     }
 
