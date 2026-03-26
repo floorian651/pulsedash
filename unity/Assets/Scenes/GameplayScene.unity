@@ -556,71 +556,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765909160}
   m_CullTransparentMesh: 1
---- !u!1 &766714383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 766714385}
-  - component: {fileID: 766714384}
-  - component: {fileID: 766714386}
-  m_Layer: 0
-  m_Name: GenerateurNiveau
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &766714384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766714383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6f8ff05850eabb9946ed51e61c7264, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
-  decreaseSpeed: 5
---- !u!4 &766714385
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766714383}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.44358, y: -0, z: -2.63746}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &766714386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766714383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df8e47be1a59e589ba73885720c00b30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GenerateurNiveau
-  player: {fileID: 1398016379}
-  analyse_rythme: 
-  GroundPrefab: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
-  obstacleLevel4: {fileID: 0}
-  obstacleLevel3: {fileID: 4322738609258709913, guid: 30adcfd473cf5b24ba7ceb320c7d975c, type: 3}
-  obstacleLevel2: {fileID: 1661879771127950703, guid: e6dcb442fa6ea8446aa21482fde6e0bb, type: 3}
-  obstacleLevel1: {fileID: 0}
 --- !u!1 &838685293
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,13 +604,79 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 920847659}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6601e82ace126170f8baccb3f0fe80b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Trigger
   musicSource: {fileID: 1398016395}
   delaiAvantMusique: 2
+  titre_musique: 
+--- !u!1 &947896520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 947896523}
+  - component: {fileID: 947896522}
+  - component: {fileID: 947896521}
+  m_Layer: 0
+  m_Name: GenerateurNiveau
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &947896521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947896520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a6f8ff05850eabb9946ed51e61c7264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
+  decreaseSpeed: 5
+--- !u!114 &947896522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947896520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df8e47be1a59e589ba73885720c00b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GenerateurNiveau
+  player: {fileID: 1398016379}
+  analyse_rythme: 
+  GroundPrefab: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
+  obstacleLevel4: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
+  obstacleLevel3: {fileID: 7003486705781667282, guid: fa19130731d49bae3b6f3b3d735a5b15, type: 3}
+  obstacleLevel2: {fileID: 4322738609258709913, guid: 30adcfd473cf5b24ba7ceb320c7d975c, type: 3}
+  obstacleLevel1: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
+--- !u!4 &947896523
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947896520}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.3978, y: -0, z: 34.73474}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1087668790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1033,10 @@ PrefabInstance:
       propertyPath: musicSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3476322314233737825, guid: a9d02c9b7dff894b2b31e5c87619c53f, type: 3}
+      propertyPath: titre_musique
+      value: Musique/seven
+      objectReference: {fileID: 0}
     - target: {fileID: 9051059924201914562, guid: a9d02c9b7dff894b2b31e5c87619c53f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1262,6 +1267,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dragon
       objectReference: {fileID: 0}
+    - target: {fileID: 2957461585505374123, guid: 7f15e42cbae20771aade60a910063fc0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5357579991628514076, guid: 7f15e42cbae20771aade60a910063fc0, type: 3}
       propertyPath: player
       value: 
@@ -1310,6 +1319,10 @@ PrefabInstance:
     - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Name
       value: Bonhomme_bleu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8061004958103817704, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_LocalScale.x
@@ -1389,4 +1402,4 @@ SceneRoots:
   - {fileID: 2749849834861903858}
   - {fileID: 622499925}
   - {fileID: 759173190}
-  - {fileID: 766714385}
+  - {fileID: 947896523}

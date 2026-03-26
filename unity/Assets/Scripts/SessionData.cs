@@ -11,9 +11,11 @@ public class SessionData : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("Session Data");
         if (Instance == null)
         {
             Instance = this;
+            
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject); // Pour éviter les doublons de SessionData

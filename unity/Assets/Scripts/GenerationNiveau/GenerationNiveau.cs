@@ -21,17 +21,18 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     private float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
 
-    //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
-    
+   
     void Start(){
+        Debug.Log("Générer le niveau");
         GenerateLevel();
     }
+    //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+    
     public void GenerateLevel()
     {   
         // On récupére le titre de la musique
         analyse_rythme = SessionData.Instance.titre;
-        Debug.Log(analyse_rythme);
-
+        //analyse_rythme="seven";
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
