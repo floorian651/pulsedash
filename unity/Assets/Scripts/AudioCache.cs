@@ -61,7 +61,6 @@ public class AudioCache : MonoBehaviour
     public IEnumerator LoadAllCachedMusic()
 {
     clips.Clear();
-
     //Chemin jusqu'au cache
     string path = Application.persistentDataPath;
 
@@ -92,6 +91,20 @@ public class AudioCache : MonoBehaviour
     }
 
     Debug.Log("Nombre de musiques chargées : " + clips.Count);
-}
+}   
+    public void LoadAllMusicTestUtilisateur(){
+
+        clips.Clear();
+
+        clips = new List<AudioClip>(Resources.LoadAll<AudioClip>("Musique"));
+
+
+        foreach (AudioClip clip in clips)
+        {
+            Debug.Log("Titre : " + clip.name);
+        }
+
+        Debug.Log("Nombre de musiques chargées : " + clips.Count);
+        }
 
 }
