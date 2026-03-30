@@ -52,13 +52,17 @@ public class GenerateurNiveau : MonoBehaviour
         // On nettoie le niveau avant de générer les nouveaux éléments
         ClearLevel();
 
-        // On génère le sol avant le niveau (de -10 à 0) pour éviter les problèmes de synchro au début du niveau+
-        Vector3 pos = new Vector3(0, groundHeight, -15);
-        Vector3 scale = new Vector3(6, 1, 30+offsetZ*2);// On met l'offset *2 puisque ça aggrandit du milieu
-        GroundPrefab.transform.localScale = scale;
-        
-        GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-        newGround.transform.parent = this.transform;
+        // Générer le sol avant de -10 à 0 en amont du niveau 
+
+
+        for (float z = -20; z <= 0; z += 2)
+        {
+            Vector3 pos = new Vector3(0, groundHeight, z);
+            GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
+            // Parent
+            newGround.transform.parent = this.transform;
+        }
+
 
         loadChunks();
     }
