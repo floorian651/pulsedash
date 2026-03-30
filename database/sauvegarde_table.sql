@@ -53,6 +53,14 @@ CREATE TABLE public.track (
 );
 
 
+-- DROP TYPE public.jobstate;
+
+CREATE TYPE public.jobstate AS ENUM (
+	'PENDING',
+	'RUNNING',
+	'COMPLETED',
+	'FAILED');
+
 -- public.jobs definition
 
 -- Drop table
@@ -61,6 +69,11 @@ CREATE TABLE public.track (
 
 CREATE TABLE public.jobs (
 	id varchar NOT NULL,
-	CONSTRAINT jobs_pk PRIMARY KEY (id),
-	CONSTRAINT jobs_user_fk FOREIGN KEY (id) REFERENCES public."user"(id)
+	user_id varchar NULL,
+	state public.jobstate NULL,
+	progress int4 NULL,
+	result_path varchar NULL,
+	created_at timestamp NULL,
+	updated_at timestamp NULL,
+	CONSTRAINT jobs_pkey PRIMARY KEY (id)
 );
