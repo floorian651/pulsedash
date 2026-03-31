@@ -55,7 +55,7 @@ public class GenerateurNiveau : MonoBehaviour
         // Générer le sol avant de -10 à 0 en amont du niveau 
 
 
-        for (float z = -20; z <= 0; z += 2)
+        for (float z = -20; z <= 10; z += 2)
         {
             Vector3 pos = new Vector3(0, groundHeight, z);
             GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
