@@ -661,7 +661,7 @@ MonoBehaviour:
   obstacleLevel4: {fileID: 252796484719994248, guid: 9e4cad94dec08004fa842796e9333029, type: 3}
   obstacleLevel3: {fileID: 919132149155446097, guid: e32b2884a9167c34f9b3849c2362a3a4, type: 3}
   obstacleLevel2: {fileID: 472200450612906202, guid: 09970fd73b052db48b94196c5f0f0276, type: 3}
-  obstacleLevel1: {fileID: 9114220666481197795, guid: ec1fec026f657f04b84c6391e5bb1357, type: 3}
+  obstacleLevel1: {fileID: 6918638160909109020, guid: d09738770bc11ec4e9cc798f1c8f8a3c, type: 3}
 --- !u!4 &947896523
 Transform:
   m_ObjectHideFlags: 0
