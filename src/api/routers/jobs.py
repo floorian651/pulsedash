@@ -25,7 +25,7 @@ async def get_job_status(job_id: str, db: Session = Depends(get_session)):
 
     # 3. Si le job est terminé, on génère une URL de téléchargement MinIO
     if job.state == "completed" and job.result_path:
-        storage = StorageService(bucket_type="audio")  # Ou "levels" selon ton choix
+        storage = StorageService(bucket_type="levels")
         response["result_url"] = storage.get_download_url(job.result_path)
 
     return response

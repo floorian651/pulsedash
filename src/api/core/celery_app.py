@@ -20,7 +20,7 @@ def _build_broker_url() -> str:
 
 
 broker_url = _build_broker_url()
-result_backend = broker_url  # Utilise directement broker_url
+result_backend = broker_url
 
 app = Celery("wavr", broker=broker_url, backend=result_backend)
 app.conf.update(

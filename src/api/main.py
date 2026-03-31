@@ -21,7 +21,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.core.config import get_settings
 from src.api.db.session import init_engine
-from src.api.routers import generate, jobs
+from src.api.routers import generate, jobs, music
+from src.api.services.storage import ensure_buckets_exist
 from src.api.utils.websocket_manager import WebSocketManager
 
 settings = get_settings()
@@ -48,6 +49,11 @@ def create_app() -> FastAPI:
     init_engine(settings.DATABASE_URL)
 
     # ---------------------------------------------------------
+    # MinIO setup
+    # ---------------------------------------------------------
+    ensure_buckets_exist()
+
+    # ---------------------------------------------------------
     # Routers
     # ---------------------------------------------------------
     app.include_router(
@@ -55,6 +61,8 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(jobs.router, prefix=settings.API_V1_PREFIX, tags=["jobs"])
+
+    app.include_router(music.router, prefix=settings.API_V1_PREFIX, tags=["music"])
 
     # ---------------------------------------------------------
     # Healthcheck

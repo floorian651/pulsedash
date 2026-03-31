@@ -37,8 +37,8 @@ class Settings(BaseSettings):
     MINIO_SECRET_KEY: str
     MINIO_SECURE: bool = False
 
-    MINIO_AUDIO_BUCKET: str = "audio"
-    MINIO_LEVEL_BUCKET: str = "levels"
+    MINIO_BUCKET_MUSIC: str = "music"
+    MINIO_BUCKET_LEVELS: str = "levels"
 
     # ---------------------------------------------------------
     # Redis / Celery
