@@ -20,6 +20,10 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     private float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
+    private float seuilLevel0;
+    private float seuilLevel1;
+    private float seuilLevel2;
+    private float seuilLevel3;
 
    
     void Start(){
@@ -63,6 +67,8 @@ public class GenerateurNiveau : MonoBehaviour
             newGround.transform.parent = this.transform;
         }
 
+        // Mettre à jour la valeur des seuils des puissances
+        majSeuilPuissance();
 
         loadChunks();
     }
@@ -125,11 +131,21 @@ public class GenerateurNiveau : MonoBehaviour
                     puissanceMax = beat.puissance;
             }
 
-            if(puissanceMax < 2.5f)
+            if(puissanceMax < seuilLevel0)
             {
                 generateChunk(GroundPrefab);
             }
-            else if(puissanceMax < 7f)
+            else if(puissanceMax < seuilLevel1)
+            {
+                generateChunk(obstacleLevel1);
+                chunksDepuisDernierObstacle = 0;
+            }
+            else if(puissanceMax < seuilLevel2)
+            {
+                generateChunk(obstacleLevel2);
+                chunksDepuisDernierObstacle = 0;
+            }
+            else if(puissanceMax < seuilLevel3)
             {
                 generateChunk(obstacleLevel3);
                 chunksDepuisDernierObstacle = 0;
@@ -152,6 +168,15 @@ public class GenerateurNiveau : MonoBehaviour
         GameObject newObstacle = Instantiate(obstacle, pos, obstacle.transform.rotation);
         //newObstacle.transform.localScale = scale;
         newObstacle.transform.parent = this.transform;
+    }
+
+    private void majSeuilPuissance(){
+        float puissanceMaxGlobal = data.getPuissanceMaxGlobale();
+
+        seuilLevel0 = puissanceMaxGlobal *0.25f;
+        seuilLevel1 = puissanceMaxGlobal *0.5f;
+        seuilLevel2 = puissanceMaxGlobal *0.75f;
+        seuilLevel3 = puissanceMaxGlobal *0.90f;
     }
 
 
