@@ -30,10 +30,12 @@ public class MenuGenerator : MonoBehaviour
             Context = gameObject.AddComponent<Context>();
         }
 
-        StartCoroutine(InitMenu());
+        //StartCoroutine(InitMenu());
+        InitMenu();
     }
 
-    IEnumerator InitMenu()
+    //IEnumerator 
+    void InitMenu()
 {       
     Debug.Log("Créer le panel");
 
@@ -92,17 +94,20 @@ public class MenuGenerator : MonoBehaviour
         if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
-            SessionData.Instance.audioSource = source;
+            //SessionData.Instance.audioSource = source;
+            SessionData.Instance.titre = source.clip.name;
+            Debug.Log(SessionData.Instance.titre);
         }
-        sceneloader.LoadSceneByName("GameplayScene"); // Remplacer par GameplayScene 
+
+        sceneloader.LoadSceneByName("GameplaySceneLocal"); // Remplacer par GameplayScene 
     }); 
 
     }
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
     // Charger tous les fichiers mp3 déjà dans le cache
-    yield return StartCoroutine(audioCache.LoadAllCachedMusic());
-
+    //yield return StartCoroutine(audioCache.LoadAllCachedMusic());
+    audioCache.LoadAllMusicTestUtilisateur();
     
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
 

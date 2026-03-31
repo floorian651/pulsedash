@@ -6,6 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
+    public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
     private float offsetZ; // Distance avant le début de la musique pour commencer à générer les chunk (parce que délai avant début musique)
     private MusicData data; // Contiendra les données du fichier JSON
@@ -20,17 +21,25 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     private float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
 
-    [ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+   
+    void Start(){
+        Debug.Log("Générer le niveau");
+        GenerateLevel();
+    }
+    //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+    
     public void GenerateLevel()
-    {
+    {   
+        // On récupére le titre de la musique
+        analyse_rythme = SessionData.Instance.titre;
+        //analyse_rythme="seven";
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
         offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
 
         // On récupère les données du fichier JSON
-
-        TextAsset jsonFile = Resources.Load<TextAsset>("analyse_rythme");
+        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
             Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
             return;
