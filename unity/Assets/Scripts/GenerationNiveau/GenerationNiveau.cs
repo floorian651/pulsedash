@@ -161,9 +161,9 @@ public class GenerateurNiveau : MonoBehaviour
     private void generateChunk(GameObject obstacle)
     {
         // On génère le chunk à la position correspondante
-        Vector3 pos = new Vector3(0, 0, offsetZ + nbChunksGeneres * chunkSize); // On oublie pas l'offset pour que les chunks commencent à être générés avant le début de la musique
-        //Vector3 scale = new Vector3(6, 1, chunkSize);
-        
+        float y = obstacle.transform.position.y;
+        Vector3 pos = new Vector3(0, y, offsetZ + nbChunksGeneres * chunkSize);
+       
         
         GameObject newObstacle = Instantiate(obstacle, pos, obstacle.transform.rotation);
         //newObstacle.transform.localScale = scale;
