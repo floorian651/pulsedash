@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 986899751133040668}
   m_Layer: 0
   m_Name: Wall_Modular
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 5811187828946444701}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1344.0226, y: -0, z: 2774.0898}
+  m_LocalPosition: {x: -315.0388, y: 0, z: -8.28447}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
