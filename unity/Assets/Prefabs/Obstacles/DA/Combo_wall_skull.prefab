@@ -155,7 +155,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6258478908223222652}
-  m_Material: {fileID: 13400000, guid: a0797e8096ebf52acacefa46a2364317, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 6156232827734953178}
   - component: {fileID: 7115844325823644543}
   - component: {fileID: 4982241225775151029}
-  - component: {fileID: 2881659745485817306}
+  - component: {fileID: 1440077392654574767}
   m_Layer: 0
   m_Name: Skull
   m_TagString: obstacle
@@ -260,14 +260,14 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2881659745485817306
+--- !u!65 &1440077392654574767
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6783693789447706208}
-  m_Material: {fileID: 13400000, guid: a0797e8096ebf52acacefa46a2364317, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
