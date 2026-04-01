@@ -20,6 +20,10 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
     public GameObject obstacleLevel1; // Préfab pour obstacle très facile    
     private float groundHeight = 0.0f; // Indique la coordonnée y du sol (actuellement)
+    private float seuilLevel0;
+    private float seuilLevel1;
+    private float seuilLevel2;
+    private float seuilLevel3;
 
    
     void Start(){
@@ -32,7 +36,6 @@ public class GenerateurNiveau : MonoBehaviour
     {   
         // On récupére le titre de la musique
         analyse_rythme = SessionData.Instance.titre;
-        //analyse_rythme="seven";
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
@@ -52,13 +55,19 @@ public class GenerateurNiveau : MonoBehaviour
         // On nettoie le niveau avant de générer les nouveaux éléments
         ClearLevel();
 
-        // On génère le sol avant le niveau (de -10 à 0) pour éviter les problèmes de synchro au début du niveau+
-        Vector3 pos = new Vector3(0, groundHeight, -15);
-        Vector3 scale = new Vector3(6, 1, 30+offsetZ*2);// On met l'offset *2 puisque ça aggrandit du milieu
-        GroundPrefab.transform.localScale = scale;
-        
-        GameObject newGround = Instantiate(GroundPrefab, pos, Quaternion.identity);
-        newGround.transform.parent = this.transform;
+        // Générer le sol avant de -10 à 0 en amont du niveau 
+
+
+        for (float z = -20; z <= 10; z += 2)
+        {
+            Vector3 pos = new Vector3(0, groundHeight, z);
+            GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
+            // Parent
+            newGround.transform.parent = this.transform;
+        }
+
+        // Mettre à jour la valeur des seuils des puissances
+        majSeuilPuissance();
 
         loadChunks();
     }
@@ -72,21 +81,6 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
-    /** Permet à partir d'un beat de décider quel action le joueur doit faire
-    * Et donc de générer l'obstacle correspondant, à la bonne position
-     */
-    // private void decideChunk(Beat beat)
-    // {
-    //     GameObject obstacle;
-
-    //     if(beat.puissance < 2.5f)
-    //     {
-    //         obstacle = Instantiate(GroundPrefab, position, Quaternion.identity);
-    //     }
-
-
-    //     obstacle.transform.parent = this.transform;
-    // }
 
     private void loadChunks()
     {
@@ -121,11 +115,21 @@ public class GenerateurNiveau : MonoBehaviour
                     puissanceMax = beat.puissance;
             }
 
-            if(puissanceMax < 2.5f)
+            if(puissanceMax < seuilLevel0)
             {
                 generateChunk(GroundPrefab);
             }
-            else if(puissanceMax < 7f)
+            else if(puissanceMax < seuilLevel1)
+            {
+                generateChunk(obstacleLevel1);
+                chunksDepuisDernierObstacle = 0;
+            }
+            else if(puissanceMax < seuilLevel2)
+            {
+                generateChunk(obstacleLevel2);
+                chunksDepuisDernierObstacle = 0;
+            }
+            else if(puissanceMax < seuilLevel3)
             {
                 generateChunk(obstacleLevel3);
                 chunksDepuisDernierObstacle = 0;
@@ -141,12 +145,22 @@ public class GenerateurNiveau : MonoBehaviour
     private void generateChunk(GameObject obstacle)
     {
         // On génère le chunk à la position correspondante
-        Vector3 pos = new Vector3(0, 0, offsetZ + nbChunksGeneres * chunkSize); // On oublie pas l'offset pour que les chunks commencent à être générés avant le début de la musique
-        Vector3 scale = new Vector3(6, 1, chunkSize);
-        obstacle.transform.localScale = scale;
+        float y = obstacle.transform.position.y;
+        Vector3 pos = new Vector3(0, y, offsetZ + nbChunksGeneres * chunkSize);
+       
         
-        GameObject newObstacle = Instantiate(obstacle, pos, Quaternion.identity);
+        GameObject newObstacle = Instantiate(obstacle, pos, obstacle.transform.rotation);
+        //newObstacle.transform.localScale = scale;
         newObstacle.transform.parent = this.transform;
+    }
+
+    private void majSeuilPuissance(){
+        float puissanceMaxGlobal = data.getPuissanceMaxGlobale();
+
+        seuilLevel0 = puissanceMaxGlobal *0.25f;
+        seuilLevel1 = puissanceMaxGlobal *0.5f;
+        seuilLevel2 = puissanceMaxGlobal *0.75f;
+        seuilLevel3 = puissanceMaxGlobal *0.90f;
     }
 
 

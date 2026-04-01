@@ -33,4 +33,14 @@ public class MusicData
         }
         return beatsInInterval;
     }
+
+    public float getPuissanceMaxGlobale(){
+        float puissanceMaxGlobale=0;
+        for (int i=0; i <beats.Length; i++){
+            if (puissanceMaxGlobale<beats[i].puissance){
+                puissanceMaxGlobale = beats[i].puissance;
+            }
+        }
+        return puissanceMaxGlobale;
+    }
 }
