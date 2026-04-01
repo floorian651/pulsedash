@@ -44,7 +44,7 @@ public static class PlaylistUI
             PopupManager.Show("Playlist créée : " + playlistName);
         });
     }
-    public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, GameObject playlistItemPrefab, Action<string> onClick)
+    public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, GameObject playlistItemPrefab, Action<string> onClick, bool showActions = true)
 {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
@@ -68,6 +68,17 @@ public static class PlaylistUI
     if (label != null)
     {
         label.text = playlist.name;
+        RectTransform labelRT = label.GetComponent<RectTransform>();
+        if (labelRT != null && showActions)
+        {
+            // Laisser de la place pour le bouton "..."
+            labelRT.offsetMax = new Vector2(-64, labelRT.offsetMax.y);
+        }
+    }
+    Transform chevron = boutonGO.transform.Find("ChevronButton");
+    if (chevron != null)
+    {
+        chevron.gameObject.SetActive(false);
     }
 
     btn.onClick.AddListener(() =>
@@ -84,19 +95,68 @@ public static class PlaylistUI
     //Récupérer la liste de toutes les musiques de la playlist sélectionnée
     List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
     
-    Button lancerPlaylistBtn = boutonGO.transform.Find("ChevronButton")?.GetComponent<Button>();
-
-
-    // Action du bouton secondaire
-    if (lancerPlaylistBtn != null)
+    if (!showActions)
     {
-        lancerPlaylistBtn.onClick.AddListener(() =>
-        {
-            Debug.Log("Lancer la playlist: " + playlist.name);
-            Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
-            pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
-        });
+        continue;
     }
+
+    // --- BOUTON "..." (ACTIONS PLAYLIST) ---
+    GameObject moreBtnGO = new GameObject("MoreButton");
+    moreBtnGO.transform.SetParent(boutonGO.transform, false);
+
+    Image moreImg = moreBtnGO.AddComponent<Image>();
+    moreImg.color = new Color32(0x4D, 0x88, 0xFF, 0xFF);
+
+    Button moreBtn = moreBtnGO.AddComponent<Button>();
+
+    RectTransform moreRT = moreBtnGO.GetComponent<RectTransform>();
+    moreRT.anchorMin = new Vector2(1, 0.5f);
+    moreRT.anchorMax = new Vector2(1, 0.5f);
+    moreRT.pivot = new Vector2(1, 0.5f);
+    moreRT.sizeDelta = new Vector2(36, 24);
+    moreRT.anchoredPosition = new Vector2(-12, 0);
+
+    GameObject moreTextGO = new GameObject("Text");
+    moreTextGO.transform.SetParent(moreBtnGO.transform, false);
+    TextMeshProUGUI moreTxt = moreTextGO.AddComponent<TextMeshProUGUI>();
+    moreTxt.text = "...";
+    moreTxt.fontSize = 16;
+    moreTxt.color = Color.white;
+    moreTxt.alignment = TextAlignmentOptions.Center;
+    moreTxt.font = LoadMontserratFont();
+
+    RectTransform moreTxtRT = moreTextGO.GetComponent<RectTransform>();
+    moreTxtRT.anchorMin = Vector2.zero;
+    moreTxtRT.anchorMax = Vector2.one;
+    moreTxtRT.offsetMin = Vector2.zero;
+    moreTxtRT.offsetMax = Vector2.zero;
+
+    moreBtn.onClick.AddListener(() =>
+    {
+        PopupManager.ShowPlaylistActionsPopup(
+            playlist.name,
+            () =>
+            {
+                Debug.Log("Lancer la playlist: " + playlist.name);
+                Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
+                pm.LancerPlaylist(track, clips, TracktoutesLesMusiques);
+            },
+            () =>
+            {
+                bool removed = pm.RemovePlaylist(playlist.name);
+                if (removed)
+                {
+                    PopupManager.Show("Playlist supprimée : " + playlist.name);
+                }
+                else
+                {
+                    PopupManager.Show("Playlist introuvable");
+                }
+
+                AfficherBoutonPlaylist(clips, resultsContainer, playlistItemPrefab, onClick);
+            }
+        );
+    });
 }}}
 
     public static void AfficherMusiquesParPlaylist(List<AudioClip> clips, string nomplaylist, Transform resultsContainer)

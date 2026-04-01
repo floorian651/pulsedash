@@ -96,6 +96,20 @@ public class PlaylistManager : MonoBehaviour
         }
     }}
 
+    // Supprimer une playlist entière
+    public bool RemovePlaylist(string playlistName)
+    {
+        Playlist p = playlists.Find(x => x.name == playlistName);
+        if (p == null)
+        {
+            return false;
+        }
+
+        playlists.Remove(p);
+        SavePlaylists();
+        return true;
+    }
+
     // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
     {
