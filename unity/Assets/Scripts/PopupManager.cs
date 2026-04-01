@@ -36,8 +36,8 @@ public class PopupManager : MonoBehaviour
         txt.fontSize = 20;
         txt.color = Color.white;
         txt.alignment = TextAlignmentOptions.Center;
-        txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
-        txt.overflowMode = TextOverflowModes.Ellipsis; 
+        //txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
+        //txt.overflowMode = TextOverflowModes.Ellipsis; 
 
         Object.Destroy(popupGO, 1.5f);
     }

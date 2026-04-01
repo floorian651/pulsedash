@@ -90,12 +90,18 @@ public class MenuGenerator : MonoBehaviour
         {
             launchGameImg.color = new Color32(0xAA, 0x99, 0xFF, 0xFF);
         }
-        launchGameBtn.onClick.AddListener(() =>
+    launchGameBtn.onClick.AddListener(() =>
 {
+        if (!Context.TryGetAudioSource(out AudioSource source) || source.clip == null)
+        {
+            PopupManager.Show("Aucune musique sélectionnée");
+            return;
+        }
 
-        if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
+        if(SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
+            PopupManager.Show("Le jeu va commencer!");
             //SessionData.Instance.audioSource = source;
             SessionData.Instance.titre = source.clip.name;
             Debug.Log(SessionData.Instance.titre);
