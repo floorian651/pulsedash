@@ -71,7 +71,6 @@ public static class PlaylistUI
         RectTransform labelRT = label.GetComponent<RectTransform>();
         if (labelRT != null && showActions)
         {
-            // Laisser de la place pour le bouton "..."
             labelRT.offsetMax = new Vector2(-64, labelRT.offsetMax.y);
         }
     }

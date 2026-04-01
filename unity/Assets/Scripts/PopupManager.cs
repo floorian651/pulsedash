@@ -304,7 +304,7 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
             popupGO = null;
             Show("Ajouté à : " + playlistName);
         }
-    });
+    },false);
 }
 
 // Pop up d'actions pour une playlist (lancer / supprimer)
