@@ -232,6 +232,7 @@ public class PlaylistManager : MonoBehaviour
 
         // Attribuer le clip trouvé à l'audio source
         source.clip = clip;
+        Context.SetSliderVisible(true);
 
         if (aJouer)
         {
@@ -257,6 +258,7 @@ public class PlaylistManager : MonoBehaviour
 
     source.clip = nextClip;
     source.Play();
+    Context.SetSliderVisible(true);
 }
 
 

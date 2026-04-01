@@ -51,9 +51,11 @@ public class MenuGenerator : MonoBehaviour
     TextMeshProUGUI messageText = UIBuilder.CreerTexte(centerContainer);
     Context.Initialize(audioSource, messageText);
 
-    // Créer un curseur pour la musique 
-    SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
-
+     // Créer un curseur pour la musique (caché au départ)
+    SliderMusique sliderMusique = SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
+    Context.SetSliderMusique(sliderMusique);
+    sliderMusique.gameObject.SetActive(false);
+    
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
 
     //Bouton.CreateMusicButton(centerContainer); 

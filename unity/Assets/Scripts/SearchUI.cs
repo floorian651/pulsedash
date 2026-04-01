@@ -66,6 +66,11 @@ public class SearchUI
             {
                 source.clip = clip;
             }
+
+            if (Context != null)
+            {
+                Context.SetSliderVisible(true);
+            }
             
             PopupManager.Show("Musique sélectionnée : " + clip.name);
 
