@@ -72,6 +72,8 @@ public class MenuGenerator : MonoBehaviour
     }
     MusicButton mb = playPauseGO.GetComponent<MusicButton>();
     if (mb == null) { mb = playPauseGO.AddComponent<MusicButton>(); }
+    Context.SetPlayPauseButton(playPauseGO);
+    playPauseGO.SetActive(false);
 
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
 

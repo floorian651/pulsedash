@@ -35,6 +35,12 @@ public class MusicButton : MonoBehaviour
         {
             texteBouton.text = "Jouer";
         }
+
+        // Cacher le bouton à la fin de la musique (pas en pause)
+        if (source.clip != null && !source.isPlaying && source.time >= source.clip.length - 0.01f)
+        {
+            Context.SetPlayPauseVisible(false);
+        }
     }
 
     void ToggleMusic()

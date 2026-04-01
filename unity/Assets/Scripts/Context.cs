@@ -6,10 +6,12 @@ public class Context : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private SliderMusique sliderMusique;
+    [SerializeField] private GameObject playPauseButton;
 
     public AudioSource AudioSource => audioSource;
     public TextMeshProUGUI MessageText => messageText;
     public SliderMusique SliderMusique => sliderMusique;
+    public GameObject PlayPauseButton => playPauseButton;
 
     public void Initialize(AudioSource source, TextMeshProUGUI text)
     {
@@ -22,6 +24,11 @@ public class Context : MonoBehaviour
         sliderMusique = slider;
     }
 
+    public void SetPlayPauseButton(GameObject button)
+    {
+        playPauseButton = button;
+    }
+
     public bool TryGetAudioSource(out AudioSource source)
     {
         source = audioSource;
@@ -32,6 +39,12 @@ public class Context : MonoBehaviour
     {
         slider = sliderMusique;
         return slider != null;
+    }
+
+    public bool TryGetPlayPauseButton(out GameObject button)
+    {
+        button = playPauseButton;
+        return button != null;
     }
 
     public void SetMessage(string message)
@@ -56,6 +69,14 @@ public class Context : MonoBehaviour
         if (sliderMusique != null)
         {
             sliderMusique.gameObject.SetActive(visible);
+        }
+    }
+
+    public void SetPlayPauseVisible(bool visible)
+    {
+        if (playPauseButton != null)
+        {
+            playPauseButton.SetActive(visible);
         }
     }
 }
