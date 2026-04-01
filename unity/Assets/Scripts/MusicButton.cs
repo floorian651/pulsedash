@@ -40,6 +40,7 @@ public class MusicButton : MonoBehaviour
         if (source.clip != null && !source.isPlaying && source.time >= source.clip.length - 0.01f)
         {
             Context.SetPlayPauseVisible(false);
+            Context.SetMessage("");
         }
     }
 
