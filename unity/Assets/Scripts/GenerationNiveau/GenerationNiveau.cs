@@ -35,8 +35,7 @@ public class GenerateurNiveau : MonoBehaviour
     public void GenerateLevel()
     {   
         // On récupére le titre de la musique
-        //analyse_rythme = SessionData.Instance.titre;
-        analyse_rythme="seven";
+        analyse_rythme = SessionData.Instance.titre;
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
@@ -82,21 +81,6 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
-    /** Permet à partir d'un beat de décider quel action le joueur doit faire
-    * Et donc de générer l'obstacle correspondant, à la bonne position
-     */
-    // private void decideChunk(Beat beat)
-    // {
-    //     GameObject obstacle;
-
-    //     if(beat.puissance < 2.5f)
-    //     {
-    //         obstacle = Instantiate(GroundPrefab, position, Quaternion.identity);
-    //     }
-
-
-    //     obstacle.transform.parent = this.transform;
-    // }
 
     private void loadChunks()
     {
