@@ -12,6 +12,7 @@ public class PlayerCollision : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("obstacle")) return;
+        Debug.LogError("Collision avec un obstacle");
         foreach (ContactPoint contact in collision.contacts)
         {
             Vector3 normal = contact.normal;
