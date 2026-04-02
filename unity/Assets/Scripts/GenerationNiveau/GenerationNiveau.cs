@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic; // Pour List
+using System.Collections.Generic;
+using System.Diagnostics; // Pour List
 
 public class GenerateurNiveau : MonoBehaviour
 {
@@ -27,11 +28,20 @@ public class GenerateurNiveau : MonoBehaviour
 
    
     void Start(){
-        Debug.Log("Générer le niveau");
+        UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.Create();
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+
+    public float GetMusicDuration()
+    {
+        analyse_rythme = SessionData.Instance.titre;
+        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
+        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
+        UnityEngine.Debug.Log("Data duration " + data.duration);
+        return data.duration;
+    }
     
     public void GenerateLevel()
     {   
@@ -45,7 +55,7 @@ public class GenerateurNiveau : MonoBehaviour
         // On récupère les données du fichier JSON
         TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
-            Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
+            UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
             return;
         }
         data = JsonUtility.FromJson<MusicData>(jsonFile.text);
