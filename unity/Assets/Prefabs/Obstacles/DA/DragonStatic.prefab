@@ -792,8 +792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragonStatic
   distanceSol: 3
-  positionX: 0
-  bonus: {fileID: 0}
+  bonus: {fileID: 4999995473475738257, guid: 2b02933f38b071145979d923c41a809d, type: 3}
 --- !u!1 &4152498064210531841
 GameObject:
   m_ObjectHideFlags: 0

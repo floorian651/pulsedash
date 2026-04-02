@@ -19,9 +19,6 @@ public class DragonStatic : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
-        // Position fixe du dragon
-        //transform.position = new Vector3(positionX, distanceSol, 0);
-
         // Le dragon ne doit pas bouger
         rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -50,5 +47,10 @@ public class DragonStatic : MonoBehaviour
         // Désactiver le collider après la mort
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
+
+        // Mettre des bonus
+        for (int i = 0; i < 5; i++){
+            Rigidbody p = Instantiate(bonus, new Vector3(0,1,20*i),  Quaternion.Euler(-90,0,0));
+        }
     }
 }
