@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] public float energy;
 
     [SerializeField] private EnergyBar energyBar;
+    [SerializeField] private OverlayEffect overlayEffect;
 
     void Start()
     {
@@ -34,6 +35,11 @@ public class Player : MonoBehaviour
         energy = Mathf.Clamp(energy, minEnergy, maxEnergy);
 
         energyBar.SetEnergy(energy);
+
+        // if (overlayEffect != null)
+        // {
+        //     overlayEffect.Flash(new Color(1, 0, 0, 0.4f));  // rouge
+        // }
     }
 
     public void Heal(float heal)
@@ -46,5 +52,10 @@ public class Player : MonoBehaviour
         energy = Mathf.Clamp(energy, minEnergy, maxEnergy);
 
         energyBar.SetEnergy(energy);
+
+        // if (overlayEffect != null)
+        // {
+        //     overlayEffect.Flash(new Color(0, 1, 0, 0.4f));  // vert
+        // }
     }
 }
