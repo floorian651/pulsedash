@@ -69,15 +69,19 @@ public class PopupManager : MonoBehaviour
         Image bg = popupGO.AddComponent<Image>();
         bg.color = new Color(0.12f, 0.10f, 0.25f, 1f);
         RectTransform rt = popupGO.GetComponent<RectTransform>();
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.sizeDelta = new Vector2(360, 200);
+        rt.anchoredPosition = Vector2.zero;
 
         // Conteneur central
         GameObject container = new GameObject("Container", typeof(RectTransform));
         container.transform.SetParent(popupGO.transform, false);
         RectTransform contRT = container.GetComponent<RectTransform>();
+        contRT.anchorMin = new Vector2(0.5f, 0.5f);
+        contRT.anchorMax = new Vector2(0.5f, 0.5f);
+        contRT.pivot = new Vector2(0.5f, 0.5f);
         contRT.sizeDelta = new Vector2(300, 150);
         contRT.anchoredPosition = Vector2.zero;
 
