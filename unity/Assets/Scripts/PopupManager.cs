@@ -454,6 +454,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
         closeTxt.fontSize = 24;
         closeTxt.alignment = TextAlignmentOptions.Center;
         closeTxt.color = Color.white;
+        closeTxt.raycastTarget = false;
 
         RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
         closeTxtRT.anchorMin = Vector2.zero;

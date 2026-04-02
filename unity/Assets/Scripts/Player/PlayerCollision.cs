@@ -3,43 +3,61 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     [SerializeField] private Player player;
+    [SerializeField] private ScreenFlash screenFlash;
+    [SerializeField] private bool allowTriggerCollisions = true;
 
     void Awake()
     {
-        player = GetComponent<Player>();
+        player = GetComponentInParent<Player>();
+        if (screenFlash == null)
+        {
+            screenFlash = FindObjectOfType<ScreenFlash>();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.LogError("Collision avec " + collision.gameObject.tag);
-        if (!collision.gameObject.CompareTag("obstacle")) return;
-        
-        Debug.LogError("Collision avec un obstacle");
-        foreach (ContactPoint contact in collision.contacts)
+        HandleHit(collision.gameObject);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!allowTriggerCollisions) return;
+        HandleHit(other.gameObject);
+    }
+
+    private void HandleHit(GameObject other)
+    {
+        string tag = other.tag;
+        Debug.Log("Collision avec " + tag);
+
+        // On ne traite que obstacle, bonus ou pulser
+        if (tag != "obstacle" && tag != "bonus" && tag != "pulser") return;
+
+        if (player == null)
         {
-            Vector3 normal = contact.normal;
-            if (Mathf.Abs(normal.y) < 0.5f)
+            Debug.LogError("Player component not found!");
+            return;
+        }
+
+        if (tag == "obstacle" || tag == "pulser")
+        {
+            player.TakeDamage(1f);
+            if (screenFlash == null)
             {
-                if (player != null)
-                {   
-                    if (collision.gameObject.CompareTag("obstacle")){
-                        player.TakeDamage(1f);
-                        Destroy(collision.gameObject);
-                    }
-                    if (collision.gameObject.CompareTag("bonus")){
-                        player.Heal(1f);
-                        Destroy(collision.gameObject);
-                    }
-
-                    
-                }
-                else
-                {
-                    Debug.LogError("Player component not found!");
-                }
-
-                break;
+                Debug.LogError("ScreenFlash not found in scene or not assigned!");
+            }
+            else
+            {
+                screenFlash.Flash();
             }
         }
+        else if (tag == "bonus")
+        {
+            player.Heal(1f);
+        }
+
+        Destroy(other.gameObject);
+        Debug.Log("objet détruit");
     }
 }
