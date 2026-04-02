@@ -219,10 +219,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 497494765}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6f8ff05850eabb9946ed51e61c7264, type: 3}
+  m_Script: {fileID: 11500000, guid: 31acf9024602f534085fca7d35eb7460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
-  decreaseSpeed: 1
 --- !u!1 &622499921
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 947896523}
   - component: {fileID: 947896522}
-  - component: {fileID: 947896521}
+  - component: {fileID: 947896524}
   m_Layer: 0
   m_Name: GenerateurNiveau
   m_TagString: Untagged
@@ -630,19 +629,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &947896521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947896520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6f8ff05850eabb9946ed51e61c7264, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
-  decreaseSpeed: 5
 --- !u!114 &947896522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,6 +664,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &947896524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947896520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31acf9024602f534085fca7d35eb7460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
 --- !u!1 &1087668790
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +890,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1398016396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398016379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a308c6bf0abec409b0b4fbf1d941b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollision
+  player: {fileID: 0}
 --- !u!1 &1445001594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,7 +1255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Name
-      value: Bonhomme_bleu
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_IsActive
@@ -1317,6 +1328,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1398016395}
+    - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1398016396}
   m_SourcePrefab: {fileID: 100100000, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
