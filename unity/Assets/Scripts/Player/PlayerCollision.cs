@@ -13,6 +13,7 @@ public class PlayerCollision : MonoBehaviour
     {
         Debug.LogError("Collision avec " + collision.gameObject.tag);
         if (!collision.gameObject.CompareTag("obstacle")) return;
+        
         Debug.LogError("Collision avec un obstacle");
         foreach (ContactPoint contact in collision.contacts)
         {
@@ -20,9 +21,17 @@ public class PlayerCollision : MonoBehaviour
             if (Mathf.Abs(normal.y) < 0.5f)
             {
                 if (player != null)
-                {
-                    player.TakeDamage(1f);
-                    Destroy(collision.gameObject);
+                {   
+                    if (collision.gameObject.CompareTag("obstacle")){
+                        player.TakeDamage(1f);
+                        Destroy(collision.gameObject);
+                    }
+                    if (collision.gameObject.CompareTag("bonus")){
+                        player.Heal(1f);
+                        Destroy(collision.gameObject);
+                    }
+
+                    
                 }
                 else
                 {
