@@ -28,6 +28,7 @@ public class GenerateurNiveau : MonoBehaviour
    
     void Start(){
         Debug.Log("Générer le niveau");
+        ReturnToMenuButton.Create();
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script

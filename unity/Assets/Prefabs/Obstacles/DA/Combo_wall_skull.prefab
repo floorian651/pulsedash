@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 8059236220838567524}
   m_Layer: 0
   m_Name: Wall_Modular
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 1440077392654574767}
   m_Layer: 0
   m_Name: Skull
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -27,6 +27,12 @@ public class SliderMusique : MonoBehaviour
             slider.value = source.time / source.clip.length;
         }
 
+        // Cacher le curseur à la fin de la musique (pas en pause)
+        if (!source.isPlaying && source.time >= source.clip.length - 0.01f)
+        {
+            Context.SetSliderVisible(false);
+        }
+
     }
 
     void OnSliderChanged(float value)

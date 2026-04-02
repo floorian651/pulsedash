@@ -17,7 +17,7 @@ public class MusicButton : MonoBehaviour
         texteBouton = GetComponentInChildren<TMP_Text>();
 
         // Texte initial
-        texteBouton.text = "Jouer";
+        texteBouton.text = ">";
 
         // Ajouter l'action
         GetComponent<Button>().onClick.AddListener(ToggleMusic);
@@ -29,11 +29,18 @@ public class MusicButton : MonoBehaviour
 
         if (source.isPlaying)
         {
-            texteBouton.text = "Pause";
+            texteBouton.text = "||";
         }
         else
         {
-            texteBouton.text = "Jouer";
+            texteBouton.text = ">";
+        }
+
+        // Cacher le bouton à la fin de la musique (pas en pause)
+        if (source.clip != null && !source.isPlaying && source.time >= source.clip.length - 0.01f)
+        {
+            Context.SetPlayPauseVisible(false);
+            Context.SetMessage("");
         }
     }
 
@@ -54,10 +61,10 @@ public class MusicButton : MonoBehaviour
                     source.Play();
             }
                 
-                texteBouton.text = "Pause";}
+                texteBouton.text = "||";}
             else{
                 source.Pause();
-                texteBouton.text = "Jouer";}
+                texteBouton.text = ">";}
 
     }
     }
