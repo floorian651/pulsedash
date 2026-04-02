@@ -11,6 +11,7 @@ public class PlayerCollision : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        Debug.LogError("Collision avec " + collision.gameObject.tag);
         if (!collision.gameObject.CompareTag("obstacle")) return;
         Debug.LogError("Collision avec un obstacle");
         foreach (ContactPoint contact in collision.contacts)
