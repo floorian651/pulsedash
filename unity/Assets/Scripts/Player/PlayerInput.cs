@@ -12,9 +12,8 @@ public class PlayerMovementE5 : MonoBehaviour
     public float distanceEntreLigne = 2.0f;
     public enum PositionX{Gauche,Milieu,Droite}
     PositionX currentSidepos = PositionX.Milieu;
-    float moveUp = 7f;
+    float moveUp = 10f;
     public float forwardSpeed = 3f;
-    //public float extraGravity = 20f;
 
     bool isGrounded;
     void Start()
@@ -71,9 +70,6 @@ public class PlayerMovementE5 : MonoBehaviour
         transform.position += Vector3.forward * Time.deltaTime * forwardSpeed + side;
     }
 
-    /*void FixedUpdate()
-{
-    rb.AddForce(Vector3.down * extraGravity, ForceMode.Acceleration);}*/
 
     // Getters and Setters de vitesse (vroom)
     public float GetSpeed()
