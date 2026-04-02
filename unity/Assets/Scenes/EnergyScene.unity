@@ -415,7 +415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Name
-      value: Bonhomme_bleu
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_IsActive
@@ -488,6 +488,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       insertIndex: -1
       addedObject: {fileID: 506762112}
+    - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 506762116}
+    - targetCorrespondingSourceObject: {fileID: 7247877160893978450, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 506762115}
   m_SourcePrefab: {fileID: 100100000, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
 --- !u!1 &506762111 stripped
 GameObject:
@@ -627,6 +633,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementE5
   distanceEntreLigne: 2
+--- !u!114 &506762115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506762111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59005a4381cd2fa6a93263370d19868a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollision
+  player: {fileID: 0}
+--- !u!114 &506762116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506762111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae18300c9a6e5bce4ab5a60ef3d844ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  decreaseSpeed: 1
+  energy: 0
+  energyBar: {fileID: 0}
 --- !u!1 &603702347
 GameObject:
   m_ObjectHideFlags: 0
