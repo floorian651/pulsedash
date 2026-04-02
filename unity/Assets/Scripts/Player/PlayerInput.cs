@@ -12,8 +12,9 @@ public class PlayerMovementE5 : MonoBehaviour
     public float distanceEntreLigne = 2.0f;
     public enum PositionX{Gauche,Milieu,Droite}
     PositionX currentSidepos = PositionX.Milieu;
-    float moveUp = 20f;
-    float forwardSpeed = 3f;
+    float moveUp = 7f;
+    public float forwardSpeed = 3f;
+    //public float extraGravity = 20f;
 
     bool isGrounded;
     void Start()
@@ -26,24 +27,27 @@ public class PlayerMovementE5 : MonoBehaviour
     void OnCollisionStay()
     {
         isGrounded = true;
-        anim.SetBool("isGrounded", isGrounded); // ligne ajoutée 
+        anim.SetBool("isGrounded", isGrounded); 
     }
 
     // Update is called once per frame
     void Update()
 
-    {   // Animation de course
-        anim.SetBool("isRunning", true);  // ligne ajoutée 
+    {   
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        anim.SetBool("isGrounded", isGrounded);
+        
+        // Animation de course
+        anim.SetBool("isRunning", true);  
 
-         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+         
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            // Jumping
-            rb.AddForce(jump * moveUp, ForceMode.Impulse);
-            anim.SetTrigger("jump");  // ligne ajoutée 
-
-            isGrounded = false;
-            anim.SetBool("isGrounded", isGrounded);  // ligne ajoutée 
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(Vector3.up * moveUp, ForceMode.Impulse);
+            anim.SetTrigger("jump");
         }
+
 
         float sideMovement = 0;
 
@@ -66,6 +70,10 @@ public class PlayerMovementE5 : MonoBehaviour
         // On applique tout les vecteurs à la position
         transform.position += Vector3.forward * Time.deltaTime * forwardSpeed + side;
     }
+
+    /*void FixedUpdate()
+{
+    rb.AddForce(Vector3.down * extraGravity, ForceMode.Acceleration);}*/
 
     // Getters and Setters de vitesse (vroom)
     public float GetSpeed()
