@@ -32,7 +32,7 @@ public class PlayerCollision : MonoBehaviour
         Debug.Log("Collision avec " + tag);
 
         // On ne traite que obstacle, bonus ou pulser
-        if (tag != "obstacle" && tag != "bonus" && tag != "pulser") return;
+        if (tag != "obstacle" && tag != "Bonus" && tag != "pulser") return;
 
         if (player == null)
         {
@@ -52,7 +52,7 @@ public class PlayerCollision : MonoBehaviour
                 screenFlash.Flash();
             }
         }
-        else if (tag == "bonus")
+        else if (tag == "Bonus")
         {
             player.Heal(1f);
         }
