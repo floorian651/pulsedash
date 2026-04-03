@@ -23,8 +23,8 @@ public class EnergyBar : MonoBehaviour
                 UnityEngine.Debug.Log("generateurNiveau null");
                 duration = 100;
             }
-            energySlider.maxValue = 100;
-            energySlider.value = 100;
+            energySlider.maxValue = 500;
+            energySlider.value = 500;
             energySlider.interactable = false;
         }
     }
@@ -34,5 +34,9 @@ public class EnergyBar : MonoBehaviour
         if (energySlider == null) return;
 
         energySlider.value = value;
+    }
+
+    public float GetEnergy(){
+        return energySlider.value;
     }
 }

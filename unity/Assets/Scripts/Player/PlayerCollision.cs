@@ -3,32 +3,61 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     [SerializeField] private Player player;
+    [SerializeField] private ScreenFlash screenFlash;
+    [SerializeField] private bool allowTriggerCollisions = true;
 
     void Awake()
     {
-        player = GetComponent<Player>();
+        player = GetComponentInParent<Player>();
+        if (screenFlash == null)
+        {
+            screenFlash = FindObjectOfType<ScreenFlash>();
+        }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("obstacle")) return;
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            Vector3 normal = contact.normal;
-            if (Mathf.Abs(normal.y) < 0.5f)
-            {
-                if (player != null)
-                {
-                    player.TakeDamage(1f);
-                    Destroy(collision.gameObject);
-                }
-                else
-                {
-                    Debug.LogError("Player component not found!");
-                }
+        HandleHit(collision.gameObject);
+    }
 
-                break;
+    void OnTriggerEnter(Collider other)
+    {
+        if (!allowTriggerCollisions) return;
+        HandleHit(other.gameObject);
+    }
+
+    private void HandleHit(GameObject other)
+    {
+        string tag = other.tag;
+        Debug.Log("Collision avec " + tag);
+
+        // On ne traite que obstacle, bonus ou pulser
+        if (tag != "obstacle" && tag != "Bonus" && tag != "pulser") return;
+
+        if (player == null)
+        {
+            Debug.LogError("Player component not found!");
+            return;
+        }
+
+        if (tag == "obstacle" || tag == "pulser")
+        {
+            player.TakeDamage(5f);
+            if (screenFlash == null)
+            {
+                Debug.LogError("ScreenFlash not found in scene or not assigned!");
+            }
+            else
+            {
+                screenFlash.Flash();
             }
         }
+        else if (tag == "Bonus")
+        {
+            player.Heal(5f);
+        }
+
+        Destroy(other.gameObject);
+        Debug.Log("objet détruit");
     }
 }
