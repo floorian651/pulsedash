@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections.Generic; // Pour List
+using System.Collections.Generic;
+using System.Diagnostics; // Pour List
 
 public class GenerateurNiveau : MonoBehaviour
 {
@@ -24,18 +25,30 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel1;
     private float seuilLevel2;
     private float seuilLevel3;
+    public GameObject pulser;
 
    
     void Start(){
-        Debug.Log("Générer le niveau");
+        UnityEngine.Debug.Log("Générer le niveau");
+        ReturnToMenuButton.Create();
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+
+    public float GetMusicDuration()
+    {
+        analyse_rythme = SessionData.Instance.titre;
+        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
+        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
+        UnityEngine.Debug.Log("Data duration " + data.duration);
+        return data.duration;
+    }
     
     public void GenerateLevel()
     {   
         // On récupére le titre de la musique
         analyse_rythme = SessionData.Instance.titre;
+
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
@@ -44,7 +57,7 @@ public class GenerateurNiveau : MonoBehaviour
         // On récupère les données du fichier JSON
         TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
-            Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
+            UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
             return;
         }
         data = JsonUtility.FromJson<MusicData>(jsonFile.text);
@@ -70,6 +83,8 @@ public class GenerateurNiveau : MonoBehaviour
         majSeuilPuissance();
 
         loadChunks();
+
+        generatePulsers(analyse_rythme);
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -161,6 +176,39 @@ public class GenerateurNiveau : MonoBehaviour
         seuilLevel1 = puissanceMaxGlobal *0.5f;
         seuilLevel2 = puissanceMaxGlobal *0.75f;
         seuilLevel3 = puissanceMaxGlobal *0.90f;
+    }
+
+    private System.Random random = new System.Random();
+
+    private void generatePulsers(string titreMusique){
+        
+        int dureeMusique = (int)data.duration;
+        print("durée :"+dureeMusique);
+        int tailleNiveau = (int)vitesse * dureeMusique;
+        int nbrPulsers = titreMusique.Length; 
+        print("Nombre de pulsers :" + nbrPulsers);
+        int distMin = tailleNiveau/nbrPulsers;
+        print("DistMin :"+distMin);
+        distMin = Mathf.Max(distMin, (int)(10 *chunkSize)); // Par défaut si distMin est inférieur à un chunksize ou prend par défaut 10 chunsize 
+        print("DistMin :"+distMin);
+
+        
+        int borneInf = (int)(distMin * 0.25f);
+        int borneSup = (int)(distMin * 0.75f);
+
+        for (int i = 0; i < tailleNiveau; i += distMin){
+
+            int positionZ = random.Next(i+borneInf,i+borneSup+1);
+
+            // Conversion en chunkSize
+            positionZ = (int) (Mathf.RoundToInt(positionZ / chunkSize) * chunkSize);
+
+            Vector3 pos = new Vector3(0, groundHeight, positionZ);
+
+            GameObject newPulser = Instantiate(pulser, pos, pulser.transform.rotation);
+            
+            newPulser.transform.parent = this.transform;
+        }
     }
 
 

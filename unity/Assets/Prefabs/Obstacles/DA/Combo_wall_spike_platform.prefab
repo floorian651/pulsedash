@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 986899751133040668}
   m_Layer: 0
   m_Name: Wall_Modular
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

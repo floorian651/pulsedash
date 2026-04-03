@@ -96,6 +96,20 @@ public class PlaylistManager : MonoBehaviour
         }
     }}
 
+    // Supprimer une playlist entière
+    public bool RemovePlaylist(string playlistName)
+    {
+        Playlist p = playlists.Find(x => x.name == playlistName);
+        if (p == null)
+        {
+            return false;
+        }
+
+        playlists.Remove(p);
+        SavePlaylists();
+        return true;
+    }
+
     // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
     {
@@ -160,8 +174,8 @@ public class PlaylistManager : MonoBehaviour
     {
         PlayTrack(trackActuel, clips, true);
 
-        // attendre fin OU action utilisateur
-        while (source.isPlaying && !stopCurrentTrack)
+        // Attendre fin réelle OU action utilisateur (ne pas avancer si pause)
+        while (!stopCurrentTrack && (source.isPlaying || source.time < source.clip.length - 0.01f))
             yield return null;
 
         source.Stop();
@@ -232,6 +246,8 @@ public class PlaylistManager : MonoBehaviour
 
         // Attribuer le clip trouvé à l'audio source
         source.clip = clip;
+        Context.SetSliderVisible(true);
+        Context.SetPlayPauseVisible(true);
 
         if (aJouer)
         {
@@ -257,6 +273,8 @@ public class PlaylistManager : MonoBehaviour
 
     source.clip = nextClip;
     source.Play();
+    Context.SetSliderVisible(true);
+    Context.SetPlayPauseVisible(true);
 }
 
 
