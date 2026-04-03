@@ -42,7 +42,7 @@ public class PlayerCollision : MonoBehaviour
 
         if (tag == "obstacle" || tag == "pulser")
         {
-            player.TakeDamage(1f);
+            player.TakeDamage(5f);
             if (screenFlash == null)
             {
                 Debug.LogError("ScreenFlash not found in scene or not assigned!");
@@ -54,7 +54,7 @@ public class PlayerCollision : MonoBehaviour
         }
         else if (tag == "Bonus")
         {
-            player.Heal(1f);
+            player.Heal(5f);
         }
 
         Destroy(other.gameObject);

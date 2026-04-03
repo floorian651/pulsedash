@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementE5 : MonoBehaviour
-{
+{   
+    [SerializeField] private EnergyBar energyBar;
+
     Animator anim;
 
     Rigidbody rb;
@@ -33,6 +35,11 @@ public class PlayerMovementE5 : MonoBehaviour
     void Update()
 
     {   
+        
+        if (energyBar.GetEnergy()==0){
+            Mourir();
+        }
+
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
         anim.SetBool("isGrounded", isGrounded);
         
@@ -79,5 +86,12 @@ public class PlayerMovementE5 : MonoBehaviour
     public void SetSpeed(float newSpeed)
     {
         forwardSpeed = newSpeed;
+    }
+
+    public void Mourir()
+    {
+        anim.SetTrigger("mort");
+        forwardSpeed = 0;
+        rb.linearVelocity = Vector3.zero;
     }
 }

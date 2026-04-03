@@ -1,9 +1,11 @@
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{
+{   
+    Animator anim;
+
     public static float minEnergy = 0f;
-    public static float maxEnergy = 100f;
+    public static float maxEnergy = 500f;
     public float decreaseSpeed = 1f;
     [SerializeField] public float energy;
 
@@ -11,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private OverlayEffect overlayEffect;
 
     void Start()
-    {
+    {   
         energy = maxEnergy;
         energyBar.SetEnergy(energy);
     }
@@ -23,6 +25,7 @@ public class Player : MonoBehaviour
             energy -= decreaseSpeed * Time.deltaTime;
             energyBar.SetEnergy(energy);
         }
+
     }
 
     public void TakeDamage(float damage)
@@ -58,4 +61,6 @@ public class Player : MonoBehaviour
         //     overlayEffect.Flash(new Color(0, 1, 0, 0.4f));  // vert
         // }
     }
+
+    
 }
