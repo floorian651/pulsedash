@@ -26,7 +26,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel2;
     private float seuilLevel3;
 
-    [SerializeField] private GameObject[] decos;
+    [SerializeField] private GameObject[] decosDroite;
+    [SerializeField] private GameObject[] decosGauche;
 
 
     public GameObject pulser;
@@ -222,16 +223,23 @@ public class GenerateurNiveau : MonoBehaviour
         int dureeMusique = (int)data.duration;
         int tailleNiveau = (int)vitesse * dureeMusique;
 
-        for (int i = 0; i < tailleNiveau; i += 5){
-
-            Vector3 pos = new Vector3(3, groundHeight, i);
-
-            int index = Random.Range(0, decos.Length);
-            GameObject decoRandom = decos[index];
-
-            GameObject newDeco = Instantiate(decoRandom, pos,  decoRandom.transform.rotation);
+        int indexD = Random.Range(0, decosDroite.Length);
+        int indexG = Random.Range(0, decosGauche.Length);
             
-            newDeco.transform.SetParent(this.transform, true);
+        GameObject decoRandomD = decosDroite[indexD];
+        GameObject decoRandomG = decosGauche[indexG];
+
+        for (int i = 0; i < tailleNiveau; i += 5){      
+            
+
+            Vector3 posD = decoRandomD.transform.position + new Vector3(0, groundHeight, i);
+            Vector3 posG = decoRandomG.transform.position+ new Vector3(0, groundHeight, i); ;
+
+            GameObject newDecoD = Instantiate(decoRandomD, posD,  decoRandomD.transform.rotation);
+            GameObject newDecoG = Instantiate(decoRandomG, posG,  decoRandomG.transform.rotation);
+            
+            newDecoD.transform.SetParent(this.transform, true);
+            newDecoG.transform.SetParent(this.transform, true);
 
         }
 
