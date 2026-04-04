@@ -25,6 +25,10 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel1;
     private float seuilLevel2;
     private float seuilLevel3;
+
+    [SerializeField] private GameObject[] decos;
+
+
     public GameObject pulser;
 
    
@@ -85,6 +89,8 @@ public class GenerateurNiveau : MonoBehaviour
         loadChunks();
 
         generatePulsers(analyse_rythme);
+
+        generateDeco();
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -209,6 +215,26 @@ public class GenerateurNiveau : MonoBehaviour
             
             newPulser.transform.parent = this.transform;
         }
+    }
+
+    private void generateDeco(){
+
+        int dureeMusique = (int)data.duration;
+        int tailleNiveau = (int)vitesse * dureeMusique;
+
+        for (int i = 0; i < tailleNiveau; i += 5){
+
+            Vector3 pos = new Vector3(3, groundHeight, i);
+
+            int index = Random.Range(0, decos.Length);
+            GameObject decoRandom = decos[index];
+
+            GameObject newDeco = Instantiate(decoRandom, pos,  decoRandom.transform.rotation);
+            
+            newDeco.transform.SetParent(this.transform, true);
+
+        }
+
     }
 
 
