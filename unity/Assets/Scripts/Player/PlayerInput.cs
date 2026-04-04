@@ -60,23 +60,40 @@ public class PlayerMovementE5 : MonoBehaviour
         // Si on appuye sur Q
         if (Input.GetKeyDown(KeyCode.A) && currentSidepos!=PositionX.Gauche)
         {
-            sideMovement = -distanceEntreLigne;
             currentSidepos--;
         }
 
         // Si on appuye sur D
         if (Input.GetKeyDown(KeyCode.D) && currentSidepos!=PositionX.Droite)
         {
-            sideMovement = distanceEntreLigne;
             currentSidepos++;
         }
 
-        Vector3 side = new Vector3(sideMovement, 0, 0);
-
+        UpdatePosition();
         // On applique tout les vecteurs à la position
-        transform.position += Vector3.forward * Time.deltaTime * forwardSpeed + side;
+        transform.position += Vector3.forward * Time.deltaTime * forwardSpeed;
     }
 
+    // Update la position X en fonction de currentPosX
+    private void UpdatePosition()
+    {
+        Vector3 pos = transform.position;
+
+        if (currentSidepos == PositionX.Gauche)
+        {
+            pos.x = -distanceEntreLigne;
+        }
+        else if (currentSidepos == PositionX.Milieu)
+        {
+            pos.x = 0f;
+        }
+        else
+        {
+            pos.x = distanceEntreLigne;
+        }
+
+        transform.position = pos;
+    }
 
     // Getters and Setters de vitesse (vroom)
     public float GetSpeed()
