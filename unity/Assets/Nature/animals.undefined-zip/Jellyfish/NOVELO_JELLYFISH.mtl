@@ -1,0 +1,21 @@
+#  ==========================================================================
+#  Wavefront Material file
+#  Exported by Red-i Productions' "Riptide Pro"
+#  (a commercial plugin for Cinema 4D PC & Mac, R10 or later)
+#  
+#  Red-i Productions
+#  http://skinprops.com
+#  
+#  ==========================================================================
+
+newmtl Mat.1
+Kd 0.736041 0.000000 0.294416
+illum 1
+
+newmtl Mat
+Kd 0.974619 0.286944 0.562014
+illum 1
+
+newmtl Mat.2
+Kd 1.000000 0.868020 0.920812
+illum 1
