@@ -5,9 +5,29 @@ using System.Linq;
 using System.Collections.Generic;
 
 
+
 public class PopupManager : MonoBehaviour
 {
+    private static string PopupBackground="Images/PopupBackground";
     private static GameObject popupGO;
+    
+
+    private static void ApplyPopupBackground(Image image)
+    {
+        if (image == null) return;
+        Debug.Log("image pas null");
+
+        Sprite sprite = Resources.Load<Sprite>(PopupBackground);
+
+        if (sprite == null) return;
+
+        image.sprite = sprite;
+        image.color = Color.white;
+        image.type = Image.Type.Simple;
+        image.preserveAspect = false;
+        Debug.Log("Popup background chargé");
+    }
+
 
     public static void Show(string message)
     {
@@ -29,6 +49,7 @@ public class PopupManager : MonoBehaviour
 
         Image bg = popupGO.AddComponent<Image>();
         bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
+        ApplyPopupBackground(bg);
 
         TextMeshProUGUI txt = new GameObject("Text").AddComponent<TextMeshProUGUI>();
         txt.transform.SetParent(popupGO.transform, false);
@@ -59,6 +80,7 @@ public class PopupManager : MonoBehaviour
             Canvas canvas = canvasGO.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvasGO.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            Debug.Log("Canvas recréé");
         }
 
         // Panel
@@ -87,6 +109,7 @@ public class PopupManager : MonoBehaviour
 
         Image contBg = container.AddComponent<Image>();
         contBg.color = new Color(1, 1, 1, 0.95f);
+        ApplyPopupBackground(contBg);
 
         // Message
         GameObject msgGO = new GameObject("Message", typeof(RectTransform));
@@ -239,6 +262,7 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
 
     Image contBg = container.AddComponent<Image>();
     contBg.color = new Color(1, 1, 1, 0.95f);
+    ApplyPopupBackground(contBg);
     
     // ScrollRect
     GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
@@ -340,6 +364,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
 
     Image contBg = container.AddComponent<Image>();
     contBg.color = new Color(1, 1, 1, 0.95f);
+    ApplyPopupBackground(contBg);
 
     // Titre
     GameObject titleGO = new GameObject("Title", typeof(RectTransform));

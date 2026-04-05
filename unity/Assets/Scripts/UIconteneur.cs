@@ -48,7 +48,8 @@ public static Transform CreateCenterContainer(Transform parent)
     layout.childForceExpandWidth = false;
 
     Image bg = centerGO.AddComponent<Image>();
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent
+    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
     return centerGO.transform;
 }
@@ -70,7 +71,8 @@ public static Transform CreateLeftContainer(Transform parent)
     layout.childForceExpandWidth = false;
 
     Image bg = leftGO.AddComponent<Image>();
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent
+    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
     return leftGO.transform;
 }
@@ -92,7 +94,8 @@ public static Transform CreateRightContainer(Transform parent)
     layout.childForceExpandWidth = false;
 
     Image bg = rightGO.AddComponent<Image>();
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent
+    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
     return rightGO.transform;
 }

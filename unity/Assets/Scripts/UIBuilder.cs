@@ -52,7 +52,9 @@ public static class UIBuilder
     RectTransform panelRT = panelGO.GetComponent<RectTransform>();
 
     Image panelImage = panelGO.GetComponent<Image>();
-    panelImage.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent pour laisser voir le background du canvas
+    panelImage.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+
 
 
     panelRT.anchorMin = Vector2.zero;
@@ -76,21 +78,24 @@ public static class UIBuilder
     rt.anchorMin = new Vector2(0, 1);
     rt.anchorMax = new Vector2(1, 1);
     rt.pivot = new Vector2(0.5f, 1);
-    rt.sizeDelta = new Vector2(0, 50);
+    rt.sizeDelta = new Vector2(0, 240);
     //rt.anchoredPosition = Vector2.zero;
     rt.anchoredPosition = new Vector2(0, -10);
 
 
     // Ajouter un fond 
     Image bgImage = topBarGO.AddComponent<Image>();
-    bgImage.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent
+    bgImage.color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
     HorizontalLayoutGroup layout = topBarGO.AddComponent<HorizontalLayoutGroup>();
     layout.childControlWidth = true;
     layout.childForceExpandWidth = false;
-    layout.childAlignment = TextAnchor.MiddleLeft;
+    layout.childControlHeight = false;
+    layout.childForceExpandHeight = false;
+    layout.childAlignment = TextAnchor.UpperLeft;
 
     layout.spacing = 20;
     layout.padding = new RectOffset(20, 20, 10, 10);
@@ -124,7 +129,8 @@ public static class UIBuilder
     // Viewport
     GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
     viewportGO.transform.SetParent(scrollGO.transform, false);
-    viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent
+    viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
 
     RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
@@ -241,20 +247,23 @@ public static class UIBuilder
 {
     GameObject go = new GameObject("SearchContainer");
     go.transform.SetParent(parent, false);
+    
 
     RectTransform rt = go.AddComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    Image.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
+    // Fond transparent Image.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    Image.color = new Color32(255, 0, 0, 80); // rouge semi-transparent
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();
     le.preferredWidth = 500;
+    le.preferredHeight = 40;
 
     VerticalLayoutGroup vlg = go.AddComponent<VerticalLayoutGroup>();
     vlg.childControlWidth = false;
     vlg.childForceExpandWidth = false;
-    vlg.childControlHeight = false;
+    vlg.childControlHeight = true;
     vlg.childForceExpandHeight = false;
     vlg.spacing = 4;
 
@@ -276,7 +285,11 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         rt.anchorMin = new Vector2(0, 1);
         rt.anchorMax = new Vector2(0, 1);
         rt.pivot = new Vector2(0, 1);
-        rt.anchoredPosition = new Vector2(-150, -30);
+        rt.anchoredPosition = Vector2.zero;
+
+        LayoutElement le = go.AddComponent<LayoutElement>();
+        le.preferredWidth = 500;
+        le.preferredHeight = 40;
 
         Image bg = go.AddComponent<Image>();
         bg.color = new Color32(0x50, 0x60, 0xA8, 0xFF);
@@ -340,14 +353,20 @@ public static TMP_InputField CreateSearchBar(Transform parent)
     // ----- ScrollRect -----
     GameObject scrollGO = new GameObject("SearchScrollView", typeof(RectTransform));
     scrollGO.transform.SetParent(parent, false);
+    scrollGO.transform.SetAsLastSibling(); // faire apparaitre au dessus du fond d'écran
 
     RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
     scrollRT.anchorMin = new Vector2(0, 1);
     scrollRT.anchorMax = new Vector2(0, 1);
     scrollRT.pivot = new Vector2(0, 1);
-    scrollRT.anchoredPosition = new Vector2(-150, -90);
+    scrollRT.anchoredPosition = Vector2.zero;
 
-    scrollRT.sizeDelta = new Vector2(500, 40);
+    scrollRT.sizeDelta = new Vector2(500, 160);
+
+    LayoutElement le = scrollGO.AddComponent<LayoutElement>();
+    le.preferredWidth = 500;
+    le.preferredHeight = 160;
+
 
     ScrollRect scroll = scrollGO.AddComponent<ScrollRect>();
     scroll.horizontal = false;
@@ -362,7 +381,9 @@ public static TMP_InputField CreateSearchBar(Transform parent)
     viewportRT.offsetMin = Vector2.zero;
     viewportRT.offsetMax = Vector2.zero;
 
-    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+    // Fond transparent viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
+    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.1f);
+
     viewportGO.GetComponent<Mask>().showMaskGraphic = false;
 
     scroll.viewport = viewportRT;
