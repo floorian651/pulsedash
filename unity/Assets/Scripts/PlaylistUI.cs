@@ -8,10 +8,13 @@ using System.Linq;
 
 
 public static class PlaylistUI
-{
+{   
+    private static string MontserratPath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
+    // Autre police "Fonts & Materials/Montserrat-Regular SDF"
+    
     private static TMP_FontAsset LoadMontserratFont()
     {
-        TMP_FontAsset font = Resources.Load<TMP_FontAsset>("Fonts & Materials/Montserrat-Regular SDF");
+        TMP_FontAsset font = Resources.Load<TMP_FontAsset>(MontserratPath);
         if (font == null)
         {
             font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");

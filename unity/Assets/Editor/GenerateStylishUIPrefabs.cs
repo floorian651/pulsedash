@@ -8,8 +8,7 @@ public static class GenerateStylishUIPrefabs
 {
     private const string SpritePath = "Assets/UI/Sprites/RoundedRect_128x64.png";
     private const string PrefabFolder = "Assets/Prefabs/UI";
-    private const string MontserratPath = "Assets/Resources/Fonts & Materials/Montserrat-Regular SDF.asset";
-
+    private const string MontserratPath = "Assets/Resources/Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
     [MenuItem("Tools/UI/Generate Stylish UI Prefabs")]
     public static void Generate()
     {
