@@ -252,8 +252,9 @@ public static class UIBuilder
     RectTransform rt = go.AddComponent<RectTransform>();
 
     Image Image = go.AddComponent<Image>();
-    // Fond transparent Image.color = new Color32(0x80, 0x95, 0xFF, 0x00);
-    Image.color = new Color32(255, 0, 0, 80); // rouge semi-transparent
+    // Fond transparent 
+    Image.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+   
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();
@@ -292,8 +293,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         le.preferredHeight = 40;
 
         Image bg = go.AddComponent<Image>();
-        bg.color = new Color32(0x50, 0x60, 0xA8, 0xFF);
-
+        bg.color = new Color32(255, 255, 255, 40);   // ~15 % opaque
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
 
@@ -315,7 +315,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
         TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
         text.fontSize = 15;
-        text.color = new Color32(0x66, 0x78, 0xCC, 0xFF);
+        text.color = new Color32(50, 50, 50, 255);
         text.alignment = TextAlignmentOptions.MidlineLeft;
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
@@ -333,7 +333,8 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         TMP_Text placeholder = placeholderGO.AddComponent<TextMeshProUGUI>();
         placeholder.text = "Rechercher...";
         placeholder.fontSize = 15;
-        placeholder.color = new Color(1f, 1f, 1f, 0.08f);
+        placeholder.color = new Color32(50, 50, 50, 255); //gris clair
+
         placeholder.alignment = TextAlignmentOptions.MidlineLeft;
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
@@ -382,7 +383,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
     viewportRT.offsetMax = Vector2.zero;
 
     // Fond transparent viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
-    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.1f);
+    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.01f);
 
     viewportGO.GetComponent<Mask>().showMaskGraphic = false;
 

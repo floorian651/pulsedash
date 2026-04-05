@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class PopupManager : MonoBehaviour
 {
-    private static string PopupBackground="Images/PopupBackground";
+    private static string PopupBackground="Images/Popup1";
     private static GameObject popupGO;
     
 
@@ -17,9 +17,13 @@ public class PopupManager : MonoBehaviour
         if (image == null) return;
         Debug.Log("image pas null");
 
-        Sprite sprite = Resources.Load<Sprite>(PopupBackground);
+        Texture2D tex = Resources.Load<Texture2D>(PopupBackground);
+        Sprite sprite = Sprite.Create(tex, new Rect(0,0,tex.width, tex.height), new Vector2(0.5f,0.5f));
+        
 
-        if (sprite == null) return;
+        if (sprite == null) {
+            Debug.Log("Sprite null");
+            return;}
 
         image.sprite = sprite;
         image.color = Color.white;
