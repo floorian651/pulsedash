@@ -293,7 +293,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         le.preferredHeight = 40;
 
         Image bg = go.AddComponent<Image>();
-        bg.color = new Color32(255, 255, 255, 40);   // ~15 % opaque
+        bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
 

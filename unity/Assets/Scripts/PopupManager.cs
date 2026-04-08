@@ -93,8 +93,8 @@ public class PopupManager : MonoBehaviour
         popupGO.transform.SetParent(canvasGO.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
-        Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(1, 1, 1, 0.05f);
+        //Image bg = popupGO.AddComponent<Image>();
+        //bg.color = new Color(1, 1, 1, 0.01f);
 
         RectTransform rt = popupGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -475,7 +475,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     closeRT.anchorMax = new Vector2(1, 1);
     closeRT.pivot = new Vector2(1, 1);
     closeRT.sizeDelta = new Vector2(80, 80);
-    closeRT.anchoredPosition = new Vector2(-20, -20);
+    closeRT.anchoredPosition = new Vector2(40, 40);
 
     // Image d'abord
     Image closeImg = closeBtnGO.AddComponent<Image>();
