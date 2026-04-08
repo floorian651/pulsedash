@@ -1,0 +1,128 @@
+using UnityEngine;
+using UnityEngine.UI; //slider
+using System.Collections; // IEnumerator
+using TMPro;  // indispensable pour TextMeshProUGUI
+
+
+public class PanelMenu : MonoBehaviour
+{
+    public AudioCache audioCache;
+    private AudioSource audioSource;
+    private Context Context;
+    public Slider sliderPrefab;
+
+    public GameObject playPauseButtonPrefab;
+    public GameObject playlistItemPrefab;
+    public GameObject launchGameButtonPrefab;
+    public GameObject averageButtonPrefab;
+
+
+    
+    void Start()
+    {   
+        // Créer un gameobject AudioSource
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        
+        Context = gameObject.GetComponent<Context>();
+        if (Context == null)
+        {
+            Context = gameObject.AddComponent<Context>();
+        }
+
+        //StartCoroutine(InitMenu());
+        InitMenu();
+    }
+
+    //IEnumerator 
+    void InitMenu()
+{       
+    Debug.Log("Créer le panel");
+
+    // Créer un panel   
+    Transform panel = UIBuilder.CreatePanel();
+
+    // Créer les conteneurs 
+    Transform middleArea = UIconteneur.CreateMiddleArea(panel, 80f);
+    Transform leftContainer = UIconteneur.CreateLeftContainer(middleArea);
+    Transform centerContainer = UIconteneur.CreateCenterContainer(middleArea);
+    Transform rightContainer = UIconteneur.CreateRightContainer(middleArea);
+
+    TextMeshProUGUI messageText = UIBuilder.CreerTexte(centerContainer);
+    Context.Initialize(audioSource, messageText);
+
+    
+    SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+
+    if(sceneloader != null){
+        Debug.Log("Créer bouton lancer jeu");
+        // Créer un bouton pour lancer la scene du gameplay 
+
+        GameObject launchGameGO = Object.Instantiate(launchGameButtonPrefab, centerContainer);
+        Button launchGameBtn = launchGameGO.GetComponent<Button>();
+        Image launchGameImg = launchGameGO.GetComponent<Image>();
+        if (launchGameImg == null)
+        {
+            launchGameImg = launchGameGO.GetComponentInChildren<Image>();
+        }
+        if (launchGameImg != null)
+        {
+            launchGameImg.color = new Color32(0xAA, 0x99, 0xFF, 0xFF);
+        }
+    launchGameBtn.onClick.AddListener(() =>
+{
+        if (!Context.TryGetAudioSource(out AudioSource source) || source.clip == null)
+        {
+            PopupManager.Show("Aucune musique sélectionnée");
+            return;
+        }
+
+        if(SessionData.Instance != null)
+        {
+            Debug.Log("Audiosource chargé pour la prochaine scène");
+            PopupManager.Show("Le jeu va commencer!");
+            //SessionData.Instance.audioSource = source;
+            SessionData.Instance.titre = source.clip.name;
+            Debug.Log(SessionData.Instance.titre);
+        }
+
+        sceneloader.LoadSceneByName("GameplaySceneLocal"); // Remplacer par GameplayScene 
+    }); 
+
+    }
+    // Créer la barre de recherche
+    Transform topBar = UIBuilder.CreateTopBar(panel);
+    
+    // Charger tous les fichiers mp3 déjà dans le cache
+    //yield return StartCoroutine(audioCache.LoadAllCachedMusic());
+    audioCache.LoadAllMusicTestUtilisateur();
+    
+    // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
+
+    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+    {
+        UIBuilder.ShowMusiquesPlaylistInContainer( averageButtonPrefab, audioCache.clips, playlistName, rightContainer);
+    });
+
+    // Créer le bouton pour créer une playlist sous la forme d'une pop up 
+    PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, (playlistName) =>
+{
+    PlaylistManager pm = FindObjectOfType<PlaylistManager>();
+    if (pm != null)
+    {
+        pm.CreatePlaylist(playlistName);
+
+        // Rafraîchir l’affichage des playlists
+        PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+        {
+            UIBuilder.ShowMusiquesPlaylistInContainer( averageButtonPrefab, audioCache.clips, playlistName, rightContainer);
+        });
+    }
+});
+
+    // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
+    SearchUI searchUI = SearchUI.Create(topBar, Context);
+    searchUI.Init(audioCache.clips, playlistItemPrefab);
+
+}
+}

@@ -463,62 +463,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     // ----- Bouton de fermeture -----
     CreateCloseButton(container.transform, popupGO);
 }
-    /*private static void CreateCloseButton(Transform parent, GameObject popupRoot)
-    {
-        GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
-        closeBtnGO.transform.SetParent(parent, false);
-        closeBtnGO.transform.SetAsLastSibling();
-
-        RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
-        closeRT.anchorMin = new Vector2(1, 1);
-        closeRT.anchorMax = new Vector2(1, 1);
-        closeRT.pivot = new Vector2(1, 1);
-        closeRT.sizeDelta = new Vector2(30, 30);
-        closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
-
-        Button closeBtn = closeBtnGO.AddComponent<Button>();
-        Image closeImg = closeBtnGO.AddComponent<Image>();
-        //closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f);
-        //closeBtn.targetGraphic = closeImg;
-
-        Texture2D tex = Resources.Load<Texture2D>(imgCloseButton);
-        Sprite sprite = Sprite.Create(tex, new Rect(0,0,tex.width, tex.height), new Vector2(0.5f,0.5f));
-        closeImg.sprite = sprite;
-        closeImg.color = Color.white;
-        closeImg.type = Image.Type.Simple;
-        closeImg.preserveAspect = false;
-
-        // Texte "X"
-        /*GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
-        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
-
-        TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
-        closeTxt.text = "X";
-        closeTxt.fontSize = 24;
-        closeTxt.alignment = TextAlignmentOptions.Center;
-        closeTxt.color = Color.white;
-        closeTxt.raycastTarget = false;
-
-        RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
-        closeTxtRT.anchorMin = Vector2.zero;
-        closeTxtRT.anchorMax = Vector2.one;
-        closeTxtRT.offsetMin = Vector2.zero;
-        closeTxtRT.offsetMax = Vector2.zero;
-
-        // Action du bouton
-        closeBtn.onClick.AddListener(() =>
-        {
-            if (popupRoot != null)
-            {
-                UnityEngine.Object.Destroy(popupRoot);
-            }
-            if (popupGO == popupRoot)
-            {
-                popupGO = null;
-            }
-        });
-        }*/
-
+    
     private static void CreateCloseButton(Transform parent, GameObject popupRoot)
 {
     GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
@@ -529,8 +474,8 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     closeRT.anchorMin = new Vector2(1, 1);
     closeRT.anchorMax = new Vector2(1, 1);
     closeRT.pivot = new Vector2(1, 1);
-    closeRT.sizeDelta = new Vector2(30, 30);
-    closeRT.anchoredPosition = new Vector2(-10, -10);
+    closeRT.sizeDelta = new Vector2(80, 80);
+    closeRT.anchoredPosition = new Vector2(-20, -20);
 
     // Image d'abord
     Image closeImg = closeBtnGO.AddComponent<Image>();
