@@ -9,6 +9,9 @@ public static class GenerateStylishUIPrefabs
     private const string SpritePath = "Assets/UI/Sprites/RoundedRect_128x64.png";
     private const string PrefabFolder = "Assets/Prefabs/UI";
     private const string MontserratPath = "Assets/Resources/Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
+    private const string SpritePathPlay = "Assets/UI/Sprites/Play.png";
+    private const string SpritePathPause = "Assets/UI/Sprites/Pause.png";
+
     [MenuItem("Tools/UI/Generate Stylish UI Prefabs")]
     public static void Generate()
     {
@@ -16,13 +19,16 @@ public static class GenerateStylishUIPrefabs
         SetupRoundedSprite();
 
         var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePath);
+        var circleSprite = EditorGUIUtility.Load("UI/Skin/Knob.psd") as Sprite;
+
+
         var font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(MontserratPath);
         if (font == null)
         {
             font = TMP_Settings.defaultFontAsset;
         }
 
-        CreatePlayPauseButton(sprite, font);
+        CreatePlayPauseButton(circleSprite, font);
         CreatePlaylistItemButton(sprite, font);
 
         AssetDatabase.SaveAssets();
@@ -61,45 +67,66 @@ public static class GenerateStylishUIPrefabs
         importer.SaveAndReimport();
     }
 
-    private static void CreatePlayPauseButton(Sprite sprite, TMP_FontAsset font)
+    private static void CreatePlayPauseButton(Sprite circleSprite, TMP_FontAsset font)
     {
         var root = new GameObject("PlayPauseButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button), typeof(LayoutElement));
         var rt = root.GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(140, 44);
 
         var image = root.GetComponent<Image>();
-        image.sprite = sprite;
-        image.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
-        image.color = new Color(0.18f, 0.69f, 0.68f, 1f); // teal
+        image.sprite = circleSprite;
+        //image.type = Image.Type.Sliced; // ou Simple si ton cercle n’a pas de border
+
+        image.type = Image.Type.Simple;
+        image.color = new Color(0.96f, 0.92f, 0.84f, 0f);
+
+
+        var icon = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        icon.transform.SetParent(root.transform, false);
+
+        var iconRt = icon.GetComponent<RectTransform>();
+        iconRt.anchorMin = new Vector2(0.5f, 0.5f);
+        iconRt.anchorMax = new Vector2(0.5f, 0.5f);
+        iconRt.sizeDelta = new Vector2(250, 200);
+        iconRt.anchoredPosition = Vector2.zero;
+
+        var iconImg = icon.GetComponent<Image>();
+        iconImg.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePathPlay);//récupérer via resource ;
 
         var button = root.GetComponent<Button>();
         button.transition = Selectable.Transition.ColorTint;
         var colors = button.colors;
-        colors.normalColor = image.color;
-        colors.highlightedColor = new Color(0.21f, 0.78f, 0.76f, 1f);
-        colors.pressedColor = new Color(0.14f, 0.56f, 0.55f, 1f);
-        colors.selectedColor = colors.highlightedColor;
-        colors.colorMultiplier = 1f;
+        colors.normalColor = new Color(1,1,1,0);      // transparent
+        colors.highlightedColor = new Color(1,1,1,0); // transparent
+        colors.pressedColor = new Color(1,1,1,0);     // transparent
+        colors.selectedColor = new Color(1,1,1,0);    // transparent
         button.colors = colors;
+
 
         var layout = root.GetComponent<LayoutElement>();
         layout.preferredWidth = 140f;
         layout.preferredHeight = 44f;
 
-        var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        var musicButton = root.AddComponent<MusicButton>();
+        musicButton.icon = iconImg;
+        musicButton.playSprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePathPlay);
+        musicButton.pauseSprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePathPause);
+        Debug.Log("Attribution des sprites");
+
+        /*var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
         label.transform.SetParent(root.transform, false);
         var labelRt = label.GetComponent<RectTransform>();
         labelRt.anchorMin = Vector2.zero;
         labelRt.anchorMax = Vector2.one;
         labelRt.offsetMin = new Vector2(12, 6);
-        labelRt.offsetMax = new Vector2(-12, -6);
+        labelRt.offsetMax = new Vector2(-12, -6);*/
 
-        var tmp = label.GetComponent<TextMeshProUGUI>();
+        /*var tmp = label.GetComponent<TextMeshProUGUI>();
         tmp.text = "Jouer";
         tmp.font = font;
         tmp.fontSize = 18f;
         tmp.color = Color.white;
-        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.alignment = TextAlignmentOptions.Center;*/
 
         var path = Path.Combine(PrefabFolder, "PlayPauseButton.prefab").Replace("\\", "/");
         PrefabUtility.SaveAsPrefabAsset(root, path);
