@@ -29,9 +29,7 @@ public class PlayerCollision : MonoBehaviour
     private void HandleHit(GameObject other)
     {
         string tag = other.tag;
-        Debug.Log("Collision avec " + tag);
 
-        // On ne traite que obstacle, bonus ou pulser
         if (tag != "obstacle" && tag != "Bonus" && tag != "pulser") return;
 
         if (player == null)
