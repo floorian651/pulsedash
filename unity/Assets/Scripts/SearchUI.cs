@@ -171,11 +171,22 @@ private void OnSearchSubmit(string nomTape)
                 source.clip = clip;
             }
 
-            Context?.SetSliderVisible(true);
-            Context?.SetPlayPauseVisible(true);
-            Context?.SetMessage(clip.name);
+            if (Context != null)
+            {
+                Context.SetSliderVisible(true);
+                Context.SetPlayPauseVisible(true);
+            }
 
             PopupManager.Show("Musique sélectionnée : " + clip.name);
+
+            if (Context != null && Context.MessageText != null)
+            {
+                Context.SetMessage(clip.name);
+            }
+            else
+            {
+                Debug.LogError("messageText n'est pas encore initialisé");
+            }
         });
     }
 }
