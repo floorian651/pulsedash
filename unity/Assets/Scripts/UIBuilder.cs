@@ -294,7 +294,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         le.preferredHeight = 64;
 
         Image bg = go.AddComponent<Image>();
-        bg.color = new Color32(240, 240, 240, 255);
+        bg.color = new Color32(17, 17, 17, 255);
         //bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
@@ -320,7 +320,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
         TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
         text.fontSize = 20;
-        text.color = new Color32(50, 50, 50, 255);
+        text.color = new Color32(240, 240, 240, 255);
         text.alignment = TextAlignmentOptions.MidlineLeft;
         text.enableWordWrapping = false;
         text.extraPadding = true;

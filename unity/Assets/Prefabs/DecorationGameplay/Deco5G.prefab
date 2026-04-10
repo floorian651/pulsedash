@@ -2298,7 +2298,7 @@ GameObject:
   - component: {fileID: 2442016114140305768}
   m_Layer: 0
   m_Name: Deco5G
-  m_TagString: Untagged
+  m_TagString: Deco
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

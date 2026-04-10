@@ -6,6 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
+    private float distanceDestruction = 40f; // distance derrière le joueur avant destruction
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
@@ -39,6 +40,30 @@ public class GenerateurNiveau : MonoBehaviour
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+
+    
+
+    void Update()
+    {
+        if (player == null) return;
+
+        float limiteZ = player.transform.position.z - distanceDestruction;
+
+        // On parcourt les enfants du générateur
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+
+            // On ne détruit que les décos (pas le sol, pas les obstacles)
+            if (child.CompareTag("Deco"))
+            {
+                if (child.position.z < limiteZ)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
 
     public float GetMusicDuration()
     {
