@@ -239,4 +239,84 @@ public static class GenerateStylishUIPrefabs
         PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
     }
+    private static void CreateMusicItemPrefab(Sprite sprite, TMP_FontAsset font)
+{
+    // Racine
+    var root = new GameObject("MusicItem", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
+    var rt = root.GetComponent<RectTransform>();
+    rt.sizeDelta = new Vector2(260, 48);
+
+    var bg = root.GetComponent<Image>();
+    bg.sprite = sprite;
+    bg.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+    bg.color = new Color(0.93f, 0.95f, 0.98f, 1f);
+
+    var layout = root.GetComponent<LayoutElement>();
+    layout.preferredWidth = 260f;
+    layout.preferredHeight = 48f;
+
+    // --- LABEL ---
+    var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+    label.transform.SetParent(root.transform, false);
+
+    var labelRt = label.GetComponent<RectTransform>();
+    labelRt.anchorMin = new Vector2(0f, 0f);
+    labelRt.anchorMax = new Vector2(1f, 1f);
+    labelRt.offsetMin = new Vector2(16, 6);
+    labelRt.offsetMax = new Vector2(-50, -6);
+
+    var tmp = label.GetComponent<TextMeshProUGUI>();
+    tmp.text = "Titre musique";
+    tmp.font = font;
+    tmp.fontSize = 16f;
+    tmp.color = new Color(0.12f, 0.15f, 0.2f, 1f);
+    tmp.alignment = TextAlignmentOptions.MidlineLeft;
+    tmp.overflowMode = TextOverflowModes.Ellipsis;
+
+    // --- BOUTON PLAY ---
+    var playBtnGO = new GameObject("PlayButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+    playBtnGO.transform.SetParent(root.transform, false);
+
+    var playRt = playBtnGO.GetComponent<RectTransform>();
+    playRt.anchorMin = new Vector2(1f, 0.5f);
+    playRt.anchorMax = new Vector2(1f, 0.5f);
+    playRt.pivot = new Vector2(1f, 0.5f);
+    playRt.sizeDelta = new Vector2(32, 32);
+    playRt.anchoredPosition = new Vector2(-10, 0);
+
+    var playImg = playBtnGO.GetComponent<Image>();
+    playImg.color = new Color(0.2f, 0.35f, 0.6f, 1f); // bleu foncé
+
+    var playBtn = playBtnGO.GetComponent<Button>();
+    playBtn.transition = Selectable.Transition.ColorTint;
+
+    var colors = playBtn.colors;
+    colors.normalColor = playImg.color;
+    colors.highlightedColor = new Color(0.25f, 0.45f, 0.75f, 1f);
+    colors.pressedColor = new Color(0.15f, 0.25f, 0.45f, 1f);
+    playBtn.colors = colors;
+
+    // Icône "▶"
+    var playTxtGO = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+    playTxtGO.transform.SetParent(playBtnGO.transform, false);
+
+    var playTxt = playTxtGO.GetComponent<TextMeshProUGUI>();
+    playTxt.text = "▶";
+    playTxt.font = font;
+    playTxt.fontSize = 20f;
+    playTxt.color = Color.white;
+    playTxt.alignment = TextAlignmentOptions.Center;
+
+    var playTxtRt = playTxtGO.GetComponent<RectTransform>();
+    playTxtRt.anchorMin = Vector2.zero;
+    playTxtRt.anchorMax = Vector2.one;
+    playTxtRt.offsetMin = Vector2.zero;
+    playTxtRt.offsetMax = Vector2.zero;
+
+    // --- SAUVEGARDE PREFAB ---
+    var path = Path.Combine(PrefabFolder, "MusicItem.prefab").Replace("\\", "/");
+    PrefabUtility.SaveAsPrefabAsset(root, path);
+    Object.DestroyImmediate(root);
+}
+
 }

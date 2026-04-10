@@ -24,6 +24,8 @@ public class SearchUI
         SearchUI ui = new SearchUI();
         ui.resultsContainer = scroll;
         ui.Context = context;
+        //searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
+
 
         searchBar.onValueChanged.AddListener(ui.OnSearch);
 
@@ -121,4 +123,66 @@ public class SearchUI
         addTxt.fontSize = 20;
     }
 }
+
+// Pour l'utiliser il faut créer un prefab avec plusieurs attribut (titre, bouton play, ajouter à une playlist, etc) 
+//BEAUCOUP à MODIFIER
+
+private void OnSearchSubmit(string nomTape)
+{
+    // Nettoyer le container CenterRight
+    foreach (Transform child in resultsContainer)
+        Object.Destroy(child.gameObject);
+
+    if (string.IsNullOrWhiteSpace(nomTape))
+        return;
+
+    nomTape = nomTape.ToLower();
+
+    var resultats = musiques
+        .Where(c => c.name.ToLower().Contains(nomTape))
+        .ToList();
+
+    foreach (var clip in resultats)
+    {
+        // Créer un item dans le container CenterRight
+        GameObject item = Object.Instantiate(MusicItemPrefab, resultsContainer);
+
+        // Mettre le nom de la musique
+        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+        if (txt != null)
+            txt.text = clip.name;
+
+        // Récupérer le bouton Play du prefab
+        Transform playButtonTransform = item.transform.Find("PlayButton");
+        if (playButtonTransform == null)
+        {
+            Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
+            continue;
+        }
+
+        Button playButton = playButtonTransform.GetComponent<Button>();
+
+        // Ajouter l'action Play
+        playButton.onClick.AddListener(() =>
+        {
+            if (Context != null && Context.TryGetAudioSource(out AudioSource source))
+            {
+                source.clip = clip;
+            }
+
+            Context?.SetSliderVisible(true);
+            Context?.SetPlayPauseVisible(true);
+            Context?.SetMessage(clip.name);
+
+            PopupManager.Show("Musique sélectionnée : " + clip.name);
+        });
+    }
+}
+
+
+public void SetResultsContainer(Transform container)
+    {
+        this.resultsContainer = container;
+    }
+
 }
