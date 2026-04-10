@@ -819,6 +819,7 @@ MonoBehaviour:
   playlistItemPrefab: {fileID: 4348915361711006122, guid: b1d7d4350022ec046951544119155968, type: 3}
   launchGameButtonPrefab: {fileID: 1483478919661330273, guid: d9868e98efcdd624985fdee66143c756, type: 3}
   averageButtonPrefab: {fileID: 1483478919661330273, guid: 59c94351a225f394c895c4a4855a9a94, type: 3}
+  overlayEffect: {fileID: 0}
 --- !u!4 &2117924043
 Transform:
   m_ObjectHideFlags: 0
