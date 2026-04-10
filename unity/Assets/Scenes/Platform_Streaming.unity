@@ -590,6 +590,56 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &705027674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705027676}
+  - component: {fileID: 705027675}
+  m_Layer: 0
+  m_Name: PanelMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &705027675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab70bb5895a610a41b90253209ddafd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PanelMenu
+  audioCache: {fileID: 817960020}
+  sliderPrefab: {fileID: 6644658377896688612, guid: 216f12ab09e2d2c498abfc04dcc18e9d, type: 3}
+  playPauseButtonPrefab: {fileID: 1483478919661330273, guid: 98d05ffb5857ba04fa6f3fdbf66de9ce, type: 3}
+  playlistItemPrefab: {fileID: 4348915361711006122, guid: b1d7d4350022ec046951544119155968, type: 3}
+  launchGameButtonPrefab: {fileID: 1483478919661330273, guid: d9868e98efcdd624985fdee66143c756, type: 3}
+  averageButtonPrefab: {fileID: 1483478919661330273, guid: 59c94351a225f394c895c4a4855a9a94, type: 3}
+--- !u!4 &705027676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 562.10406, y: 272.0522, z: 619.74396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &782858679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,7 +1170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2117924042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,3 +1220,4 @@ SceneRoots:
   - {fileID: 540940294}
   - {fileID: 1485912758}
   - {fileID: 98384348}
+  - {fileID: 705027676}

@@ -12,6 +12,7 @@ public class SearchUI
     private Transform resultsContainer;
 
     private GameObject playlistItemPrefab;
+    private GameObject musicItemPrefab;
 
     public static SearchUI Create(Transform parent, Context context)
     {
@@ -145,7 +146,7 @@ private void OnSearchSubmit(string nomTape)
     foreach (var clip in resultats)
     {
         // Créer un item dans le container CenterRight
-        GameObject item = Object.Instantiate(MusicItemPrefab, resultsContainer);
+        GameObject item = Object.Instantiate(musicItemPrefab, resultsContainer);
 
         // Mettre le nom de la musique
         TMP_Text txt = item.GetComponentInChildren<TMP_Text>();

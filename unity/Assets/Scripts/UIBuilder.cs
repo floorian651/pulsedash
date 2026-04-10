@@ -281,19 +281,21 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         go.transform.SetParent(parent, false);
 
         RectTransform rt = go.GetComponent<RectTransform>();
-
-        rt.sizeDelta = new Vector2(500, 40);
+        rt.sizeDelta = new Vector2(600, 64);
         rt.anchorMin = new Vector2(0, 1);
         rt.anchorMax = new Vector2(0, 1);
         rt.pivot = new Vector2(0, 1);
-        rt.anchoredPosition = Vector2.zero;
+        rt.anchoredPosition = new Vector2(20, -10);
+        //rt.anchoredPosition = Vector2.zero;
 
         LayoutElement le = go.AddComponent<LayoutElement>();
         le.preferredWidth = 500;
-        le.preferredHeight = 40;
+        //le.preferredHeight = 40;
+        le.preferredHeight = 64;
 
         Image bg = go.AddComponent<Image>();
-        bg.color = new Color32(255, 255, 255, 120);   //transparent
+        bg.color = new Color32(240, 240, 240, 255);
+        //bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
 
@@ -304,19 +306,25 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         RectTransform textAreaRT = textAreaGO.GetComponent<RectTransform>();
         textAreaRT.anchorMin = Vector2.zero;
         textAreaRT.anchorMax = Vector2.one;
-        textAreaRT.offsetMin = new Vector2(8, 2);
-        textAreaRT.offsetMax = new Vector2(-8, -2);
-
+        // Padding plus léger pour éviter le clipping vertical
+        textAreaRT.offsetMin = new Vector2(14, 6);
+        textAreaRT.offsetMax = new Vector2(-14, -6);
+        
         textAreaGO.AddComponent<RectMask2D>();
+
+        input.textViewport = textAreaRT;
 
         // Texte principal
         GameObject textGO = new GameObject("Text", typeof(RectTransform));
         textGO.transform.SetParent(textAreaGO.transform, false);
 
         TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
-        text.fontSize = 15;
+        text.fontSize = 20;
         text.color = new Color32(50, 50, 50, 255);
         text.alignment = TextAlignmentOptions.MidlineLeft;
+        text.enableWordWrapping = false;
+        text.extraPadding = true;
+
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
         textRT.anchorMin = Vector2.zero;
@@ -332,10 +340,14 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
         TMP_Text placeholder = placeholderGO.AddComponent<TextMeshProUGUI>();
         placeholder.text = "Rechercher...";
-        placeholder.fontSize = 15;
-        placeholder.color = new Color32(50, 50, 50, 255); //gris clair
+        placeholder.fontSize = 20;
+        placeholder.color = new Color32(120, 120, 120, 255);
+        //placeholder.color = new Color32(50, 50, 50, 255); //gris clair
 
         placeholder.alignment = TextAlignmentOptions.MidlineLeft;
+        placeholder.enableWordWrapping = false;
+        placeholder.extraPadding = true;
+
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
         phRT.anchorMin = Vector2.zero;
