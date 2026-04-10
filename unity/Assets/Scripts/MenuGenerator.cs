@@ -109,7 +109,7 @@ public class MenuGenerator : MonoBehaviour
             Debug.Log(SessionData.Instance.titre);
         }
 
-        sceneloader.LoadSceneByName("GameplaySceneLocal"); // Remplacer par GameplayScene 
+        sceneloader.LoadSceneByName("PlayerScene"); // Remplacer par GameplayScene 
     }); 
 
     }
