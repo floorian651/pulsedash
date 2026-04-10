@@ -15,7 +15,6 @@ public class MenuGenerator : MonoBehaviour
     public GameObject playlistItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
-    [SerializeField] private OverlayEffect overlayEffect;
     
     void Start()
     {   
@@ -108,12 +107,7 @@ public class MenuGenerator : MonoBehaviour
             Debug.Log(SessionData.Instance.titre);
         }
 
-        sceneloader.LoadSceneByName("PlayerScene"); // Remplacer par GameplayScene 
-        if (overlayEffect != null)
-        {
-            Debug.Log("J'affiche du rouge");
-            overlayEffect.Flash(new Color(1, 0, 0, 0.4f));  // rouge
-        }
+        sceneloader.LoadSceneByName("PlayerScene"); // Remplacer par GameplayScene
     }); 
 
     }
