@@ -647,6 +647,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CalqueCommandes
   displayDuration: 3
   fadeDuration: 1
+  screenRatio: 0.9
+  gapRatio: 0.1
 --- !u!1 &838685293
 GameObject:
   m_ObjectHideFlags: 0
