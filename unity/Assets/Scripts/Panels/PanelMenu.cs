@@ -76,7 +76,7 @@ public class PanelMenu : MonoBehaviour
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
     if (sceneloader != null)
     {
-        GameObject launchGameGO = Instantiate(launchGameButtonPrefab, leftContainer);
+        GameObject launchGameGO = Instantiate(launchGameButtonPrefab, bottomBar);
         Button launchGameBtn = launchGameGO.GetComponent<Button>();
 
         launchGameBtn.onClick.AddListener(() =>

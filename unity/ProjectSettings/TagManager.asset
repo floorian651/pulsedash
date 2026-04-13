@@ -10,6 +10,7 @@ TagManager:
   - Bonus
   - AverageButton
   - Deco
+  - LaunchGameButton
   layers:
   - Default
   - TransparentFX

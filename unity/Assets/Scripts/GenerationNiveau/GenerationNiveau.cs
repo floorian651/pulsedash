@@ -6,7 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
-    private float distanceDestruction = 40f; // distance derrière le joueur avant destruction
+    private float distanceDestruction = 20f; // distance derrière le joueur avant destruction
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
