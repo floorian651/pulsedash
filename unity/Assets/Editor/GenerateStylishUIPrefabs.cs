@@ -93,6 +93,7 @@ public static class GenerateStylishUIPrefabs
 
         var iconImg = icon.GetComponent<Image>();
         iconImg.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePathPlay);//récupérer via resource ;
+        iconImg.color = Color.white;
 
         var button = root.GetComponent<Button>();
         button.transition = Selectable.Transition.ColorTint;

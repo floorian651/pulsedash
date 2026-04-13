@@ -148,7 +148,7 @@ public static Transform CreateBottomAudioBar(Transform parent, float height = 80
 
     // Fond léger (optionnel)
     Image bg = bottomGO.AddComponent<Image>();
-    bg.color = new Color32(0x20, 0x20, 0x20, 0x80); // semi-transparent
+    bg.color = new Color32(0,0,0,255); // noir
 
     return bottomGO.transform;
 }

@@ -41,6 +41,7 @@ public class MusicButton : MonoBehaviour
 
         // Sprite initial
         icon.sprite = playSprite;
+        icon.color = Color.white;
 
         // Ajouter l'action
         btn.onClick.AddListener(ToggleMusic);
@@ -61,6 +62,7 @@ public class MusicButton : MonoBehaviour
 
         // Mettre à jour l'icône selon l'état
         icon.sprite = source.isPlaying ? pauseSprite : playSprite;
+        icon.color = Color.white;
 
         // Cacher le bouton à la fin de la musique (pas en pause)
         if (source.clip != null && !source.isPlaying && source.time >= source.clip.length - 0.01f)
