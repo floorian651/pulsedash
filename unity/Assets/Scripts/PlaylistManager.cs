@@ -19,11 +19,16 @@ public class PlaylistManager : MonoBehaviour
 
 
 
+    void Awake()
+    {
+        // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
+        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
+        LoadPlaylists();
+    }
+
     void Start()
     {
         Debug.Log("PlaylistManager peut start!");
-        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
-        LoadPlaylists();
     }
 
     private bool TryGetAudioSource(out AudioSource source)

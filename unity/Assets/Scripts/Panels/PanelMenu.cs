@@ -30,10 +30,9 @@ public class PanelMenu : MonoBehaviour
         {
             Context = gameObject.AddComponent<Context>();
         }
-        // Important: enregistrer l'AudioSource dans le Context pour que MusicButton puisse le trouver
+        // Enregistrer l'AudioSource dans le Context pour que MusicButton puisse le trouver
         Context.Initialize(audioSource, null);
 
-        //StartCoroutine(InitMenu());
         InitMenu();
     }
 
@@ -98,7 +97,7 @@ public class PanelMenu : MonoBehaviour
         });
     }
 
-    // TOP BAR (recherche)
+    // TOP BAR (barre de recherche)
     Transform topBar = UIBuilder.CreateTopBar(panel);
 
     // CHARGEMENT MUSIQUES
@@ -111,7 +110,7 @@ public class PanelMenu : MonoBehaviour
         pm.LoadPlaylists();
     }
 
-    // PLAYLISTS À GAUCHE
+        // PLAYLISTS À GAUCHE
     
     PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, playlistName =>
     {
@@ -126,12 +125,7 @@ public class PanelMenu : MonoBehaviour
             });
         }
     });
-
-    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
-    {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
-    });
-
+    
 
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
@@ -139,6 +133,12 @@ public class PanelMenu : MonoBehaviour
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);
+
+
+    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+    {
+        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
+    });
 }
 
    
