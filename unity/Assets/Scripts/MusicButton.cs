@@ -16,6 +16,23 @@ public class MusicButton : MonoBehaviour
     {
         Context = Object.FindObjectOfType<Context>();
 
+        if (icon == null)
+        {
+            icon = GetComponentInChildren<Image>();
+        }
+        if (icon == null)
+        {
+            Debug.LogError("MusicButton: Image 'icon' manquante.");
+            return;
+        }
+
+        Button btn = GetComponent<Button>();
+        if (btn == null)
+        {
+            Debug.LogError("MusicButton: composant Button manquant sur le prefab.");
+            return;
+        }
+
         // Récupérer le texte du bouton
         //texteBouton = GetComponentInChildren<TMP_Text>();
 
@@ -26,7 +43,7 @@ public class MusicButton : MonoBehaviour
         icon.sprite = playSprite;
 
         // Ajouter l'action
-        GetComponent<Button>().onClick.AddListener(ToggleMusic);
+        btn.onClick.AddListener(ToggleMusic);
     }
 
     void Update()

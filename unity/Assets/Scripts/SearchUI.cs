@@ -25,18 +25,18 @@ public class SearchUI
         SearchUI ui = new SearchUI();
         ui.resultsContainer = scroll;
         ui.Context = context;
-        //searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
-
-
-        searchBar.onValueChanged.AddListener(ui.OnSearch);
+        // Soumission (Entrée) pour l'affichage long
+        searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
+        //searchBar.onValueChanged.AddListener(ui.OnSearch); il faudra le remettre pour MenuGenerator
 
         return ui;
     }
 
-    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab)
     {
         musiques = clips;
         this.playlistItemPrefab = playlistItemPrefab;
+        this.musicItemPrefab = musicItemPrefab;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
@@ -143,6 +143,12 @@ private void OnSearchSubmit(string nomTape)
         .Where(c => c.name.ToLower().Contains(nomTape))
         .ToList();
 
+    if (musicItemPrefab == null)
+    {
+        Debug.LogError("musicItemPrefab n'est pas assigné dans SearchUI.Init()");
+        return;
+    }
+
     foreach (var clip in resultats)
     {
         // Créer un item dans le container CenterRight
@@ -152,6 +158,20 @@ private void OnSearchSubmit(string nomTape)
         TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
         if (txt != null)
             txt.text = clip.name;
+
+        // Ajuster la taille: plus long et plus fin
+        RectTransform itemRT = item.GetComponent<RectTransform>();
+        if (itemRT != null)
+        {
+            itemRT.sizeDelta = new Vector2(420, 30);
+        }
+        LayoutElement itemLE = item.GetComponent<LayoutElement>();
+        if (itemLE == null)
+        {
+            itemLE = item.AddComponent<LayoutElement>();
+        }
+        itemLE.preferredWidth = 420;
+        itemLE.preferredHeight = 30;
 
         // Récupérer le bouton Play du prefab
         Transform playButtonTransform = item.transform.Find("PlayButton");
@@ -179,14 +199,7 @@ private void OnSearchSubmit(string nomTape)
 
             PopupManager.Show("Musique sélectionnée : " + clip.name);
 
-            if (Context != null && Context.MessageText != null)
-            {
-                Context.SetMessage(clip.name);
-            }
-            else
-            {
-                Debug.LogError("messageText n'est pas encore initialisé");
-            }
+            
         });
     }
 }

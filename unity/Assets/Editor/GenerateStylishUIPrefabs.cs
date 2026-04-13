@@ -245,16 +245,17 @@ public static class GenerateStylishUIPrefabs
         // Racine
         var root = new GameObject("MusicItem", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
         var rt = root.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(260, 48);
+
+        rt.sizeDelta = new Vector2(380, 32);
+
+        var layout = root.GetComponent<LayoutElement>();
+        layout.preferredWidth = 380f;
+        layout.preferredHeight = 32f;
 
         var bg = root.GetComponent<Image>();
         bg.sprite = sprite;
         bg.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
         bg.color = new Color(0.93f, 0.95f, 0.98f, 1f);
-
-        var layout = root.GetComponent<LayoutElement>();
-        layout.preferredWidth = 260f;
-        layout.preferredHeight = 48f;
 
         // --- LABEL ---
         var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
@@ -263,8 +264,8 @@ public static class GenerateStylishUIPrefabs
         var labelRt = label.GetComponent<RectTransform>();
         labelRt.anchorMin = new Vector2(0f, 0f);
         labelRt.anchorMax = new Vector2(1f, 1f);
-        labelRt.offsetMin = new Vector2(16, 6);
-        labelRt.offsetMax = new Vector2(-50, -6);
+        labelRt.offsetMin = new Vector2(16, 4);
+        labelRt.offsetMax = new Vector2(-60, -4);
 
         var tmp = label.GetComponent<TextMeshProUGUI>();
         tmp.text = "Titre musique";
@@ -279,11 +280,11 @@ public static class GenerateStylishUIPrefabs
         playBtnGO.transform.SetParent(root.transform, false);
 
         var playRt = playBtnGO.GetComponent<RectTransform>();
+        playRt.sizeDelta = new Vector2(40, 20); // plus fin
+        playRt.anchoredPosition = new Vector2(-10, 0);
         playRt.anchorMin = new Vector2(1f, 0.5f);
         playRt.anchorMax = new Vector2(1f, 0.5f);
         playRt.pivot = new Vector2(1f, 0.5f);
-        playRt.sizeDelta = new Vector2(32, 32);
-        playRt.anchoredPosition = new Vector2(-10, 0);
 
         var playImg = playBtnGO.GetComponent<Image>();
         playImg.color = new Color(0.2f, 0.35f, 0.6f, 1f); // bleu foncé
@@ -304,7 +305,7 @@ public static class GenerateStylishUIPrefabs
         var playTxt = playTxtGO.GetComponent<TextMeshProUGUI>();
         playTxt.text = "▶";
         playTxt.font = font;
-        playTxt.fontSize = 20f;
+        playTxt.fontSize = 16f;
         playTxt.color = Color.white;
         playTxt.alignment = TextAlignmentOptions.Center;
 

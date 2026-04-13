@@ -13,6 +13,7 @@ public class PanelMenu : MonoBehaviour
 
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
+    public GameObject musicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
 
@@ -29,6 +30,8 @@ public class PanelMenu : MonoBehaviour
         {
             Context = gameObject.AddComponent<Context>();
         }
+        // Important: enregistrer l'AudioSource dans le Context pour que MusicButton puisse le trouver
+        Context.Initialize(audioSource, null);
 
         //StartCoroutine(InitMenu());
         InitMenu();
@@ -70,10 +73,6 @@ public class PanelMenu : MonoBehaviour
     Context.SetPlayPauseButton(playPauseGO);
     playPauseGO.SetActive(false);
 
-    // TEXTE CENTRAL
-    TextMeshProUGUI messageText = UIBuilder.CreerTexte(centerRightContainer);
-    Context.Initialize(audioSource, messageText);
-
     // BOUTON LANCER LE JEU
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
     if (sceneloader != null)
@@ -105,12 +104,15 @@ public class PanelMenu : MonoBehaviour
     // CHARGEMENT MUSIQUES
     audioCache.LoadAllMusicTestUtilisateur();
 
-    // PLAYLISTS À GAUCHE
-    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+    // S'assurer que les playlists sont chargées avant d'afficher les boutons
+    PlaylistManager pm = FindObjectOfType<PlaylistManager>();
+    if (pm != null)
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
-    });
+        pm.LoadPlaylists();
+    }
 
+    // PLAYLISTS À GAUCHE
+    
     PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, playlistName =>
     {
         PlaylistManager pm = FindObjectOfType<PlaylistManager>();
@@ -125,9 +127,15 @@ public class PanelMenu : MonoBehaviour
         }
     });
 
+    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+    {
+        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
+    });
+
+
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab);
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);
