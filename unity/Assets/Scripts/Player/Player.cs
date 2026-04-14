@@ -42,12 +42,7 @@ public class Player : MonoBehaviour
 
         if (overlayEffect != null)
         {
-            Debug.Log("J'affiche du rouge");
             overlayEffect.Flash(new Color(1, 0, 0, 0.4f));  // rouge
-        }
-        else
-        {
-            Debug.Log("Je n'affiche pas de rouge");
         }
     }
 
@@ -62,10 +57,10 @@ public class Player : MonoBehaviour
 
         energyBar.SetEnergy(energy);
 
-        // if (overlayEffect != null)
-        // {
-        //     overlayEffect.Flash(new Color(0, 1, 0, 0.4f));  // vert
-        // }
+        if (overlayEffect != null)
+        {
+            overlayEffect.Flash(new Color(0, 1, 0, 0.4f));  // vert
+        }
     }
 
     
