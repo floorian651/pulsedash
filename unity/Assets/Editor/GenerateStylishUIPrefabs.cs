@@ -341,6 +341,49 @@ public static class GenerateStylishUIPrefabs
         playTxtRt.offsetMin = Vector2.zero;
         playTxtRt.offsetMax = Vector2.zero;
 
+
+        // --- BOUTON AJOUTER À PLAYLIST ---
+        var addBtnGO = new GameObject("AddToPlaylistButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+        addBtnGO.transform.SetParent(root.transform, false);
+
+        // Position du bouton (à droite du bouton Play)
+        var addRt = addBtnGO.GetComponent<RectTransform>();
+        addRt.sizeDelta = new Vector2(40, 20);
+        addRt.anchorMin = new Vector2(1f, 0.5f);
+        addRt.anchorMax = new Vector2(1f, 0.5f);
+        addRt.pivot = new Vector2(1f, 0.5f);
+        addRt.anchoredPosition = new Vector2(-55, 0); // décalé à gauche du bouton Play
+
+        // Style du bouton
+        var addImg = addBtnGO.GetComponent<Image>();
+        addImg.color = new Color(0.35f, 0.6f, 0.2f, 1f); // vert foncé
+
+        var addBtn = addBtnGO.GetComponent<Button>();
+        addBtn.transition = Selectable.Transition.ColorTint;
+
+        var addColors = addBtn.colors;
+        addColors.normalColor = addImg.color;
+        addColors.highlightedColor = new Color(0.45f, 0.75f, 0.3f, 1f);
+        addColors.pressedColor = new Color(0.25f, 0.45f, 0.2f, 1f);
+        addBtn.colors = addColors;
+
+        // Icône "+"
+        var addTxtGO = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        addTxtGO.transform.SetParent(addBtnGO.transform, false);
+
+        var addTxt = addTxtGO.GetComponent<TextMeshProUGUI>();
+        addTxt.text = "+";
+        addTxt.font = font;
+        addTxt.fontSize = 18f;
+        addTxt.color = Color.white;
+        addTxt.alignment = TextAlignmentOptions.Center;
+
+        var addTxtRt = addTxtGO.GetComponent<RectTransform>();
+        addTxtRt.anchorMin = Vector2.zero;
+        addTxtRt.anchorMax = Vector2.one;
+        addTxtRt.offsetMin = Vector2.zero;
+        addTxtRt.offsetMax = Vector2.zero;
+
         // --- SAUVEGARDE PREFAB ---
         var path = Path.Combine(PrefabFolder, "MusicItem.prefab").Replace("\\", "/");
         PrefabUtility.SaveAsPrefabAsset(root, path);

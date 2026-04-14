@@ -159,7 +159,6 @@ private void OnSearchSubmit(string nomTape)
         if (txt != null)
             txt.text = clip.name;
 
-        // Ajuster l'ancrage et la taille pour rester dans le canvas
         RectTransform itemRT = item.GetComponent<RectTransform>();
         if (itemRT != null)
         {
@@ -176,6 +175,17 @@ private void OnSearchSubmit(string nomTape)
         itemLE.preferredWidth = -1;
         itemLE.preferredHeight = 48; // ou 64 selon ton UI
 
+
+        // Récupérer le bouton + du prefab
+        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
+        if (addButtonTransform != null)
+        {
+            Button addButton = addButtonTransform.GetComponent<Button>();
+            addButton.onClick.AddListener(() =>
+            {
+                PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
+            });
+        }
 
         // Récupérer le bouton Play du prefab
         Transform playButtonTransform = item.transform.Find("PlayButton");
