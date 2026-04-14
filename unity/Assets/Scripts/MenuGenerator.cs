@@ -15,8 +15,6 @@ public class MenuGenerator : MonoBehaviour
     public GameObject playlistItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
-
-
     
     void Start()
     {   
@@ -109,7 +107,7 @@ public class MenuGenerator : MonoBehaviour
             Debug.Log(SessionData.Instance.titre);
         }
 
-        sceneloader.LoadSceneByName("GameplaySceneLocal"); // Remplacer par GameplayScene 
+        sceneloader.LoadSceneByName("PlayerScene"); // Remplacer par GameplayScene
     }); 
 
     }

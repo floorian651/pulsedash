@@ -17,6 +17,16 @@ public class PlayerCollision : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.contacts.Length > 0)
+        {
+            Vector3 normal = collision.contacts[0].normal;
+
+            // Si la collision vient du dessus (le joueur tombe sur l'objet)
+            if (Vector3.Dot(normal, Vector3.up) > 0.5f)
+            {
+                return; // ignore la collision
+            }
+        }
         HandleHit(collision.gameObject);
     }
 
@@ -29,9 +39,7 @@ public class PlayerCollision : MonoBehaviour
     private void HandleHit(GameObject other)
     {
         string tag = other.tag;
-        Debug.Log("Collision avec " + tag);
 
-        // On ne traite que obstacle, bonus ou pulser
         if (tag != "obstacle" && tag != "Bonus" && tag != "pulser") return;
 
         if (player == null)
