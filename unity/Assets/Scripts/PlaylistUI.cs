@@ -47,7 +47,8 @@ public static class PlaylistUI
             PopupManager.Show("Playlist créée : " + playlistName);
         });
     }
-    public static void AfficherBoutonPlaylist(List<AudioClip> clips, Transform resultsContainer, GameObject playlistItemPrefab, Action<string> onClick, bool showActions = true)
+
+    public static void AfficherBoutonPlaylist(GameObject averageButtonPrefab, List<AudioClip> clips, Transform resultsContainer, Transform containerListeMusique, GameObject playlistItemPrefab, Action<string> onClick, bool showActions = true)
 {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
@@ -55,11 +56,12 @@ public static class PlaylistUI
         List<Playlist> toutesLesPlaylists = pm.playlists;
         
 
-    foreach (Transform child in resultsContainer)
+    foreach (Transform child in resultsContainer){
+
         if (!child.CompareTag("AverageButton") && !child.CompareTag("LaunchGameButton")){
             UnityEngine.Object.Destroy(child.gameObject);
             Debug.Log("Destroy childrend");
-        }
+        }}
         
 
     // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
@@ -134,6 +136,7 @@ public static class PlaylistUI
     moreTxtRT.offsetMin = Vector2.zero;
     moreTxtRT.offsetMax = Vector2.zero;
 
+    if (averageButtonPrefab != null){ 
     moreBtn.onClick.AddListener(() =>
     {
         PopupManager.ShowPlaylistActionsPopup(
@@ -142,7 +145,9 @@ public static class PlaylistUI
             {
                 Debug.Log("Lancer la playlist: " + playlist.name);
                 Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
-                pm.LancerPlaylist(track, clips, TracktoutesLesMusiques);
+
+                              
+                pm.LancerPlaylist(averageButtonPrefab, playlistItemPrefab, track, clips, TracktoutesLesMusiques, playlist.name, containerListeMusique); 
             },
             () =>
             {
@@ -156,13 +161,14 @@ public static class PlaylistUI
                     PopupManager.Show("Playlist introuvable");
                 }
 
-                AfficherBoutonPlaylist(clips, resultsContainer, playlistItemPrefab, onClick);
+                AfficherBoutonPlaylist(averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
             }
         );
     });
+    }
 }}}
-
-    public static void AfficherMusiquesParPlaylist(List<AudioClip> clips, string nomplaylist, Transform resultsContainer)
+    
+    public static void AfficherMusiquesParPlaylist(GameObject averageButtonPrefab, GameObject playlistItemPrefab, List<AudioClip> clips, string nomplaylist, Transform resultsContainer)
 {   
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
 
@@ -251,7 +257,8 @@ public static class PlaylistUI
 
         btn.onClick.AddListener(() =>
         {   
-            pm.LancerPlaylist(track, clips,TracktoutesLesMusiques);
+            
+            pm.LancerPlaylist(averageButtonPrefab, playlistItemPrefab, track, clips, TracktoutesLesMusiques, nomplaylist, resultsContainer);
          
         });
         // --- LISTENER DU BOUTON ENLEVER À PLAYLIST ---

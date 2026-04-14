@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI; //slider
 using System.Collections; // IEnumerator
 using TMPro;  // indispensable pour TextMeshProUGUI
@@ -149,3 +149,4 @@ public class MenuGenerator : MonoBehaviour
 
 }
 }
+*/

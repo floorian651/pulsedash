@@ -156,8 +156,10 @@ public class PlaylistManager : MonoBehaviour
         forcePrevious = true;
         stopCurrentTrack = true;
     }
-    public void LancerPlaylist( Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
-{
+    public void LancerPlaylist(GameObject averageButtonPrefab, GameObject playlistItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
+{   
+    UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistItemPrefab, clips, playlistName, centerRightContainer);
+
     if (trackactuel == null)
     {
         PopupManager.Show("Playlist vide");

@@ -119,9 +119,9 @@ public class PanelMenu : MonoBehaviour
         {
             pm.CreatePlaylist(playlistName);
 
-            PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+            PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistName =>
             {
-                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
+                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistItemPrefab, audioCache.clips, playlistName, centerRightContainer);
             });
         }
     });
@@ -135,9 +135,9 @@ public class PanelMenu : MonoBehaviour
     searchUI.SetResultsContainer(centerRightContainer);
 
 
-    PlaylistUI.AfficherBoutonPlaylist(audioCache.clips, leftContainer, playlistItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistName =>
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, audioCache.clips, playlistName, centerRightContainer);
+        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistItemPrefab, audioCache.clips, playlistName, centerRightContainer);
     });
 }
 
