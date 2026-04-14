@@ -6,6 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
+    private float distanceDestruction = 20f; // distance derrière le joueur avant destruction
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
@@ -25,6 +26,13 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel1;
     private float seuilLevel2;
     private float seuilLevel3;
+
+    private int compt = 0;
+
+    [SerializeField] private GameObject[] decosDroite;
+    [SerializeField] private GameObject[] decosGauche;
+
+
     public GameObject pulser;
 
    
@@ -34,6 +42,40 @@ public class GenerateurNiveau : MonoBehaviour
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
+
+    
+
+    void Update()
+    {
+        if (player == null) return;
+
+        int dureeMusique = (int)data.duration;
+        int tailleNiveau = (int)vitesse * dureeMusique;
+
+        // Générer la déco devant le joueur 
+        if((player.transform.position.z < tailleNiveau) && (compt>20)){
+            compt  = 0;
+            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);}
+        
+        compt  = compt +1;
+
+        float limiteZ = player.transform.position.z - distanceDestruction;
+
+        // On parcourt les enfants du générateur
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = transform.GetChild(i);
+
+            // On ne détruit que les décos (pas le sol, pas les obstacles)
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle"))
+            {
+                if (child.position.z < limiteZ)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
 
     public float GetMusicDuration()
     {
@@ -85,6 +127,8 @@ public class GenerateurNiveau : MonoBehaviour
         loadChunks();
 
         generatePulsers(analyse_rythme);
+
+        //generateDeco();
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -209,6 +253,34 @@ public class GenerateurNiveau : MonoBehaviour
             
             newPulser.transform.parent = this.transform;
         }
+    }
+
+    private void generateDeco(int positionD, int positionF){
+
+        int dureeMusique = (int)data.duration;
+        //int tailleNiveau = (int)vitesse * dureeMusique;
+
+        int indexD = Random.Range(0, decosDroite.Length);
+        int indexG = Random.Range(0, decosGauche.Length);
+            
+        GameObject decoRandomD = decosDroite[indexD];
+        GameObject decoRandomG = decosGauche[indexG];
+
+        //for (int i = 0; i < tailleNiveau; i += 5){
+        for (int i = positionD; i < positionF; i += 5){      
+            
+
+            Vector3 posD = decoRandomD.transform.position + new Vector3(0, groundHeight, i);
+            Vector3 posG = decoRandomG.transform.position+ new Vector3(0, groundHeight, i); ;
+
+            GameObject newDecoD = Instantiate(decoRandomD, posD,  decoRandomD.transform.rotation);
+            GameObject newDecoG = Instantiate(decoRandomG, posG,  decoRandomG.transform.rotation);
+            
+            newDecoD.transform.SetParent(this.transform, true);
+            newDecoG.transform.SetParent(this.transform, true);
+
+        }
+
     }
 
 

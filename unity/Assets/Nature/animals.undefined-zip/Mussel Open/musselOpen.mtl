@@ -1,0 +1,8 @@
+# Created by Kenney (www.kenney.nl)
+
+newmtl brownDarkest
+  Kd 0.05 0.02 0.01
+
+newmtl brownLight
+  Kd 0.98 0.65 0.37
+
