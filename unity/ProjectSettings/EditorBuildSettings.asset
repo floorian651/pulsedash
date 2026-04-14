@@ -21,8 +21,13 @@ EditorBuildSettings:
     path: Assets/Scenes/EnergyScene.unity
     guid: 492558d137a278e909abe20164654599
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/GameplaySceneLocal.unity
     guid: dd33de356ea22584f864971a696b39fb
+=======
+    path: Assets/Scenes/PlayerScene.unity
+    guid: 7d947fe6096392226bc7e0e59b672b16
+>>>>>>> e9b0854cd5d6c93477ed98150023b5014404cb68
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
