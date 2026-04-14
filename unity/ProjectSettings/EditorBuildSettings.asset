@@ -5,24 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/Platform_Streaming.unity
     guid: f7ae16e8a109afb4395aa542c9914a3e
   - enabled: 1
-    path: Assets/Scenes/Pulser_animated.unity
-    guid: 39cd53ada9dd2d14bb65f0b3cdd001d8
-  - enabled: 1
-    path: Assets/Scenes/GameplaySceneLocal.unity
-    guid: 85debab33e58b66cb99fa95975e67bb3
-  - enabled: 1
     path: Assets/Scenes/EnergyScene.unity
     guid: 492558d137a278e909abe20164654599
   - enabled: 1
+    path: Assets/Scenes/GameplaySceneLocal.unity
+    guid: dd33de356ea22584f864971a696b39fb
+  - enabled: 1
     path: Assets/Scenes/PlayerScene.unity
     guid: 7d947fe6096392226bc7e0e59b672b16
-  m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

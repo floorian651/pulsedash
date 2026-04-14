@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: c051fe5a20f72814f9643eb10ebbd2fc, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -742,6 +742,14 @@ MonoBehaviour:
   obstacleLevel3: {fileID: 5811187828946444701, guid: 162dc82242b993549851c3ff3f4839f0, type: 3}
   obstacleLevel2: {fileID: 4078296400486125278, guid: b34507bebbc298347be8f04f454b464e, type: 3}
   obstacleLevel1: {fileID: 5517663320238159854, guid: 8c83a00df74cba04c86d37ff73263011, type: 3}
+  decosDroite:
+  - {fileID: 5504237124445147975, guid: 01813f16d6714bf4dbf5a57b00a4515d, type: 3}
+  - {fileID: 2052405765113701562, guid: 278da5114fcbbf348873354126d89b1c, type: 3}
+  - {fileID: 2775859686472658656, guid: e02a9b1a18beb26418dfc84795e501a8, type: 3}
+  decosGauche:
+  - {fileID: 907276436290311733, guid: fad28ebe8b4e7c0438d4468b3f5f9910, type: 3}
+  - {fileID: 1009685052748669806, guid: 54ea986480136d34a842fe244768efe5, type: 3}
+  - {fileID: 3073733250756936658, guid: 0e76b02306bcf484ab9de2711be4b315, type: 3}
   pulser: {fileID: 4070396160462701413, guid: b8b5d834f1f33de46836b763be289319, type: 3}
 --- !u!4 &947896523
 Transform:
@@ -752,7 +760,7 @@ Transform:
   m_GameObject: {fileID: 947896520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.3978, y: -0, z: 34.73474}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -770,7 +778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31acf9024602f534085fca7d35eb7460, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnergyBar
-  generateurNiveau: {fileID: 0}
+  generateurNiveau: {fileID: 947896522}
 --- !u!1 &1087668790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,6 +1323,8 @@ MonoBehaviour:
   obstacleLevel3: {fileID: 7003486705781667282, guid: fa19130731d49bae3b6f3b3d735a5b15, type: 3}
   obstacleLevel2: {fileID: 4322738609258709913, guid: 30adcfd473cf5b24ba7ceb320c7d975c, type: 3}
   obstacleLevel1: {fileID: 0}
+  decosDroite: []
+  decosGauche: []
   pulser: {fileID: 0}
 --- !u!4 &1942247590
 Transform:
@@ -1453,6 +1463,26 @@ PrefabInstance:
     - target: {fileID: 3075801003196827885, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063221457480549624, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063221457480549624, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063221457480549624, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9848078
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063221457480549624, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.17364816
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063221457480549624, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4077924343679197704, guid: d5b87e2d0860286209c24ce62e5bf693, type: 3}
       propertyPath: m_IsActive

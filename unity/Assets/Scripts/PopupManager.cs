@@ -5,9 +5,34 @@ using System.Linq;
 using System.Collections.Generic;
 
 
+
 public class PopupManager : MonoBehaviour
 {
+    private static string PopupBackground="Images/Popup1";
+    private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
+    
+
+    private static void ApplyPopupBackground(Image image)
+    {
+        if (image == null) return;
+        Debug.Log("image pas null");
+
+        Texture2D tex = Resources.Load<Texture2D>(PopupBackground);
+        Sprite sprite = Sprite.Create(tex, new Rect(0,0,tex.width, tex.height), new Vector2(0.5f,0.5f));
+        
+
+        if (sprite == null) {
+            Debug.Log("Sprite null");
+            return;}
+
+        image.sprite = sprite;
+        image.color = Color.white;
+        image.type = Image.Type.Simple;
+        image.preserveAspect = false;
+        Debug.Log("Popup background chargé");
+    }
+
 
     public static void Show(string message)
     {
@@ -29,6 +54,7 @@ public class PopupManager : MonoBehaviour
 
         Image bg = popupGO.AddComponent<Image>();
         bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
+        ApplyPopupBackground(bg);
 
         TextMeshProUGUI txt = new GameObject("Text").AddComponent<TextMeshProUGUI>();
         txt.transform.SetParent(popupGO.transform, false);
@@ -59,6 +85,7 @@ public class PopupManager : MonoBehaviour
             Canvas canvas = canvasGO.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvasGO.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            Debug.Log("Canvas recréé");
         }
 
         // Panel
@@ -66,8 +93,9 @@ public class PopupManager : MonoBehaviour
         popupGO.transform.SetParent(canvasGO.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
-        Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(0.12f, 0.10f, 0.25f, 1f);
+        //Image bg = popupGO.AddComponent<Image>();
+        //bg.color = new Color(1, 1, 1, 0.01f);
+
         RectTransform rt = popupGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f);
         rt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -85,8 +113,9 @@ public class PopupManager : MonoBehaviour
         contRT.sizeDelta = new Vector2(300, 150);
         contRT.anchoredPosition = Vector2.zero;
 
-        Image contBg = container.AddComponent<Image>();
-        contBg.color = new Color(1, 1, 1, 0.95f);
+        Image contBg = container.AddComponent<Image>(); 
+        contBg.color = new Color(1f, 1f, 1f, 0.9f);
+        ApplyPopupBackground(contBg);
 
         // Message
         GameObject msgGO = new GameObject("Message", typeof(RectTransform));
@@ -216,7 +245,8 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
     popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
 
     Image bg = popupGO.AddComponent<Image>();
-    bg.color = new Color(0, 0, 0, 0.6f);
+    bg.color = new Color(1f, 1f, 1f, 0.1f);
+
 
     RectTransform rt = popupGO.GetComponent<RectTransform>();
     rt.anchorMin = Vector2.zero;
@@ -238,7 +268,8 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
 
 
     Image contBg = container.AddComponent<Image>();
-    contBg.color = new Color(1, 1, 1, 0.95f);
+    contBg.color = new Color(1f, 1f, 1f, 0.1f);
+    ApplyPopupBackground(contBg);
     
     // ScrollRect
     GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
@@ -256,6 +287,8 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
     // Viewport
     GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
     viewportGO.transform.SetParent(scrollGO.transform, false);
+
+    viewportGO.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.01f);
 
     RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
     viewportRT.anchorMin = Vector2.zero;
@@ -293,7 +326,8 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
     scroll.content = contentRT;
 
     // Génération des boutons de playlists
-    PlaylistUI.AfficherBoutonPlaylist(null, contentRT, playlistItemPrefab, playlistName =>
+    
+    PlaylistUI.AfficherBoutonPlaylist(null, null, contentRT, null, playlistItemPrefab, playlistName =>
     {
         PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
@@ -340,6 +374,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
 
     Image contBg = container.AddComponent<Image>();
     contBg.color = new Color(1, 1, 1, 0.95f);
+    ApplyPopupBackground(contBg);
 
     // Titre
     GameObject titleGO = new GameObject("Title", typeof(RectTransform));
@@ -429,54 +464,51 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     // ----- Bouton de fermeture -----
     CreateCloseButton(container.transform, popupGO);
 }
+    
     private static void CreateCloseButton(Transform parent, GameObject popupRoot)
+{
+    GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
+    closeBtnGO.transform.SetParent(parent, false);
+    closeBtnGO.transform.SetAsLastSibling();
+
+    RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
+    closeRT.anchorMin = new Vector2(1, 1);
+    closeRT.anchorMax = new Vector2(1, 1);
+    closeRT.pivot = new Vector2(1, 1);
+    closeRT.sizeDelta = new Vector2(80, 80);
+    closeRT.anchoredPosition = new Vector2(40, 40);
+
+    // Image d'abord
+    Image closeImg = closeBtnGO.AddComponent<Image>();
+
+    // Chargement de la texture
+    Texture2D tex = Resources.Load<Texture2D>(imgCloseButton);
+    if (tex != null)
     {
-        GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
-        closeBtnGO.transform.SetParent(parent, false);
-        closeBtnGO.transform.SetAsLastSibling();
+        Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+        closeImg.sprite = sprite;
+    }
+    else
+    {
+        Debug.LogError("Image du bouton de fermeture introuvable !");
+    }
 
-        RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
-        closeRT.anchorMin = new Vector2(1, 1);
-        closeRT.anchorMax = new Vector2(1, 1);
-        closeRT.pivot = new Vector2(1, 1);
-        closeRT.sizeDelta = new Vector2(30, 30);
-        closeRT.anchoredPosition = new Vector2(-10, -10); // marge depuis le coin
+    closeImg.color = Color.white;
 
-        Button closeBtn = closeBtnGO.AddComponent<Button>();
-        Image closeImg = closeBtnGO.AddComponent<Image>();
-        closeImg.color = new Color(0.40f, 0.55f, 0.95f, 1f);
-        closeBtn.targetGraphic = closeImg;
+    // Puis le Button
+    Button closeBtn = closeBtnGO.AddComponent<Button>();
 
-        // Texte "X"
-        GameObject closeTextGO = new GameObject("Text", typeof(RectTransform));
-        closeTextGO.transform.SetParent(closeBtnGO.transform, false);
+    closeBtn.onClick.AddListener(() =>
+    {
+        if (popupRoot != null)
+            UnityEngine.Object.Destroy(popupRoot);
 
-        TextMeshProUGUI closeTxt = closeTextGO.AddComponent<TextMeshProUGUI>();
-        closeTxt.text = "X";
-        closeTxt.fontSize = 24;
-        closeTxt.alignment = TextAlignmentOptions.Center;
-        closeTxt.color = Color.white;
-        closeTxt.raycastTarget = false;
+        if (popupGO == popupRoot)
+            popupGO = null;
+    });
+}
 
-        RectTransform closeTxtRT = closeTextGO.GetComponent<RectTransform>();
-        closeTxtRT.anchorMin = Vector2.zero;
-        closeTxtRT.anchorMax = Vector2.one;
-        closeTxtRT.offsetMin = Vector2.zero;
-        closeTxtRT.offsetMax = Vector2.zero;
 
-        // Action du bouton
-        closeBtn.onClick.AddListener(() =>
-        {
-            if (popupRoot != null)
-            {
-                UnityEngine.Object.Destroy(popupRoot);
-            }
-            if (popupGO == popupRoot)
-            {
-                popupGO = null;
-            }
-        });
-        }
 
 
 }

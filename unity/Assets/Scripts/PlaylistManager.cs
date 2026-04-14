@@ -19,11 +19,16 @@ public class PlaylistManager : MonoBehaviour
 
 
 
+    void Awake()
+    {
+        // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
+        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
+        LoadPlaylists();
+    }
+
     void Start()
     {
         Debug.Log("PlaylistManager peut start!");
-        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
-        LoadPlaylists();
     }
 
     private bool TryGetAudioSource(out AudioSource source)
@@ -151,8 +156,10 @@ public class PlaylistManager : MonoBehaviour
         forcePrevious = true;
         stopCurrentTrack = true;
     }
-    public void LancerPlaylist( Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
-{
+    public void LancerPlaylist(GameObject averageButtonPrefab, GameObject musicItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
+{   
+    UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
+
     if (trackactuel == null)
     {
         PopupManager.Show("Playlist vide");

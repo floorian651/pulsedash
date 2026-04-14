@@ -24,6 +24,8 @@ public class DragonStatic : MonoBehaviour
 
         // Lancer l’animation de vol
         anim.SetTrigger("isFlying");
+
+        
     }
 
     void OnCollisionEnter(Collision collision)
@@ -38,7 +40,8 @@ public class DragonStatic : MonoBehaviour
     }
 
     void Mourir()
-    {
+    {   
+    
         estMort = true;
 
         // Jouer l’animation de mort

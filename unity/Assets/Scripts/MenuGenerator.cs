@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI; //slider
 using System.Collections; // IEnumerator
 using TMPro;  // indispensable pour TextMeshProUGUI
@@ -13,6 +13,7 @@ public class MenuGenerator : MonoBehaviour
 
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
+    public GameObject musicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
     
@@ -142,7 +143,8 @@ public class MenuGenerator : MonoBehaviour
 
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab);
 
 }
 }
+*/
