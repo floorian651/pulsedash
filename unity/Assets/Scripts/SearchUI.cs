@@ -159,19 +159,23 @@ private void OnSearchSubmit(string nomTape)
         if (txt != null)
             txt.text = clip.name;
 
-        // Ajuster la taille: plus long et plus fin
+        // Ajuster l'ancrage et la taille pour rester dans le canvas
         RectTransform itemRT = item.GetComponent<RectTransform>();
         if (itemRT != null)
         {
-            itemRT.sizeDelta = new Vector2(420, 30);
+            itemRT.anchorMin = new Vector2(0f, 1f);
+            itemRT.anchorMax = new Vector2(1f, 1f);
+            itemRT.pivot = new Vector2(0.5f, 1f);
+            itemRT.anchoredPosition = Vector2.zero;
         }
         LayoutElement itemLE = item.GetComponent<LayoutElement>();
         if (itemLE == null)
         {
             itemLE = item.AddComponent<LayoutElement>();
         }
-        itemLE.preferredWidth = 420;
-        itemLE.preferredHeight = 30;
+        itemLE.preferredWidth = -1;
+        itemLE.preferredHeight = 48; // ou 64 selon ton UI
+
 
         // Récupérer le bouton Play du prefab
         Transform playButtonTransform = item.transform.Find("PlayButton");

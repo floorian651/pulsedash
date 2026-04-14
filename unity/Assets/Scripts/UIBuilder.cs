@@ -102,7 +102,7 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
-    public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, GameObject  playlistItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
         foreach (Transform child in mainContent)
     {
@@ -171,7 +171,7 @@ public static class UIBuilder
     
     // Génération des boutons de playlists
     
-    PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, playlistItemPrefab, clips, playlistName,contentRT);
+    PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, playlistName,contentRT);
 
     BoutonNextBeforeInContainer(averageButtonPrefab,clips,playlistName,mainContent);
     }

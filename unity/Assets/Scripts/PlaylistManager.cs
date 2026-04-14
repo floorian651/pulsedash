@@ -156,9 +156,9 @@ public class PlaylistManager : MonoBehaviour
         forcePrevious = true;
         stopCurrentTrack = true;
     }
-    public void LancerPlaylist(GameObject averageButtonPrefab, GameObject playlistItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
+    public void LancerPlaylist(GameObject averageButtonPrefab, GameObject musicItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
 {   
-    UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistItemPrefab, clips, playlistName, centerRightContainer);
+    UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
 
     if (trackactuel == null)
     {
