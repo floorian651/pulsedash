@@ -49,7 +49,7 @@ public class DragonStatic : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
 
         // Mettre des bonus
-        for (int i = (int)(transform.position.z) + 5; i < 5; i++){
+        for (int i = 0; i < 5; i++){
             Rigidbody p = Instantiate(bonus, new Vector3(0,1,20*i),  Quaternion.Euler(-90,0,0));
         }
     }
