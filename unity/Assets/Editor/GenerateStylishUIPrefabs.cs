@@ -11,6 +11,8 @@ public static class GenerateStylishUIPrefabs
     private const string MontserratPath = "Assets/Resources/Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
     private const string SpritePathPlay = "Assets/UI/Sprites/Play.png";
     private const string SpritePathPause = "Assets/UI/Sprites/Pause.png";
+    private const string SpritePathNext = "Assets/UI/Sprites/Imagenext.png";
+    private const string SpritePathPrevious = "Assets/UI/Sprites/Imageprevious.png";
 
     [MenuItem("Tools/UI/Generate Stylish UI Prefabs")]
     public static void Generate()
