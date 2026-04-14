@@ -27,6 +27,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel2;
     private float seuilLevel3;
 
+    private int compt = 0;
+
     [SerializeField] private GameObject[] decosDroite;
     [SerializeField] private GameObject[] decosGauche;
 
@@ -47,6 +49,16 @@ public class GenerateurNiveau : MonoBehaviour
     {
         if (player == null) return;
 
+        int dureeMusique = (int)data.duration;
+        int tailleNiveau = (int)vitesse * dureeMusique;
+
+        // Générer la déco devant le joueur 
+        if((player.transform.position.z < tailleNiveau) && (compt>20)){
+            compt  = 0;
+            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);}
+        
+        compt  = compt +1;
+
         float limiteZ = player.transform.position.z - distanceDestruction;
 
         // On parcourt les enfants du générateur
@@ -55,7 +67,7 @@ public class GenerateurNiveau : MonoBehaviour
             Transform child = transform.GetChild(i);
 
             // On ne détruit que les décos (pas le sol, pas les obstacles)
-            if (child.CompareTag("Deco"))
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle"))
             {
                 if (child.position.z < limiteZ)
                 {
@@ -116,7 +128,7 @@ public class GenerateurNiveau : MonoBehaviour
 
         generatePulsers(analyse_rythme);
 
-        generateDeco();
+        //generateDeco();
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -243,10 +255,10 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
-    private void generateDeco(){
+    private void generateDeco(int positionD, int positionF){
 
         int dureeMusique = (int)data.duration;
-        int tailleNiveau = (int)vitesse * dureeMusique;
+        //int tailleNiveau = (int)vitesse * dureeMusique;
 
         int indexD = Random.Range(0, decosDroite.Length);
         int indexG = Random.Range(0, decosGauche.Length);
@@ -254,7 +266,8 @@ public class GenerateurNiveau : MonoBehaviour
         GameObject decoRandomD = decosDroite[indexD];
         GameObject decoRandomG = decosGauche[indexG];
 
-        for (int i = 0; i < tailleNiveau; i += 5){      
+        //for (int i = 0; i < tailleNiveau; i += 5){
+        for (int i = positionD; i < positionF; i += 5){      
             
 
             Vector3 posD = decoRandomD.transform.position + new Vector3(0, groundHeight, i);
