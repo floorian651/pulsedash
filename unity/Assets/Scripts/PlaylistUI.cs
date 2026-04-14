@@ -208,8 +208,8 @@ public static class PlaylistUI
         }
 
         // Bouton principal (lancer la musique)
-        Button btn = boutonGO.GetComponent<Button>();
-        if (btn == null) btn = boutonGO.AddComponent<Button>();
+        //Button btn = boutonGO.GetComponent<Button>();
+        //if (btn == null) btn = boutonGO.AddComponent<Button>();
 
         // Label
         TextMeshProUGUI txt = null;
@@ -281,10 +281,10 @@ public static class PlaylistUI
             removeTxt.color = Color.white;
         }
 
-        btn.onClick.AddListener(() =>
+        /*btn.onClick.AddListener(() =>
         {
             pm.LancerPlaylist(averageButtonPrefab, musicItemPrefab, track, clips, TracktoutesLesMusiques, nomplaylist, resultsContainer);
-        });
+        });*/
 
         if (removeBtn != null)
         {
