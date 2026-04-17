@@ -7,6 +7,7 @@ using TMPro;
 public static class GenerateStylishUIPrefabs
 {
     private const string SpritePath = "Assets/UI/Sprites/RoundedRect_128x64.png";
+    private const string SpriteMusicItemPath = "Assets/UI/Sprites/Sprite_musicitem.png";
     private const string PrefabFolder = "Assets/Prefabs/UI";
     private const string MontserratPath = "Assets/Resources/Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
     private const string SpritePathPlay = "Assets/UI/Sprites/Play.png";
@@ -21,6 +22,10 @@ public static class GenerateStylishUIPrefabs
         SetupRoundedSprite();
 
         var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpritePath);
+        var musicitemSprite = AssetDatabase.LoadAssetAtPath<Sprite>(SpriteMusicItemPath);
+        if (musicitemSprite == null)
+            Debug.LogError("SPRITE MUSICITEM NON CHARGÉ : " + SpriteMusicItemPath);
+
         var circleSprite = EditorGUIUtility.Load("UI/Skin/Knob.psd") as Sprite;
 
 
@@ -32,7 +37,7 @@ public static class GenerateStylishUIPrefabs
 
         CreatePlayPauseButton(circleSprite, font);
         CreatePlaylistItemButton(sprite, font);
-        CreateMusicItemPrefab(sprite, font);
+        CreateMusicItemPrefab(musicitemSprite, font);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -142,7 +147,7 @@ public static class GenerateStylishUIPrefabs
         // Racine (même base visuelle que MusicItem)
         var root = new GameObject("PlaylistItem", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button), typeof(LayoutElement));
         var rt = root.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(380, 32);
+        rt.sizeDelta = new Vector2(250, 32);
 
         var layout = root.GetComponent<LayoutElement>();
         layout.preferredWidth = 380f;
@@ -151,6 +156,7 @@ public static class GenerateStylishUIPrefabs
         var image = root.GetComponent<Image>();
         image.sprite = sprite;
         image.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+        
         image.color = new Color(0.93f, 0.95f, 0.98f, 1f);
 
         // Bouton racine (même rendu que le fond, juste un léger feedback)
@@ -232,7 +238,8 @@ public static class GenerateStylishUIPrefabs
 
         var image = root.GetComponent<Image>();
         image.sprite = sprite;
-        image.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+        //image.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
+        image.type = Image.Type.Simple;
         image.color = new Color(0.18f, 0.69f, 0.68f, 1f); // teal
 
         var button = root.GetComponent<Button>();
@@ -274,16 +281,17 @@ public static class GenerateStylishUIPrefabs
         var root = new GameObject("MusicItem", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
         var rt = root.GetComponent<RectTransform>();
 
-        rt.sizeDelta = new Vector2(380, 32);
+        rt.sizeDelta = new Vector2(200, 32);
 
         var layout = root.GetComponent<LayoutElement>();
-        layout.preferredWidth = 380f;
-        layout.preferredHeight = 32f;
+        layout.preferredWidth = 250f;
+        layout.preferredHeight = 250f;
 
         var bg = root.GetComponent<Image>();
         bg.sprite = sprite;
         bg.type = sprite != null ? Image.Type.Sliced : Image.Type.Simple;
-        bg.color = new Color(0.93f, 0.95f, 0.98f, 1f);
+        bg.color = Color.white;
+
 
         // --- LABEL ---
         var label = new GameObject("Label", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
@@ -298,7 +306,7 @@ public static class GenerateStylishUIPrefabs
         var tmp = label.GetComponent<TextMeshProUGUI>();
         tmp.text = "Titre musique";
         tmp.font = font;
-        tmp.fontSize = 16f;
+        tmp.fontSize = 10f;
         tmp.color = new Color(0.12f, 0.15f, 0.2f, 1f);
         tmp.alignment = TextAlignmentOptions.MidlineLeft;
         tmp.overflowMode = TextOverflowModes.Ellipsis;
@@ -308,42 +316,18 @@ public static class GenerateStylishUIPrefabs
         playBtnGO.transform.SetParent(root.transform, false);
 
         var playRt = playBtnGO.GetComponent<RectTransform>();
-        playRt.sizeDelta = new Vector2(40, 20); // plus fin
+        playRt.sizeDelta = new Vector2(80, 80); // plus fin
         playRt.anchoredPosition = new Vector2(-10, 0);
         playRt.anchorMin = new Vector2(1f, 0.5f);
         playRt.anchorMax = new Vector2(1f, 0.5f);
         playRt.pivot = new Vector2(1f, 0.5f);
 
         var playImg = playBtnGO.GetComponent<Image>();
-        playImg.color = new Color(0.2f, 0.35f, 0.6f, 1f); // bleu foncé
 
-        var playBtn = playBtnGO.GetComponent<Button>();
-        playBtn.transition = Selectable.Transition.ColorTint;
-
-        var colors = playBtn.colors;
-        colors.normalColor = playImg.color;
-        colors.highlightedColor = new Color(0.25f, 0.45f, 0.75f, 1f);
-        colors.pressedColor = new Color(0.15f, 0.25f, 0.45f, 1f);
-        playBtn.colors = colors;
-
-        // Icône "▶"
-        var playTxtGO = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
-        playTxtGO.transform.SetParent(playBtnGO.transform, false);
-
-        var playTxt = playTxtGO.GetComponent<TextMeshProUGUI>();
-        playTxt.text = "▶";
-        playTxt.font = font;
-        playTxt.fontSize = 16f;
-        playTxt.color = Color.white;
-        playTxt.alignment = TextAlignmentOptions.Center;
-
-        var playTxtRt = playTxtGO.GetComponent<RectTransform>();
-        playTxtRt.anchorMin = Vector2.zero;
-        playTxtRt.anchorMax = Vector2.one;
-        playTxtRt.offsetMin = Vector2.zero;
-        playTxtRt.offsetMax = Vector2.zero;
-
-
+        playImg.sprite =  AssetDatabase.LoadAssetAtPath<Sprite>(SpritePathPlay);
+        playImg.type = Image.Type.Sliced; // si ton sprite est un 9-slice
+        playImg.color = Color.white;
+        
         // --- BOUTON AJOUTER À PLAYLIST ---
         var addBtnGO = new GameObject("AddToPlaylistButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
         addBtnGO.transform.SetParent(root.transform, false);

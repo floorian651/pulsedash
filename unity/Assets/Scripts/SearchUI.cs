@@ -173,7 +173,9 @@ private void OnSearchSubmit(string nomTape)
             itemLE = item.AddComponent<LayoutElement>();
         }
         itemLE.preferredWidth = -1;
-        itemLE.preferredHeight = 48; // ou 64 selon ton UI
+        itemLE.preferredHeight = -1; // laisse le layout décider
+
+        //itemLE.preferredHeight = 48; // ou 64 selon ton UI
 
 
         // Récupérer le bouton + du prefab

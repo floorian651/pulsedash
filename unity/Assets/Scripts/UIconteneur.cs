@@ -109,12 +109,13 @@ public static Transform CreateCenterRightContainer(Transform parent)
     rt.sizeDelta = new Vector2(600, 300); // 400 + 200
 
     VerticalLayoutGroup layout = fusionGO.AddComponent<VerticalLayoutGroup>();
-    layout.spacing = 20;
+    layout.spacing = 0;
     layout.childAlignment = TextAnchor.MiddleCenter;
     layout.childControlHeight = false;
     layout.childForceExpandHeight = false;
     layout.childControlWidth = false;
     layout.childForceExpandWidth = false;
+
 
     Image bg = fusionGO.AddComponent<Image>();
     bg.color = new Color32(0x80, 0x95, 0xFF, 0x00); // transparent
