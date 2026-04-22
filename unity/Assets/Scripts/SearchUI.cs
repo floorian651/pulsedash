@@ -6,10 +6,13 @@ using System.Linq;
 
 public class SearchUI
 {
-    private List<AudioClip> musiques;
-    private Context Context;
-    // Zone pour afficher les résultats du menu déroulant 
-    private Transform resultsContainer;
+    private const float MusicItemRowHeight = 80f;
+    private const float MusicItemRowScale = 4f;
+
+	    private List<AudioClip> musiques;
+	    private Context Context;
+	    // Zone pour afficher les résultats du menu déroulant 
+	    private Transform resultsContainer;
 
     private GameObject playlistItemPrefab;
     private GameObject musicItemPrefab;
@@ -126,16 +129,28 @@ public class SearchUI
 }
 
 // Pour l'utiliser il faut créer un prefab avec plusieurs attribut (titre, bouton play, ajouter à une playlist, etc) 
-//BEAUCOUP à MODIFIER
+	//BEAUCOUP à MODIFIER
 
-private void OnSearchSubmit(string nomTape)
-{
-    // Nettoyer le container CenterRight
-    foreach (Transform child in resultsContainer)
-        Object.Destroy(child.gameObject);
+	private void OnSearchSubmit(string nomTape)
+	{
+	    // Nettoyer le container CenterRight
+	    foreach (Transform child in resultsContainer)
+	        Object.Destroy(child.gameObject);
 
-    if (string.IsNullOrWhiteSpace(nomTape))
-        return;
+		    // Le container du middle area doit empiler des items de façon compacte.
+		    var vlg = resultsContainer.GetComponent<VerticalLayoutGroup>();
+		    if (vlg != null)
+		    {
+		        vlg.childControlHeight = true;
+		        vlg.childForceExpandHeight = false;
+		        vlg.childControlWidth = true;
+		        vlg.childForceExpandWidth = true;
+		        vlg.spacing = 6;
+		        vlg.childAlignment = TextAnchor.UpperCenter;
+		    }
+
+	    if (string.IsNullOrWhiteSpace(nomTape))
+	        return;
 
     nomTape = nomTape.ToLower();
 
@@ -149,37 +164,21 @@ private void OnSearchSubmit(string nomTape)
         return;
     }
 
-    foreach (var clip in resultats)
-    {
-        // Créer un item dans le container CenterRight
-        GameObject item = Object.Instantiate(musicItemPrefab, resultsContainer);
+		    foreach (var clip in resultats)
+		    {
+		        // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
+		        GameObject item = PlaylistUI.InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemRowHeight);
 
-        // Mettre le nom de la musique
-        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
-        if (txt != null)
-            txt.text = clip.name;
-
-        RectTransform itemRT = item.GetComponent<RectTransform>();
-        if (itemRT != null)
-        {
-            itemRT.anchorMin = new Vector2(0f, 1f);
-            itemRT.anchorMax = new Vector2(1f, 1f);
-            itemRT.pivot = new Vector2(0.5f, 1f);
-            itemRT.anchoredPosition = Vector2.zero;
-        }
-        LayoutElement itemLE = item.GetComponent<LayoutElement>();
-        if (itemLE == null)
-        {
-            itemLE = item.AddComponent<LayoutElement>();
-        }
-        itemLE.preferredWidth = -1;
-        itemLE.preferredHeight = -1; // laisse le layout décider
-
-        //itemLE.preferredHeight = 48; // ou 64 selon ton UI
-
-
-        // Récupérer le bouton + du prefab
-        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
+		        // Mettre le nom de la musique
+		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+		        if (txt != null)
+		            txt.text = clip.name;
+	
+		        // La hauteur visible en liste est pilotée par le conteneur "row".
+	
+	
+	        // Récupérer le bouton + du prefab
+	        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
         if (addButtonTransform != null)
         {
             Button addButton = addButtonTransform.GetComponent<Button>();
@@ -200,8 +199,8 @@ private void OnSearchSubmit(string nomTape)
         Button playButton = playButtonTransform.GetComponent<Button>();
 
         // Ajouter l'action Play
-        playButton.onClick.AddListener(() =>
-        {
+	        playButton.onClick.AddListener(() =>
+	        {
             if (Context != null && Context.TryGetAudioSource(out AudioSource source))
             {
                 source.clip = clip;
@@ -215,15 +214,23 @@ private void OnSearchSubmit(string nomTape)
 
             PopupManager.Show("Musique sélectionnée : " + clip.name);
 
-            
-        });
-    }
-}
+	            
+	        });
+	    }
+
+	    var containerRT = resultsContainer as RectTransform;
+		    if (containerRT != null)
+		    {
+		        LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
+		    }
+		}
+
+		
 
 
-public void SetResultsContainer(Transform container)
-    {
-        this.resultsContainer = container;
+	public void SetResultsContainer(Transform container)
+	    {
+	        this.resultsContainer = container;
     }
 
 }

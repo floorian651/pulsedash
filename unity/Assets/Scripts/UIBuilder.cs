@@ -146,12 +146,15 @@ public static class UIBuilder
     GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
     contentGO.transform.SetParent(viewportGO.transform, false);
 
-    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = true;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = true;
-    layout.childForceExpandWidth = true;
-    layout.spacing = 10;
+	    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+	    // Dans les listes, on préfère piloter la hauteur via `LayoutElement` sur les items
+	    // (plutôt que la taille du prefab), sinon ils prennent trop de place à l'écran.
+	    layout.childControlHeight = true;
+	    layout.childForceExpandHeight = false;
+	    layout.childControlWidth = true;
+	    layout.childForceExpandWidth = true;
+	    layout.spacing = 6;
+	    layout.childAlignment = TextAnchor.UpperCenter;
 
     ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
     fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
