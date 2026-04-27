@@ -93,7 +93,7 @@ public class PanelMenu : MonoBehaviour
                 SessionData.Instance.titre = source.clip.name;
             }
 
-            sceneloader.LoadSceneByName("GameplayScene");
+            sceneloader.LoadSceneByName("FinishLineScene");
         });
     }
 
