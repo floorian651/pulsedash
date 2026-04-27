@@ -17,6 +17,7 @@ public class GenerateurNiveau : MonoBehaviour
     private int chunksDepuisDernierObstacle = 0; // Compteur de chunks depuis le dernier obstacle, pour espacer les obstacles
     private int nbChunksGeneres = 0; // Compteur du nombre de chunks générés, pour éviter de générer des chunks trop loin
     public GameObject GroundPrefab; // Préfab du sol
+    public GameObject FinishLinePrefab; // Préfab de la ligne d'arrivée
     public GameObject obstacleLevel4; // Préfab pour obstacle difficile
     public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
@@ -111,8 +112,6 @@ public class GenerateurNiveau : MonoBehaviour
         ClearLevel();
 
         // Générer le sol avant de -10 à 0 en amont du niveau 
-
-
         for (float z = -20; z <= 10; z += 2)
         {
             Vector3 pos = new Vector3(0, groundHeight, z);
@@ -127,6 +126,23 @@ public class GenerateurNiveau : MonoBehaviour
         loadChunks();
 
         generatePulsers(analyse_rythme);
+
+        // Génération de la ligne d'arrivée
+        if (FinishLinePrefab == null)
+        {
+            UnityEngine.Debug.LogError("FinishLinePrefab non assigné");
+            return;
+        }
+
+        // Vector3 posFinish = new Vector3(0, groundHeight + 1.3f, offsetZ + nbChunksGeneres * chunkSize);
+        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, 0);
+        Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
+        
+        GameObject finishLine = Instantiate(FinishLinePrefab, posFinish, rotFinish);
+        finishLine.transform.localScale = new Vector3(6, 6, 6);
+        finishLine.transform.parent = this.transform;
+
+        UnityEngine.Debug.Log(finishLine);
 
         //generateDeco();
     }
