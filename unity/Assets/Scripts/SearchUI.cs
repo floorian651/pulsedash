@@ -13,6 +13,8 @@ public class SearchUI
 	    private Context Context;
 	    // Zone pour afficher les résultats du menu déroulant 
 	    private Transform resultsContainer;
+	    // ScrollView créé sous la barre de recherche (peut bloquer les clics si on affiche les résultats ailleurs)
+	    private ScrollRect builtScrollRect;
 
     private GameObject playlistItemPrefab;
     private GameObject musicItemPrefab;
@@ -27,6 +29,7 @@ public class SearchUI
 
         SearchUI ui = new SearchUI();
         ui.resultsContainer = scroll;
+        ui.builtScrollRect = scroll != null ? scroll.GetComponentInParent<ScrollRect>() : null;
         ui.Context = context;
         // Soumission (Entrée) pour l'affichage long
         searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
@@ -231,6 +234,16 @@ public class SearchUI
 	public void SetResultsContainer(Transform container)
 	    {
 	        this.resultsContainer = container;
+	        // Si on affiche les résultats dans un autre container (ex: CenterRight), on désactive le ScrollView
+	        // créé sous la barre de recherche pour éviter qu'il capture les raycasts au-dessus des boutons.
+	        if (builtScrollRect != null)
+	        {
+	            bool useBuiltScroll =
+	                container == builtScrollRect.content ||
+	                container == builtScrollRect.transform ||
+	                (container != null && container.IsChildOf(builtScrollRect.transform));
+	            builtScrollRect.gameObject.SetActive(useBuiltScroll);
+	        }
     }
 
 }

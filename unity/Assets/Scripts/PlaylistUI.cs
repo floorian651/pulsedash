@@ -317,6 +317,20 @@ public static class PlaylistUI
 
         var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
 
+        // Assure que les boutons sont "au-dessus" (visuel + clic) même si le label chevauche leur zone.
+        var label = item.transform.Find("Label")?.GetComponent<TMP_Text>();
+        if (label != null)
+        {
+            label.raycastTarget = false;
+        }
+
+        var playButtonTf = item.transform.Find("PlayButton");
+        if (playButtonTf != null) playButtonTf.SetAsLastSibling();
+
+        var addToPlaylistButtonTf = item.transform.Find("AddToPlaylistButton");
+        if (addToPlaylistButtonTf != null) addToPlaylistButtonTf.SetAsLastSibling();
+
+
         var itemRT = item.GetComponent<RectTransform>();
         if (itemRT != null)
         {

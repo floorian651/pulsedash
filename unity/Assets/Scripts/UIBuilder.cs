@@ -78,7 +78,7 @@ public static class UIBuilder
     rt.anchorMin = new Vector2(0, 1);
     rt.anchorMax = new Vector2(1, 1);
     rt.pivot = new Vector2(0.5f, 1);
-    rt.sizeDelta = new Vector2(0, 240);
+    rt.sizeDelta = new Vector2(0, 100);
     //rt.anchoredPosition = Vector2.zero;
     rt.anchoredPosition = new Vector2(0, -10);
 
@@ -87,6 +87,8 @@ public static class UIBuilder
     Image bgImage = topBarGO.AddComponent<Image>();
     // Fond transparent
     bgImage.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    // Évite de bloquer les clics sur les éléments en dessous (image transparente)
+    bgImage.raycastTarget = false;
 
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
@@ -258,12 +260,14 @@ public static class UIBuilder
     Image Image = go.AddComponent<Image>();
     // Fond transparent 
     Image.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    // Évite de bloquer les clics (fond transparent)
+    Image.raycastTarget = false;
    
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();
     le.preferredWidth = 500;
-    le.preferredHeight = 40;
+    le.preferredHeight = 30;
 
     VerticalLayoutGroup vlg = go.AddComponent<VerticalLayoutGroup>();
     vlg.childControlWidth = false;
@@ -285,7 +289,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         go.transform.SetParent(parent, false);
 
         RectTransform rt = go.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(600, 64);
+        rt.sizeDelta = new Vector2(600, 32);
         rt.anchorMin = new Vector2(0, 1);
         rt.anchorMax = new Vector2(0, 1);
         rt.pivot = new Vector2(0, 1);
@@ -302,6 +306,10 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         //bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
+
+        input.customCaretColor = true;
+        input.caretColor = Color.white;
+        input.caretWidth = 10;
 
         // Zone de texte
         GameObject textAreaGO = new GameObject("Text Area", typeof(RectTransform));
