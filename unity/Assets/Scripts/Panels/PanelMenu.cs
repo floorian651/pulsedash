@@ -8,7 +8,7 @@ public class PanelMenu : MonoBehaviour
 {
     public AudioCache audioCache;
     private AudioSource audioSource;
-    private Context Context;
+    public Context Context;
     public Slider sliderPrefab;
 
     public GameObject playPauseButtonPrefab;

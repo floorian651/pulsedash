@@ -9,7 +9,7 @@ public class SearchUI
     private const float MusicItemRowHeight = 80f;
     private const float MusicItemRowScale = 4f;
 
-	    private List<AudioClip> musiques;
+	    public List<AudioClip> musiques;
 	    private Context Context;
 	    // Zone pour afficher les résultats du menu déroulant 
 	    private Transform resultsContainer;
@@ -182,24 +182,24 @@ public class SearchUI
 	
 	        // Récupérer le bouton + du prefab
 	        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
-        if (addButtonTransform != null)
-        {
-            Button addButton = addButtonTransform.GetComponent<Button>();
-            addButton.onClick.AddListener(() =>
+            if (addButtonTransform != null)
             {
-                PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
-            });
-        }
+                Button addButton = addButtonTransform.GetComponent<Button>();
+                addButton.onClick.AddListener(() =>
+                {
+                    PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
+                });
+            }
 
-        // Récupérer le bouton Play du prefab
-        Transform playButtonTransform = item.transform.Find("PlayButton");
-        if (playButtonTransform == null)
-        {
-            Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
-            continue;
-        }
+            // Récupérer le bouton Play du prefab
+            Transform playButtonTransform = item.transform.Find("PlayButton");
+            if (playButtonTransform == null)
+            {
+                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
+                continue;
+            }
 
-        Button playButton = playButtonTransform.GetComponent<Button>();
+            Button playButton = playButtonTransform.GetComponent<Button>();
 
         // Ajouter l'action Play
 	        playButton.onClick.AddListener(() =>

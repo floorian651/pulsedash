@@ -199,6 +199,71 @@ public static class PlaylistUI
 
         foreach (var track in TracktoutesLesMusiques)
         {
+
+            // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
+		        GameObject item = InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
+
+		        // Mettre le nom de la musique
+		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+		        if (txt != null)
+		            txt.text =track.title;
+	
+		    	
+	        // Récupérer le bouton + du prefab
+	        Transform subButtonTransform = item.transform.Find("SubToPlaylistButton");
+        if (subButtonTransform != null)
+        {
+            Button subButton = subButtonTransform.GetComponent<Button>();
+            subButton.onClick.AddListener(() =>
+            {
+                pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
+                PopupManager.Show("Musique supprimée : " + track.title);
+            });
+        }
+
+        // Récupérer le bouton Play du prefab
+        Transform playButtonTransform = item.transform.Find("PlayButton");
+        if (playButtonTransform == null)
+        {
+            Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
+            continue;
+        }
+
+        Button playButton = playButtonTransform.GetComponent<Button>();
+
+        // Ajouter l'action Play
+        PanelMenu panelMenu = FindObjectOfType<PanelMenu>();
+	        playButton.onClick.AddListener(() =>
+	        {
+            if (panelMenu != null && panelMenu.Context.TryGetAudioSource(out AudioSource source))
+            {
+                source.clip = clips.FirstOrDefault(c => c.name.ToLower().Contains(track.title.ToLower()));
+            }
+
+            if (panelMenu != null)
+            {
+                panelMenu.Context.SetSliderVisible(true);
+                panelMenu.Context.SetPlayPauseVisible(true);
+            }
+
+            PopupManager.Show("Musique sélectionnée : " + track.title);
+
+	            
+	        });
+	    }
+
+	    var containerRT = resultsContainer as RectTransform;
+		    if (containerRT != null)
+		    {
+		        LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
+		    }
+    }
+
+
+
+
+
+/*
             GameObject boutonGO;
 
             if (musicItemPrefab != null)
@@ -300,7 +365,7 @@ public static class PlaylistUI
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
         }
-    }
+    }*/
 
     public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
     {
