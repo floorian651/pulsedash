@@ -297,9 +297,9 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         //rt.anchoredPosition = Vector2.zero;
 
         LayoutElement le = go.AddComponent<LayoutElement>();
-        le.preferredWidth = 500;
+        le.preferredWidth = 400;
         //le.preferredHeight = 40;
-        le.preferredHeight = 64;
+        le.preferredHeight = 30;
 
         Image bg = go.AddComponent<Image>();
         bg.color = new Color32(17, 17, 17, 255);

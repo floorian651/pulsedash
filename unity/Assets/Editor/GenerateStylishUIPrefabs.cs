@@ -37,7 +37,7 @@ public static class GenerateStylishUIPrefabs
 
         CreatePlayPauseButton(circleSprite, font);
         CreatePlaylistItemButton(sprite, font);
-        CreateMusicItemPrefab(musicitemSprite, font);
+       //CreateMusicItemPrefab(musicitemSprite, font);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -275,7 +275,7 @@ public static class GenerateStylishUIPrefabs
         PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
     }
-    private static void CreateMusicItemPrefab(Sprite sprite, TMP_FontAsset font)
+   /*private static void CreateMusicItemPrefab(Sprite sprite, TMP_FontAsset font)
 {
         // Racine
         var root = new GameObject("MusicItem", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(LayoutElement));
@@ -374,6 +374,6 @@ public static class GenerateStylishUIPrefabs
         var path = Path.Combine(PrefabFolder, "MusicItem.prefab").Replace("\\", "/");
         PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
-    }
+    }*/
 
 }
