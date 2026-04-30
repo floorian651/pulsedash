@@ -135,14 +135,12 @@ public class GenerateurNiveau : MonoBehaviour
         }
 
         // Vector3 posFinish = new Vector3(0, groundHeight + 1.3f, offsetZ + nbChunksGeneres * chunkSize);
-        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, 0);
+        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);
         Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
         
         GameObject finishLine = Instantiate(FinishLinePrefab, posFinish, rotFinish);
         finishLine.transform.localScale = new Vector3(6, 6, 6);
         finishLine.transform.parent = this.transform;
-
-        UnityEngine.Debug.Log(finishLine);
 
         //generateDeco();
     }
