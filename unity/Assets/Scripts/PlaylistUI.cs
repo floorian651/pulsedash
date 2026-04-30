@@ -191,8 +191,8 @@ public static class PlaylistUI
         if (playlist_recherche == null) return;
 
         // Nettoyer les anciens résultats
-        foreach (Transform child in resultsContainer)
-            UnityEngine.Object.Destroy(child.gameObject);
+        //foreach (Transform child in resultsContainer)
+        //    UnityEngine.Object.Destroy(child.gameObject);
 
         //Récupérer la liste de toutes les musiques de la playlist sélectionnée
         List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
@@ -201,55 +201,53 @@ public static class PlaylistUI
         {
 
             // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
-		        GameObject item = InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
+		    GameObject item = InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
 
 		        // Mettre le nom de la musique
-		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
-		        if (txt != null)
-		            txt.text =track.title;
-	
+		    TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+		    if (txt != null)
+		        txt.text =track.title;
+
 		    	
-	        // Récupérer le bouton + du prefab
+	        // Récupérer le bouton - du prefab
 	        Transform subButtonTransform = item.transform.Find("SubToPlaylistButton");
-        if (subButtonTransform != null)
-        {
-            Button subButton = subButtonTransform.GetComponent<Button>();
-            subButton.onClick.AddListener(() =>
+            if (subButtonTransform != null)
+            {   Debug.Log("Bouton subutton créé");
+                Button subButton = subButtonTransform.GetComponent<Button>();
+                subButton.onClick.AddListener(() =>
+                {
+                    pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
+                    PopupManager.Show("Musique supprimée : " + track.title);
+                });
+            }
+
+            // Récupérer le bouton Play du prefab
+            Transform playButtonTransform = item.transform.Find("PlayButton");
+            if (playButtonTransform == null)
             {
-                pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
-                PopupManager.Show("Musique supprimée : " + track.title);
+                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
+                continue;
+            }
+
+            Button playButton = playButtonTransform.GetComponent<Button>();
+
+            // Ajouter l'action Play
+            PanelMenu panelMenu = FindObjectOfType<PanelMenu>();
+                playButton.onClick.AddListener(() =>
+                {
+                if (panelMenu != null && panelMenu.Context.TryGetAudioSource(out AudioSource source))
+                {
+                    source.clip = clips.FirstOrDefault(c => c.name.ToLower().Contains(track.title.ToLower()));
+                }
+
+                if (panelMenu != null)
+                {
+                    panelMenu.Context.SetSliderVisible(true);
+                    panelMenu.Context.SetPlayPauseVisible(true);
+                }
+
+                PopupManager.Show("Musique sélectionnée : " + track.title);
             });
-        }
-
-        // Récupérer le bouton Play du prefab
-        Transform playButtonTransform = item.transform.Find("PlayButton");
-        if (playButtonTransform == null)
-        {
-            Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
-            continue;
-        }
-
-        Button playButton = playButtonTransform.GetComponent<Button>();
-
-        // Ajouter l'action Play
-        PanelMenu panelMenu = FindObjectOfType<PanelMenu>();
-	        playButton.onClick.AddListener(() =>
-	        {
-            if (panelMenu != null && panelMenu.Context.TryGetAudioSource(out AudioSource source))
-            {
-                source.clip = clips.FirstOrDefault(c => c.name.ToLower().Contains(track.title.ToLower()));
-            }
-
-            if (panelMenu != null)
-            {
-                panelMenu.Context.SetSliderVisible(true);
-                panelMenu.Context.SetPlayPauseVisible(true);
-            }
-
-            PopupManager.Show("Musique sélectionnée : " + track.title);
-
-	            
-	        });
 	    }
 
 	    var containerRT = resultsContainer as RectTransform;
@@ -259,113 +257,6 @@ public static class PlaylistUI
 		    }
     }
 
-
-
-
-
-/*
-            GameObject boutonGO;
-
-            if (musicItemPrefab != null)
-            {
-                boutonGO = InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
-                if (boutonGO != null)
-                {
-                    boutonGO.name = "MusicItem_" + track.title;
-                }
-            }
-            else
-            {
-                boutonGO = new GameObject("ResultButton");
-                boutonGO.transform.SetParent(resultsContainer, false);
-            }
-
-            // Label
-            TextMeshProUGUI txt = null;
-            var labelTf = boutonGO != null ? boutonGO.transform.Find("Label") : null;
-            if (labelTf != null)
-            {
-                txt = labelTf.GetComponent<TextMeshProUGUI>();
-            }
-            if (txt == null)
-            {
-                txt = boutonGO.GetComponentInChildren<TextMeshProUGUI>();
-            }
-            if (txt != null)
-            {
-                txt.text = track.title;
-                txt.font = LoadMontserratFont();
-                txt.fontSize = 16;
-                txt.color = new Color(0.12f, 0.15f, 0.2f, 1f);
-                txt.alignment = TextAlignmentOptions.MidlineLeft;
-                txt.textWrappingMode = TextWrappingModes.NoWrap;
-                txt.overflowMode = TextOverflowModes.Ellipsis;
-            }
-
-            // Bouton "remove" — on réutilise le bouton droit du prefab si présent
-            Button removeBtn = null;
-            TextMeshProUGUI removeTxt = null;
-            var chevronTf = boutonGO != null ? boutonGO.transform.Find("ChevronButton") : null;
-            if (chevronTf == null && boutonGO != null) chevronTf = boutonGO.transform.Find("PlayButton");
-            if (chevronTf != null)
-            {
-                removeBtn = chevronTf.GetComponent<Button>();
-                removeTxt = chevronTf.GetComponentInChildren<TextMeshProUGUI>();
-            }
-
-            if (removeBtn == null)
-            {
-                // Fallback si pas de bouton droit dans le prefab
-                GameObject addBtnGO = new GameObject("RemoveButton");
-                addBtnGO.transform.SetParent(boutonGO.transform, false);
-
-                Image addImg = addBtnGO.AddComponent<Image>();
-                addImg.color = new Color32(0x4D, 0x88, 0xFF, 0xFF);
-
-                removeBtn = addBtnGO.AddComponent<Button>();
-
-                RectTransform addRT = addBtnGO.GetComponent<RectTransform>();
-                addRT.anchorMin = new Vector2(1, 0);
-                addRT.anchorMax = new Vector2(1, 1);
-                addRT.pivot = new Vector2(1, 0.5f);
-                addRT.sizeDelta = new Vector2(24, 0);
-                addRT.anchoredPosition = new Vector2(-5, 0);
-
-                GameObject addTextGO = new GameObject("Text");
-                addTextGO.transform.SetParent(addBtnGO.transform, false);
-                removeTxt = addTextGO.AddComponent<TextMeshProUGUI>();
-                removeTxt.font = LoadMontserratFont();
-                removeTxt.alignment = TextAlignmentOptions.Center;
-                RectTransform addTxtRT = addTextGO.GetComponent<RectTransform>();
-                addTxtRT.anchorMin = Vector2.zero;
-                addTxtRT.anchorMax = Vector2.one;
-                addTxtRT.offsetMin = Vector2.zero;
-                addTxtRT.offsetMax = Vector2.zero;
-            }
-
-            if (removeTxt != null)
-            {
-                removeTxt.text = "-";
-                removeTxt.fontSize = 16;
-                removeTxt.color = Color.white;
-            }
-
-            if (removeBtn != null)
-            {
-                removeBtn.onClick.AddListener(() =>
-                {
-                    pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
-                    PopupManager.Show("Musique supprimée : " + track.title);
-                });
-            }
-        }
-
-        var containerRT = resultsContainer as RectTransform;
-        if (containerRT != null)
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
-        }
-    }*/
 
     public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
     {
@@ -404,39 +295,11 @@ public static class PlaylistUI
             itemRT.anchorMin = new Vector2(0.5f, 0.5f);
             itemRT.anchorMax = new Vector2(0.5f, 0.5f);
             itemRT.pivot = new Vector2(0.5f, 0.5f);
-            itemRT.anchoredPosition = Vector2.zero;
+            itemRT.anchoredPosition3D = Vector3.zero;
             itemRT.localScale = new Vector3(scale*MusicItemRowScale, scale*MusicItemRowScale, 1f);
         }
 
         return item;
     }
 
-     /*public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
-    {
-        if (prefab == null) return null;
-
-        var rowGO = new GameObject("MusicItemRow", typeof(RectTransform), typeof(LayoutElement));
-        rowGO.transform.SetParent(parent, false);
-
-        var rowLE = rowGO.GetComponent<LayoutElement>();
-        float scaledRowHeight = rowHeight * MusicItemRowScale;
-        rowLE.minHeight = scaledRowHeight;
-        rowLE.preferredHeight = scaledRowHeight;
-        rowLE.flexibleHeight = 0f;
-        rowLE.preferredWidth = -1;
-
-        var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
-
-        var itemRT = item.GetComponent<RectTransform>();
-        if (itemRT != null)
-        {
-            itemRT.anchorMin = new Vector2(0.5f, 0.5f);
-            itemRT.anchorMax = new Vector2(0.5f, 0.5f);
-            itemRT.pivot = new Vector2(0.5f, 0.5f);
-            itemRT.anchoredPosition = Vector2.zero;
-            itemRT.localScale = new Vector3(MusicItemRowScale, MusicItemRowScale, 1f);
-        }
-
-        return item;
-    }*/
 }

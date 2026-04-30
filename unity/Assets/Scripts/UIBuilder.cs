@@ -122,7 +122,7 @@ public static class UIBuilder
     scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
     scrollRT.offsetMin = Vector2.zero;
     scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(200, 100);
+    scrollRT.sizeDelta = new Vector2(250, 250);
 
 
     ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
@@ -132,7 +132,11 @@ public static class UIBuilder
     GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
     viewportGO.transform.SetParent(scrollGO.transform, false);
     // Fond transparent
-    viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    //viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
+
+    var img = viewportGO.GetComponent<Image>();
+    img.color = new Color32(0x80, 0x95, 0xFF, 20); // léger alpha visible
+    img.raycastTarget = false;
 
 
     RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
@@ -142,21 +146,19 @@ public static class UIBuilder
     viewportRT.offsetMax = Vector2.zero;
     
 
-    scroll.viewport = viewportRT;
-
     // Content
     GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
     contentGO.transform.SetParent(viewportGO.transform, false);
 
-	    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
 	    // Dans les listes, on préfère piloter la hauteur via `LayoutElement` sur les items
 	    // (plutôt que la taille du prefab), sinon ils prennent trop de place à l'écran.
-	    layout.childControlHeight = true;
-	    layout.childForceExpandHeight = false;
-	    layout.childControlWidth = true;
-	    layout.childForceExpandWidth = true;
-	    layout.spacing = 6;
-	    layout.childAlignment = TextAnchor.UpperCenter;
+	layout.childControlHeight = true;
+	layout.childForceExpandHeight = false;
+	layout.childControlWidth = true;
+	layout.childForceExpandWidth = true;
+	layout.spacing = 6;
+	layout.childAlignment = TextAnchor.UpperCenter;
 
     ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
     fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -168,10 +170,10 @@ public static class UIBuilder
     contentRT.anchorMax = new Vector2(1, 1);
     contentRT.pivot = new Vector2(0.5f, 1);
     contentRT.anchoredPosition = Vector2.zero;
-    contentRT.offsetMin = new Vector2(0, 0);
-    contentRT.offsetMax = new Vector2(0, 0);
+    contentRT.sizeDelta = new Vector2(0, 0);
     
     scroll.content = contentRT;
+    scroll.viewport = viewportRT;
     ClearContainer(contentRT);
     
     // Génération des boutons de playlists

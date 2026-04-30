@@ -14,6 +14,7 @@ public class PanelMenu : MonoBehaviour
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
     public GameObject musicItemPrefab;
+    public GameObject playlistmusicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
 
@@ -119,9 +120,9 @@ public class PanelMenu : MonoBehaviour
         {
             pm.CreatePlaylist(playlistName);
 
-            PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, musicItemPrefab, playlistName =>
+            PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, playlistName =>
             {
-                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
             });
         }
     });
@@ -135,9 +136,9 @@ public class PanelMenu : MonoBehaviour
     searchUI.SetResultsContainer(centerRightContainer);
 
 
-    PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, musicItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab,playlistmusicItemPrefab, playlistName =>
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
     });
 }
 
