@@ -139,7 +139,7 @@ public static class UIBuilder
     hlg.childForceExpandHeight = false;
 
     LayoutElement navLE = navGO.AddComponent<LayoutElement>();
-    navLE.preferredHeight = 40;
+    navLE.preferredHeight = 100;
       
     Button prevBtn = Bouton.CreateButtonEditor(navGO.transform,PreviousButtonPrefab, "<<", () => pm.OnPreviousPressed());
     Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, NextButtonPrefab, ">>", () => pm.OnNextPressed());

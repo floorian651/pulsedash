@@ -125,7 +125,7 @@ public static Transform CreateCenterRightContainer(Transform parent)
 
 
 // A implémenter pour faire un conteneur en bas du panel
-public static Transform CreateBottomAudioBar(Transform parent, float height = 80f)
+public static Transform CreateBottomAudioBar(Transform parent,float height = 60f)
 {
     GameObject bottomGO = new GameObject("BottomAudioBar", typeof(RectTransform));
     bottomGO.transform.SetParent(parent, false);
@@ -149,7 +149,7 @@ public static Transform CreateBottomAudioBar(Transform parent, float height = 80
 
     // Fond léger (optionnel)
     Image bg = bottomGO.AddComponent<Image>();
-    bg.color = new Color32(0,0,0,255); // noir
+    bg.color = new Color32(0x80, 0x95, 0xFF, 20);
 
     return bottomGO.transform;
 }
