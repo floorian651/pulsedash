@@ -17,6 +17,8 @@ public class PanelMenu : MonoBehaviour
     public GameObject playlistmusicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
+    public GameObject NextButtonPrefab;
+    public GameObject PreviousButtonPrefab;
 
 
     
@@ -120,9 +122,9 @@ public class PanelMenu : MonoBehaviour
         {
             pm.CreatePlaylist(playlistName);
 
-            PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, playlistName =>
+            PlaylistUI.AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, playlistName =>
             {
-                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+                UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
             });
         }
     });
@@ -136,9 +138,9 @@ public class PanelMenu : MonoBehaviour
     searchUI.SetResultsContainer(centerRightContainer);
 
 
-    PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab,playlistmusicItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist( PreviousButtonPrefab,  NextButtonPrefab, averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab,playlistmusicItemPrefab, playlistName =>
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+        UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
     });
 }
 

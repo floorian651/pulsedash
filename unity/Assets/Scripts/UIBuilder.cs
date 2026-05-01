@@ -105,7 +105,7 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
-    public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void ShowMusiquesPlaylistInContainer(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab, GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
            
     // Génération des boutons de playlists
@@ -113,11 +113,11 @@ public static class UIBuilder
     
     PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, playlistName,contentRT);
 
-    BoutonNextBeforeInContainer(averageButtonPrefab,clips,playlistName,mainContent);
+    BoutonNextBeforeInContainer(PreviousButtonPrefab, NextButtonPrefab, clips,playlistName,mainContent);
     }
 
 
-    public static void BoutonNextBeforeInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void BoutonNextBeforeInContainer(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {
     PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
     if (pm == null) return;
@@ -141,8 +141,8 @@ public static class UIBuilder
     LayoutElement navLE = navGO.AddComponent<LayoutElement>();
     navLE.preferredHeight = 40;
       
-    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "<<", () => pm.OnPreviousPressed());
-    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, ">>", () => pm.OnNextPressed());
+    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform,PreviousButtonPrefab, "<<", () => pm.OnPreviousPressed());
+    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, NextButtonPrefab, ">>", () => pm.OnNextPressed());
     
     }
     public static void ClearContainer(Transform container)

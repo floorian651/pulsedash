@@ -327,7 +327,7 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
 
     // Génération des boutons de playlists
     
-    PlaylistUI.AfficherBoutonPlaylist(null, null, contentRT, null, playlistItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(null, null, null, null, contentRT, null, playlistItemPrefab, playlistName =>
     {
         PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
