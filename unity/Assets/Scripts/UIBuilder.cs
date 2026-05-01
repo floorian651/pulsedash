@@ -8,6 +8,7 @@ using System.Linq;
 
 public static class UIBuilder
 {   
+    public const float MusicItemRowScale = 4f;
 
     // Créer un panel pour l'interface
     public static Transform CreatePanel()
@@ -106,77 +107,9 @@ public static class UIBuilder
 }
     public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
-        foreach (Transform child in mainContent)
-    {
-        UnityEngine.Object.Destroy(child.gameObject);
-    }
-
-    // Conteneur principal pour la playlist
-
-    // ScrollRect
-    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
-    scrollGO.transform.SetParent(mainContent.transform, false);
-
-    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
-    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
-    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
-    scrollRT.offsetMin = Vector2.zero;
-    scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(250, 250);
-
-
-    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
-    scroll.horizontal = false;
-
-    // Viewport
-    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
-    viewportGO.transform.SetParent(scrollGO.transform, false);
-    // Fond transparent
-    //viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
-
-    var img = viewportGO.GetComponent<Image>();
-    img.color = new Color32(0x80, 0x95, 0xFF, 20); // léger alpha visible
-    img.raycastTarget = false;
-
-
-    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
-    viewportRT.anchorMin = Vector2.zero;
-    viewportRT.anchorMax = Vector2.one;
-    viewportRT.offsetMin = Vector2.zero;
-    viewportRT.offsetMax = Vector2.zero;
-    
-
-    // Content
-    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
-    contentGO.transform.SetParent(viewportGO.transform, false);
-
-	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-	    // Dans les listes, on préfère piloter la hauteur via `LayoutElement` sur les items
-	    // (plutôt que la taille du prefab), sinon ils prennent trop de place à l'écran.
-	layout.childControlHeight = true;
-	layout.childForceExpandHeight = false;
-	layout.childControlWidth = true;
-	layout.childForceExpandWidth = true;
-	layout.spacing = 6;
-	layout.childAlignment = TextAnchor.UpperCenter;
-
-    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
-    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
-
-    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
-    contentRT.anchorMin = new Vector2(0, 1);
-    contentRT.anchorMax = new Vector2(1, 1);
-    contentRT.pivot = new Vector2(0.5f, 1);
-    contentRT.anchoredPosition = Vector2.zero;
-    contentRT.sizeDelta = new Vector2(0, 0);
-    
-    scroll.content = contentRT;
-    scroll.viewport = viewportRT;
-    ClearContainer(contentRT);
-    
+           
     // Génération des boutons de playlists
+    RectTransform contentRT = UIBuilder.CreateScrollContent(mainContent);
     
     PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, playlistName,contentRT);
 
@@ -439,5 +372,126 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
     return contentGO.transform; // parent pour ajouter les éléments
 }
+
+public static RectTransform CreateScrollContent(Transform mainContent)
+{
+    foreach (Transform child in mainContent)
+    {
+        UnityEngine.Object.Destroy(child.gameObject);
+    }
+
+    // Conteneur principal pour la playlist
+
+    // ScrollRect
+    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
+    scrollGO.transform.SetParent(mainContent.transform, false);
+
+    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
+    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
+    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
+    scrollRT.offsetMin = Vector2.zero;
+    scrollRT.offsetMax = Vector2.zero;
+    scrollRT.sizeDelta = new Vector2(250, 250);
+
+
+    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
+    scroll.horizontal = false;
+
+    // Viewport
+    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
+    viewportGO.transform.SetParent(scrollGO.transform, false);
+    // Fond transparent
+    //viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
+
+    var img = viewportGO.GetComponent<Image>();
+    img.color = new Color32(0x80, 0x95, 0xFF, 20); // léger alpha visible
+    img.raycastTarget = false;
+
+
+    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
+    viewportRT.anchorMin = Vector2.zero;
+    viewportRT.anchorMax = Vector2.one;
+    viewportRT.offsetMin = Vector2.zero;
+    viewportRT.offsetMax = Vector2.zero;
+    
+
+    // Content
+    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+    contentGO.transform.SetParent(viewportGO.transform, false);
+
+	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+	    // Dans les listes, on préfère piloter la hauteur via `LayoutElement` sur les items
+	    // (plutôt que la taille du prefab), sinon ils prennent trop de place à l'écran.
+	layout.childControlHeight = true;
+	layout.childForceExpandHeight = false;
+	layout.childControlWidth = true;
+	layout.childForceExpandWidth = true;
+	layout.spacing = 6;
+	layout.childAlignment = TextAnchor.UpperCenter;
+
+    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
+    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+
+    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
+    contentRT.anchorMin = new Vector2(0, 1);
+    contentRT.anchorMax = new Vector2(1, 1);
+    contentRT.pivot = new Vector2(0.5f, 1);
+    contentRT.anchoredPosition = Vector2.zero;
+    contentRT.sizeDelta = new Vector2(0, 0);
+    
+    scroll.content = contentRT;
+    scroll.viewport = viewportRT;
+    ClearContainer(contentRT);
+
+    return contentRT;
+}
+    public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
+    {
+        if (prefab == null) return null;
+
+        var rowGO = new GameObject("MusicItemRow", typeof(RectTransform), typeof(LayoutElement));
+        rowGO.transform.SetParent(parent, false);
+
+        var rowLE = rowGO.GetComponent<LayoutElement>();
+        rowLE.minHeight = rowHeight;
+        rowLE.preferredHeight = rowHeight;
+        rowLE.flexibleHeight = 0f;
+        rowLE.preferredWidth = -1;
+
+        var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
+
+        // Assure que les boutons sont "au-dessus" (visuel + clic) même si le label chevauche leur zone.
+        var label = item.transform.Find("Label")?.GetComponent<TMP_Text>();
+        if (label != null)
+        {
+            label.raycastTarget = false;
+        }
+
+        var playButtonTf = item.transform.Find("PlayButton");
+        if (playButtonTf != null) playButtonTf.SetAsLastSibling();
+
+        var addToPlaylistButtonTf = item.transform.Find("AddToPlaylistButton");
+        if (addToPlaylistButtonTf != null) addToPlaylistButtonTf.SetAsLastSibling();
+
+        var subToPlaylistButtonTf = item.transform.Find("SubToPlaylistButton");
+        if (subToPlaylistButtonTf != null) subToPlaylistButtonTf.SetAsLastSibling();
+
+
+        var itemRT = item.GetComponent<RectTransform>();
+        if (itemRT != null)
+        {
+            float prefabHeight = Mathf.Max(1f, itemRT.sizeDelta.y);
+            float scale = Mathf.Clamp(rowHeight / prefabHeight, 0.05f, 1f);
+            itemRT.anchorMin = new Vector2(0.5f, 0.5f);
+            itemRT.anchorMax = new Vector2(0.5f, 0.5f);
+            itemRT.pivot = new Vector2(0.5f, 0.5f);
+            itemRT.anchoredPosition3D = Vector3.zero;
+            itemRT.localScale = new Vector3(scale*MusicItemRowScale, scale*MusicItemRowScale, 1f);
+        }
+
+        return item;
+    }
 }
 

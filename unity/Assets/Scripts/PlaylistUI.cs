@@ -190,18 +190,23 @@ public static class PlaylistUI
         Playlist playlist_recherche = pm.GetPlaylist(nomplaylist);
         if (playlist_recherche == null) return;
 
-        // Nettoyer les anciens résultats
-        //foreach (Transform child in resultsContainer)
-        //    UnityEngine.Object.Destroy(child.gameObject);
-
         //Récupérer la liste de toutes les musiques de la playlist sélectionnée
         List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+        
+        var rt = resultsContainer as RectTransform;
+
+        rt.localScale = Vector3.one;
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = Vector2.zero;
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
 
         foreach (var track in TracktoutesLesMusiques)
         {
 
             // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
-		    GameObject item = InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
+		    GameObject item = UIBuilder.InstantiateMusicItemRow(musicItemPrefab, resultsContainer, MusicItemListHeight);
 
 		        // Mettre le nom de la musique
 		    TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
@@ -258,48 +263,6 @@ public static class PlaylistUI
     }
 
 
-    public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
-    {
-        if (prefab == null) return null;
-
-        var rowGO = new GameObject("MusicItemRow", typeof(RectTransform), typeof(LayoutElement));
-        rowGO.transform.SetParent(parent, false);
-
-        var rowLE = rowGO.GetComponent<LayoutElement>();
-        rowLE.minHeight = rowHeight;
-        rowLE.preferredHeight = rowHeight;
-        rowLE.flexibleHeight = 0f;
-        rowLE.preferredWidth = -1;
-
-        var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
-
-        // Assure que les boutons sont "au-dessus" (visuel + clic) même si le label chevauche leur zone.
-        var label = item.transform.Find("Label")?.GetComponent<TMP_Text>();
-        if (label != null)
-        {
-            label.raycastTarget = false;
-        }
-
-        var playButtonTf = item.transform.Find("PlayButton");
-        if (playButtonTf != null) playButtonTf.SetAsLastSibling();
-
-        var addToPlaylistButtonTf = item.transform.Find("AddToPlaylistButton");
-        if (addToPlaylistButtonTf != null) addToPlaylistButtonTf.SetAsLastSibling();
-
-
-        var itemRT = item.GetComponent<RectTransform>();
-        if (itemRT != null)
-        {
-            float prefabHeight = Mathf.Max(1f, itemRT.sizeDelta.y);
-            float scale = Mathf.Clamp(rowHeight / prefabHeight, 0.05f, 1f);
-            itemRT.anchorMin = new Vector2(0.5f, 0.5f);
-            itemRT.anchorMax = new Vector2(0.5f, 0.5f);
-            itemRT.pivot = new Vector2(0.5f, 0.5f);
-            itemRT.anchoredPosition3D = Vector3.zero;
-            itemRT.localScale = new Vector3(scale*MusicItemRowScale, scale*MusicItemRowScale, 1f);
-        }
-
-        return item;
-    }
+    
 
 }
