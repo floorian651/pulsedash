@@ -129,8 +129,8 @@ public class PopupManager : MonoBehaviour
         msgTxt.overflowMode = TextOverflowModes.Ellipsis; 
 
         RectTransform msgRT = msgGO.GetComponent<RectTransform>();
-        msgRT.anchorMin = new Vector2(0, 0.7f);
-        msgRT.anchorMax = new Vector2(1, 1);
+        msgRT.anchorMin = new Vector2(0, 0.55f);
+        msgRT.anchorMax = new Vector2(1, 0.85f);
         msgRT.offsetMin = Vector2.zero;
         msgRT.offsetMax = Vector2.zero;
 
@@ -234,7 +234,7 @@ public class PopupManager : MonoBehaviour
     }
 
 // Pop up avec le nom des playlist pour ajouter le clip trackName à l'une des playlists
-public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemPrefab)
+public static void ShowPlaylistPopup(string trackName, GameObject averageButtonTransparent)
 {
     // Détruire l'ancien popup
     if (popupGO != null)
@@ -327,7 +327,7 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
 
     // Génération des boutons de playlists
     
-    PlaylistUI.AfficherBoutonPlaylist(null, null, null, null, contentRT, null, playlistItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(null, null, null, null, contentRT, null, averageButtonTransparent, playlistName =>
     {
         PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
@@ -397,14 +397,18 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     GameObject launchBtnGO = new GameObject("LaunchButton", typeof(RectTransform));
     launchBtnGO.transform.SetParent(container.transform, false);
     RectTransform launchRT = launchBtnGO.GetComponent<RectTransform>();
-    launchRT.anchorMin = new Vector2(0.1f, 0.35f);
-    launchRT.anchorMax = new Vector2(0.9f, 0.55f);
-    launchRT.offsetMin = Vector2.zero;
-    launchRT.offsetMax = Vector2.zero;
+    launchRT.anchorMin = new Vector2(0.5f, 0.50f);
+    launchRT.anchorMax = new Vector2(0.5f, 0.50f);
+
+    launchRT.pivot = new Vector2(0.5f, 0.5f);
+
+    launchRT.sizeDelta = new Vector2(150, 30);
+
+    launchRT.anchoredPosition = Vector2.zero;
 
     Button launchBtn = launchBtnGO.AddComponent<Button>();
     Image launchImg = launchBtnGO.AddComponent<Image>();
-    launchImg.color = new Color(0.15f, 0.25f, 0.45f, 0.9f);
+    launchImg.color = new Color(0.28f, 0.32f, 0.38f, 0.95f);
 
     GameObject launchTextGO = new GameObject("Text", typeof(RectTransform));
     launchTextGO.transform.SetParent(launchBtnGO.transform, false);
@@ -424,10 +428,14 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     GameObject deleteBtnGO = new GameObject("DeleteButton", typeof(RectTransform));
     deleteBtnGO.transform.SetParent(container.transform, false);
     RectTransform deleteRT = deleteBtnGO.GetComponent<RectTransform>();
-    deleteRT.anchorMin = new Vector2(0.1f, 0.1f);
-    deleteRT.anchorMax = new Vector2(0.9f, 0.3f);
-    deleteRT.offsetMin = Vector2.zero;
-    deleteRT.offsetMax = Vector2.zero;
+    deleteRT.anchorMin = new Vector2(0.5f, 0.3f);
+    deleteRT.anchorMax = new Vector2(0.5f, 0.3f);
+
+    deleteRT.pivot = new Vector2(0.5f, 0.5f);
+
+    deleteRT.sizeDelta = new Vector2(150, 30);
+
+    deleteRT.anchoredPosition = Vector2.zero;
 
     Button deleteBtn = deleteBtnGO.AddComponent<Button>();
     Image deleteImg = deleteBtnGO.AddComponent<Image>();

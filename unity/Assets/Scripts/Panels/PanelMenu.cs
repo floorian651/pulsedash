@@ -19,6 +19,7 @@ public class PanelMenu : MonoBehaviour
     public GameObject averageButtonPrefab;
     public GameObject NextButtonPrefab;
     public GameObject PreviousButtonPrefab;
+    public GameObject averageButtonTransparent;
 
 
     
@@ -132,7 +133,7 @@ public class PanelMenu : MonoBehaviour
 
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab,averageButtonTransparent);
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);

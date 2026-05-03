@@ -18,7 +18,8 @@ public class SearchUI
 
     private GameObject playlistItemPrefab;
     private GameObject musicItemPrefab;
-
+    private GameObject averageButtonTransparent;
+    
     public static SearchUI Create(Transform parent, Context context)
     {
         // Conteneur vertical 
@@ -38,11 +39,12 @@ public class SearchUI
         return ui;
     }
 
-    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent)
     {
         musiques = clips;
         this.playlistItemPrefab = playlistItemPrefab;
         this.musicItemPrefab = musicItemPrefab;
+        this.averageButtonTransparent = averageButtonTransparent;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
@@ -105,7 +107,7 @@ public class SearchUI
                 Button addButton = addButtonTransform.GetComponent<Button>();
                 addButton.onClick.AddListener(() =>
                 {
-                    PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
+                    PopupManager.ShowPlaylistPopup(clip.name,averageButtonTransparent);
                 });
             }
 
