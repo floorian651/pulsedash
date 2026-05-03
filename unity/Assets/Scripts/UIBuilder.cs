@@ -288,11 +288,14 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         //bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
+        input.targetGraphic = bg;
 
         input.customCaretColor = true;
         input.caretColor = Color.white;
-        input.caretWidth = 10;
-
+        input.caretWidth = 5;
+        input.lineType = TMP_InputField.LineType.SingleLine;
+        input.richText = false;
+        
         // Zone de texte
         GameObject textAreaGO = new GameObject("Text Area", typeof(RectTransform));
         textAreaGO.transform.SetParent(go.transform, false);
@@ -300,35 +303,16 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         RectTransform textAreaRT = textAreaGO.GetComponent<RectTransform>();
         textAreaRT.anchorMin = Vector2.zero;
         textAreaRT.anchorMax = Vector2.one;
-        // Padding plus léger pour éviter le clipping vertical
-        textAreaRT.offsetMin = new Vector2(14, 6);
-        textAreaRT.offsetMax = new Vector2(-14, -6);
+        textAreaRT.offsetMin = new Vector2(14, 2);
+        textAreaRT.offsetMax = new Vector2(-14, -2);
+        //textAreaRT.offsetMin = new Vector2(14, 6);
+        //textAreaRT.offsetMax = new Vector2(-14, -6);
         
-        textAreaGO.AddComponent<RectMask2D>();
+        //textAreaGO.AddComponent<RectMask2D>();
 
         input.textViewport = textAreaRT;
 
-        // Texte principal
-        GameObject textGO = new GameObject("Text", typeof(RectTransform));
-        textGO.transform.SetParent(textAreaGO.transform, false);
-
-        TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
-        text.fontSize = 20;
-        text.color = new Color32(240, 240, 240, 255);
-        text.alignment = TextAlignmentOptions.MidlineLeft;
-        text.enableWordWrapping = false;
-        text.extraPadding = true;
-
-
-        RectTransform textRT = textGO.GetComponent<RectTransform>();
-        textRT.anchorMin = Vector2.zero;
-        textRT.anchorMax = Vector2.one;
-        textRT.offsetMin = Vector2.zero;
-        textRT.offsetMax = Vector2.zero;
-
-        input.textComponent = text;
-
-        // Placeholder
+        // Placeholder (doit être derrière le texte/caret)
         GameObject placeholderGO = new GameObject("Placeholder", typeof(RectTransform));
         placeholderGO.transform.SetParent(textAreaGO.transform, false);
 
@@ -341,7 +325,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         placeholder.alignment = TextAlignmentOptions.MidlineLeft;
         placeholder.enableWordWrapping = false;
         placeholder.extraPadding = true;
-
+        placeholder.raycastTarget = false;
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
         phRT.anchorMin = Vector2.zero;
@@ -350,6 +334,37 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         phRT.offsetMax = Vector2.zero;
 
         input.placeholder = placeholder;
+
+        // Texte principal
+        GameObject textGO = new GameObject("Text", typeof(RectTransform));
+        textGO.transform.SetParent(textAreaGO.transform, false);
+
+        TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
+        text.margin = Vector4.zero;
+        text.fontSize = 20;
+        text.color = new Color32(240, 240, 240, 255);
+        text.alignment = TextAlignmentOptions.MidlineLeft;
+        text.enableWordWrapping = false;
+        text.extraPadding = true;
+        text.margin = Vector4.zero;
+        text.raycastTarget = false;
+
+
+        RectTransform textRT = textGO.GetComponent<RectTransform>();
+        textRT.anchorMin = Vector2.zero;
+        textRT.anchorMax = Vector2.one;
+        textRT.offsetMin = Vector2.zero;
+        textRT.offsetMax = Vector2.zero;
+
+        input.textComponent = text;
+
+        // Assure l'ordre de rendu: placeholder derrière, texte/caret devant.
+        placeholderGO.transform.SetAsFirstSibling();
+        textGO.transform.SetAsLastSibling();
+
+        // TMP_InputField initialise des sous-objets dans OnEnable ; on force une ré-init une fois câblé.
+        input.enabled = false;
+        input.enabled = true;
 
         return input;
     }

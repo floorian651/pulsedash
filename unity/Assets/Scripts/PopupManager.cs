@@ -144,7 +144,7 @@ public class PopupManager : MonoBehaviour
         inputRT.offsetMax = Vector2.zero;
 
         Image inputBG = inputGO.AddComponent<Image>();
-        inputBG.color = Color.white;
+        inputBG.color = new Color(1f, 1f, 1f, 0.01f);
 
         TMP_InputField inputField = inputGO.AddComponent<TMP_InputField>();
 
@@ -196,14 +196,14 @@ public class PopupManager : MonoBehaviour
         GameObject btnGO = new GameObject("ConfirmButton", typeof(RectTransform));
         btnGO.transform.SetParent(container.transform, false);
         RectTransform btnRT = btnGO.GetComponent<RectTransform>();
-        btnRT.anchorMin = new Vector2(0.3f, 0.05f);
-        btnRT.anchorMax = new Vector2(0.7f, 0.25f);
+        btnRT.anchorMin = new Vector2(0.3f, 0.12f);
+        btnRT.anchorMax = new Vector2(0.7f, 0.32f);
         btnRT.offsetMin = Vector2.zero;
         btnRT.offsetMax = Vector2.zero;
 
         Button btn = btnGO.AddComponent<Button>();
         Image btnImg = btnGO.AddComponent<Image>();
-        btnImg.color = new Color(0.2f, 0.6f, 1f, 0.9f);
+        btnImg.color = new Color(0.48f, 0.52f, 0.58f, 1f);
 
         GameObject btnTextGO = new GameObject("Text", typeof(RectTransform));
         btnTextGO.transform.SetParent(btnGO.transform, false);
@@ -379,9 +379,9 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     // Titre
     GameObject titleGO = new GameObject("Title", typeof(RectTransform));
     titleGO.transform.SetParent(container.transform, false);
-    RectTransform titleRT = titleGO.GetComponent<RectTransform>();
-    titleRT.anchorMin = new Vector2(0, 0.7f);
-    titleRT.anchorMax = new Vector2(1, 1);
+    RectTransform titleRT = titleGO.GetComponent<RectTransform>();    
+    titleRT.anchorMin = new Vector2(0, 0.6f);
+    titleRT.anchorMax = new Vector2(1, 0.9f);
     titleRT.offsetMin = new Vector2(10, 0);
     titleRT.offsetMax = new Vector2(-10, -10);
 
@@ -404,7 +404,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
 
     Button launchBtn = launchBtnGO.AddComponent<Button>();
     Image launchImg = launchBtnGO.AddComponent<Image>();
-    launchImg.color = new Color(0.2f, 0.6f, 1f, 0.9f);
+    launchImg.color = new Color(0.15f, 0.25f, 0.45f, 0.9f);
 
     GameObject launchTextGO = new GameObject("Text", typeof(RectTransform));
     launchTextGO.transform.SetParent(launchBtnGO.transform, false);
@@ -431,7 +431,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
 
     Button deleteBtn = deleteBtnGO.AddComponent<Button>();
     Image deleteImg = deleteBtnGO.AddComponent<Image>();
-    deleteImg.color = new Color(0.85f, 0.2f, 0.2f, 0.95f);
+    deleteImg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f);
 
     GameObject deleteTextGO = new GameObject("Text", typeof(RectTransform));
     deleteTextGO.transform.SetParent(deleteBtnGO.transform, false);
