@@ -113,38 +113,85 @@ public static class UIBuilder
     
     PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, playlistName,contentRT);
 
-    BoutonNextBeforeInContainer(PreviousButtonPrefab, NextButtonPrefab, clips,playlistName,mainContent);
+    BoutonNextBeforeInContainer(PreviousButtonPrefab, PreviousButtonPrefab, clips,playlistName,mainContent);
     }
 
 
-    public static void BoutonNextBeforeInContainer(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
-    {
-    PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
-    if (pm == null) return;
-    
-    //Ajout des boutons next et before pour gérer la playlist
-    Playlist playlist_recherche = pm.GetPlaylist(playlistName);
+    public static void BoutonNextBeforeInContainer(
+    GameObject PreviousButtonPrefab,
+    GameObject NextButtonPrefab,
+    List<AudioClip> clips,
+    string playlistName,
+    Transform mainContent)
+{
+        PlaylistManager pm =
+            UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
-    //Récupérer la liste de toutes les musiques de la playlist sélectionnée
-    List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+        if (pm == null) return;
 
-    // Conteneur horizontal pour aligner Avant / Après sur la même hauteur
-    GameObject navGO = new GameObject("NavButtons", typeof(RectTransform));
-    navGO.transform.SetParent(mainContent, false);
+        Playlist playlist_recherche = pm.GetPlaylist(playlistName);
 
-    HorizontalLayoutGroup hlg = navGO.AddComponent<HorizontalLayoutGroup>();
-    hlg.childAlignment = TextAnchor.MiddleCenter;
-    hlg.spacing = 10;
-    hlg.childForceExpandWidth = false;
-    hlg.childForceExpandHeight = false;
+        if (playlist_recherche == null) return;
 
-    LayoutElement navLE = navGO.AddComponent<LayoutElement>();
-    navLE.preferredHeight = 100;
-      
-    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform,PreviousButtonPrefab, "<<", () => pm.OnPreviousPressed());
-    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, NextButtonPrefab, ">>", () => pm.OnNextPressed());
-    
-    }
+        GameObject navGO = new GameObject(
+            "NavButtons",
+            typeof(RectTransform),
+            typeof(LayoutElement)
+        );
+
+        navGO.transform.SetParent(mainContent, false);
+        navGO.transform.SetAsFirstSibling();
+
+        HorizontalLayoutGroup hlg =
+            navGO.AddComponent<HorizontalLayoutGroup>();
+
+        hlg.childAlignment = TextAnchor.UpperCenter; 
+        hlg.spacing = 20;
+
+        hlg.childForceExpandWidth = false;
+        hlg.childForceExpandHeight = false;
+
+        hlg.padding = new RectOffset(0, 0, 10, 0);
+
+        LayoutElement navLE =
+            navGO.GetComponent<LayoutElement>();
+
+        navLE.preferredHeight = 70;
+
+        Button prevBtn =
+            Bouton.CreateButtonEditor(
+                navGO.transform,
+                PreviousButtonPrefab,
+                "<<",
+                () => pm.OnPreviousPressed()
+            );
+
+        Button nextBtn =
+            Bouton.CreateButtonEditor(
+                navGO.transform,
+                NextButtonPrefab,
+                ">>",
+                () => pm.OnNextPressed()
+            );
+
+        prevBtn.transform.localScale = new Vector3(2f, 2f, 1f);
+
+        nextBtn.transform.localScale = new Vector3(-2f, 2f, 1f);
+
+        LayoutElement prevLE =
+            prevBtn.gameObject.AddComponent<LayoutElement>();
+
+        prevLE.preferredWidth = 120;
+        prevLE.preferredHeight = 120;
+
+        LayoutElement nextLE =
+            nextBtn.gameObject.AddComponent<LayoutElement>();
+
+        nextLE.preferredWidth = 120;
+        nextLE.preferredHeight = 120;
+}
+
+
     public static void ClearContainer(Transform container)
 {
     // On parcourt tous les enfants
