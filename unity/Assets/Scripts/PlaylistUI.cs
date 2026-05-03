@@ -12,18 +12,6 @@ public static class PlaylistUI
 {   
     private const float MusicItemListHeight = 80f;
     private const float MusicItemRowScale = 4f;
-    private static string MontserratPath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular SDF.asset";
-    // Autre police "Fonts & Materials/Montserrat-Regular SDF"
-    
-    private static TMP_FontAsset LoadMontserratFont()
-    {
-        TMP_FontAsset font = Resources.Load<TMP_FontAsset>(MontserratPath);
-        if (font == null)
-        {
-            font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
-        }
-        return font;
-    }
 
     public static void CreateButtonCreerPlaylist(GameObject averageButtonPrefab, Transform parent, Action<string> onPlaylistCreated)
     {   
@@ -76,12 +64,14 @@ public static class PlaylistUI
     foreach (var playlist in toutesLesPlaylists)
 {
     GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
+    UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
     Button btn = boutonGO.GetComponent<Button>();
 
     TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
     if (label != null)
     {
         label.text = playlist.name;
+        UIBuilder.ApplyMontserratFont(label);
         RectTransform labelRT = label.GetComponent<RectTransform>();
         if (labelRT != null && showActions)
         {
@@ -136,7 +126,7 @@ public static class PlaylistUI
     moreTxt.fontSize = 16;
     moreTxt.color = Color.white;
     moreTxt.alignment = TextAlignmentOptions.Center;
-    moreTxt.font = LoadMontserratFont();
+    UIBuilder.ApplyMontserratFont(moreTxt);
 
     RectTransform moreTxtRT = moreTextGO.GetComponent<RectTransform>();
     moreTxtRT.anchorMin = Vector2.zero;

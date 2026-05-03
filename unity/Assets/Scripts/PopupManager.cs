@@ -62,6 +62,7 @@ public class PopupManager : MonoBehaviour
         txt.fontSize = 20;
         txt.color = Color.white;
         txt.alignment = TextAlignmentOptions.Center;
+        UIBuilder.ApplyMontserratFont(txt);
         //txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         //txt.overflowMode = TextOverflowModes.Ellipsis; 
 
@@ -125,6 +126,7 @@ public class PopupManager : MonoBehaviour
         msgTxt.alignment = TextAlignmentOptions.Center;
         msgTxt.fontSize = 18;
         msgTxt.color = Color.black;
+        UIBuilder.ApplyMontserratFont(msgTxt);
         msgTxt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         msgTxt.overflowMode = TextOverflowModes.Ellipsis; 
 
@@ -168,6 +170,7 @@ public class PopupManager : MonoBehaviour
         placeholder.fontSize = 14;
         placeholder.color = new Color(0, 0, 0, 0.5f);
         placeholder.alignment = TextAlignmentOptions.Left;
+        UIBuilder.ApplyMontserratFont(placeholder);
         inputField.placeholder = placeholder;
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
@@ -183,6 +186,7 @@ public class PopupManager : MonoBehaviour
         text.fontSize = 14;
         text.color = Color.black;
         text.alignment = TextAlignmentOptions.Left;
+        UIBuilder.ApplyMontserratFont(text);
         inputField.textComponent = text;
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
@@ -212,6 +216,7 @@ public class PopupManager : MonoBehaviour
         btnText.alignment = TextAlignmentOptions.Center;
         btnText.color = Color.white;
         btnText.fontSize = 16;
+        UIBuilder.ApplyMontserratFont(btnText);
 
         RectTransform btnTextRT = btnTextGO.GetComponent<RectTransform>();
         btnTextRT.anchorMin = Vector2.zero;
@@ -392,6 +397,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     titleTxt.alignment = TextAlignmentOptions.Center;
     titleTxt.textWrappingMode = TextWrappingModes.NoWrap;
     titleTxt.overflowMode = TextOverflowModes.Ellipsis;
+    UIBuilder.ApplyMontserratFont(titleTxt);
 
     // Bouton lancer
     GameObject launchBtnGO = new GameObject("LaunchButton", typeof(RectTransform));
@@ -417,6 +423,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     launchTxt.alignment = TextAlignmentOptions.Center;
     launchTxt.color = Color.white;
     launchTxt.fontSize = 16;
+    UIBuilder.ApplyMontserratFont(launchTxt);
 
     RectTransform launchTextRT = launchTextGO.GetComponent<RectTransform>();
     launchTextRT.anchorMin = Vector2.zero;
@@ -448,6 +455,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     deleteTxt.alignment = TextAlignmentOptions.Center;
     deleteTxt.color = Color.white;
     deleteTxt.fontSize = 16;
+    UIBuilder.ApplyMontserratFont(deleteTxt);
 
     RectTransform deleteTextRT = deleteTextGO.GetComponent<RectTransform>();
     deleteTextRT.anchorMin = Vector2.zero;

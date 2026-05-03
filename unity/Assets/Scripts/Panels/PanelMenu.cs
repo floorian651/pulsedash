@@ -40,9 +40,10 @@ public class PanelMenu : MonoBehaviour
         InitMenu();
     }
 
-    void InitMenu()
+void InitMenu()
 {       
     Debug.Log("Créer le panel");
+    UIBuilder.SetTMPDefaultFontToMontserrat();
 
     // PANEL PRINCIPAL
     Transform panel = UIBuilder.CreatePanel();
@@ -143,6 +144,9 @@ public class PanelMenu : MonoBehaviour
     {
         UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
     });
+
+    // Appliquer Montserrat à tout ce qui existe déjà dans l'UI (labels de prefabs inclus).
+    UIBuilder.ApplyMontserratFontRecursive(panel);
 }
 
    
