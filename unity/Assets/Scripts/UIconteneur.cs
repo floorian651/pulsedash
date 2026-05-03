@@ -143,7 +143,7 @@ public static Transform CreateBottomAudioBar(Transform parent,float height = 60f
     layout.childAlignment = TextAnchor.MiddleCenter;
     layout.spacing = 20;
     layout.padding = new RectOffset(20, 20, 10, 10);
-    layout.childControlHeight = true;
+    layout.childControlHeight = false;
     layout.childControlWidth = false;
     layout.childForceExpandWidth = true;
 

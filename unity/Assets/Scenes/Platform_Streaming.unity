@@ -640,7 +640,7 @@ MonoBehaviour:
   playlistItemPrefab: {fileID: 4348915361711006122, guid: b1d7d4350022ec046951544119155968, type: 3}
   musicItemPrefab: {fileID: 2117360025801944245, guid: b5e7de259b5575a4da2d068c216b97b2, type: 3}
   playlistmusicItemPrefab: {fileID: 2117360025801944245, guid: 1eb8eb26ffa003841b4a18ad68053480, type: 3}
-  launchGameButtonPrefab: {fileID: 1483478919661330273, guid: d9868e98efcdd624985fdee66143c756, type: 3}
+  launchGameButtonPrefab: {fileID: 2117360025801944245, guid: 0e1f9f66918aca84e9a7bd88399eeb26, type: 3}
   averageButtonPrefab: {fileID: 1483478919661330273, guid: 59c94351a225f394c895c4a4855a9a94, type: 3}
   NextButtonPrefab: {fileID: 1483478919661330273, guid: bbab1896e9cd10440818a67113a7eb82, type: 3}
   PreviousButtonPrefab: {fileID: 1483478919661330273, guid: 46cdaef29ecd9e242ae040051561122e, type: 3}
