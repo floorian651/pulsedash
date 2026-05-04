@@ -143,7 +143,7 @@ public class PopupManager : MonoBehaviour
         inputGO.transform.SetParent(container.transform, false);
         RectTransform inputRT = inputGO.GetComponent<RectTransform>();
         inputRT.anchorMin = new Vector2(0.1f, 0.3f);
-        inputRT.anchorMax = new Vector2(0.9f, 0.6f);
+        inputRT.anchorMax = new Vector2(0.9f, 0.75f);
         inputRT.offsetMin = Vector2.zero;
         inputRT.offsetMax = Vector2.zero;
 
@@ -203,7 +203,7 @@ public class PopupManager : MonoBehaviour
         btnGO.transform.SetParent(container.transform, false);
         RectTransform btnRT = btnGO.GetComponent<RectTransform>();
         btnRT.anchorMin = new Vector2(0.3f, 0.12f);
-        btnRT.anchorMax = new Vector2(0.7f, 0.32f);
+        btnRT.anchorMax = new Vector2(0.7f, 0.40f);
         btnRT.offsetMin = Vector2.zero;
         btnRT.offsetMax = Vector2.zero;
 
@@ -217,7 +217,7 @@ public class PopupManager : MonoBehaviour
         btnText.text = "Valider";
         btnText.alignment = TextAlignmentOptions.Center;
         btnText.color = Color.white;
-        btnText.fontSize = 16;
+        btnText.fontSize = 15;
         UIBuilder.ApplyMontserratFont(btnText);
 
         RectTransform btnTextRT = btnTextGO.GetComponent<RectTransform>();
@@ -491,15 +491,13 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     closeBtnGO.transform.SetParent(parent, false);
     closeBtnGO.transform.SetAsLastSibling();
 
-    Image bg = closeBtnGO.AddComponent<Image>();
-    bg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f); // rouge théoriquement
 
     RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
     closeRT.anchorMin = new Vector2(1, 1);
     closeRT.anchorMax = new Vector2(1, 1);
     closeRT.pivot = new Vector2(1, 1);
-    closeRT.sizeDelta = new Vector2(80, 80);
-    closeRT.anchoredPosition = new Vector2(40, 40);
+    closeRT.sizeDelta = new Vector2(90, 90);
+    closeRT.anchoredPosition = new Vector2(35, 40);
 
     // Image d'abord
     Image closeImg = closeBtnGO.AddComponent<Image>();
@@ -516,7 +514,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
         Debug.LogError("Image du bouton de fermeture introuvable !");
     }
 
-    closeImg.color = Color.white;
+    closeImg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f); // rouge théoriquement
 
     // Puis le Button
     Button closeBtn = closeBtnGO.AddComponent<Button>();

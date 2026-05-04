@@ -62,13 +62,14 @@ public static Transform CreateLeftContainer(Transform parent)
     RectTransform rt = leftGO.GetComponent<RectTransform>();
     rt.sizeDelta = new Vector2(200, 250);
 
-    VerticalLayoutGroup layout = leftGO.AddComponent<VerticalLayoutGroup>();
+    /*VerticalLayoutGroup layout = leftGO.AddComponent<VerticalLayoutGroup>();
     layout.spacing = 20;
-    layout.childAlignment = TextAnchor.MiddleCenter;
+    layout.padding.top = 20;
+    layout.childAlignment = TextAnchor.UpperCenter;
     layout.childControlHeight = false;
     layout.childForceExpandHeight = false;
     layout.childControlWidth = false;
-    layout.childForceExpandWidth = false;
+    layout.childForceExpandWidth = false;*/
 
     Image bg = leftGO.AddComponent<Image>();
     // Fond transparent

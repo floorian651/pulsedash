@@ -12,6 +12,7 @@ public static class PlaylistUI
 {   
     private const float MusicItemListHeight = 80f;
     private const float MusicItemRowScale = 4f;
+    private static readonly Vector2 PlaylistItemSize = new Vector2(250f, 200f);
 
     public static void CreateButtonCreerPlaylist(GameObject averageButtonPrefab, Transform parent, Action<string> onPlaylistCreated)
     {   
@@ -20,7 +21,8 @@ public static class PlaylistUI
         {
             OpenCreatePlaylistPopup(onPlaylistCreated);
         });
-        
+
+                
     }
 
     private static void OpenCreatePlaylistPopup(Action<string> onPlaylistCreated)
@@ -67,6 +69,23 @@ public static class PlaylistUI
     UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
     Button btn = boutonGO.GetComponent<Button>();
 
+    // Taille des items playlist
+    RectTransform boutonRT = boutonGO.GetComponent<RectTransform>();
+    if (boutonRT != null)
+    {
+        boutonRT.sizeDelta = PlaylistItemSize;
+    }
+
+    LayoutElement boutonLE = boutonGO.GetComponent<LayoutElement>();
+    if (boutonLE == null)
+    {
+        boutonLE = boutonGO.AddComponent<LayoutElement>();
+    }
+    boutonLE.minWidth = PlaylistItemSize.x;
+    boutonLE.preferredWidth = PlaylistItemSize.x;
+    boutonLE.minHeight = PlaylistItemSize.y;
+    boutonLE.preferredHeight = PlaylistItemSize.y;
+
     TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
     if (label != null)
     {
@@ -79,9 +98,15 @@ public static class PlaylistUI
         }
     }
     Transform chevron = boutonGO.transform.Find("ChevronButton");
+    Button chevronBtn = null;
     if (chevron != null)
     {
-        chevron.gameObject.SetActive(false);
+        chevron.gameObject.SetActive(showActions);
+        chevronBtn = chevron.GetComponent<Button>();
+        if (chevronBtn == null)
+        {
+            chevronBtn = chevron.GetComponentInChildren<Button>(true);
+        }
     }
 
     btn.onClick.AddListener(() =>
@@ -103,39 +128,17 @@ public static class PlaylistUI
         continue;
     }
 
-    // --- BOUTON "..." (ACTIONS PLAYLIST) ---
-    GameObject moreBtnGO = new GameObject("MoreButton");
-    moreBtnGO.transform.SetParent(boutonGO.transform, false);
+    // --- ACTIONS PLAYLIST sur le bouton Chevron (suppression du MoreButton) ---
+    if (chevronBtn == null)
+    {
+        Debug.LogWarning($"PlaylistUI: ChevronButton introuvable ou sans Button pour la playlist '{playlist.name}'.");
+        continue;
+    }
 
-    Image moreImg = moreBtnGO.AddComponent<Image>();
-    moreImg.color = new Color32(0x4D, 0x88, 0xFF, 0xFF);
-
-    Button moreBtn = moreBtnGO.AddComponent<Button>();
-
-    RectTransform moreRT = moreBtnGO.GetComponent<RectTransform>();
-    moreRT.anchorMin = new Vector2(1, 0.5f);
-    moreRT.anchorMax = new Vector2(1, 0.5f);
-    moreRT.pivot = new Vector2(1, 0.5f);
-    moreRT.sizeDelta = new Vector2(36, 24);
-    moreRT.anchoredPosition = new Vector2(-12, 0);
-
-    GameObject moreTextGO = new GameObject("Text");
-    moreTextGO.transform.SetParent(moreBtnGO.transform, false);
-    TextMeshProUGUI moreTxt = moreTextGO.AddComponent<TextMeshProUGUI>();
-    moreTxt.text = "...";
-    moreTxt.fontSize = 16;
-    moreTxt.color = Color.white;
-    moreTxt.alignment = TextAlignmentOptions.Center;
-    UIBuilder.ApplyMontserratFont(moreTxt);
-
-    RectTransform moreTxtRT = moreTextGO.GetComponent<RectTransform>();
-    moreTxtRT.anchorMin = Vector2.zero;
-    moreTxtRT.anchorMax = Vector2.one;
-    moreTxtRT.offsetMin = Vector2.zero;
-    moreTxtRT.offsetMax = Vector2.zero;
+    chevronBtn.onClick.RemoveAllListeners();
 
     if (averageButtonPrefab != null){ 
-    moreBtn.onClick.AddListener(() =>
+    chevronBtn.onClick.AddListener(() =>
     {
         PopupManager.ShowPlaylistActionsPopup(
             playlist.name,
