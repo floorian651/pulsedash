@@ -134,7 +134,7 @@ public class GenerateurNiveau : MonoBehaviour
             return;
         }
 
-        // Vector3 posFinish = new Vector3(0, groundHeight + 1.3f, offsetZ + nbChunksGeneres * chunkSize);
+        // Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, offsetZ + nbChunksGeneres * chunkSize);
         Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);
         Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
         
