@@ -645,6 +645,7 @@ MonoBehaviour:
   NextButtonPrefab: {fileID: 1483478919661330273, guid: bbab1896e9cd10440818a67113a7eb82, type: 3}
   PreviousButtonPrefab: {fileID: 1483478919661330273, guid: 46cdaef29ecd9e242ae040051561122e, type: 3}
   averageButtonTransparent: {fileID: 1483478919661330273, guid: fb4f0f232eeda744183377210ef62160, type: 3}
+  creerPlaylistButton: {fileID: 2117360025801944245, guid: d8a06362529913d48b64ac1d2523ee96, type: 3}
 --- !u!4 &705027676
 Transform:
   m_ObjectHideFlags: 0

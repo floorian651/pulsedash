@@ -54,9 +54,9 @@ public static class PlaylistUI
 
     foreach (Transform child in resultsContainer){
 
-        if (!child.CompareTag("AverageButton") && !child.CompareTag("LaunchGameButton")){
+        if (!child.CompareTag("CreerPlaylistButton") && !child.CompareTag("LancerJeuButton")){
             UnityEngine.Object.Destroy(child.gameObject);
-            Debug.Log("Destroy childrend");
+            Debug.Log("Destroy children");
         }}
         
 

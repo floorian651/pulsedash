@@ -9,119 +9,6 @@ using System.Linq;
 public static class UIBuilder
 {   
     public const float MusicItemRowScale = 4f;
-    // Police UI "Medieval" (TTF) + fallback TMP Montserrat SDF.
-    // Note: MedievalSharp est un .ttf dans Resources ; on génère un TMP_FontAsset à l'exécution si aucun .asset TMP n'existe.
-    private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
-    private const string MontserratFontResourcePath = "Fonts & Materials/Montserrat-Regular SDF";
-    private static TMP_FontAsset uiFont;
-
-    public static TMP_FontAsset GetMontserratFont()
-    {
-        // Conservé pour compat: "MontserratFont" = police UI globale.
-        if (uiFont != null) return uiFont;
-
-        // 1) Essayer de créer un TMP_FontAsset depuis MedievalSharp (Font).
-        Font medievalFont = Resources.Load<Font>(MedievalSharpTtfResourcePath);
-        if (medievalFont != null)
-        {
-            uiFont = TryCreateTMPFontAsset(medievalFont);
-            if (uiFont != null) return uiFont;
-        }
-
-        // 2) Fallback sur Montserrat TMP (déjà en Resources).
-        uiFont = Resources.Load<TMP_FontAsset>(MontserratFontResourcePath);
-        if (uiFont == null)
-        {
-            uiFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
-        }
-
-        if (uiFont == null)
-        {
-            Debug.LogWarning(
-                "UIBuilder: impossible de charger une police TMP. " +
-                $"Attendu: Font '{MedievalSharpTtfResourcePath}' ou TMP_FontAsset '{MontserratFontResourcePath}'."
-            );
-        }
-
-        return uiFont;
-    }
-
-    private static TMP_FontAsset TryCreateTMPFontAsset(Font sourceFont)
-    {
-        if (sourceFont == null) return null;
-
-        // On évite de dépendre d'une signature précise en cherchant la surcharge CreateFontAsset(Font).
-        var method = typeof(TMP_FontAsset).GetMethod(
-            "CreateFontAsset",
-            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static,
-            null,
-            new[] { typeof(Font) },
-            null
-        );
-
-        if (method == null) return null;
-
-        try
-        {
-            var created = method.Invoke(null, new object[] { sourceFont }) as TMP_FontAsset;
-            if (created == null) return null;
-
-            // Si possible, passer en mode dynamique pour ne pas "perdre" des caractères (accents, etc.).
-            var atlasProp = typeof(TMP_FontAsset).GetProperty("atlasPopulationMode");
-            if (atlasProp != null && atlasProp.CanWrite)
-            {
-                try
-                {
-                    object dynamicValue = System.Enum.Parse(atlasProp.PropertyType, "Dynamic");
-                    atlasProp.SetValue(created, dynamicValue);
-                }
-                catch { }
-            }
-
-            var multiAtlasProp = typeof(TMP_FontAsset).GetProperty("enableMultiAtlasSupport");
-            if (multiAtlasProp != null && multiAtlasProp.CanWrite)
-            {
-                try { multiAtlasProp.SetValue(created, true); } catch { }
-            }
-
-            return created;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    public static void ApplyMontserratFont(TMP_Text text)
-    {
-        if (text == null) return;
-        var font = GetMontserratFont();
-        if (font != null) text.font = font;
-    }
-
-    public static void ApplyMontserratFontRecursive(Transform root)
-    {
-        if (root == null) return;
-        var font = GetMontserratFont();
-        if (font == null) return;
-
-        var texts = root.GetComponentsInChildren<TMP_Text>(true);
-        foreach (var t in texts)
-        {
-            if (t != null) t.font = font;
-        }
-    }
-
-    public static void SetTMPDefaultFontToMontserrat()
-    {
-        var font = GetMontserratFont();
-        if (font == null) return;
-
-        if (TMP_Settings.defaultFontAsset != font)
-        {
-            TMP_Settings.defaultFontAsset = font;
-        }
-    }
 
     // Créer un panel pour l'interface
     public static Transform CreatePanel()
@@ -329,7 +216,6 @@ public static class UIBuilder
         texteTMP.color = new Color(0.918f, 0.937f, 0.969f, 1f);
         texteTMP.enableWordWrapping = true;
         texteTMP.overflowMode = TextOverflowModes.Overflow;
-        ApplyMontserratFont(texteTMP);
 
 
         // Stretch dans le parent
@@ -440,7 +326,6 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         placeholder.enableWordWrapping = false;
         placeholder.extraPadding = true;
         placeholder.raycastTarget = false;
-        ApplyMontserratFont(placeholder);
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
         phRT.anchorMin = Vector2.zero;
@@ -463,7 +348,6 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         text.extraPadding = true;
         text.margin = Vector4.zero;
         text.raycastTarget = false;
-        ApplyMontserratFont(text);
 
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
@@ -639,7 +523,6 @@ public static RectTransform CreateScrollContent(Transform mainContent)
         rowLE.preferredWidth = -1;
 
         var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
-        ApplyMontserratFontRecursive(item.transform);
 
         // Assure que les boutons sont "au-dessus" (visuel + clic) même si le label chevauche leur zone.
         var label = item.transform.Find("Label")?.GetComponent<TMP_Text>();

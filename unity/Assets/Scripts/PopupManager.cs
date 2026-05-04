@@ -52,8 +52,10 @@ public class PopupManager : MonoBehaviour
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(300, 60);
 
+        //Image bg = popupGO.AddComponent<Image>();
+        //bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
         Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
+        bg.color = new Color(1f, 1f, 1f, 0.1f);
         ApplyPopupBackground(bg);
 
         TextMeshProUGUI txt = new GameObject("Text").AddComponent<TextMeshProUGUI>();
@@ -94,8 +96,8 @@ public class PopupManager : MonoBehaviour
         popupGO.transform.SetParent(canvasGO.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
-        //Image bg = popupGO.AddComponent<Image>();
-        //bg.color = new Color(1, 1, 1, 0.01f);
+        Image bg = popupGO.AddComponent<Image>();
+        bg.color = new Color(1f, 1f, 1f, 0.1f);
 
         RectTransform rt = popupGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -358,8 +360,10 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     popupGO = new GameObject("PlaylistActionsPopup", typeof(RectTransform));
     popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
 
+    //Image bg = popupGO.AddComponent<Image>();
+    //bg.color = new Color(0, 0, 0, 0.6f);
     Image bg = popupGO.AddComponent<Image>();
-    bg.color = new Color(0, 0, 0, 0.6f);
+    bg.color = new Color(1f, 1f, 1f, 0.1f);
 
     RectTransform rt = popupGO.GetComponent<RectTransform>();
     rt.anchorMin = Vector2.zero;
@@ -486,6 +490,9 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     GameObject closeBtnGO = new GameObject("CloseButton", typeof(RectTransform));
     closeBtnGO.transform.SetParent(parent, false);
     closeBtnGO.transform.SetAsLastSibling();
+
+    Image bg = closeBtnGO.AddComponent<Image>();
+    bg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f); // rouge théoriquement
 
     RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
     closeRT.anchorMin = new Vector2(1, 1);

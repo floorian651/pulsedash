@@ -20,6 +20,7 @@ public class PanelMenu : MonoBehaviour
     public GameObject NextButtonPrefab;
     public GameObject PreviousButtonPrefab;
     public GameObject averageButtonTransparent;
+    public GameObject creerPlaylistButton;
 
 
     
@@ -117,7 +118,7 @@ void InitMenu()
 
         // PLAYLISTS À GAUCHE
     
-    PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, playlistName =>
+    PlaylistUI.CreateButtonCreerPlaylist(creerPlaylistButton, leftContainer, playlistName =>
     {
         PlaylistManager pm = FindObjectOfType<PlaylistManager>();
         if (pm != null)
