@@ -67,6 +67,13 @@ public class PlayerCollision : MonoBehaviour
         else if (tag == "Finish")
         {
             Debug.Log("Collision finish");
+
+            // Loading the finish scene
+            SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+            if (sceneloader != null)
+            {
+                sceneloader.LoadSceneByName("FinishScene");
+            }
         }
 
         Destroy(other.gameObject);
