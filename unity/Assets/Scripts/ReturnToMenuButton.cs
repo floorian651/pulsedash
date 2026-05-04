@@ -42,6 +42,7 @@ public static class ReturnToMenuButton
         label.fontSize = 18;
         label.color = Color.black;
         label.alignment = TextAlignmentOptions.Center;
+        UIBuilder.ApplyMontserratFont(label);
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
         textRT.anchorMin = Vector2.zero;

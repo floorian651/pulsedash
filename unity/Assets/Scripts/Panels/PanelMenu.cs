@@ -8,14 +8,19 @@ public class PanelMenu : MonoBehaviour
 {
     public AudioCache audioCache;
     private AudioSource audioSource;
-    private Context Context;
+    public Context Context;
     public Slider sliderPrefab;
 
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
     public GameObject musicItemPrefab;
+    public GameObject playlistmusicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
+    public GameObject NextButtonPrefab;
+    public GameObject PreviousButtonPrefab;
+    public GameObject averageButtonTransparent;
+    public GameObject creerPlaylistButton;
 
 
     
@@ -36,9 +41,10 @@ public class PanelMenu : MonoBehaviour
         InitMenu();
     }
 
-    void InitMenu()
+void InitMenu()
 {       
     Debug.Log("Créer le panel");
+    UIBuilder.SetTMPDefaultFontToMontserrat();
 
     // PANEL PRINCIPAL
     Transform panel = UIBuilder.CreatePanel();
@@ -112,16 +118,16 @@ public class PanelMenu : MonoBehaviour
 
         // PLAYLISTS À GAUCHE
     
-    PlaylistUI.CreateButtonCreerPlaylist(averageButtonPrefab, leftContainer, playlistName =>
+    PlaylistUI.CreateButtonCreerPlaylist(creerPlaylistButton, leftContainer, playlistName =>
     {
         PlaylistManager pm = FindObjectOfType<PlaylistManager>();
         if (pm != null)
         {
             pm.CreatePlaylist(playlistName);
 
-            PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, musicItemPrefab, playlistName =>
+            PlaylistUI.AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, playlistName =>
             {
-                UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+                UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
             });
         }
     });
@@ -129,16 +135,19 @@ public class PanelMenu : MonoBehaviour
 
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab,averageButtonTransparent);
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);
 
 
-    PlaylistUI.AfficherBoutonPlaylist(averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, musicItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist( PreviousButtonPrefab,  NextButtonPrefab, averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab,playlistmusicItemPrefab, playlistName =>
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+        UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
     });
+
+    // Appliquer Montserrat à tout ce qui existe déjà dans l'UI (labels de prefabs inclus).
+    UIBuilder.ApplyMontserratFontRecursive(panel);
 }
 
    
