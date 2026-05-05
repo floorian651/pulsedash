@@ -73,8 +73,8 @@ public static Transform CreateLeftContainer(Transform parent)
 
     Image bg = leftGO.AddComponent<Image>();
     // Fond transparent
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
-
+    //bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    bg.color =new Color(0.5f, 0.15f, 0.18f, 0.95f);// rouge
     return leftGO.transform;
 }
 
