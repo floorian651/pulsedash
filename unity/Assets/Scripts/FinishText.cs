@@ -19,6 +19,8 @@ public class FinishText : MonoBehaviour
 
             if (txt != null)
             {
+                txt.fontSize = 25;
+                UIBuilder.ApplyMontserratFont(txt);
                 txt.text = finishText;
             }
         }
@@ -29,7 +31,7 @@ public class FinishText : MonoBehaviour
     {
         if (player != null)
         {
-            finishText = "Bravo ! Vous avez terminé le niveau avec "  + player.GetEnergyLevel() + " / " + player.GetMaxEnergyLevel() + " énergie restante";
+            finishText = "Bravo ! \n Vous avez terminé le niveau avec \n"  + player.GetEnergyLevel() + " / " + player.GetMaxEnergyLevel() + " énergie restante";
         }
         else
         {
