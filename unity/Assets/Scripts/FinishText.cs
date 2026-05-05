@@ -3,17 +3,30 @@ using UnityEngine;
 public class FinishText : MonoBehaviour
 {
     [SerializeField] private Player player;
-    private GameObject musicItemPrefab;
+    [SerializeField] private GameObject finishTextPrefab;
+    [SerializeField] private Transform uiParent;
+    string finishText;
+    private TMPro.TextMeshProUGUI txt;
 
     void Awake()
     {
         player = FindObjectOfType<Player>();
+        if (player != null)
+        {
+            GameObject obj = Instantiate(finishTextPrefab, uiParent);
+
+            txt = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+
+            if (txt != null)
+            {
+                txt.text = finishText;
+            }
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        string finishText;
         if (player != null)
         {
             finishText = "Bravo ! Vous avez terminé le niveau avec "  + player.GetEnergyLevel() + " / " + player.GetMaxEnergyLevel() + " énergie restante";
@@ -22,6 +35,10 @@ public class FinishText : MonoBehaviour
         {
             finishText = "Niveau terminé";
         }
+        if (txt != null)
+            {
+                txt.text = finishText;
+            }
         Debug.Log(finishText);
     }
 }
