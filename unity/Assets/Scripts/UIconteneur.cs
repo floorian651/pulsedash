@@ -26,6 +26,8 @@ public static Transform CreateMiddleArea(Transform parent, float topBarHeight)
     HorizontalLayoutGroup layout = middleGO.AddComponent<HorizontalLayoutGroup>();
     layout.childAlignment = TextAnchor.MiddleCenter;
     layout.spacing = 30;
+    layout.childControlWidth = false;
+    layout.childControlHeight = false;
     layout.padding = new RectOffset(20, 20, 20, 20);
 
     return middleGO.transform;
@@ -60,21 +62,18 @@ public static Transform CreateLeftContainer(Transform parent)
     leftGO.transform.SetParent(parent, false);
 
     RectTransform rt = leftGO.GetComponent<RectTransform>();
-    rt.sizeDelta = new Vector2(200, 250);
 
-    /*VerticalLayoutGroup layout = leftGO.AddComponent<VerticalLayoutGroup>();
-    layout.spacing = 20;
-    layout.padding.top = 20;
-    layout.childAlignment = TextAnchor.UpperCenter;
-    layout.childControlHeight = false;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandWidth = false;*/
+    rt.anchorMin = new Vector2(0, 1);
+    rt.anchorMax = new Vector2(0, 1);
+    rt.pivot = new Vector2(0, 1);
+
+    rt.anchoredPosition = new Vector2(20, -20);
+    rt.sizeDelta = new Vector2(300, 200);
 
     Image bg = leftGO.AddComponent<Image>();
     // Fond transparent
     //bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
-    bg.color =new Color(0.5f, 0.15f, 0.18f, 0.95f);// rouge
+    bg.color =new Color(0.5f, 0.15f, 0.18f, 0.4f);// rouge
     return leftGO.transform;
 }
 

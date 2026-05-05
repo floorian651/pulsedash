@@ -50,12 +50,12 @@ void InitMenu()
     Transform panel = UIBuilder.CreatePanel();
 
     // CONTENEURS PRINCIPAUX
-    Transform middleArea = UIconteneur.CreateMiddleArea(panel, 80f);
+    Transform middleArea = UIconteneur.CreateMiddleArea(panel, -100f);
     Transform leftContainer = UIconteneur.CreateLeftContainer(middleArea);
     Transform centerRightContainer = UIconteneur.CreateCenterRightContainer(middleArea);
 
     // BARRE AUDIO EN BAS
-    Transform bottomBar = UIconteneur.CreateBottomAudioBar(panel, 80f);
+    Transform bottomBar = UIconteneur.CreateBottomAudioBar(panel, 90f);
 
     // Slider musique (caché au départ)
     SliderMusique sliderMusique = SliderMusiqueFactory.Create(bottomBar, sliderPrefab, Context);
