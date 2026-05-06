@@ -56,7 +56,7 @@ public class GenerateurNiveau : MonoBehaviour
         // Générer la déco devant le joueur 
         if((player.transform.position.z < tailleNiveau) && (compt>20)){
             compt  = 0;
-            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);}
+            generateDeco((int)(player.transform.position.z),(int)(player.transform.position.z)+30);}
         
         compt  = compt +1;
 
