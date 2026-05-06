@@ -134,8 +134,8 @@ public class GenerateurNiveau : MonoBehaviour
             return;
         }
 
-        // Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, offsetZ + nbChunksGeneres * chunkSize);
-        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);
+        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, offsetZ + nbChunksGeneres * chunkSize);
+        // Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);    // FinishLine put at the beginning of the level for testing purposes
         Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
         
         GameObject finishLine = Instantiate(FinishLinePrefab, posFinish, rotFinish);
