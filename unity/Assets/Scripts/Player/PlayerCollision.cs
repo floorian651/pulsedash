@@ -40,7 +40,7 @@ public class PlayerCollision : MonoBehaviour
     {
         string tag = other.tag;
 
-        if (tag != "obstacle" && tag != "Bonus" && tag != "pulser") return;
+        if (tag != "obstacle" && tag != "Bonus" && tag != "pulser" && tag != "Finish") return;
 
         if (player == null)
         {
@@ -63,6 +63,17 @@ public class PlayerCollision : MonoBehaviour
         else if (tag == "Bonus")
         {
             player.Heal(5f);
+        }
+        else if (tag == "Finish")
+        {
+            Debug.Log("Collision finish");
+
+            // Loading the finish scene
+            SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+            if (sceneloader != null)
+            {
+                sceneloader.LoadSceneByName("FinishScene");
+            }
         }
 
         Destroy(other.gameObject);
