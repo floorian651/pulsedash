@@ -6,7 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
-    private float distanceDestruction = 20f; // distance derrière le joueur avant destruction
+    private float distanceDestruction = 30f; // distance derrière le joueur avant destruction
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
@@ -26,6 +26,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel1;
     private float seuilLevel2;
     private float seuilLevel3;
+    private float lastGeneratedZ = 0f;
+    private float generationDistance = 30f;
 
     private int compt = 0;
 
@@ -43,32 +45,28 @@ public class GenerateurNiveau : MonoBehaviour
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
 
-    
 
     void Update()
     {
         if (player == null) return;
 
-        int dureeMusique = (int)data.duration;
-        int tailleNiveau = (int)vitesse * dureeMusique;
+        float playerZ = player.transform.position.z;
 
-        // Générer la déco devant le joueur 
-        if((player.transform.position.z < tailleNiveau) && (compt>20)){
-            compt  = 0;
-            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);
-            //generateGround((int)(player.transform.position.z)+5,(int)(player.transform.position.z)+20);
-            }
-        
-        compt  = compt +1;
+        // Génération propre basée sur distance
+        if (playerZ + generationDistance > lastGeneratedZ)
+        {
+            generateDeco((int)lastGeneratedZ, (int)(lastGeneratedZ + generationDistance));
+            generateGround((int)lastGeneratedZ, (int)(lastGeneratedZ + generationDistance));
 
-        float limiteZ = player.transform.position.z - distanceDestruction;
+            lastGeneratedZ += generationDistance;
+        }
 
-        // On parcourt les enfants du générateur
+        float limiteZ = playerZ - distanceDestruction;
+
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             Transform child = transform.GetChild(i);
 
-            // On ne détruit les décos, le sol et les obstacles
             if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol"))
             {
                 if (child.position.z < limiteZ)
@@ -157,7 +155,7 @@ public class GenerateurNiveau : MonoBehaviour
     {
         if(chunksDepuisDernierObstacle < espaceEntreObstacles)
         {
-            generateChunk(GroundPrefab);
+            //generateChunk(GroundPrefab);
             chunksDepuisDernierObstacle++;
             return;
         }
@@ -200,8 +198,8 @@ public class GenerateurNiveau : MonoBehaviour
                 generateChunk(obstacleLevel4);
                 chunksDepuisDernierObstacle = 0;
         }
-        }
-    }
+        }}
+    
 
     private void generateChunk(GameObject obstacle)
     {
