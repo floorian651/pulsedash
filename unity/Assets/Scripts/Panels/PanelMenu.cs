@@ -185,11 +185,21 @@ public class PanelMenu : MonoBehaviour
 
             if (SessionData.Instance != null)
             {
-                PopupManager.Show("Le jeu va commencer!");
-                SessionData.Instance.titre = source.clip.name;
+                //PopupManager.Show("Le jeu va commencer!");
+
+                PopupManager.ShowModeSelectionPopup(mode =>
+                {
+                    Debug.Log("Mode choisi : " + mode);
+                    PopupManager.Show("Le jeu va commencer!");
+
+                    SessionData.Instance.titre = source.clip.name;
+                    sceneloader.LoadSceneByName(mode + "_GameplayScene");
+                });
+
+                //SessionData.Instance.titre = source.clip.name;
             }
 	
-	        sceneloader.LoadSceneByName("GameplayScene");
+	        //sceneloader.LoadSceneByName("GameplayScene");
 	    });
         }
 	}

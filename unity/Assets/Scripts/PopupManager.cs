@@ -8,10 +8,21 @@ using UnityEngine.EventSystems;
 
 
 public class PopupManager : MonoBehaviour
-{
+{   
+    public static GameObject crazyPrefab;
+    public static GameObject lazyPrefab;
+    public static GameObject easyPrefab;
+    public static GameObject validatePrefab;
     private static string PopupBackground="Images/Popup1";
     private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
+
+    private void Start(){
+        crazyPrefab = Resources.Load<GameObject>("UI/Crazy");
+        lazyPrefab = Resources.Load<GameObject>("UI/Lazy");
+        easyPrefab = Resources.Load<GameObject>("UI/Easy");
+        validatePrefab = Resources.Load<GameObject>("UI/validateButton");
+    }
 
     private static Canvas GetOrCreateCanvas()
     {
@@ -567,6 +578,105 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
         if (popupGO == popupRoot)
             popupGO = null;
     });
+}
+
+public static void ShowModeSelectionPopup(System.Action<string> onValidate)
+{
+    if (popupGO != null)
+        UnityEngine.Object.Destroy(popupGO);
+
+    Canvas canvas = GetOrCreateCanvas();
+
+    popupGO = new GameObject("ModeSelectionPopup", typeof(RectTransform));
+    popupGO.transform.SetParent(canvas.transform, false);
+
+    Image bg = popupGO.AddComponent<Image>();
+    bg.color = new Color(1f, 1f, 1f, 0.1f);
+
+    RectTransform rt = popupGO.GetComponent<RectTransform>();
+    rt.anchorMin = Vector2.zero;
+    rt.anchorMax = Vector2.one;
+    rt.offsetMin = Vector2.zero;
+    rt.offsetMax = Vector2.zero;
+
+    // ----- Container -----
+    GameObject container = new GameObject("Container", typeof(RectTransform));
+    container.transform.SetParent(popupGO.transform, false);
+
+    RectTransform contRT = container.GetComponent<RectTransform>();
+    contRT.sizeDelta = new Vector2(300, 300);
+    contRT.anchorMin = new Vector2(0.5f, 0.5f);
+    contRT.anchorMax = new Vector2(0.5f, 0.5f);
+    contRT.pivot = new Vector2(0.5f, 0.5f);
+    contRT.anchoredPosition = Vector2.zero;
+
+    Image contBg = container.AddComponent<Image>();
+    contBg.color = new Color(1, 1, 1, 0.95f);
+    ApplyPopupBackground(contBg);
+
+    // ----- Titre -----
+    GameObject titleGO = new GameObject("Title", typeof(RectTransform));
+    titleGO.transform.SetParent(container.transform, false);
+
+    TextMeshProUGUI titleTxt = titleGO.AddComponent<TextMeshProUGUI>();
+    titleTxt.text = "Choisis ton mode";
+    titleTxt.fontSize = 20;
+    titleTxt.color = Color.black;
+    titleTxt.alignment = TextAlignmentOptions.Center;
+    UIBuilder.ApplyMontserratFont(titleTxt);
+
+    RectTransform titleRT = titleGO.GetComponent<RectTransform>();
+    titleRT.anchorMin = new Vector2(0, 0.75f);
+    titleRT.anchorMax = new Vector2(1, 0.95f);
+    titleRT.offsetMin = Vector2.zero;
+    titleRT.offsetMax = Vector2.zero;
+
+    string selectedMode = null;
+
+    CreateModePrefabButton(container.transform, crazyPrefab, "Crazy", 0.55f, () => selectedMode = "Crazy");
+    CreateModePrefabButton(container.transform, lazyPrefab, "Lazy", 0.40f, () => selectedMode = "Lazy");
+    CreateModePrefabButton(container.transform, easyPrefab, "Easy", 0.25f, () => selectedMode = "Easy");
+
+    GameObject validateGO = GameObject.Instantiate(validatePrefab, container.transform);
+    RectTransform validateRT = validateGO.GetComponent<RectTransform>();
+    validateRT.anchorMin = new Vector2(0.5f, 0.10f);
+    validateRT.anchorMax = new Vector2(0.5f, 0.10f);
+    validateRT.anchoredPosition = Vector2.zero;
+
+    Button validateBtn = validateGO.GetComponent<Button>();
+    validateBtn.onClick.AddListener(() =>
+    {
+        if (selectedMode != null)
+        {
+            UnityEngine.Object.Destroy(popupGO);
+            popupGO = null;
+            onValidate?.Invoke(selectedMode);
+        }
+        else
+        {
+            Debug.LogWarning("Aucun mode sélectionné !");
+        }
+    });
+
+    CreateCloseButton(container.transform, popupGO);
+}
+
+private static void CreateModePrefabButton(Transform parent, GameObject prefab, string modeName, float anchorY, System.Action onSelect)
+{
+    GameObject btnGO = GameObject.Instantiate(prefab, parent);
+
+    RectTransform rt = btnGO.GetComponent<RectTransform>();
+    rt.anchorMin = new Vector2(0.5f, anchorY);
+    rt.anchorMax = new Vector2(0.5f, anchorY);
+    rt.anchoredPosition = Vector2.zero;
+
+    // Si ton prefab contient un TMP pour afficher le nom
+    TextMeshProUGUI txt = btnGO.GetComponentInChildren<TextMeshProUGUI>();
+    if (txt != null)
+        txt.text = modeName;
+
+    Button btn = btnGO.GetComponent<Button>();
+    btn.onClick.AddListener(() => onSelect());
 }
 
 
