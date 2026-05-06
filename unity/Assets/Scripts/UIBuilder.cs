@@ -598,8 +598,6 @@ public static RectTransform CreateScrollContent(Transform mainContent)
     contentGO.transform.SetParent(viewportGO.transform, false);
 
 	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-	    // Dans les listes, on préfère piloter la hauteur via `LayoutElement` sur les items
-	    // (plutôt que la taille du prefab), sinon ils prennent trop de place à l'écran.
 	layout.childControlHeight = true;
 	layout.childForceExpandHeight = false;
 	layout.childControlWidth = true;

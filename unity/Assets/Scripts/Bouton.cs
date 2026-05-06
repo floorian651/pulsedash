@@ -68,7 +68,8 @@ public static class Bouton
             label.text = text;
             UIBuilder.ApplyMontserratFont(label);
         }
-        
+
+           
         btn.onClick.AddListener(action);
 
         LayoutElement le = boutonGO.AddComponent<LayoutElement>();
