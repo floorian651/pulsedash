@@ -12,6 +12,10 @@ public static class PlaylistUI
 {   
     private const float MusicItemListHeight = 80f;
     private const float MusicItemRowScale = 4f;
+<<<<<<< HEAD
+=======
+    private static readonly Vector2 PlaylistItemSize = new Vector2(250f, 200f);
+>>>>>>> main
 
     public static void CreateButtonCreerPlaylist(GameObject averageButtonPrefab, Transform parent, Action<string> onPlaylistCreated)
     {   
@@ -21,6 +25,7 @@ public static class PlaylistUI
             OpenCreatePlaylistPopup(onPlaylistCreated);
         });
 
+<<<<<<< HEAD
         if (createPlaylistButton != null)
         {
             createPlaylistButton.transform.SetAsFirstSibling();
@@ -56,6 +61,8 @@ public static class PlaylistUI
                 label.margin = Vector4.zero;
             }
   }
+=======
+>>>>>>> main
                 
     }
 
@@ -98,6 +105,7 @@ public static class PlaylistUI
         if (!child.CompareTag("CreerPlaylistButton") && !child.CompareTag("LancerJeuButton")){
             UnityEngine.Object.Destroy(child.gameObject);
             Debug.Log("Destroy children");
+<<<<<<< HEAD
         }
 
         }   
@@ -123,11 +131,62 @@ public static class PlaylistUI
 
 
         if (boutonRT != null)
+=======
+        }}
+        
+
+    // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
+    foreach (var playlist in toutesLesPlaylists)
+{
+    GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
+    UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
+    Button btn = boutonGO.GetComponent<Button>();
+
+    // Taille des items playlist
+    RectTransform boutonRT = boutonGO.GetComponent<RectTransform>();
+    if (boutonRT != null)
+    {
+        boutonRT.sizeDelta = PlaylistItemSize;
+    }
+
+    LayoutElement boutonLE = boutonGO.GetComponent<LayoutElement>();
+    if (boutonLE == null)
+    {
+        boutonLE = boutonGO.AddComponent<LayoutElement>();
+    }
+    boutonLE.minWidth = PlaylistItemSize.x;
+    boutonLE.preferredWidth = PlaylistItemSize.x;
+    boutonLE.minHeight = PlaylistItemSize.y;
+    boutonLE.preferredHeight = PlaylistItemSize.y;
+
+    TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+    if (label != null)
+    {
+        label.text = playlist.name;
+        UIBuilder.ApplyMontserratFont(label);
+        RectTransform labelRT = label.GetComponent<RectTransform>();
+        if (labelRT != null && showActions)
+>>>>>>> main
         {
             boutonRT.sizeDelta = new Vector2(boutonRT.sizeDelta.x,200);
             boutonRT.anchoredPosition = new Vector2(0f, currentY);
         }
+<<<<<<< HEAD
         currentY -=verticalGap;
+=======
+    }
+    Transform chevron = boutonGO.transform.Find("ChevronButton");
+    Button chevronBtn = null;
+    if (chevron != null)
+    {
+        chevron.gameObject.SetActive(showActions);
+        chevronBtn = chevron.GetComponent<Button>();
+        if (chevronBtn == null)
+        {
+            chevronBtn = chevron.GetComponentInChildren<Button>(true);
+        }
+    }
+>>>>>>> main
 
         Image background = boutonGO.GetComponent<Image>();
         if (background != null)
@@ -142,6 +201,7 @@ public static class PlaylistUI
         }
 
 
+<<<<<<< HEAD
         TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
         if (label != null)
         {
@@ -224,6 +284,48 @@ public static class PlaylistUI
         });
         }
     }}}
+=======
+    // --- ACTIONS PLAYLIST sur le bouton Chevron (suppression du MoreButton) ---
+    if (chevronBtn == null)
+    {
+        Debug.LogWarning($"PlaylistUI: ChevronButton introuvable ou sans Button pour la playlist '{playlist.name}'.");
+        continue;
+    }
+
+    chevronBtn.onClick.RemoveAllListeners();
+
+    if (averageButtonPrefab != null){ 
+    chevronBtn.onClick.AddListener(() =>
+    {
+        PopupManager.ShowPlaylistActionsPopup(
+            playlist.name,
+            () =>
+            {
+                Debug.Log("Lancer la playlist: " + playlist.name);
+                Track track = TracktoutesLesMusiques.Find(t => t.order == 0);
+
+                              
+                pm.LancerPlaylist(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, musicItemPrefab, track, clips, TracktoutesLesMusiques, playlist.name, containerListeMusique); 
+            },
+            () =>
+            {
+                bool removed = pm.RemovePlaylist(playlist.name);
+                if (removed)
+                {
+                    PopupManager.Show("Playlist supprimée : " + playlist.name);
+                }
+                else
+                {
+                    PopupManager.Show("Playlist introuvable");
+                }
+
+                AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
+            }
+        );
+    });
+    }
+}}}
+>>>>>>> main
     
     public static void AfficherMusiquesParPlaylist(
         GameObject averageButtonPrefab,

@@ -17,6 +17,7 @@ public class GenerateurNiveau : MonoBehaviour
     private int chunksDepuisDernierObstacle = 0; // Compteur de chunks depuis le dernier obstacle, pour espacer les obstacles
     private int nbChunksGeneres = 0; // Compteur du nombre de chunks générés, pour éviter de générer des chunks trop loin
     public GameObject GroundPrefab; // Préfab du sol
+    public GameObject FinishLinePrefab; // Préfab de la ligne d'arrivée
     public GameObject obstacleLevel4; // Préfab pour obstacle difficile
     public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile

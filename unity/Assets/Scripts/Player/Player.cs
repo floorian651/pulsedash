@@ -10,8 +10,11 @@ public class Player : MonoBehaviour
     [SerializeField] public float energy;
 
     [SerializeField] private EnergyBar energyBar;
-    //[SerializeField] private OverlayEffect overlayEffect;
     public OverlayEffect overlayEffect;
+
+    void Awake() {
+        DontDestroyOnLoad(transform.gameObject);
+    }
 
     void Start()
     {   
@@ -63,5 +66,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+    public float GetEnergyLevel()
+    {
+        return energy;
+    }
+
+    public float GetMaxEnergyLevel()
+    {
+        return maxEnergy;
+    }
 }
