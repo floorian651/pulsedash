@@ -106,15 +106,19 @@ public static class PlaylistUI
     const float verticalGap = 50f;
     float currentY = -topPadding;
 
-    // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
-    foreach (var playlist in toutesLesPlaylists)
-    {
-        GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
-        UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
-        Button btn = boutonGO.GetComponent<Button>();
+	    // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
+	    foreach (var playlist in toutesLesPlaylists)
+	    {
+	        GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
+	        UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
+	        Button btn = boutonGO.GetComponent<Button>();
 
-        // Taille des items playlist
-        RectTransform boutonRT = boutonGO.GetComponent<RectTransform>();
+	        bool forceRaycastTargets =
+	            playlistItemPrefab != null &&
+	            playlistItemPrefab.name.IndexOf("AverageButtonTransparent", StringComparison.OrdinalIgnoreCase) >= 0;
+
+	        // Taille des items playlist
+	        RectTransform boutonRT = boutonGO.GetComponent<RectTransform>();
 
         boutonRT.anchorMin = new Vector2(0.5f, 1f);
         boutonRT.anchorMax = new Vector2(0.5f, 1f);
@@ -127,17 +131,29 @@ public static class PlaylistUI
             boutonRT.sizeDelta = new Vector2(boutonRT.sizeDelta.x,200);
             boutonRT.anchoredPosition = new Vector2(0f, currentY);
         }
-        currentY -=verticalGap;
+	        currentY -=verticalGap;
 
-        Image background = boutonGO.GetComponent<Image>();
-        if (background != null)
-        {
-            background.raycastTarget = false;
-        }
+	        Image background = boutonGO.GetComponent<Image>();
+	        if (background != null)
+	        {
+	            background.raycastTarget = forceRaycastTargets;
+	        }
 
-        TextMeshProUGUI labelRaycast = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
-        if (labelRaycast != null)
-        {
+	        if (forceRaycastTargets && btn != null && btn.targetGraphic != null)
+	        {
+	            btn.targetGraphic.raycastTarget = true;
+	        }
+
+	        /*CanvasGroup canvasGroup = boutonGO.GetComponent<CanvasGroup>();
+	        if (forceRaycastTargets && canvasGroup != null)
+	        {
+	            canvasGroup.blocksRaycasts = true;
+	            canvasGroup.interactable = true;
+	        }*/
+
+	        TextMeshProUGUI labelRaycast = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
+	        if (labelRaycast != null)
+	        {
             labelRaycast.raycastTarget = false;
         }
 
