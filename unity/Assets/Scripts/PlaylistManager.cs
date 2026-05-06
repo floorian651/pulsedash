@@ -19,11 +19,16 @@ public class PlaylistManager : MonoBehaviour
 
 
 
+    void Awake()
+    {
+        // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
+        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
+        LoadPlaylists();
+    }
+
     void Start()
     {
         Debug.Log("PlaylistManager peut start!");
-        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
-        LoadPlaylists();
     }
 
     private bool TryGetAudioSource(out AudioSource source)
@@ -96,6 +101,20 @@ public class PlaylistManager : MonoBehaviour
         }
     }}
 
+    // Supprimer une playlist entière
+    public bool RemovePlaylist(string playlistName)
+    {
+        Playlist p = playlists.Find(x => x.name == playlistName);
+        if (p == null)
+        {
+            return false;
+        }
+
+        playlists.Remove(p);
+        SavePlaylists();
+        return true;
+    }
+
     // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
     {
@@ -137,12 +156,14 @@ public class PlaylistManager : MonoBehaviour
         forcePrevious = true;
         stopCurrentTrack = true;
     }
-    public void LancerPlaylist( Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
-{
-    if (trackactuel == null)
-    {
-        PopupManager.Show("Playlist vide");
-        return;
+    public void LancerPlaylist(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab,GameObject averageButtonPrefab, GameObject musicItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
+    {   
+        UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
+
+        if (trackactuel == null)
+        {
+            PopupManager.Show("Playlist vide");
+            return;
     }
 
     StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
@@ -160,8 +181,8 @@ public class PlaylistManager : MonoBehaviour
     {
         PlayTrack(trackActuel, clips, true);
 
-        // attendre fin OU action utilisateur
-        while (source.isPlaying && !stopCurrentTrack)
+        // Attendre fin réelle OU action utilisateur (ne pas avancer si pause)
+        while (!stopCurrentTrack && (source.isPlaying || source.time < source.clip.length - 0.01f))
             yield return null;
 
         source.Stop();
@@ -232,6 +253,8 @@ public class PlaylistManager : MonoBehaviour
 
         // Attribuer le clip trouvé à l'audio source
         source.clip = clip;
+        Context.SetSliderVisible(true);
+        Context.SetPlayPauseVisible(true);
 
         if (aJouer)
         {
@@ -257,6 +280,8 @@ public class PlaylistManager : MonoBehaviour
 
     source.clip = nextClip;
     source.Play();
+    Context.SetSliderVisible(true);
+    Context.SetPlayPauseVisible(true);
 }
 
 

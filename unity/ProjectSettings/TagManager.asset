@@ -9,6 +9,8 @@ TagManager:
   - pulser
   - Bonus
   - AverageButton
+  - Deco
+  - LaunchGameButton
   layers:
   - Default
   - TransparentFX

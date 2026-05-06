@@ -6,13 +6,20 @@ using System.Linq;
 
 public class SearchUI
 {
-    private List<AudioClip> musiques;
-    private Context Context;
-    // Zone pour afficher les résultats du menu déroulant 
-    private Transform resultsContainer;
+    private const float MusicItemRowHeight = 80f;
+    private const float MusicItemRowScale = 4f;
+
+	public List<AudioClip> musiques;
+	private Context Context;
+	    // Zone pour afficher les résultats du menu déroulant 
+	private Transform resultsContainer;
+	    // ScrollView créé sous la barre de recherche (peut bloquer les clics si on affiche les résultats ailleurs)
+	private ScrollRect builtScrollRect;
 
     private GameObject playlistItemPrefab;
-
+    private GameObject musicItemPrefab;
+    private GameObject averageButtonTransparent;
+    
     public static SearchUI Create(Transform parent, Context context)
     {
         // Conteneur vertical 
@@ -23,17 +30,21 @@ public class SearchUI
 
         SearchUI ui = new SearchUI();
         ui.resultsContainer = scroll;
+        ui.builtScrollRect = scroll != null ? scroll.GetComponentInParent<ScrollRect>() : null;
         ui.Context = context;
-
-        searchBar.onValueChanged.AddListener(ui.OnSearch);
+        // Soumission (Entrée) pour l'affichage long
+        searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
+        //searchBar.onValueChanged.AddListener(ui.OnSearch); il faudra le remettre pour MenuGenerator
 
         return ui;
     }
 
-    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent)
     {
         musiques = clips;
         this.playlistItemPrefab = playlistItemPrefab;
+        this.musicItemPrefab = musicItemPrefab;
+        this.averageButtonTransparent = averageButtonTransparent;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
@@ -41,15 +52,28 @@ public class SearchUI
     return musiques.FirstOrDefault(c => c.name.ToLower().Contains(nomMusique.ToLower()));
 }
 
+// Pour l'utiliser il faut créer un prefab avec plusieurs attribut (titre, bouton play, ajouter à une playlist, etc) 
+	//BEAUCOUP à MODIFIER
 
-    private void OnSearch(string nomTape)
-{
-    // Nettoyage des anciens résultats
-    foreach (Transform child in resultsContainer)
-        Object.Destroy(child.gameObject);
+	private void OnSearchSubmit(string nomTape)
+	{   
+        RectTransform contentRT = UIBuilder.CreateScrollContent(resultsContainer);
 
-    if (string.IsNullOrWhiteSpace(nomTape))
-        return;
+
+		    // Le container du middle area doit empiler des items de façon compacte.
+		    var vlg = contentRT.GetComponent<VerticalLayoutGroup>();
+		    if (vlg != null)
+		    {
+		        vlg.childControlHeight = true;
+		        vlg.childForceExpandHeight = false;
+		        vlg.childControlWidth = true;
+		        vlg.childForceExpandWidth = true;
+		        vlg.spacing = 6;
+		        vlg.childAlignment = TextAnchor.UpperCenter;
+		    }
+
+	    if (string.IsNullOrWhiteSpace(nomTape))
+	        return;
 
     nomTape = nomTape.ToLower();
 
@@ -57,62 +81,89 @@ public class SearchUI
         .Where(c => c.name.ToLower().Contains(nomTape))
         .ToList();
 
-    foreach (var clip in resultats)
+    if (musicItemPrefab == null)
     {
-        // --- BOUTON PRINCIPAL ---
-        Button btn = Bouton.CreateButton(resultsContainer, clip.name, new UnityEngine.Vector2(80, 70), () =>
-        {
+        Debug.LogError("musicItemPrefab n'est pas assigné dans SearchUI.Init()");
+        return;
+    }
+
+		    foreach (var clip in resultats)
+		    {
+		        // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
+		        GameObject item = UIBuilder.InstantiateMusicItemRow(musicItemPrefab, contentRT, MusicItemRowHeight);
+
+		        // Mettre le nom de la musique
+		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+		        if (txt != null)
+		            txt.text = clip.name;
+	
+		        // La hauteur visible en liste est pilotée par le conteneur "row".
+	
+	
+	        // Récupérer le bouton + du prefab
+	        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
+            if (addButtonTransform != null)
+            {
+                Button addButton = addButtonTransform.GetComponent<Button>();
+                addButton.onClick.AddListener(() =>
+                {
+                    PopupManager.ShowPlaylistPopup(clip.name,averageButtonTransparent);
+                });
+            }
+
+            // Récupérer le bouton Play du prefab
+            Transform playButtonTransform = item.transform.Find("PlayButton");
+            if (playButtonTransform == null)
+            {
+                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
+                continue;
+            }
+
+            Button playButton = playButtonTransform.GetComponent<Button>();
+
+        // Ajouter l'action Play
+	        playButton.onClick.AddListener(() =>
+	        {
             if (Context != null && Context.TryGetAudioSource(out AudioSource source))
             {
                 source.clip = clip;
             }
-            
+
+            if (Context != null)
+            {
+                Context.SetSliderVisible(true);
+                Context.SetPlayPauseVisible(true);
+            }
+
             PopupManager.Show("Musique sélectionnée : " + clip.name);
 
-            // modifier le texte dans le mainContent
-            if (Context != null && Context.MessageText != null)
-            {
-                Context.SetMessage(clip.name);
-            }
-            else
-            {
-                Debug.LogError("messageText n'est pas encore initialisé");
-            }       
+	            
+	        });
+	    }
 
-});
+	    var containerRT = contentRT as RectTransform;
+		    if (containerRT != null)
+		    {
+		        LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
+		    }
+		}
 
-        // Redimensionner le bouton principal pour le menu déroulant
-        LayoutElement le = btn.gameObject.GetComponent<LayoutElement>();
-        le.preferredWidth = 180;
-        le.preferredHeight = 30;
+		
 
-        // Ajuster le texte à gauche avec un peu de marge
-        TMP_Text txt = btn.GetComponentInChildren<TMP_Text>();
-        RectTransform txtRT = txt.GetComponent<RectTransform>();
-        txtRT.offsetMin = new Vector2(10, 0);
-        txtRT.offsetMax = new Vector2(-40, 0);
-        txt.alignment = TextAlignmentOptions.MidlineLeft;
-        txt.fontSize = 15;
 
-        // --- BOUTON “+” AJOUT À PLAYLIST ---
-        Button addBtn = Bouton.CreateButton(btn.transform, "+",new UnityEngine.Vector2(80,70), () =>
-        {
-
-            PopupManager.ShowPlaylistPopup(clip.name, playlistItemPrefab);
-
-        });
-
-        RectTransform addRT = addBtn.GetComponent<RectTransform>();
-        addRT.anchorMin = new Vector2(1, 0);
-        addRT.anchorMax = new Vector2(1, 1);
-        addRT.pivot = new Vector2(1, 0.5f);
-        addRT.sizeDelta = new Vector2(30, 0);
-        addRT.anchoredPosition = new Vector2(-5, 0);
-
-        // Ajuster le texte du "+" pour qu’il soit centré
-        TMP_Text addTxt = addBtn.GetComponentInChildren<TMP_Text>();
-        addTxt.alignment = TextAlignmentOptions.Center;
-        addTxt.fontSize = 20;
+	public void SetResultsContainer(Transform container)
+	    {
+	        this.resultsContainer = container;
+	        // Si on affiche les résultats dans un autre container (ex: CenterRight), on désactive le ScrollView
+	        // créé sous la barre de recherche pour éviter qu'il capture les raycasts au-dessus des boutons.
+	        if (builtScrollRect != null)
+	        {
+	            bool useBuiltScroll =
+	                container == builtScrollRect.content ||
+	                container == builtScrollRect.transform ||
+	                (container != null && container.IsChildOf(builtScrollRect.transform));
+	            builtScrollRect.gameObject.SetActive(useBuiltScroll);
+	        }
     }
-}
+
 }

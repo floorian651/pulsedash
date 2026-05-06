@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.UI; //slider
 using System.Collections; // IEnumerator
 using TMPro;  // indispensable pour TextMeshProUGUI
@@ -13,10 +13,9 @@ public class MenuGenerator : MonoBehaviour
 
     public GameObject playPauseButtonPrefab;
     public GameObject playlistItemPrefab;
+    public GameObject musicItemPrefab;
     public GameObject launchGameButtonPrefab;
     public GameObject averageButtonPrefab;
-
-
     
     void Start()
     {   
@@ -30,10 +29,12 @@ public class MenuGenerator : MonoBehaviour
             Context = gameObject.AddComponent<Context>();
         }
 
-        StartCoroutine(InitMenu());
+        //StartCoroutine(InitMenu());
+        InitMenu();
     }
 
-    IEnumerator InitMenu()
+    //IEnumerator 
+    void InitMenu()
 {       
     Debug.Log("Créer le panel");
 
@@ -49,9 +50,11 @@ public class MenuGenerator : MonoBehaviour
     TextMeshProUGUI messageText = UIBuilder.CreerTexte(centerContainer);
     Context.Initialize(audioSource, messageText);
 
-    // Créer un curseur pour la musique 
-    SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
-
+     // Créer un curseur pour la musique (caché au départ)
+    SliderMusique sliderMusique = SliderMusiqueFactory.Create(centerContainer, sliderPrefab, Context);
+    Context.SetSliderMusique(sliderMusique);
+    sliderMusique.gameObject.SetActive(false);
+    
     // Créer le bouton pour lancer et arrêter une musique sélectionnée
 
     //Bouton.CreateMusicButton(centerContainer); 
@@ -68,6 +71,8 @@ public class MenuGenerator : MonoBehaviour
     }
     MusicButton mb = playPauseGO.GetComponent<MusicButton>();
     if (mb == null) { mb = playPauseGO.AddComponent<MusicButton>(); }
+    Context.SetPlayPauseButton(playPauseGO);
+    playPauseGO.SetActive(false);
 
     SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
 
@@ -86,23 +91,32 @@ public class MenuGenerator : MonoBehaviour
         {
             launchGameImg.color = new Color32(0xAA, 0x99, 0xFF, 0xFF);
         }
-        launchGameBtn.onClick.AddListener(() =>
+    launchGameBtn.onClick.AddListener(() =>
 {
+        if (!Context.TryGetAudioSource(out AudioSource source) || source.clip == null)
+        {
+            PopupManager.Show("Aucune musique sélectionnée");
+            return;
+        }
 
-        if(Context.TryGetAudioSource(out AudioSource source) && SessionData.Instance != null)
+        if(SessionData.Instance != null)
         {
             Debug.Log("Audiosource chargé pour la prochaine scène");
-            SessionData.Instance.audioSource = source;
+            PopupManager.Show("Le jeu va commencer!");
+            //SessionData.Instance.audioSource = source;
+            SessionData.Instance.titre = source.clip.name;
+            Debug.Log(SessionData.Instance.titre);
         }
-        sceneloader.LoadSceneByName("Pulser_animated");
+
+        sceneloader.LoadSceneByName("GameplayScene"); // Remplacer par GameplayScene
     }); 
 
     }
     Transform topBar = UIBuilder.CreateTopBar(panel);
     
     // Charger tous les fichiers mp3 déjà dans le cache
-    yield return StartCoroutine(audioCache.LoadAllCachedMusic());
-
+    //yield return StartCoroutine(audioCache.LoadAllCachedMusic());
+    audioCache.LoadAllMusicTestUtilisateur();
     
     // Afficher les titres des playlists déjà créées avec un bouton pour afficher les musiques dans la playlist sélectionnée
 
@@ -129,7 +143,8 @@ public class MenuGenerator : MonoBehaviour
 
     // Créer une barre de recherche avec menu déroulant constituté des musiques avec un bouton pour les ajouter à une playlist ou les écouter
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab);
 
 }
 }
+*/

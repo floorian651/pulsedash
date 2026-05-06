@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: df8e47be1a59e589ba73885720c00b30
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - player: {instanceID: 0}
+  - GroundPrefab: {instanceID: 0}
+  - FinishLinePrefab: {fileID: 2114923291099937316, guid: 8f09663c1093d46fca8b13b7a502cb3d, type: 3}
+  - obstacleLevel4: {instanceID: 0}
+  - obstacleLevel3: {instanceID: 0}
+  - obstacleLevel2: {instanceID: 0}
+  - obstacleLevel1: {instanceID: 0}
+  - pulser: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -13,7 +13,7 @@ public static class Bouton
         // Image NECESSAIRE au Button, mais sans sprite
         Image img = buttonGO.AddComponent<Image>();
         
-        img.color = new Color(1f, 0.710f, 0.278f, 1f);  // accent or (palette 3)
+        img.color = new Color(0.78f, 0.80f, 0.82f, 1f);
 
         Button button = buttonGO.AddComponent<Button>();
         button.targetGraphic = img;
@@ -37,6 +37,7 @@ public static class Bouton
         tmp.fontSize = 22;
         tmp.color = new Color(0.118f, 0.141f, 0.192f, 1f);
         tmp.alignment = TextAlignmentOptions.Center;
+        UIBuilder.ApplyMontserratFont(tmp);
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
         textRT.anchorMin = Vector2.zero;
@@ -58,15 +59,21 @@ public static class Bouton
     public static Button CreateButtonEditor(Transform parent, GameObject averageButtonPrefab, string text, UnityEngine.Events.UnityAction action){
         
         GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);
+        UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
         Button btn = boutonGO.GetComponent<Button>();
 
         TextMeshProUGUI label = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
         if (label != null)
         {
             label.text = text;
+            UIBuilder.ApplyMontserratFont(label);
         }
         
         btn.onClick.AddListener(action);
+
+        LayoutElement le = boutonGO.AddComponent<LayoutElement>();
+        le.preferredHeight = 40;
+        le.preferredWidth = 160;
 
         return btn;
 }
