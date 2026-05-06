@@ -99,7 +99,7 @@ void InitMenu()
                 SessionData.Instance.titre = source.clip.name;
             }
 
-            sceneloader.LoadSceneByName("FinishLineScene");
+            sceneloader.LoadSceneByName("GameplayScene");
         });
     }
 
