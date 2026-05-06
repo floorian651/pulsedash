@@ -129,6 +129,21 @@ public class GenerateurNiveau : MonoBehaviour
 
         generatePulsers(analyse_rythme);
 
+         // Génération de la ligne d'arrivée
+        if (FinishLinePrefab == null)
+        {
+            UnityEngine.Debug.LogError("FinishLinePrefab non assigné");
+            return;
+        }
+
+        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, offsetZ + nbChunksGeneres * chunkSize);
+        // Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);    // FinishLine put at the beginning of the level for testing purposes
+        Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
+
+        GameObject finishLine = Instantiate(FinishLinePrefab, posFinish, rotFinish);
+        finishLine.transform.localScale = new Vector3(6, 6, 6);
+        finishLine.transform.parent = this.transform;
+
     }
 
     // Méthode pour nettoyer les blocs générés
