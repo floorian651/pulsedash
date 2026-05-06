@@ -15,7 +15,6 @@ public class Player : MonoBehaviour
     void Awake() {
         DontDestroyOnLoad(transform.gameObject);
     }
-
     void Start()
     {   
         energy = maxEnergy;

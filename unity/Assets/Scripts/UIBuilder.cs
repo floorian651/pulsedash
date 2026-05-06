@@ -218,6 +218,8 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
+
+   
     public static void ShowMusiquesPlaylistInContainer(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab, GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
            

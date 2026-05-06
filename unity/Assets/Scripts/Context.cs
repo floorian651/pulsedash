@@ -13,6 +13,14 @@ public class Context : MonoBehaviour
     public SliderMusique SliderMusique => sliderMusique;
     public GameObject PlayPauseButton => playPauseButton;
 
+    public static Context Instance { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+
     public void Initialize(AudioSource source, TextMeshProUGUI text)
     {
         audioSource = source;

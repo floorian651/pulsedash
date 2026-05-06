@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 
 
@@ -11,6 +12,43 @@ public class PopupManager : MonoBehaviour
     private static string PopupBackground="Images/Popup1";
     private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
+
+    private static Canvas GetOrCreateCanvas()
+    {
+        Canvas canvas = Object.FindObjectOfType<Canvas>();
+        if (canvas != null)
+        {
+            EnsureEventSystem();
+            return canvas;
+        }
+
+        GameObject canvasGO =
+            new GameObject(
+                "Canvas",
+                typeof(Canvas),
+                typeof(CanvasScaler),
+                typeof(GraphicRaycaster)
+            );
+
+        canvas = canvasGO.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        CanvasScaler scaler = canvasGO.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
+        EnsureEventSystem();
+        return canvas;
+    }
+
+    private static void EnsureEventSystem()
+    {
+        if (Object.FindObjectOfType<EventSystem>() != null)
+            return;
+
+        GameObject eventSystem = new GameObject("EventSystem");
+        eventSystem.AddComponent<EventSystem>();
+        eventSystem.AddComponent<StandaloneInputModule>();
+    }
     
 
     private static void ApplyPopupBackground(Image image)
@@ -19,6 +57,12 @@ public class PopupManager : MonoBehaviour
         Debug.Log("image pas null");
 
         Texture2D tex = Resources.Load<Texture2D>(PopupBackground);
+        if (tex == null)
+        {
+            Debug.LogWarning($"PopupManager: texture introuvable dans Resources: '{PopupBackground}'.");
+            return;
+        }
+
         Sprite sprite = Sprite.Create(tex, new Rect(0,0,tex.width, tex.height), new Vector2(0.5f,0.5f));
         
 
@@ -81,19 +125,11 @@ public class PopupManager : MonoBehaviour
         }
 
         // Canvas
-        GameObject canvasGO = GameObject.Find("Canvas");
-        if (canvasGO == null)
-        {
-            canvasGO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            Canvas canvas = canvasGO.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGO.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            Debug.Log("Canvas recréé");
-        }
+        Canvas canvas = GetOrCreateCanvas();
 
         // Panel
         popupGO = new GameObject("PopupPanel", typeof(RectTransform));
-        popupGO.transform.SetParent(canvasGO.transform, false);
+        popupGO.transform.SetParent(canvas.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
         Image bg = popupGO.AddComponent<Image>();
@@ -247,9 +283,11 @@ public static void ShowPlaylistPopup(string trackName, GameObject averageButtonT
     if (popupGO != null)
         UnityEngine.Object.Destroy(popupGO);
 
+    Canvas canvas = GetOrCreateCanvas();
+
     // Création du popup
     popupGO = new GameObject("PlaylistPopup", typeof(RectTransform));
-    popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
+    popupGO.transform.SetParent(canvas.transform, false);
 
     Image bg = popupGO.AddComponent<Image>();
     bg.color = new Color(1f, 1f, 1f, 0.1f);
@@ -357,8 +395,10 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     if (popupGO != null)
         UnityEngine.Object.Destroy(popupGO);
 
+    Canvas canvas = GetOrCreateCanvas();
+
     popupGO = new GameObject("PlaylistActionsPopup", typeof(RectTransform));
-    popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
+    popupGO.transform.SetParent(canvas.transform, false);
 
     //Image bg = popupGO.AddComponent<Image>();
     //bg.color = new Color(0, 0, 0, 0.6f);

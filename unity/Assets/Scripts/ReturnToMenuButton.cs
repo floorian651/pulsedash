@@ -33,7 +33,19 @@ public static class ReturnToMenuButton
 
         Button btn = buttonGO.AddComponent<Button>();
         btn.targetGraphic = img;
-        btn.onClick.AddListener(() => SceneManager.LoadScene("Platform_Streaming"));
+        btn.onClick.AddListener(() =>
+        {
+            /*if (Context.Instance.TryGetAudioSource(out AudioSource src))
+            {
+                src.Stop();
+            }*/
+            GameObject obj = GameObject.Find("Player");
+            AudioSource src = obj.GetComponentInChildren<AudioSource>();
+            src.Stop();
+
+            SceneManager.LoadScene("Platform_Streaming");
+        });
+
 
         GameObject textGO = new GameObject("Label", typeof(RectTransform));
         textGO.transform.SetParent(buttonGO.transform, false);
