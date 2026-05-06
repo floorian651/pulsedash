@@ -55,7 +55,9 @@ public class GenerateurNiveau : MonoBehaviour
         // Générer la déco devant le joueur 
         if((player.transform.position.z < tailleNiveau) && (compt>20)){
             compt  = 0;
-            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);}
+            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);
+            //generateGround((int)(player.transform.position.z)+5,(int)(player.transform.position.z)+20);
+            }
         
         compt  = compt +1;
 
@@ -66,8 +68,8 @@ public class GenerateurNiveau : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
 
-            // On ne détruit que les décos (pas le sol, pas les obstacles)
-            if (child.CompareTag("Deco") || child.CompareTag("obstacle"))
+            // On ne détruit les décos, le sol et les obstacles
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol"))
             {
                 if (child.position.z < limiteZ)
                 {
@@ -113,7 +115,7 @@ public class GenerateurNiveau : MonoBehaviour
         // Générer le sol avant de -10 à 0 en amont du niveau 
 
 
-        for (float z = -20; z <= 10; z += 2)
+        for (float z = -20; z <= 0; z += 2)
         {
             Vector3 pos = new Vector3(0, groundHeight, z);
             GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
@@ -128,7 +130,6 @@ public class GenerateurNiveau : MonoBehaviour
 
         generatePulsers(analyse_rythme);
 
-        //generateDeco();
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -176,7 +177,8 @@ public class GenerateurNiveau : MonoBehaviour
 
             if(puissanceMax < seuilLevel0)
             {
-                generateChunk(GroundPrefab);
+                //generateChunk(GroundPrefab);
+                return;
             }
             else if(puissanceMax < seuilLevel1)
             {
@@ -255,6 +257,16 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
+    private void generateGround(int positionD, int positionF){
+        for (int z = positionD; z < positionF; z += 2)
+        {
+            Vector3 pos = new Vector3(0, groundHeight, z);
+            GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
+            // Parent
+            newGround.transform.parent = this.transform;
+        }
+    }
+
     private void generateDeco(int positionD, int positionF){
 
         int dureeMusique = (int)data.duration;
@@ -283,5 +295,4 @@ public class GenerateurNiveau : MonoBehaviour
 
     }
 
-
-}
+ }

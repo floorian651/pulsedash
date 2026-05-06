@@ -50,7 +50,7 @@ void InitMenu()
     Transform panel = UIBuilder.CreatePanel();
 
     // CONTENEURS PRINCIPAUX
-    Transform middleArea = UIconteneur.CreateMiddleArea(panel, -100f);
+    Transform middleArea = UIconteneur.CreateMiddleArea(panel, 0f);
     Transform leftContainer = UIconteneur.CreateLeftContainer(middleArea);
     Transform centerRightContainer = UIconteneur.CreateCenterRightContainer(middleArea);
 
