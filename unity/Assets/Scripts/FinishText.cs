@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class FinishText : MonoBehaviour
 {
@@ -31,7 +32,8 @@ public class FinishText : MonoBehaviour
     {
         if (player != null)
         {
-            finishText = "Bravo ! \n Vous avez terminé le niveau avec \n"  + player.GetEnergyLevel() + " / " + player.GetMaxEnergyLevel() + " énergie restante";
+            float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
+            finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
         }
         else
         {
