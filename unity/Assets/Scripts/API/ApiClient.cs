@@ -90,7 +90,7 @@ public class ApiClient : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private string baseUrl = "http://localhost:8000/api/v1";
 
-    public static string BaseUrl => Instance._baseUrl;
+    public static string BaseUrl => Instance.baseUrl;
 
     // ── Singleton ─────────────────────────────────────────────────────────────
 
