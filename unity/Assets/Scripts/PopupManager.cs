@@ -626,22 +626,44 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     UIBuilder.ApplyMontserratFont(titleTxt);
 
     RectTransform titleRT = titleGO.GetComponent<RectTransform>();
-    titleRT.anchorMin = new Vector2(0, 0.75f);
-    titleRT.anchorMax = new Vector2(1, 0.95f);
+    titleRT.anchorMin = new Vector2(0, 0.60f);
+    titleRT.anchorMax = new Vector2(1, 0.80f);
     titleRT.offsetMin = Vector2.zero;
     titleRT.offsetMax = Vector2.zero;
 
+    GameObject modesRow = new GameObject("ModesRow", typeof(RectTransform));
+    modesRow.transform.SetParent(container.transform, false);
+
+    RectTransform rowRT = modesRow.GetComponent<RectTransform>();
+    rowRT.anchorMin = new Vector2(0.5f, 0.40f);
+    rowRT.anchorMax = new Vector2(0.5f, 0.40f);
+    rowRT.pivot = new Vector2(0.5f, 0.5f);
+    rowRT.sizeDelta = new Vector2(260, 80);
+    rowRT.anchoredPosition = Vector2.zero;
+
+    // Layout horizontal
+    HorizontalLayoutGroup hLayout = modesRow.AddComponent<HorizontalLayoutGroup>();
+    hLayout.childAlignment = TextAnchor.MiddleCenter;
+    hLayout.spacing = 0;
+    hLayout.childForceExpandWidth = false;
+    hLayout.childForceExpandHeight = false;
+    hLayout.childControlWidth = false;
+    hLayout.childControlHeight =false;
+
+
     string selectedMode = null;
 
-    CreateModePrefabButton(container.transform, crazyPrefab, "Crazy", 0.55f, () => selectedMode = "Crazy");
-    CreateModePrefabButton(container.transform, lazyPrefab, "Lazy", 0.40f, () => selectedMode = "Lazy");
-    CreateModePrefabButton(container.transform, easyPrefab, "Easy", 0.25f, () => selectedMode = "Easy");
-
+    CreateModePrefabButton(modesRow.transform, lazyPrefab, "Lazy", () => selectedMode = "Lazy");
+    CreateModePrefabButton(modesRow.transform, easyPrefab, "Easy", () => selectedMode = "Easy");
+    CreateModePrefabButton(modesRow.transform, crazyPrefab, "Crazy", () => selectedMode = "Crazy");
+    
+    
     GameObject validateGO = GameObject.Instantiate(validatePrefab, container.transform);
     RectTransform validateRT = validateGO.GetComponent<RectTransform>();
-    validateRT.anchorMin = new Vector2(0.5f, 0.10f);
-    validateRT.anchorMax = new Vector2(0.5f, 0.10f);
+    validateRT.anchorMin = new Vector2(0.5f, 0.25f);
+    validateRT.anchorMax = new Vector2(0.5f, 0.25f);
     validateRT.anchoredPosition = Vector2.zero;
+
 
     Button validateBtn = validateGO.GetComponent<Button>();
     validateBtn.onClick.AddListener(() =>
@@ -661,16 +683,12 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     CreateCloseButton(container.transform, popupGO);
 }
 
-private static void CreateModePrefabButton(Transform parent, GameObject prefab, string modeName, float anchorY, System.Action onSelect)
+
+
+private static void CreateModePrefabButton(Transform parent, GameObject prefab, string modeName, System.Action onSelect)
 {
     GameObject btnGO = GameObject.Instantiate(prefab, parent);
 
-    RectTransform rt = btnGO.GetComponent<RectTransform>();
-    rt.anchorMin = new Vector2(0.5f, anchorY);
-    rt.anchorMax = new Vector2(0.5f, anchorY);
-    rt.anchoredPosition = Vector2.zero;
-
-    // Si ton prefab contient un TMP pour afficher le nom
     TextMeshProUGUI txt = btnGO.GetComponentInChildren<TextMeshProUGUI>();
     if (txt != null)
         txt.text = modeName;
@@ -678,9 +696,6 @@ private static void CreateModePrefabButton(Transform parent, GameObject prefab, 
     Button btn = btnGO.GetComponent<Button>();
     btn.onClick.AddListener(() => onSelect());
 }
-
-
-
 
 }
 
