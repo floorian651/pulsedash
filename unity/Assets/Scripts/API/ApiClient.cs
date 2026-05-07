@@ -9,6 +9,19 @@ using UnityEngine.Networking;
 // ---------------------------------------------------------------------------
 
 [Serializable]
+public class ApiJamendoTrack
+{
+    public string id;
+    public string name;
+    public string artist_name;
+    public int    duration;
+    public string audio;
+}
+
+[Serializable]
+class ApiJamendoTrackList { public ApiJamendoTrack[] items; }
+
+[Serializable]
 public class TokenResponse
 {
     public string access_token;
@@ -372,6 +385,25 @@ public class ApiClient : MonoBehaviour
         yield return req.SendWebRequest();
         yield return StartCoroutine(HandleResponse(req,
             _ => onSuccess?.Invoke(),
+            onError));
+    }
+
+    // ── Recherche Jamendo ─────────────────────────────────────────────────────
+
+    public IEnumerator SearchJamendo(
+        string query, int limit,
+        Action<ApiJamendoTrack[]> onResults,
+        Action<string> onError)
+    {
+        string url = BaseUrl + "/jamendo/search?q=" + UnityWebRequest.EscapeURL(query) + "&limit=" + limit;
+        var req = MakeGet(url, withAuth: false);
+        yield return req.SendWebRequest();
+        yield return StartCoroutine(HandleResponse(req,
+            json =>
+            {
+                var wrapper = JsonUtility.FromJson<ApiJamendoTrackList>("{\"items\":" + json + "}");
+                onResults?.Invoke(wrapper?.items ?? Array.Empty<ApiJamendoTrack>());
+            },
             onError));
     }
 

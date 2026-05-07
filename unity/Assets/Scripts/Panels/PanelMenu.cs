@@ -79,27 +79,16 @@ void InitMenu()
     playPauseGO.SetActive(false);
 
     // BOUTON LANCER LE JEU
-    SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
-    if (sceneloader != null)
     {
         GameObject launchGameGO = Instantiate(launchGameButtonPrefab, bottomBar);
         Button launchGameBtn = launchGameGO.GetComponent<Button>();
-
         launchGameBtn.onClick.AddListener(() =>
         {
-            if (!Context.TryGetAudioSource(out AudioSource source) || source.clip == null)
-            {
-                PopupManager.Show("Aucune musique sélectionnée");
-                return;
-            }
-
-            if (SessionData.Instance != null)
-            {
-                PopupManager.Show("Le jeu va commencer!");
-                SessionData.Instance.titre = source.clip.name;
-            }
-
-            sceneloader.LoadSceneByName("GameplayScene");
+            GameLauncher launcher = FindObjectOfType<GameLauncher>();
+            if (launcher != null)
+                launcher.Launch();
+            else
+                Debug.LogError("GameLauncher introuvable — ajoute-le comme composant dans la scène.");
         });
     }
 

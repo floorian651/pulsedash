@@ -4,6 +4,7 @@ using System.Collections;
 
 [System.Serializable]
 public class JamendoTrack {
+    public string id;
     public string name;
     public string audio;
     public string artist_name;

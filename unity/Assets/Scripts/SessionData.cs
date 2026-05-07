@@ -7,6 +7,7 @@ public class SessionData : MonoBehaviour
     public string playerName;
     public string titre;
     public LevelData levelData;
+    public string jamendoTrackId;
 
 
     void Awake()
