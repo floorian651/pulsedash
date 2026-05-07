@@ -1,39 +1,66 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.IO;
 
 public class getMusicTest : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    static void test()
     {
         string title = "Meme";
-        
-        StartCoroutine(GetMusic(title));
+        StartCoroutine(DownloadMP3(title));
     }
 
-    public void GetMusic(string title)
+    IEnumerator GetMusic(string title)
     {
         string url = DotEnv.GetURL() + "/api/v1/music/" + title + "/download";
+
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.Success)
+            if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                string response = webRequest.downloadHandler.text;
-                Debug.Log("Réponse : " + response);
+                Debug.LogError("Erreur API : " + webRequest.error);
+                yield break;
             }
-            else
-            {
-                Debug.LogError("Erreur : " + webRequest.error);
-            }
+
+            // 👉 Ici on récupère l'URL de téléchargement
+            string downloadUrl = webRequest.downloadHandler.text;
+
+            Debug.Log("URL de téléchargement : " + downloadUrl);
+
+            // 👉 On lance le téléchargement du MP3
+            yield return StartCoroutine(DownloadMP3(downloadUrl, title));
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator DownloadMP3(string url, string title)
     {
-        
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur téléchargement : " + webRequest.error);
+                yield break;
+            }
+
+            byte[] data = webRequest.downloadHandler.data;
+
+            // 👉 Chemin de sauvegarde
+            string path = Application.dataPath + "/Resources/Musique/";
+
+            // Crée le dossier si nécessaire
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            string filePath = path + title + ".mp3";
+
+            File.WriteAllBytes(filePath, data);
+
+            Debug.Log("Musique téléchargée : " + filePath);
+        }
     }
 }
