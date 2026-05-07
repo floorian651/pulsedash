@@ -1,14 +1,15 @@
 using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.Networking;
+using System.IO;
 
 public class MusicDAO : MonoBehaviour
 {
-    static void test()
-    {
-        string title = "Meme";
-        StartCoroutine(DownloadMP3(title));
-    }
-
-    IEnumerator GetMusic(string title)
+    public IEnumerator GetMusic(string title)
     {
         string url = DotEnv.GetURL() + "/api/v1/music/" + title + "/download";
 

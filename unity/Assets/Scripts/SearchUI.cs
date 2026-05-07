@@ -4,7 +4,8 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SearchUI
+
+public class SearchUI : MonoBehaviour
 {
     private const float MusicItemRowHeight = 80f;
     private const float MusicItemRowScale = 4f;
@@ -52,6 +53,21 @@ public class SearchUI
     return musiques.FirstOrDefault(c => c.name.ToLower().Contains(nomMusique.ToLower()));
 }
 
+public List<AudioClip> LoadAllMusicTestLienBDD(){
+
+        List<AudioClip> clips = new List<AudioClip>(Resources.LoadAll<AudioClip>("Musique"));
+
+
+        foreach (AudioClip clip in clips)
+        {
+            Debug.Log("Titre : " + clip.name);
+        }
+
+        Debug.Log("Nombre de musiques chargées : " + clips.Count);
+
+        return clips;
+    }
+
 // Pour l'utiliser il faut créer un prefab avec plusieurs attribut (titre, bouton play, ajouter à une playlist, etc) 
 	//BEAUCOUP à MODIFIER
 
@@ -75,7 +91,12 @@ public class SearchUI
 	    if (string.IsNullOrWhiteSpace(nomTape))
 	        return;
 
-    nomTape = nomTape.ToLower();
+    // nomTape = nomTape.ToLower();
+
+
+    MusicDAO musicDAO = new MusicDAO();
+    StartCoroutine(musicDAO.GetMusic(nomTape));
+    List<AudioClip> musiques = LoadAllMusicTestLienBDD();
 
     var resultats = musiques
         .Where(c => c.name.ToLower().Contains(nomTape))
