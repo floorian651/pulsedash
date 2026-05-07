@@ -9,7 +9,7 @@ public class getMusicTest : MonoBehaviour
     {
         string title = "Meme";
         
-        StartCoroutine(GetRequest(url + "/api/v1/music/" + title + "/download"));
+        StartCoroutine(GetMusic(title));
     }
 
     public void GetMusic(string title)
