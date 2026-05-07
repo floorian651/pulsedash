@@ -8,6 +8,7 @@ public class Trigger : MonoBehaviour
     public string titre_musique;
 
 
+    // A MODIFIER POUR LA BDD
     void OnEnable(){
         
          if (!musicStarted){
@@ -24,14 +25,14 @@ public class Trigger : MonoBehaviour
         {
             musicStarted = true;
 
-            // 1. On lit l'heure exacte de la carte son au moment du déclenchement
+            // On lit l'heure exacte de la carte son au moment du déclenchement
             double heureActuelle = AudioSettings.dspTime;
 
-            // 2. On calcule l'heure exacte à laquelle la musique DOIT démarrer
+            // On calcule l'heure exacte à laquelle la musique DOIT démarrer
             double heureDepartMusique = heureActuelle + delaiAvantMusique;
             // Récupérer l'audio source 
             
-            // 3. On donne l'ordre à l'AudioSource de se lancer pile à cette heure-là
+            // On donne l'ordre à l'AudioSource de se lancer pile à cette heure-là
             musicSource.PlayScheduled(heureDepartMusique);
 
         }

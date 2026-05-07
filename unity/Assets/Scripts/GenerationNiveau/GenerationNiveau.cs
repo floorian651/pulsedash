@@ -77,7 +77,7 @@ public class GenerateurNiveau : MonoBehaviour
             }
         }
     }
-
+    // A MODIFIER POUR LA BDD
     public float GetMusicDuration()
     {
         analyse_rythme = SessionData.Instance.titre;
@@ -98,6 +98,7 @@ public class GenerateurNiveau : MonoBehaviour
         offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
 
         // On récupère les données du fichier JSON
+        // A MODIFIER POUR LA BDD
         TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
             UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");

@@ -67,6 +67,8 @@ public class PlayerCollision : MonoBehaviour
         else if (tag == "Finish")
         {
             Debug.Log("Collision finish");
+            // A MODIFIER POUR LA BDD faire en sorte d'envoyer à la BDD le score final du joueur calculé
+            // via son énergie voir la formule utilisée dans FinishText
 
             // Loading the finish scene
             SceneLoader sceneloader = FindObjectOfType<SceneLoader>();

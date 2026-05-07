@@ -15,6 +15,7 @@ public class SessionData : MonoBehaviour
         {
             Instance = this;
             
+            // A MODIFIER POUR LA BDD
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject); // Pour éviter les doublons de SessionData
