@@ -38,6 +38,7 @@ public class Dragon : MonoBehaviour
     bool estMort = false;
 
     float compt_frames = 0f;
+    float positionDragon;
 
     void Start()
     {
@@ -64,6 +65,8 @@ public class Dragon : MonoBehaviour
 
         anim.SetBool("modeStatic",modeStatic);
 
+        positionDragon = transform.position.z;
+
     }
 
 
@@ -71,6 +74,7 @@ public class Dragon : MonoBehaviour
     {   
         // incrémenter le compteur de frames
         compt_frames += Time.deltaTime;
+        positionDragon = transform.position.z;
 
         if (!estMort && !modeStatic){
             // Récupérer les coordonnées du Joueur 
@@ -237,7 +241,8 @@ public class Dragon : MonoBehaviour
         anim.SetTrigger("mort");
 
         // Mettre des bonus
-        for (int i = 0; i < 5; i++){
+        for (int i = ((int) positionDragon); i < ((int) positionDragon)+ 5; i++){
+            Debug.Log(positionDragon);
             Rigidbody p = Instantiate(bonus, new Vector3(0,5,10*i),  Quaternion.Euler(-90,0,0));
         }
     }

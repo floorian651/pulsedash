@@ -209,7 +209,7 @@ public class PopupManager : MonoBehaviour
 
         Button btn = btnGO.AddComponent<Button>();
         Image btnImg = btnGO.AddComponent<Image>();
-        btnImg.color = new Color(0.48f, 0.52f, 0.58f, 1f);
+        btnImg.color = new Color(0.48f, 0.52f, 0.58f, 0.1f);
 
         GameObject btnTextGO = new GameObject("Text", typeof(RectTransform));
         btnTextGO.transform.SetParent(btnGO.transform, false);
