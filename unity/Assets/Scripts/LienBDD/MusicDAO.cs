@@ -1,9 +1,6 @@
-using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections;
-using System.IO;
 
-public class getMusicTest : MonoBehaviour
+public class MusicDAO : MonoBehaviour
 {
     static void test()
     {
@@ -25,12 +22,10 @@ public class getMusicTest : MonoBehaviour
                 yield break;
             }
 
-            // 👉 Ici on récupère l'URL de téléchargement
             string downloadUrl = webRequest.downloadHandler.text;
 
             Debug.Log("URL de téléchargement : " + downloadUrl);
 
-            // 👉 On lance le téléchargement du MP3
             yield return StartCoroutine(DownloadMP3(downloadUrl, title));
         }
     }
@@ -49,10 +44,8 @@ public class getMusicTest : MonoBehaviour
 
             byte[] data = webRequest.downloadHandler.data;
 
-            // 👉 Chemin de sauvegarde
             string path = Application.dataPath + "/Resources/Musique/";
 
-            // Crée le dossier si nécessaire
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
