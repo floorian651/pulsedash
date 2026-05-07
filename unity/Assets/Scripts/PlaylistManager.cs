@@ -156,14 +156,14 @@ public class PlaylistManager : MonoBehaviour
         forcePrevious = true;
         stopCurrentTrack = true;
     }
-    public void LancerPlaylist(GameObject averageButtonPrefab, GameObject musicItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
-{   
-    UIBuilder.ShowMusiquesPlaylistInContainer(averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
+    public void LancerPlaylist(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab,GameObject averageButtonPrefab, GameObject musicItemPrefab, Track trackactuel, List<AudioClip> clips, List<Track> toutesLesMusiques, string playlistName, Transform centerRightContainer)
+    {   
+        UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
 
-    if (trackactuel == null)
-    {
-        PopupManager.Show("Playlist vide");
-        return;
+        if (trackactuel == null)
+        {
+            PopupManager.Show("Playlist vide");
+            return;
     }
 
     StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));

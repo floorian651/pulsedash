@@ -8,6 +8,120 @@ using System.Linq;
 
 public static class UIBuilder
 {   
+    public const float MusicItemRowScale = 4f;
+    // Police UI "Medieval" (TTF) + fallback TMP Montserrat SDF.
+    // Note: MedievalSharp est un .ttf dans Resources ; on génère un TMP_FontAsset à l'exécution si aucun .asset TMP n'existe.
+    private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
+    private const string MontserratFontResourcePath = "Fonts & Materials/Montserrat-Regular SDF";
+    private static TMP_FontAsset uiFont;
+
+    public static TMP_FontAsset GetMontserratFont()
+    {
+        // Conservé pour compat: "MontserratFont" = police UI globale.
+        if (uiFont != null) return uiFont;
+
+        // 1) Essayer de créer un TMP_FontAsset depuis MedievalSharp (Font).
+        Font medievalFont = Resources.Load<Font>(MedievalSharpTtfResourcePath);
+        if (medievalFont != null)
+        {
+            uiFont = TryCreateTMPFontAsset(medievalFont);
+            if (uiFont != null) return uiFont;
+        }
+
+        // 2) Fallback sur Montserrat TMP (déjà en Resources).
+        uiFont = Resources.Load<TMP_FontAsset>(MontserratFontResourcePath);
+        if (uiFont == null)
+        {
+            uiFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+        }
+
+        if (uiFont == null)
+        {
+            Debug.LogWarning(
+                "UIBuilder: impossible de charger une police TMP. " +
+                $"Attendu: Font '{MedievalSharpTtfResourcePath}' ou TMP_FontAsset '{MontserratFontResourcePath}'."
+            );
+        }
+
+        return uiFont;
+    }
+
+    private static TMP_FontAsset TryCreateTMPFontAsset(Font sourceFont)
+    {
+        if (sourceFont == null) return null;
+
+        // On évite de dépendre d'une signature précise en cherchant la surcharge CreateFontAsset(Font).
+        var method = typeof(TMP_FontAsset).GetMethod(
+            "CreateFontAsset",
+            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static,
+            null,
+            new[] { typeof(Font) },
+            null
+        );
+
+        if (method == null) return null;
+
+        try
+        {
+            var created = method.Invoke(null, new object[] { sourceFont }) as TMP_FontAsset;
+            if (created == null) return null;
+
+            // Si possible, passer en mode dynamique pour ne pas "perdre" des caractères (accents, etc.).
+            var atlasProp = typeof(TMP_FontAsset).GetProperty("atlasPopulationMode");
+            if (atlasProp != null && atlasProp.CanWrite)
+            {
+                try
+                {
+                    object dynamicValue = System.Enum.Parse(atlasProp.PropertyType, "Dynamic");
+                    atlasProp.SetValue(created, dynamicValue);
+                }
+                catch { }
+            }
+
+            var multiAtlasProp = typeof(TMP_FontAsset).GetProperty("enableMultiAtlasSupport");
+            if (multiAtlasProp != null && multiAtlasProp.CanWrite)
+            {
+                try { multiAtlasProp.SetValue(created, true); } catch { }
+            }
+
+            return created;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    public static void ApplyMontserratFont(TMP_Text text)
+    {
+        if (text == null) return;
+        var font = GetMontserratFont();
+        if (font != null) text.font = font;
+    }
+
+    public static void ApplyMontserratFontRecursive(Transform root)
+    {
+        if (root == null) return;
+        var font = GetMontserratFont();
+        if (font == null) return;
+
+        var texts = root.GetComponentsInChildren<TMP_Text>(true);
+        foreach (var t in texts)
+        {
+            if (t != null) t.font = font;
+        }
+    }
+
+    public static void SetTMPDefaultFontToMontserrat()
+    {
+        var font = GetMontserratFont();
+        if (font == null) return;
+
+        if (TMP_Settings.defaultFontAsset != font)
+        {
+            TMP_Settings.defaultFontAsset = font;
+        }
+    }
 
     // Créer un panel pour l'interface
     public static Transform CreatePanel()
@@ -78,7 +192,7 @@ public static class UIBuilder
     rt.anchorMin = new Vector2(0, 1);
     rt.anchorMax = new Vector2(1, 1);
     rt.pivot = new Vector2(0.5f, 1);
-    rt.sizeDelta = new Vector2(0, 240);
+    rt.sizeDelta = new Vector2(0, 100);
     //rt.anchoredPosition = Vector2.zero;
     rt.anchoredPosition = new Vector2(0, -10);
 
@@ -87,6 +201,8 @@ public static class UIBuilder
     Image bgImage = topBarGO.AddComponent<Image>();
     // Fond transparent
     bgImage.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    // Évite de bloquer les clics sur les éléments en dessous (image transparente)
+    bgImage.raycastTarget = false;
 
 
     // Ajouter un layout horizontal pour organiser les éléments enfants
@@ -102,109 +218,93 @@ public static class UIBuilder
 
     return topBarGO.transform;
 }
-    public static void ShowMusiquesPlaylistInContainer(GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
+    public static void ShowMusiquesPlaylistInContainer(GameObject PreviousButtonPrefab, GameObject NextButtonPrefab, GameObject averageButtonPrefab, GameObject musicItemPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
     {   
-        foreach (Transform child in mainContent)
-    {
-        UnityEngine.Object.Destroy(child.gameObject);
-    }
-
-    // Conteneur principal pour la playlist
-
-    // ScrollRect
-    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
-    scrollGO.transform.SetParent(mainContent.transform, false);
-
-    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
-    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
-    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
-    scrollRT.offsetMin = Vector2.zero;
-    scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(200, 100);
-
-
-    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
-    scroll.horizontal = false;
-
-    // Viewport
-    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
-    viewportGO.transform.SetParent(scrollGO.transform, false);
-    // Fond transparent
-    viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
-
-
-    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
-    viewportRT.anchorMin = Vector2.zero;
-    viewportRT.anchorMax = Vector2.one;
-    viewportRT.offsetMin = Vector2.zero;
-    viewportRT.offsetMax = Vector2.zero;
-    
-
-    scroll.viewport = viewportRT;
-
-    // Content
-    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
-    contentGO.transform.SetParent(viewportGO.transform, false);
-
-    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-    layout.childControlHeight = true;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = true;
-    layout.childForceExpandWidth = true;
-    layout.spacing = 10;
-
-    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
-    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
-
-    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
-    contentRT.anchorMin = new Vector2(0, 1);
-    contentRT.anchorMax = new Vector2(1, 1);
-    contentRT.pivot = new Vector2(0.5f, 1);
-    contentRT.anchoredPosition = Vector2.zero;
-    contentRT.offsetMin = new Vector2(0, 0);
-    contentRT.offsetMax = new Vector2(0, 0);
-    
-    scroll.content = contentRT;
-    ClearContainer(contentRT);
-    
+           
     // Génération des boutons de playlists
+    RectTransform contentRT = UIBuilder.CreateScrollContent(mainContent);
     
     PlaylistUI.AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, playlistName,contentRT);
 
-    BoutonNextBeforeInContainer(averageButtonPrefab,clips,playlistName,mainContent);
+    BoutonNextBeforeInContainer(PreviousButtonPrefab, PreviousButtonPrefab, clips,playlistName,mainContent);
     }
 
 
-    public static void BoutonNextBeforeInContainer(GameObject averageButtonPrefab, List<AudioClip> clips, string playlistName, Transform mainContent)
-    {
-    PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>(); 
-    if (pm == null) return;
-    
-    //Ajout des boutons next et before pour gérer la playlist
-    Playlist playlist_recherche = pm.GetPlaylist(playlistName);
+    public static void BoutonNextBeforeInContainer(
+    GameObject PreviousButtonPrefab,
+    GameObject NextButtonPrefab,
+    List<AudioClip> clips,
+    string playlistName,
+    Transform mainContent)
+{
+        PlaylistManager pm =
+            UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
-    //Récupérer la liste de toutes les musiques de la playlist sélectionnée
-    List<Track> TracktoutesLesMusiques = playlist_recherche.tracks;
+        if (pm == null) return;
 
-    // Conteneur horizontal pour aligner Avant / Après sur la même hauteur
-    GameObject navGO = new GameObject("NavButtons", typeof(RectTransform));
-    navGO.transform.SetParent(mainContent, false);
+        Playlist playlist_recherche = pm.GetPlaylist(playlistName);
 
-    HorizontalLayoutGroup hlg = navGO.AddComponent<HorizontalLayoutGroup>();
-    hlg.childAlignment = TextAnchor.MiddleCenter;
-    hlg.spacing = 10;
-    hlg.childForceExpandWidth = false;
-    hlg.childForceExpandHeight = false;
+        if (playlist_recherche == null) return;
 
-    LayoutElement navLE = navGO.AddComponent<LayoutElement>();
-    navLE.preferredHeight = 40;
-      
-    Button prevBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, "<<", () => pm.OnPreviousPressed());
-    Button nextBtn = Bouton.CreateButtonEditor(navGO.transform, averageButtonPrefab, ">>", () => pm.OnNextPressed());
-    
-    }
+        GameObject navGO = new GameObject(
+            "NavButtons",
+            typeof(RectTransform),
+            typeof(LayoutElement)
+        );
+
+        navGO.transform.SetParent(mainContent, false);
+        navGO.transform.SetAsFirstSibling();
+
+        HorizontalLayoutGroup hlg =
+            navGO.AddComponent<HorizontalLayoutGroup>();
+
+        hlg.childAlignment = TextAnchor.UpperCenter; 
+        hlg.spacing = 20;
+
+        hlg.childForceExpandWidth = false;
+        hlg.childForceExpandHeight = false;
+
+        hlg.padding = new RectOffset(0, 0, 10, 0);
+
+        LayoutElement navLE =
+            navGO.GetComponent<LayoutElement>();
+
+        navLE.preferredHeight = 70;
+
+        Button prevBtn =
+            Bouton.CreateButtonEditor(
+                navGO.transform,
+                PreviousButtonPrefab,
+                "<<",
+                () => pm.OnPreviousPressed()
+            );
+
+        Button nextBtn =
+            Bouton.CreateButtonEditor(
+                navGO.transform,
+                NextButtonPrefab,
+                ">>",
+                () => pm.OnNextPressed()
+            );
+
+        prevBtn.transform.localScale = new Vector3(2f, 2f, 1f);
+
+        nextBtn.transform.localScale = new Vector3(-2f, 2f, 1f);
+
+        LayoutElement prevLE =
+            prevBtn.gameObject.AddComponent<LayoutElement>();
+
+        prevLE.preferredWidth = 120;
+        prevLE.preferredHeight = 120;
+
+        LayoutElement nextLE =
+            nextBtn.gameObject.AddComponent<LayoutElement>();
+
+        nextLE.preferredWidth = 120;
+        nextLE.preferredHeight = 120;
+}
+
+
     public static void ClearContainer(Transform container)
 {
     // On parcourt tous les enfants
@@ -229,6 +329,7 @@ public static class UIBuilder
         texteTMP.color = new Color(0.918f, 0.937f, 0.969f, 1f);
         texteTMP.enableWordWrapping = true;
         texteTMP.overflowMode = TextOverflowModes.Overflow;
+        ApplyMontserratFont(texteTMP);
 
 
         // Stretch dans le parent
@@ -255,12 +356,14 @@ public static class UIBuilder
     Image Image = go.AddComponent<Image>();
     // Fond transparent 
     Image.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    // Évite de bloquer les clics (fond transparent)
+    Image.raycastTarget = false;
    
 
 
     LayoutElement le = go.AddComponent<LayoutElement>();
     le.preferredWidth = 500;
-    le.preferredHeight = 40;
+    le.preferredHeight = 30;
 
     VerticalLayoutGroup vlg = go.AddComponent<VerticalLayoutGroup>();
     vlg.childControlWidth = false;
@@ -282,7 +385,7 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         go.transform.SetParent(parent, false);
 
         RectTransform rt = go.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(600, 64);
+        rt.sizeDelta = new Vector2(600, 32);
         rt.anchorMin = new Vector2(0, 1);
         rt.anchorMax = new Vector2(0, 1);
         rt.pivot = new Vector2(0, 1);
@@ -290,16 +393,23 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         //rt.anchoredPosition = Vector2.zero;
 
         LayoutElement le = go.AddComponent<LayoutElement>();
-        le.preferredWidth = 500;
+        le.preferredWidth = 400;
         //le.preferredHeight = 40;
-        le.preferredHeight = 64;
+        le.preferredHeight = 30;
 
         Image bg = go.AddComponent<Image>();
         bg.color = new Color32(17, 17, 17, 255);
         //bg.color = new Color32(255, 255, 255, 120);   //transparent
 
         TMP_InputField input = go.AddComponent<TMP_InputField>();
+        input.targetGraphic = bg;
 
+        input.customCaretColor = true;
+        input.caretColor = Color.white;
+        input.caretWidth = 5;
+        input.lineType = TMP_InputField.LineType.SingleLine;
+        input.richText = false;
+        
         // Zone de texte
         GameObject textAreaGO = new GameObject("Text Area", typeof(RectTransform));
         textAreaGO.transform.SetParent(go.transform, false);
@@ -307,35 +417,16 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         RectTransform textAreaRT = textAreaGO.GetComponent<RectTransform>();
         textAreaRT.anchorMin = Vector2.zero;
         textAreaRT.anchorMax = Vector2.one;
-        // Padding plus léger pour éviter le clipping vertical
-        textAreaRT.offsetMin = new Vector2(14, 6);
-        textAreaRT.offsetMax = new Vector2(-14, -6);
+        textAreaRT.offsetMin = new Vector2(14, 2);
+        textAreaRT.offsetMax = new Vector2(-14, -2);
+        //textAreaRT.offsetMin = new Vector2(14, 6);
+        //textAreaRT.offsetMax = new Vector2(-14, -6);
         
-        textAreaGO.AddComponent<RectMask2D>();
+        //textAreaGO.AddComponent<RectMask2D>();
 
         input.textViewport = textAreaRT;
 
-        // Texte principal
-        GameObject textGO = new GameObject("Text", typeof(RectTransform));
-        textGO.transform.SetParent(textAreaGO.transform, false);
-
-        TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
-        text.fontSize = 20;
-        text.color = new Color32(240, 240, 240, 255);
-        text.alignment = TextAlignmentOptions.MidlineLeft;
-        text.enableWordWrapping = false;
-        text.extraPadding = true;
-
-
-        RectTransform textRT = textGO.GetComponent<RectTransform>();
-        textRT.anchorMin = Vector2.zero;
-        textRT.anchorMax = Vector2.one;
-        textRT.offsetMin = Vector2.zero;
-        textRT.offsetMax = Vector2.zero;
-
-        input.textComponent = text;
-
-        // Placeholder
+        // Placeholder (doit être derrière le texte/caret)
         GameObject placeholderGO = new GameObject("Placeholder", typeof(RectTransform));
         placeholderGO.transform.SetParent(textAreaGO.transform, false);
 
@@ -348,7 +439,8 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         placeholder.alignment = TextAlignmentOptions.MidlineLeft;
         placeholder.enableWordWrapping = false;
         placeholder.extraPadding = true;
-
+        placeholder.raycastTarget = false;
+        ApplyMontserratFont(placeholder);
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
         phRT.anchorMin = Vector2.zero;
@@ -357,6 +449,38 @@ public static TMP_InputField CreateSearchBar(Transform parent)
         phRT.offsetMax = Vector2.zero;
 
         input.placeholder = placeholder;
+
+        // Texte principal
+        GameObject textGO = new GameObject("Text", typeof(RectTransform));
+        textGO.transform.SetParent(textAreaGO.transform, false);
+
+        TMP_Text text = textGO.AddComponent<TextMeshProUGUI>();
+        text.margin = Vector4.zero;
+        text.fontSize = 20;
+        text.color = new Color32(240, 240, 240, 255);
+        text.alignment = TextAlignmentOptions.MidlineLeft;
+        text.enableWordWrapping = false;
+        text.extraPadding = true;
+        text.margin = Vector4.zero;
+        text.raycastTarget = false;
+        ApplyMontserratFont(text);
+
+
+        RectTransform textRT = textGO.GetComponent<RectTransform>();
+        textRT.anchorMin = Vector2.zero;
+        textRT.anchorMax = Vector2.one;
+        textRT.offsetMin = Vector2.zero;
+        textRT.offsetMax = Vector2.zero;
+
+        input.textComponent = text;
+
+        // Assure l'ordre de rendu: placeholder derrière, texte/caret devant.
+        placeholderGO.transform.SetAsFirstSibling();
+        textGO.transform.SetAsLastSibling();
+
+        // TMP_InputField initialise des sous-objets dans OnEnable ; on force une ré-init une fois câblé.
+        input.enabled = false;
+        input.enabled = true;
 
         return input;
     }
@@ -426,5 +550,124 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
     return contentGO.transform; // parent pour ajouter les éléments
 }
-}
 
+public static RectTransform CreateScrollContent(Transform mainContent)
+{
+    foreach (Transform child in mainContent)
+    {
+        UnityEngine.Object.Destroy(child.gameObject);
+    }
+
+    // Conteneur principal pour la playlist
+
+    // ScrollRect
+    GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
+    scrollGO.transform.SetParent(mainContent.transform, false);
+
+    RectTransform scrollRT = scrollGO.GetComponent<RectTransform>();
+    scrollRT.anchorMin = new Vector2(0.05f, 0.05f);
+    scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
+    scrollRT.offsetMin = Vector2.zero;
+    scrollRT.offsetMax = Vector2.zero;
+    scrollRT.sizeDelta = new Vector2(250, 250);
+
+
+    ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
+    scroll.horizontal = false;
+
+    // Viewport
+    GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
+    viewportGO.transform.SetParent(scrollGO.transform, false);
+    // Fond transparent
+    //viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
+
+    var img = viewportGO.GetComponent<Image>();
+    img.color = new Color32(0x80, 0x95, 0xFF, 20); // léger alpha visible
+    img.raycastTarget = false;
+
+
+    RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
+    viewportRT.anchorMin = Vector2.zero;
+    viewportRT.anchorMax = Vector2.one;
+    viewportRT.offsetMin = Vector2.zero;
+    viewportRT.offsetMax = Vector2.zero;
+    
+
+    // Content
+    GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+    contentGO.transform.SetParent(viewportGO.transform, false);
+
+	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+	layout.childControlHeight = true;
+	layout.childForceExpandHeight = false;
+	layout.childControlWidth = true;
+	layout.childForceExpandWidth = true;
+	layout.spacing = 6;
+	layout.childAlignment = TextAnchor.UpperCenter;
+
+    ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
+    fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+    fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+
+    RectTransform contentRT = contentGO.GetComponent<RectTransform>();
+    contentRT.anchorMin = new Vector2(0, 1);
+    contentRT.anchorMax = new Vector2(1, 1);
+    contentRT.pivot = new Vector2(0.5f, 1);
+    contentRT.anchoredPosition = Vector2.zero;
+    contentRT.sizeDelta = new Vector2(0, 0);
+    
+    scroll.content = contentRT;
+    scroll.viewport = viewportRT;
+    ClearContainer(contentRT);
+
+    return contentRT;
+}
+    public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
+    {
+        if (prefab == null) return null;
+
+        var rowGO = new GameObject("MusicItemRow", typeof(RectTransform), typeof(LayoutElement));
+        rowGO.transform.SetParent(parent, false);
+
+        var rowLE = rowGO.GetComponent<LayoutElement>();
+        rowLE.minHeight = rowHeight;
+        rowLE.preferredHeight = rowHeight;
+        rowLE.flexibleHeight = 0f;
+        rowLE.preferredWidth = -1;
+
+        var item = UnityEngine.Object.Instantiate(prefab, rowGO.transform, false);
+        ApplyMontserratFontRecursive(item.transform);
+
+        // Assure que les boutons sont "au-dessus" (visuel + clic) même si le label chevauche leur zone.
+        var label = item.transform.Find("Label")?.GetComponent<TMP_Text>();
+        if (label != null)
+        {
+            label.raycastTarget = false;
+        }
+
+        var playButtonTf = item.transform.Find("PlayButton");
+        if (playButtonTf != null) playButtonTf.SetAsLastSibling();
+
+        var addToPlaylistButtonTf = item.transform.Find("AddToPlaylistButton");
+        if (addToPlaylistButtonTf != null) addToPlaylistButtonTf.SetAsLastSibling();
+
+        var subToPlaylistButtonTf = item.transform.Find("SubToPlaylistButton");
+        if (subToPlaylistButtonTf != null) subToPlaylistButtonTf.SetAsLastSibling();
+
+
+        var itemRT = item.GetComponent<RectTransform>();
+        if (itemRT != null)
+        {
+            float prefabHeight = Mathf.Max(1f, itemRT.sizeDelta.y);
+            float scale = Mathf.Clamp(rowHeight / prefabHeight, 0.05f, 1f);
+            itemRT.anchorMin = new Vector2(0.5f, 0.5f);
+            itemRT.anchorMax = new Vector2(0.5f, 0.5f);
+            itemRT.pivot = new Vector2(0.5f, 0.5f);
+            itemRT.anchoredPosition3D = Vector3.zero;
+            itemRT.localScale = new Vector3(scale*MusicItemRowScale, scale*MusicItemRowScale, 1f);
+        }
+
+        return item;
+    }
+}

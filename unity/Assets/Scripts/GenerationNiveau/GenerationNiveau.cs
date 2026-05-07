@@ -6,7 +6,7 @@ public class GenerateurNiveau : MonoBehaviour
 {
     [Header("Paramètres de génération")]
     private int randomSeed; // Graine aléatoire pour la génération du niveau.
-    private float distanceDestruction = 20f; // distance derrière le joueur avant destruction
+    private float distanceDestruction = 30f; // distance derrière le joueur avant destruction
     public GameObject player; // Référence au joueur pour récupérer sa vitesse
     public string analyse_rythme;
     private float vitesse; // Sera init quand on l'aura
@@ -17,6 +17,7 @@ public class GenerateurNiveau : MonoBehaviour
     private int chunksDepuisDernierObstacle = 0; // Compteur de chunks depuis le dernier obstacle, pour espacer les obstacles
     private int nbChunksGeneres = 0; // Compteur du nombre de chunks générés, pour éviter de générer des chunks trop loin
     public GameObject GroundPrefab; // Préfab du sol
+    public GameObject FinishLinePrefab; // Préfab de la ligne d'arrivée
     public GameObject obstacleLevel4; // Préfab pour obstacle difficile
     public GameObject obstacleLevel3; // Préfab pour obstacle de difficulté moyenne
     public GameObject obstacleLevel2; // Préfab pour obstacle de difficulté facile
@@ -26,6 +27,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float seuilLevel1;
     private float seuilLevel2;
     private float seuilLevel3;
+    private float lastGeneratedZ = 0f;
+    private float generationDistance = 30f;
 
     private int compt = 0;
 
@@ -43,31 +46,29 @@ public class GenerateurNiveau : MonoBehaviour
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
 
-    
 
     void Update()
     {
         if (player == null) return;
 
-        int dureeMusique = (int)data.duration;
-        int tailleNiveau = (int)vitesse * dureeMusique;
+        float playerZ = player.transform.position.z;
 
-        // Générer la déco devant le joueur 
-        if((player.transform.position.z < tailleNiveau) && (compt>20)){
-            compt  = 0;
-            generateDeco((int)(player.transform.position.z)+10,(int)(player.transform.position.z)+30);}
-        
-        compt  = compt +1;
+        // Génération propre basée sur distance
+        if (playerZ + generationDistance > lastGeneratedZ)
+        {
+            generateDeco((int)lastGeneratedZ, (int)(lastGeneratedZ + generationDistance));
+            generateGround((int)lastGeneratedZ, (int)(lastGeneratedZ + generationDistance));
 
-        float limiteZ = player.transform.position.z - distanceDestruction;
+            lastGeneratedZ += generationDistance;
+        }
 
-        // On parcourt les enfants du générateur
+        float limiteZ = playerZ - distanceDestruction;
+
         for (int i = transform.childCount - 1; i >= 0; i--)
         {
             Transform child = transform.GetChild(i);
 
-            // On ne détruit que les décos (pas le sol, pas les obstacles)
-            if (child.CompareTag("Deco") || child.CompareTag("obstacle"))
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol"))
             {
                 if (child.position.z < limiteZ)
                 {
@@ -113,7 +114,7 @@ public class GenerateurNiveau : MonoBehaviour
         // Générer le sol avant de -10 à 0 en amont du niveau 
 
 
-        for (float z = -20; z <= 10; z += 2)
+        for (float z = -20; z <= 0; z += 2)
         {
             Vector3 pos = new Vector3(0, groundHeight, z);
             GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
@@ -128,7 +129,6 @@ public class GenerateurNiveau : MonoBehaviour
 
         generatePulsers(analyse_rythme);
 
-        //generateDeco();
     }
 
     // Méthode pour nettoyer les blocs générés
@@ -156,7 +156,7 @@ public class GenerateurNiveau : MonoBehaviour
     {
         if(chunksDepuisDernierObstacle < espaceEntreObstacles)
         {
-            generateChunk(GroundPrefab);
+            //generateChunk(GroundPrefab);
             chunksDepuisDernierObstacle++;
             return;
         }
@@ -176,7 +176,8 @@ public class GenerateurNiveau : MonoBehaviour
 
             if(puissanceMax < seuilLevel0)
             {
-                generateChunk(GroundPrefab);
+                //generateChunk(GroundPrefab);
+                return;
             }
             else if(puissanceMax < seuilLevel1)
             {
@@ -198,8 +199,8 @@ public class GenerateurNiveau : MonoBehaviour
                 generateChunk(obstacleLevel4);
                 chunksDepuisDernierObstacle = 0;
         }
-        }
-    }
+        }}
+    
 
     private void generateChunk(GameObject obstacle)
     {
@@ -255,6 +256,16 @@ public class GenerateurNiveau : MonoBehaviour
         }
     }
 
+    private void generateGround(int positionD, int positionF){
+        for (int z = positionD; z < positionF; z += 2)
+        {
+            Vector3 pos = new Vector3(0, groundHeight, z);
+            GameObject newGround = Instantiate(GroundPrefab, pos, GroundPrefab.transform.rotation);
+            // Parent
+            newGround.transform.parent = this.transform;
+        }
+    }
+
     private void generateDeco(int positionD, int positionF){
 
         int dureeMusique = (int)data.duration;
@@ -283,5 +294,4 @@ public class GenerateurNiveau : MonoBehaviour
 
     }
 
-
-}
+ }

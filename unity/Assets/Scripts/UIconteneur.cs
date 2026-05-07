@@ -26,6 +26,8 @@ public static Transform CreateMiddleArea(Transform parent, float topBarHeight)
     HorizontalLayoutGroup layout = middleGO.AddComponent<HorizontalLayoutGroup>();
     layout.childAlignment = TextAnchor.MiddleCenter;
     layout.spacing = 30;
+    layout.childControlWidth = false;
+    layout.childControlHeight = false;
     layout.padding = new RectOffset(20, 20, 20, 20);
 
     return middleGO.transform;
@@ -60,20 +62,18 @@ public static Transform CreateLeftContainer(Transform parent)
     leftGO.transform.SetParent(parent, false);
 
     RectTransform rt = leftGO.GetComponent<RectTransform>();
-    rt.sizeDelta = new Vector2(200, 250);
 
-    VerticalLayoutGroup layout = leftGO.AddComponent<VerticalLayoutGroup>();
-    layout.spacing = 20;
-    layout.childAlignment = TextAnchor.MiddleCenter;
-    layout.childControlHeight = false;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandWidth = false;
+    rt.anchorMin = new Vector2(0, 1);
+    rt.anchorMax = new Vector2(0, 1);
+    rt.pivot = new Vector2(0, 1);
+
+    rt.anchoredPosition = new Vector2(20, -20);
+    rt.sizeDelta = new Vector2(300, 200);
 
     Image bg = leftGO.AddComponent<Image>();
     // Fond transparent
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
-
+    //bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
+    bg.color =new Color(0.5f, 0.15f, 0.18f, 0.4f);// rouge
     return leftGO.transform;
 }
 
@@ -108,13 +108,14 @@ public static Transform CreateCenterRightContainer(Transform parent)
     RectTransform rt = fusionGO.GetComponent<RectTransform>();
     rt.sizeDelta = new Vector2(600, 300); // 400 + 200
 
-    VerticalLayoutGroup layout = fusionGO.AddComponent<VerticalLayoutGroup>();
-    layout.spacing = 20;
-    layout.childAlignment = TextAnchor.MiddleCenter;
-    layout.childControlHeight = false;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandWidth = false;
+	    VerticalLayoutGroup layout = fusionGO.AddComponent<VerticalLayoutGroup>();
+	    layout.spacing = 0;
+	    layout.childAlignment = TextAnchor.UpperCenter;
+	    layout.childControlHeight = false;
+	    layout.childForceExpandHeight = false;
+	    layout.childControlWidth = false;
+	    layout.childForceExpandWidth = false;
+
 
     Image bg = fusionGO.AddComponent<Image>();
     bg.color = new Color32(0x80, 0x95, 0xFF, 0x00); // transparent
@@ -124,7 +125,7 @@ public static Transform CreateCenterRightContainer(Transform parent)
 
 
 // A implémenter pour faire un conteneur en bas du panel
-public static Transform CreateBottomAudioBar(Transform parent, float height = 80f)
+public static Transform CreateBottomAudioBar(Transform parent,float height = 60f)
 {
     GameObject bottomGO = new GameObject("BottomAudioBar", typeof(RectTransform));
     bottomGO.transform.SetParent(parent, false);
@@ -142,13 +143,13 @@ public static Transform CreateBottomAudioBar(Transform parent, float height = 80
     layout.childAlignment = TextAnchor.MiddleCenter;
     layout.spacing = 20;
     layout.padding = new RectOffset(20, 20, 10, 10);
-    layout.childControlHeight = true;
+    layout.childControlHeight = false;
     layout.childControlWidth = false;
     layout.childForceExpandWidth = true;
 
     // Fond léger (optionnel)
     Image bg = bottomGO.AddComponent<Image>();
-    bg.color = new Color32(0,0,0,255); // noir
+    bg.color = new Color32(0x80, 0x95, 0xFF, 20);
 
     return bottomGO.transform;
 }

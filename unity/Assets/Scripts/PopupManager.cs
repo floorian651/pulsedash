@@ -52,8 +52,10 @@ public class PopupManager : MonoBehaviour
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(300, 60);
 
+        //Image bg = popupGO.AddComponent<Image>();
+        //bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
         Image bg = popupGO.AddComponent<Image>();
-        bg.color = new Color(0.12f, 0.10f, 0.25f, 1f); 
+        bg.color = new Color(1f, 1f, 1f, 0.1f);
         ApplyPopupBackground(bg);
 
         TextMeshProUGUI txt = new GameObject("Text").AddComponent<TextMeshProUGUI>();
@@ -62,6 +64,7 @@ public class PopupManager : MonoBehaviour
         txt.fontSize = 20;
         txt.color = Color.white;
         txt.alignment = TextAlignmentOptions.Center;
+        UIBuilder.ApplyMontserratFont(txt);
         //txt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         //txt.overflowMode = TextOverflowModes.Ellipsis; 
 
@@ -93,8 +96,8 @@ public class PopupManager : MonoBehaviour
         popupGO.transform.SetParent(canvasGO.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
-        //Image bg = popupGO.AddComponent<Image>();
-        //bg.color = new Color(1, 1, 1, 0.01f);
+        Image bg = popupGO.AddComponent<Image>();
+        bg.color = new Color(1f, 1f, 1f, 0.1f);
 
         RectTransform rt = popupGO.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -125,12 +128,13 @@ public class PopupManager : MonoBehaviour
         msgTxt.alignment = TextAlignmentOptions.Center;
         msgTxt.fontSize = 18;
         msgTxt.color = Color.black;
+        UIBuilder.ApplyMontserratFont(msgTxt);
         msgTxt.textWrappingMode = TextWrappingModes.NoWrap; // pas de retour à la ligne 
         msgTxt.overflowMode = TextOverflowModes.Ellipsis; 
 
         RectTransform msgRT = msgGO.GetComponent<RectTransform>();
-        msgRT.anchorMin = new Vector2(0, 0.7f);
-        msgRT.anchorMax = new Vector2(1, 1);
+        msgRT.anchorMin = new Vector2(0, 0.55f);
+        msgRT.anchorMax = new Vector2(1, 0.85f);
         msgRT.offsetMin = Vector2.zero;
         msgRT.offsetMax = Vector2.zero;
 
@@ -139,12 +143,12 @@ public class PopupManager : MonoBehaviour
         inputGO.transform.SetParent(container.transform, false);
         RectTransform inputRT = inputGO.GetComponent<RectTransform>();
         inputRT.anchorMin = new Vector2(0.1f, 0.3f);
-        inputRT.anchorMax = new Vector2(0.9f, 0.6f);
+        inputRT.anchorMax = new Vector2(0.9f, 0.75f);
         inputRT.offsetMin = Vector2.zero;
         inputRT.offsetMax = Vector2.zero;
 
         Image inputBG = inputGO.AddComponent<Image>();
-        inputBG.color = Color.white;
+        inputBG.color = new Color(1f, 1f, 1f, 0.01f);
 
         TMP_InputField inputField = inputGO.AddComponent<TMP_InputField>();
 
@@ -168,6 +172,7 @@ public class PopupManager : MonoBehaviour
         placeholder.fontSize = 14;
         placeholder.color = new Color(0, 0, 0, 0.5f);
         placeholder.alignment = TextAlignmentOptions.Left;
+        UIBuilder.ApplyMontserratFont(placeholder);
         inputField.placeholder = placeholder;
 
         RectTransform phRT = placeholderGO.GetComponent<RectTransform>();
@@ -183,6 +188,7 @@ public class PopupManager : MonoBehaviour
         text.fontSize = 14;
         text.color = Color.black;
         text.alignment = TextAlignmentOptions.Left;
+        UIBuilder.ApplyMontserratFont(text);
         inputField.textComponent = text;
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
@@ -196,14 +202,14 @@ public class PopupManager : MonoBehaviour
         GameObject btnGO = new GameObject("ConfirmButton", typeof(RectTransform));
         btnGO.transform.SetParent(container.transform, false);
         RectTransform btnRT = btnGO.GetComponent<RectTransform>();
-        btnRT.anchorMin = new Vector2(0.3f, 0.05f);
-        btnRT.anchorMax = new Vector2(0.7f, 0.25f);
+        btnRT.anchorMin = new Vector2(0.3f, 0.12f);
+        btnRT.anchorMax = new Vector2(0.7f, 0.40f);
         btnRT.offsetMin = Vector2.zero;
         btnRT.offsetMax = Vector2.zero;
 
         Button btn = btnGO.AddComponent<Button>();
         Image btnImg = btnGO.AddComponent<Image>();
-        btnImg.color = new Color(0.2f, 0.6f, 1f, 0.9f);
+        btnImg.color = new Color(0.48f, 0.52f, 0.58f, 0.1f);
 
         GameObject btnTextGO = new GameObject("Text", typeof(RectTransform));
         btnTextGO.transform.SetParent(btnGO.transform, false);
@@ -211,7 +217,8 @@ public class PopupManager : MonoBehaviour
         btnText.text = "Valider";
         btnText.alignment = TextAlignmentOptions.Center;
         btnText.color = Color.white;
-        btnText.fontSize = 16;
+        btnText.fontSize = 15;
+        UIBuilder.ApplyMontserratFont(btnText);
 
         RectTransform btnTextRT = btnTextGO.GetComponent<RectTransform>();
         btnTextRT.anchorMin = Vector2.zero;
@@ -234,7 +241,7 @@ public class PopupManager : MonoBehaviour
     }
 
 // Pop up avec le nom des playlist pour ajouter le clip trackName à l'une des playlists
-public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemPrefab)
+public static void ShowPlaylistPopup(string trackName, GameObject averageButtonTransparent)
 {
     // Détruire l'ancien popup
     if (popupGO != null)
@@ -327,7 +334,7 @@ public static void ShowPlaylistPopup(string trackName, GameObject  playlistItemP
 
     // Génération des boutons de playlists
     
-    PlaylistUI.AfficherBoutonPlaylist(null, null, contentRT, null, playlistItemPrefab, playlistName =>
+    PlaylistUI.AfficherBoutonPlaylist(null, null, null, null, contentRT, null, averageButtonTransparent, playlistName =>
     {
         PlaylistManager pm = UnityEngine.Object.FindObjectOfType<PlaylistManager>();
 
@@ -353,8 +360,10 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     popupGO = new GameObject("PlaylistActionsPopup", typeof(RectTransform));
     popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
 
+    //Image bg = popupGO.AddComponent<Image>();
+    //bg.color = new Color(0, 0, 0, 0.6f);
     Image bg = popupGO.AddComponent<Image>();
-    bg.color = new Color(0, 0, 0, 0.6f);
+    bg.color = new Color(1f, 1f, 1f, 0.1f);
 
     RectTransform rt = popupGO.GetComponent<RectTransform>();
     rt.anchorMin = Vector2.zero;
@@ -379,9 +388,9 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     // Titre
     GameObject titleGO = new GameObject("Title", typeof(RectTransform));
     titleGO.transform.SetParent(container.transform, false);
-    RectTransform titleRT = titleGO.GetComponent<RectTransform>();
-    titleRT.anchorMin = new Vector2(0, 0.7f);
-    titleRT.anchorMax = new Vector2(1, 1);
+    RectTransform titleRT = titleGO.GetComponent<RectTransform>();    
+    titleRT.anchorMin = new Vector2(0, 0.6f);
+    titleRT.anchorMax = new Vector2(1, 0.9f);
     titleRT.offsetMin = new Vector2(10, 0);
     titleRT.offsetMax = new Vector2(-10, -10);
 
@@ -392,19 +401,24 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     titleTxt.alignment = TextAlignmentOptions.Center;
     titleTxt.textWrappingMode = TextWrappingModes.NoWrap;
     titleTxt.overflowMode = TextOverflowModes.Ellipsis;
+    UIBuilder.ApplyMontserratFont(titleTxt);
 
     // Bouton lancer
     GameObject launchBtnGO = new GameObject("LaunchButton", typeof(RectTransform));
     launchBtnGO.transform.SetParent(container.transform, false);
     RectTransform launchRT = launchBtnGO.GetComponent<RectTransform>();
-    launchRT.anchorMin = new Vector2(0.1f, 0.35f);
-    launchRT.anchorMax = new Vector2(0.9f, 0.55f);
-    launchRT.offsetMin = Vector2.zero;
-    launchRT.offsetMax = Vector2.zero;
+    launchRT.anchorMin = new Vector2(0.5f, 0.50f);
+    launchRT.anchorMax = new Vector2(0.5f, 0.50f);
+
+    launchRT.pivot = new Vector2(0.5f, 0.5f);
+
+    launchRT.sizeDelta = new Vector2(150, 30);
+
+    launchRT.anchoredPosition = Vector2.zero;
 
     Button launchBtn = launchBtnGO.AddComponent<Button>();
     Image launchImg = launchBtnGO.AddComponent<Image>();
-    launchImg.color = new Color(0.2f, 0.6f, 1f, 0.9f);
+    launchImg.color = new Color(0.28f, 0.32f, 0.38f, 0.95f);
 
     GameObject launchTextGO = new GameObject("Text", typeof(RectTransform));
     launchTextGO.transform.SetParent(launchBtnGO.transform, false);
@@ -413,6 +427,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     launchTxt.alignment = TextAlignmentOptions.Center;
     launchTxt.color = Color.white;
     launchTxt.fontSize = 16;
+    UIBuilder.ApplyMontserratFont(launchTxt);
 
     RectTransform launchTextRT = launchTextGO.GetComponent<RectTransform>();
     launchTextRT.anchorMin = Vector2.zero;
@@ -424,14 +439,18 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     GameObject deleteBtnGO = new GameObject("DeleteButton", typeof(RectTransform));
     deleteBtnGO.transform.SetParent(container.transform, false);
     RectTransform deleteRT = deleteBtnGO.GetComponent<RectTransform>();
-    deleteRT.anchorMin = new Vector2(0.1f, 0.1f);
-    deleteRT.anchorMax = new Vector2(0.9f, 0.3f);
-    deleteRT.offsetMin = Vector2.zero;
-    deleteRT.offsetMax = Vector2.zero;
+    deleteRT.anchorMin = new Vector2(0.5f, 0.3f);
+    deleteRT.anchorMax = new Vector2(0.5f, 0.3f);
+
+    deleteRT.pivot = new Vector2(0.5f, 0.5f);
+
+    deleteRT.sizeDelta = new Vector2(150, 30);
+
+    deleteRT.anchoredPosition = Vector2.zero;
 
     Button deleteBtn = deleteBtnGO.AddComponent<Button>();
     Image deleteImg = deleteBtnGO.AddComponent<Image>();
-    deleteImg.color = new Color(0.85f, 0.2f, 0.2f, 0.95f);
+    deleteImg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f);
 
     GameObject deleteTextGO = new GameObject("Text", typeof(RectTransform));
     deleteTextGO.transform.SetParent(deleteBtnGO.transform, false);
@@ -440,6 +459,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     deleteTxt.alignment = TextAlignmentOptions.Center;
     deleteTxt.color = Color.white;
     deleteTxt.fontSize = 16;
+    UIBuilder.ApplyMontserratFont(deleteTxt);
 
     RectTransform deleteTextRT = deleteTextGO.GetComponent<RectTransform>();
     deleteTextRT.anchorMin = Vector2.zero;
@@ -471,12 +491,13 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     closeBtnGO.transform.SetParent(parent, false);
     closeBtnGO.transform.SetAsLastSibling();
 
+
     RectTransform closeRT = closeBtnGO.GetComponent<RectTransform>();
     closeRT.anchorMin = new Vector2(1, 1);
     closeRT.anchorMax = new Vector2(1, 1);
     closeRT.pivot = new Vector2(1, 1);
-    closeRT.sizeDelta = new Vector2(80, 80);
-    closeRT.anchoredPosition = new Vector2(40, 40);
+    closeRT.sizeDelta = new Vector2(90, 90);
+    closeRT.anchoredPosition = new Vector2(35, 40);
 
     // Image d'abord
     Image closeImg = closeBtnGO.AddComponent<Image>();
@@ -493,7 +514,7 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
         Debug.LogError("Image du bouton de fermeture introuvable !");
     }
 
-    closeImg.color = Color.white;
+    closeImg.color = new Color(0.55f, 0.12f, 0.12f, 0.95f); // rouge théoriquement
 
     // Puis le Button
     Button closeBtn = closeBtnGO.AddComponent<Button>();
