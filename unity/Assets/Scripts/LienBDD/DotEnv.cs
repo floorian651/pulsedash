@@ -1,31 +1,23 @@
-using UnityEngine;
 using System;
-using DotNetEnv;
+using UnityEngine;
 
 public class DotEnv
 {
-    public string GetVariable(string variableName)
+    string GetVariable(string variableName)
     {
-        try
+        string value = Environment.GetEnvironmentVariable(variableName);
+
+        if (string.IsNullOrEmpty(value))
         {
-            // Charger les variables d'environnement à partir du fichier .env
-            Env.Load();
-
-            // Récupérer la valeur de la variable d'environnement
-            string variableValue = Env.GetString(variableName);
-
-            if (string.IsNullOrEmpty(variableValue))
-            {
-                Debug.LogWarning($"La variable d'environnement '{variableName}' n'est pas définie ou est vide.");
-                return null;
-            }
-
-            return variableValue;
+            Debug.LogWarning($"Variable '{variableName}' vide ou inexistante.");
         }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Erreur lors de la récupération de la variable d'environnement '{variableName}': {ex.Message}");
-            return null;
-        }
+
+        return value;
+    }
+
+    public static string GetURL()
+    {
+        DotEnv dotEnv = new DotEnv();
+        return dotEnv.GetVariable("API_URL");
     }
 }

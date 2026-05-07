@@ -14,7 +14,7 @@ public class getMusicTest : MonoBehaviour
 
     public void GetMusic(string title)
     {
-        string url = DotEnv.GetVariable("API_URL") + "/api/v1/music/" + title + "/download";
+        string url = DotEnv.GetURL() + "/api/v1/music/" + title + "/download";
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
             yield return webRequest.SendWebRequest();
