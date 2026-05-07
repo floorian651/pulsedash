@@ -1,46 +1,26 @@
-using UnityEngine;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class Beat
+// Helpers statiques pour travailler sur les données de niveau reçues depuis l'API.
+// HitData et LevelData sont définis dans ApiClient.cs.
+public static class LevelDataHelpers
 {
-    public float timing;
-    public float puissance;
-}
-
-[System.Serializable]
-public class MusicData
-{
-    public int tempo;
-    public string key;
-    public Beat[] beats;
-    public float duration;
-
-    public List<Beat> getBeatsInInterval(float start, float end)
+    public static List<HitData> GetHitsInInterval(HitData[] hits, float start, float end)
     {
-        // On va parcourir les beats et récupérer ceux qui sont dans l'intervalle
-        List<Beat> beatsInInterval = new List<Beat>();
-        for (int i = 0; i < beats.Length; i++)
+        var result = new List<HitData>();
+        for (int i = 0; i < hits.Length; i++)
         {
-            if (beats[i].timing >= start && beats[i].timing < end)
-            {
-                beatsInInterval.Add(beats[i]);
-            }
-            else if (beats[i].timing >= end)
-            {
-                break; // Les beats sont triés par timing, on peut arrêter la boucle
-            }
+            if (hits[i].time >= end) break;
+            if (hits[i].time >= start)
+                result.Add(hits[i]);
         }
-        return beatsInInterval;
+        return result;
     }
 
-    public float getPuissanceMaxGlobale(){
-        float puissanceMaxGlobale=0;
-        for (int i=0; i <beats.Length; i++){
-            if (puissanceMaxGlobale<beats[i].puissance){
-                puissanceMaxGlobale = beats[i].puissance;
-            }
-        }
-        return puissanceMaxGlobale;
+    public static float GetMaxStrength(HitData[] hits)
+    {
+        float max = 0f;
+        for (int i = 0; i < hits.Length; i++)
+            if (hits[i].strength > max) max = hits[i].strength;
+        return max;
     }
 }

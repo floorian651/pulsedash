@@ -6,6 +6,7 @@ public class SessionData : MonoBehaviour
     public int score;
     public string playerName;
     public string titre;
+    public LevelData levelData;
 
 
     void Awake()
