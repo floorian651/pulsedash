@@ -257,7 +257,7 @@ public class GenerateurNiveau : MonoBehaviour
         int borneInf = (int)(distMin * 0.25f);
         int borneSup = (int)(distMin * 0.75f);
 
-        for (int i = 0; i < tailleNiveau; i += distMin){
+        for (int i = (int) generationDistance ; i < tailleNiveau; i += distMin){
 
             int positionZ = random.Next(i+borneInf,i+borneSup+1);
 

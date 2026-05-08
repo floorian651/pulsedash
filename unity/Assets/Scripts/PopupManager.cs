@@ -664,18 +664,7 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     RectTransform validateRT = validateGO.GetComponent<RectTransform>();
     validateRT.anchorMin = new Vector2(0.5f, 0.25f);
     validateRT.anchorMax = new Vector2(0.5f, 0.25f);
-    validateRT.anchoredPosition = new Vector2(-10f, 0f);
-
-    /*GameObject btnTextGO = new GameObject("Text", typeof(RectTransform));
-    btnTextGO.transform.SetParent(validateGO.transform, false);
-    TextMeshProUGUI btnText = btnTextGO.AddComponent<TextMeshProUGUI>();
-    btnText.text = "Valider";
-    btnText.alignment = TextAlignmentOptions.Center;
-    btnText.color = Color.white;
-    btnText.fontSize = 15;
-    UIBuilder.ApplyMontserratFont(btnText);*/
-
-    
+    validateRT.anchoredPosition = new Vector2(-10f, 0f);    
 
 
     Button validateBtn = validateGO.GetComponent<Button>();

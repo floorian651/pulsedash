@@ -8,10 +8,7 @@ using System.Linq;
 
 public static class UIBuilder
 {   
-    public const float MusicItemRowScale = 4f;
-    // Police UI "Medieval" (TTF) + fallback TMP Montserrat SDF.
-    // Note: MedievalSharp est un .ttf dans Resources ; on génère un TMP_FontAsset à l'exécution si aucun .asset TMP n'existe.
-    private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
+    public const float MusicItemRowScale = 4f;   private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
     private const string MontserratFontResourcePath = "Fonts & Materials/Montserrat-Regular SDF";
     private static TMP_FontAsset uiFont;
 

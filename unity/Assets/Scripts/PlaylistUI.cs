@@ -44,10 +44,6 @@ public static class PlaylistUI
                 labelRt.anchorMax = new Vector2(0.5f, 0.5f);
                 labelRt.pivot = new Vector2(0.5f, 0.5f);
                 labelRt.anchoredPosition = Vector2.zero;
-                /*labelRt.anchorMin = Vector2.zero;
-                labelRt.anchorMax = Vector2.one;
-                labelRt.offsetMin = Vector2.zero;
-                labelRt.offsetMax = Vector2.zero;*/
 
                 label.enableWordWrapping = false;
 
@@ -143,13 +139,6 @@ public static class PlaylistUI
 	        {
 	            btn.targetGraphic.raycastTarget = true;
 	        }
-
-	        /*CanvasGroup canvasGroup = boutonGO.GetComponent<CanvasGroup>();
-	        if (forceRaycastTargets && canvasGroup != null)
-	        {
-	            canvasGroup.blocksRaycasts = true;
-	            canvasGroup.interactable = true;
-	        }*/
 
 	        TextMeshProUGUI labelRaycast = boutonGO.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
 	        if (labelRaycast != null)

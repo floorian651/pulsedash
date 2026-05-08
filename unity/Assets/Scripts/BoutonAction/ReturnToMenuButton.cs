@@ -35,10 +35,6 @@ public static class ReturnToMenuButton
         btn.targetGraphic = img;
         btn.onClick.AddListener(() =>
         {
-            /*if (Context.Instance.TryGetAudioSource(out AudioSource src))
-            {
-                src.Stop();
-            }*/
             GameObject obj = GameObject.Find("Player");
             AudioSource src = obj.GetComponentInChildren<AudioSource>();
             src.Stop();
