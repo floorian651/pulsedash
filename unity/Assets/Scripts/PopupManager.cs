@@ -604,7 +604,7 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     container.transform.SetParent(popupGO.transform, false);
 
     RectTransform contRT = container.GetComponent<RectTransform>();
-    contRT.sizeDelta = new Vector2(300, 300);
+    contRT.sizeDelta = new Vector2(430, 330);
     contRT.anchorMin = new Vector2(0.5f, 0.5f);
     contRT.anchorMax = new Vector2(0.5f, 0.5f);
     contRT.pivot = new Vector2(0.5f, 0.5f);
@@ -627,7 +627,7 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
 
     RectTransform titleRT = titleGO.GetComponent<RectTransform>();
     titleRT.anchorMin = new Vector2(0, 0.60f);
-    titleRT.anchorMax = new Vector2(1, 0.80f);
+    titleRT.anchorMax = new Vector2(1, 0.95f);
     titleRT.offsetMin = Vector2.zero;
     titleRT.offsetMax = Vector2.zero;
 
@@ -635,16 +635,18 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     modesRow.transform.SetParent(container.transform, false);
 
     RectTransform rowRT = modesRow.GetComponent<RectTransform>();
-    rowRT.anchorMin = new Vector2(0.5f, 0.40f);
-    rowRT.anchorMax = new Vector2(0.5f, 0.40f);
-    rowRT.pivot = new Vector2(0.5f, 0.5f);
-    rowRT.sizeDelta = new Vector2(260, 80);
-    rowRT.anchoredPosition = Vector2.zero;
 
+    rowRT.anchorMin = new Vector2(0.5f, 0.40f);
+    rowRT.anchorMax = new Vector2(0.5f, 0.45f);
+    rowRT.pivot = new Vector2(0.5f, 0.5f);
+
+    rowRT.sizeDelta = new Vector2(300, 80);
+
+    rowRT.anchoredPosition = new Vector2(-145f, 0f);
     // Layout horizontal
     HorizontalLayoutGroup hLayout = modesRow.AddComponent<HorizontalLayoutGroup>();
     hLayout.childAlignment = TextAnchor.MiddleCenter;
-    hLayout.spacing = 0;
+    hLayout.spacing = -220;
     hLayout.childForceExpandWidth = false;
     hLayout.childForceExpandHeight = false;
     hLayout.childControlWidth = false;
@@ -662,7 +664,18 @@ public static void ShowModeSelectionPopup(System.Action<string> onValidate)
     RectTransform validateRT = validateGO.GetComponent<RectTransform>();
     validateRT.anchorMin = new Vector2(0.5f, 0.25f);
     validateRT.anchorMax = new Vector2(0.5f, 0.25f);
-    validateRT.anchoredPosition = Vector2.zero;
+    validateRT.anchoredPosition = new Vector2(-10f, 0f);
+
+    /*GameObject btnTextGO = new GameObject("Text", typeof(RectTransform));
+    btnTextGO.transform.SetParent(validateGO.transform, false);
+    TextMeshProUGUI btnText = btnTextGO.AddComponent<TextMeshProUGUI>();
+    btnText.text = "Valider";
+    btnText.alignment = TextAlignmentOptions.Center;
+    btnText.color = Color.white;
+    btnText.fontSize = 15;
+    UIBuilder.ApplyMontserratFont(btnText);*/
+
+    
 
 
     Button validateBtn = validateGO.GetComponent<Button>();
