@@ -319,7 +319,7 @@ MonoBehaviour:
   - {fileID: 907276436290311733, guid: fad28ebe8b4e7c0438d4468b3f5f9910, type: 3}
   - {fileID: 1009685052748669806, guid: 54ea986480136d34a842fe244768efe5, type: 3}
   - {fileID: 3073733250756936658, guid: 0e76b02306bcf484ab9de2711be4b315, type: 3}
-  pulser: {fileID: 4070396160462701413, guid: e9f3ca572723c3e4998a57f2d53043d6, type: 3}
+  pulser: {fileID: 4070396160462701413, guid: b8b5d834f1f33de46836b763be289319, type: 3}
 --- !u!4 &220633272
 Transform:
   m_ObjectHideFlags: 0

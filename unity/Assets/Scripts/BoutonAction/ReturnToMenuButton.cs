@@ -35,9 +35,10 @@ public static class ReturnToMenuButton
         btn.targetGraphic = img;
         btn.onClick.AddListener(() =>
         {
-            GameObject obj = GameObject.Find("Player");
+            UnityEngine.GameObject obj = UnityEngine.GameObject.Find("Player");
             AudioSource src = obj.GetComponentInChildren<AudioSource>();
             src.Stop();
+            //UnityEngine.Object.Destroy(obj);
 
             SceneManager.LoadScene("Platform_Streaming");
         });

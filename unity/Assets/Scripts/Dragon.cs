@@ -8,7 +8,7 @@ public class Dragon : MonoBehaviour
 {
     public float moveSpeed = 1f;
     public float distanceSol = 3f;
-    public float distJoueur = 20f;
+    public float distJoueur = 10f;
     public Transform player;
     public Rigidbody fireball;
     public Rigidbody bonus;
@@ -74,16 +74,18 @@ public class Dragon : MonoBehaviour
 
             timerAttaque -= Time.deltaTime;
 
-            if (JoueurDetecte() && !estEnAttaque && timerAttaque <= 0f)  {
-
+            if (JoueurDetecte() && !estEnAttaque && timerAttaque <= 0f)
+            {
                 Debug.Log("Joueur détecté");
-                MoveDragonAttaque();
+
+                RegarderJoueur();
                 LancerAttaque();
             }
-            else
+            else if(!estEnAttaque && !JoueurDetecte())
             {
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
             }
+                        
         }
         else if (modeStatic && compt_frames >= timer_tir && !estMort)
         {
@@ -144,58 +146,23 @@ public class Dragon : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, -90, 0);
     }
 
-    public void MoveDragonAttaque()
-    {
-        if (xJ > transform.position.x)
-        {   
-            Debug.Log("Détection à droite");
-            direction = 1;
-            transform.position += Vector3.right * Time.deltaTime * moveSpeed;
-        }
-        else if (xJ < transform.position.x)
-        {   
-            Debug.Log("Détection à gauche");
-            direction = -1;
-            transform.position += Vector3.right * Time.deltaTime * moveSpeed * -1;
-        }
-    }
+    public void RegarderJoueur()
+{
+    transform.rotation = Quaternion.Euler(0, 180, 0);
+    // Stopper le mouvement immédiatement
+    rb.linearVelocity = Vector3.zero;
+    
+}
 
     public void LancerAttaque()
-{   
+{
     Debug.Log(gameObject.name + " attaque appelée");
-    // Récupérer la distance entre le joueur et le dragon
-    float hyp = Hypo();
 
-    //if (hyp <= 0.01f)
-    //    return;
-
-    // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
-    if (direction == 1)
-    {
-        Debug.Log("Joueur à droite");
-
-        // Si le joueur est à droite sur l'écran
-        transform.rotation = Quaternion.Euler(0, 90 + Angle(hyp), 0);
-    }
-    else
-    {
-        Debug.Log("Joueur à gauche");
-
-        // Si le joueur est à gauche sur l'écran
-        transform.rotation = Quaternion.Euler(0, 90 + Angle(hyp) + 90, 0);
-    }
-
-    Debug.Log("Dragon pivote de " + Angle(hyp));
-
-    // Lancer l'animation d'attaque
     anim.SetTrigger("isAttacking");
-
-    Debug.Log("Animation d'attaque");
 
     estEnAttaque = true;
     timerAttaque = cooldownAttaque;
 
-    // Attendre quelques frames pour tirer
     StartCoroutine(TirerApresXFrame(25));
 }
 
@@ -215,21 +182,7 @@ public class Dragon : MonoBehaviour
         estEnAttaque = false;
     }
 
-    public float Hypo()
-    {
-        return (Mathf.Sqrt(
-            Mathf.Pow(transform.position.x - xJ, 2) +
-            Mathf.Pow(transform.position.z - zJ, 2)
-        ));
-    }
-
-    public float Angle(float hyp)
-    {
-        float dz = transform.position.z - zJ;
-
-        return Mathf.Asin(dz / hyp) * Mathf.Rad2Deg;
-    }
-
+    
     void RecupererCoordJoueur()
     {
         Vector3 pos = player.position;

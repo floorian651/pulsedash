@@ -29,12 +29,14 @@ public class FinishText : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
+    {   
+        ReturnToMenuButton.Create();
         if (player != null)
         {   
             // A MODIFIER POUR LA BDD récupérer le score du joueur via la BDD si possible
             float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
             finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
+            Destroy(player.gameObject);
         }
         else
         {
