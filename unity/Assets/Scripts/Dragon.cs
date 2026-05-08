@@ -48,8 +48,13 @@ public class Dragon : MonoBehaviour
         else 
             Debug.Log("Player null");
 
+<<<<<<< HEAD
         anim.SetBool("modeStatic", modeStatic);
         positionDragon = transform.position.z;
+=======
+        positionDragon = transform.position.z;
+
+>>>>>>> main
     }
 
     void Update()
