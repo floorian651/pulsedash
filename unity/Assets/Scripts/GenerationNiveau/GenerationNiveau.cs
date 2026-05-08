@@ -68,7 +68,7 @@ public class GenerateurNiveau : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
 
-            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol"))
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol") || child.CompareTag("pulser"))
             {
                 if (child.position.z < limiteZ)
                 {
