@@ -8,7 +8,8 @@ using System.Linq;
 
 public static class UIBuilder
 {   
-    public const float MusicItemRowScale = 4f;   private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
+    public const float MusicItemRowScale = 4f;   
+    private const string MedievalSharpTtfResourcePath = "Fonts & Materials/MedievalSharp,Montserrat/MedievalSharp/MedievalSharp-Regular";
     private const string MontserratFontResourcePath = "Fonts & Materials/Montserrat-Regular SDF";
     private static TMP_FontAsset uiFont;
 
@@ -17,7 +18,7 @@ public static class UIBuilder
         // Conservé pour compat: "MontserratFont" = police UI globale.
         if (uiFont != null) return uiFont;
 
-        // 1) Essayer de créer un TMP_FontAsset depuis MedievalSharp (Font).
+        //  Essayer de créer un TMP_FontAsset depuis MedievalSharp (Font).
         Font medievalFont = Resources.Load<Font>(MedievalSharpTtfResourcePath);
         if (medievalFont != null)
         {
@@ -25,7 +26,7 @@ public static class UIBuilder
             if (uiFont != null) return uiFont;
         }
 
-        // 2) Fallback sur Montserrat TMP (déjà en Resources).
+        // Fallback sur Montserrat TMP (déjà en Resources).
         uiFont = Resources.Load<TMP_FontAsset>(MontserratFontResourcePath);
         if (uiFont == null)
         {
