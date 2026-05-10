@@ -7,7 +7,7 @@ public static class ReturnToMenuButton
 {
 
     public static GameObject prefab;
-    
+
     public static void Create()
     {
         Canvas canvas = Object.FindObjectOfType<Canvas>();
@@ -37,20 +37,5 @@ public static class ReturnToMenuButton
             SceneManager.LoadScene("Platform_Streaming");
         });
 
-
-        GameObject textGO = new GameObject("Label", typeof(RectTransform));
-        textGO.transform.SetParent(buttonGO.transform, false);
-        TextMeshProUGUI label = textGO.AddComponent<TextMeshProUGUI>();
-        label.text = "Retour menu";
-        label.fontSize = 18;
-        label.color = Color.black;
-        label.alignment = TextAlignmentOptions.Center;
-        UIBuilder.ApplyMontserratFont(label);
-
-        RectTransform textRT = textGO.GetComponent<RectTransform>();
-        textRT.anchorMin = Vector2.zero;
-        textRT.anchorMax = Vector2.one;
-        textRT.offsetMin = Vector2.zero;
-        textRT.offsetMax = Vector2.zero;
     }
 }
