@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Diagnostics; // Pour List
+using System;
 
 public class GenerateurNiveau : MonoBehaviour
 {
@@ -32,6 +33,14 @@ public class GenerateurNiveau : MonoBehaviour
 
     public GameObject backToMenuPrefab;
 
+    public enum Difficulty
+    {
+        Lazy, // 30% d'énergie en plus
+        Easy, // 15% d'énergie en plus
+        Crazy // Pas de bonus d'énergie
+        }
+    public Difficulty difficulty = Difficulty.Lazy; // Difficulté par défaut
+
     private int compt = 0;
 
     [SerializeField] private GameObject[] decosDroite;
@@ -45,6 +54,17 @@ public class GenerateurNiveau : MonoBehaviour
         UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
+        if (SessionData.Instance != null){
+
+            string mode = SessionData.Instance.mode;
+
+            difficulty = (Difficulty)Enum.Parse(
+            typeof(Difficulty),
+            mode,
+            true
+        );
+        }
+            PreparePlayer();
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
@@ -80,7 +100,32 @@ public class GenerateurNiveau : MonoBehaviour
             }
         }
     }
+
+    void PreparePlayer()
+    {
+        player.transform.position = new Vector3(0, 1, -5); // Position de départ du joueur
+        Player playerScript = player.GetComponent<Player>();
+        if (playerScript != null)
+        {
+            // On calcule l'énergie maximale du joueur en fonction de la durée de la musique, pour que le joueur puisse tenir toute la musique s'il ne prend pas de dégâts
+            float energieMax = GetMusicDuration() * playerScript.decreaseSpeed;
+            switch(difficulty)
+            {
+                case Difficulty.Lazy:
+                    energieMax *= 1.3f; // Bonus de 30% d'énergie
+                    break;
+                case Difficulty.Easy:
+                    energieMax *= 1.15f; // Bonus de 15% d'énergie
+                    break;
+                case Difficulty.Crazy:
+                    energieMax *= 1.05f; // Bonus de 5% d'énergie
+                    break;
+            }
+            playerScript.SetEnergyMax(energieMax);
+        }
+    }
     // A MODIFIER POUR LA BDD
+
     public float GetMusicDuration()
     {
         analyse_rythme = SessionData.Instance.titre;
@@ -88,6 +133,11 @@ public class GenerateurNiveau : MonoBehaviour
         data = JsonUtility.FromJson<MusicData>(jsonFile.text);
         UnityEngine.Debug.Log("Data duration " + data.duration);
         return data.duration;
+    }
+
+    public void SetDifficulty(Difficulty newDifficulty)
+    {
+        difficulty = newDifficulty;
     }
     
     public void GenerateLevel()
@@ -243,6 +293,7 @@ public class GenerateurNiveau : MonoBehaviour
     }
 
     private System.Random random = new System.Random();
+    
 
     private void generatePulsers(string titreMusique){
         
@@ -290,8 +341,8 @@ public class GenerateurNiveau : MonoBehaviour
         int dureeMusique = (int)data.duration;
         //int tailleNiveau = (int)vitesse * dureeMusique;
 
-        int indexD = Random.Range(0, decosDroite.Length);
-        int indexG = Random.Range(0, decosGauche.Length);
+        int indexD = UnityEngine.Random.Range(0, decosDroite.Length);
+        int indexG = UnityEngine.Random.Range(0, decosGauche.Length);
             
         GameObject decoRandomD = decosDroite[indexD];
         GameObject decoRandomG = decosGauche[indexG];

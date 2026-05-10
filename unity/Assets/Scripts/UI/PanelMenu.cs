@@ -193,9 +193,9 @@ public class PanelMenu : MonoBehaviour
                     PopupManager.Show("Le jeu va commencer!");
 
                     SessionData.Instance.titre = source.clip.name;
-                    sceneloader.LoadSceneByName(mode + "_GameplayScene");
-                    //SessionData.Instance.mode = mode;
-                    //sceneloader.LoadSceneByName("GameplayScene");
+                    //sceneloader.LoadSceneByName(mode + "_GameplayScene");
+                    SessionData.Instance.mode = mode;
+                    sceneloader.LoadSceneByName("GameplayScene");
                 });
 
             }

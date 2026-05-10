@@ -29,6 +29,15 @@ public class EnergyBar : MonoBehaviour
         }
     }
 
+    public void ResizeEnergyBar(float newMaxEnergy)
+    {
+        if (energySlider != null)
+        {
+            energySlider.maxValue = newMaxEnergy;
+            energySlider.value = newMaxEnergy; // Réinitialiser la barre d'énergie à la nouvelle valeur maximale
+        }
+    }
+
     public void SetEnergy(float value)
     {
         if (energySlider == null) return;

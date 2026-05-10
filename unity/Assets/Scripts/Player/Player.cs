@@ -74,4 +74,16 @@ public class Player : MonoBehaviour
     {
         return maxEnergy;
     }
+
+    public float GetDecreaseSpeed()
+    {
+        return decreaseSpeed;
+    }
+
+    public void SetEnergyMax(float newMaxEnergy)
+    {
+        maxEnergy = newMaxEnergy;
+        energy = Mathf.Clamp(energy, minEnergy, maxEnergy);
+        energyBar.ResizeEnergyBar(maxEnergy);
+    }
 }
