@@ -85,6 +85,6 @@ public class Player : MonoBehaviour
     {
         maxEnergy = newMaxEnergy;
         energy = Mathf.Clamp(energy, minEnergy, maxEnergy);
-        energyBar.SetEnergy(energy);
+        energyBar.ResizeEnergyBar(maxEnergy);
     }
 }

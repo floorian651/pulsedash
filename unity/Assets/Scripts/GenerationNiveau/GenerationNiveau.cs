@@ -36,7 +36,7 @@ public class GenerateurNiveau : MonoBehaviour
         Moyen, // 15% d'énergie en plus
         Difficile // Pas de bonus d'énergie
         }
-    public Difficulty difficulty = Difficulty.Difficile; // Difficulté par défaut
+    public Difficulty difficulty = Difficulty.Facile; // Difficulté par défaut
 
     private int compt = 0;
 
