@@ -69,7 +69,13 @@ public class PlayerCollision : MonoBehaviour
             Debug.Log("Collision finish");
             // A MODIFIER POUR LA BDD faire en sorte d'envoyer à la BDD le score final du joueur calculé
             // via son énergie voir la formule utilisée dans FinishText
-
+            
+            // Enregistrer le score dans SessionData
+            if (player != null){
+                if (SessionData.Instance != null){
+                SessionData.Instance.score = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
+            }
+            }            
             // Loading the finish scene
             SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
             if (sceneloader != null)

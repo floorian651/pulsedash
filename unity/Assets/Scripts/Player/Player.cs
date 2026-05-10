@@ -12,9 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] private EnergyBar energyBar;
     public OverlayEffect overlayEffect;
 
-    void Awake() {
+    /*void Awake() {
         DontDestroyOnLoad(transform.gameObject);
-    }
+    }*/
     void Start()
     {   
         energy = maxEnergy;

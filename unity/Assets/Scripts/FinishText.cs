@@ -12,9 +12,9 @@ public class FinishText : MonoBehaviour
 
     void Awake()
     {
-        player = FindObjectOfType<Player>();
-        if (player != null)
-        {
+        //player = FindObjectOfType<Player>();
+        //if (player != null)
+        //{
             GameObject obj = Instantiate(finishTextPrefab, uiParent);
 
             txt = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
@@ -24,8 +24,8 @@ public class FinishText : MonoBehaviour
                 txt.fontSize = 25;
                 UIBuilder.ApplyMontserratFont(txt);
                 txt.text = finishText;
-            }
-        }
+           }
+        //}
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,17 +33,22 @@ public class FinishText : MonoBehaviour
     {   
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
-        if (player != null)
-        {   
+        //if (player != null)
+        //{   
             // A MODIFIER POUR LA BDD récupérer le score du joueur via la BDD si possible
-            float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
-            finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
-            Destroy(player.gameObject);
-        }
+            //float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
+            if (SessionData.Instance != null){
+                float scorePercentage = SessionData.Instance.score;
+
+                finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
+                //Destroy(player.gameObject);
+                }
+            
+        /*}
         else
         {
             finishText = "Niveau terminé";
-        }
+        }*/
         if (txt != null)
             {
                 txt.text = finishText;

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SessionData : MonoBehaviour
 {
     public static SessionData Instance;
-    public int score;
+    public float score;
     public string playerName;
     public string titre;
     public string scenePrecedente;
@@ -45,7 +45,7 @@ public class SessionData : MonoBehaviour
 {
     switch (scene)
     {
-        case "Crazy_GamePlayScene":
+        case string s when s.EndsWith("GameplayScene"):
         case "FinishScene":
             scenePrecedente = "Platform_Streaming";
             break;
