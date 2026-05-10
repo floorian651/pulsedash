@@ -10,6 +10,13 @@ public class SliderMusique : MonoBehaviour
 
     void Start()
     {
+        if (slider == null)
+        {
+            Debug.LogError("SliderMusique: champ 'slider' non initialisé (prefab/factory?).");
+            enabled = false;
+            return;
+        }
+
         slider.minValue = 0f;
         slider.maxValue = 1f;
 

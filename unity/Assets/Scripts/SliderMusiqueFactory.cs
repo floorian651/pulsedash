@@ -10,13 +10,30 @@ public static class SliderMusiqueFactory
 {
     public static SliderMusique Create(Transform parent, Slider sliderPrefab, Context Context)
     {
+        if (parent == null)
+        {
+            Debug.LogError("SliderMusiqueFactory.Create: parent est null.");
+            return null;
+        }
+
+        if (sliderPrefab == null)
+        {
+            Debug.LogError("SliderMusiqueFactory.Create: sliderPrefab n'est pas assigné.");
+            return null;
+        }
+
         Transform existing = parent.Find(sliderPrefab.name + "(Clone)");
-    if (existing != null)
-        return existing.GetComponent<SliderMusique>();
+        if (existing != null)
+            return existing.GetComponent<SliderMusique>();
 
 
         Slider slider = Object.Instantiate(sliderPrefab, parent);
 
+        if (slider == null)
+        {
+            Debug.LogError("SliderMusiqueFactory.Create: échec de l'instantiation du Slider.");
+            return null;
+        }
 
         SliderMusique sm = slider.gameObject.AddComponent<SliderMusique>();
         sm.slider = slider;

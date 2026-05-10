@@ -887,6 +887,7 @@ MonoBehaviour:
   player: {fileID: 0}
   finishTextPrefab: {fileID: 2117360025801944245, guid: d8464e262f13abd31b6cefaa023a7e22, type: 3}
   uiParent: {fileID: 193011649}
+  backToMenuPrefab: {fileID: 1483478919661330273, guid: c224afa5ad6e7b949ab256f5c29c74c4, type: 3}
 --- !u!4 &1927355455
 Transform:
   m_ObjectHideFlags: 0

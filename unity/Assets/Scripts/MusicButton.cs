@@ -32,13 +32,6 @@ public class MusicButton : MonoBehaviour
             Debug.LogError("MusicButton: composant Button manquant sur le prefab.");
             return;
         }
-
-        // Récupérer le texte du bouton
-        //texteBouton = GetComponentInChildren<TMP_Text>();
-
-        // Texte initial
-        //texteBouton.text = ">"
-
         // Sprite initial
         icon.sprite = playSprite;
         icon.color = Color.white;
@@ -50,15 +43,6 @@ public class MusicButton : MonoBehaviour
     void Update()
     {   
         if (Context == null || !Context.TryGetAudioSource(out AudioSource source)) return;
-
-        /*if (source.isPlaying)
-        {
-            texteBouton.text = "||";
-        }
-        else
-        {
-            texteBouton.text = ">";
-        }*/
 
         // Mettre à jour l'icône selon l'état
         icon.sprite = source.isPlaying ? pauseSprite : playSprite;

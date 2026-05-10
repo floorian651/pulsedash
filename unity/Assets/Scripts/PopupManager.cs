@@ -3,14 +3,63 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 
 
 public class PopupManager : MonoBehaviour
-{
+{   
+    public static GameObject crazyPrefab;
+    public static GameObject lazyPrefab;
+    public static GameObject easyPrefab;
+    public static GameObject validatePrefab;
     private static string PopupBackground="Images/Popup1";
     private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
+
+    private void Start(){
+        crazyPrefab = Resources.Load<GameObject>("UI/Crazy");
+        lazyPrefab = Resources.Load<GameObject>("UI/Lazy");
+        easyPrefab = Resources.Load<GameObject>("UI/Easy");
+        validatePrefab = Resources.Load<GameObject>("UI/validateButton");
+    }
+
+    private static Canvas GetOrCreateCanvas()
+    {
+        Canvas canvas = Object.FindObjectOfType<Canvas>();
+        if (canvas != null)
+        {
+            EnsureEventSystem();
+            return canvas;
+        }
+
+        GameObject canvasGO =
+            new GameObject(
+                "Canvas",
+                typeof(Canvas),
+                typeof(CanvasScaler),
+                typeof(GraphicRaycaster)
+            );
+
+        canvas = canvasGO.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        CanvasScaler scaler = canvasGO.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
+        EnsureEventSystem();
+        return canvas;
+    }
+
+    private static void EnsureEventSystem()
+    {
+        if (Object.FindObjectOfType<EventSystem>() != null)
+            return;
+
+        GameObject eventSystem = new GameObject("EventSystem");
+        eventSystem.AddComponent<EventSystem>();
+        eventSystem.AddComponent<StandaloneInputModule>();
+    }
     
 
     private static void ApplyPopupBackground(Image image)
@@ -19,6 +68,12 @@ public class PopupManager : MonoBehaviour
         Debug.Log("image pas null");
 
         Texture2D tex = Resources.Load<Texture2D>(PopupBackground);
+        if (tex == null)
+        {
+            Debug.LogWarning($"PopupManager: texture introuvable dans Resources: '{PopupBackground}'.");
+            return;
+        }
+
         Sprite sprite = Sprite.Create(tex, new Rect(0,0,tex.width, tex.height), new Vector2(0.5f,0.5f));
         
 
@@ -81,19 +136,11 @@ public class PopupManager : MonoBehaviour
         }
 
         // Canvas
-        GameObject canvasGO = GameObject.Find("Canvas");
-        if (canvasGO == null)
-        {
-            canvasGO = new GameObject("Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            Canvas canvas = canvasGO.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvasGO.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            Debug.Log("Canvas recréé");
-        }
+        Canvas canvas = GetOrCreateCanvas();
 
         // Panel
         popupGO = new GameObject("PopupPanel", typeof(RectTransform));
-        popupGO.transform.SetParent(canvasGO.transform, false);
+        popupGO.transform.SetParent(canvas.transform, false);
         popupGO.transform.SetAsLastSibling(); // pour qu'elle soit au-dessus du reste de l'interface
 
         Image bg = popupGO.AddComponent<Image>();
@@ -247,9 +294,11 @@ public static void ShowPlaylistPopup(string trackName, GameObject averageButtonT
     if (popupGO != null)
         UnityEngine.Object.Destroy(popupGO);
 
+    Canvas canvas = GetOrCreateCanvas();
+
     // Création du popup
     popupGO = new GameObject("PlaylistPopup", typeof(RectTransform));
-    popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
+    popupGO.transform.SetParent(canvas.transform, false);
 
     Image bg = popupGO.AddComponent<Image>();
     bg.color = new Color(1f, 1f, 1f, 0.1f);
@@ -357,8 +406,10 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     if (popupGO != null)
         UnityEngine.Object.Destroy(popupGO);
 
+    Canvas canvas = GetOrCreateCanvas();
+
     popupGO = new GameObject("PlaylistActionsPopup", typeof(RectTransform));
-    popupGO.transform.SetParent(GameObject.Find("Canvas").transform, false);
+    popupGO.transform.SetParent(canvas.transform, false);
 
     //Image bg = popupGO.AddComponent<Image>();
     //bg.color = new Color(0, 0, 0, 0.6f);
@@ -529,8 +580,124 @@ public static void ShowPlaylistActionsPopup(string playlistName, System.Action o
     });
 }
 
+public static void ShowModeSelectionPopup(System.Action<string> onValidate)
+{
+    if (popupGO != null)
+        UnityEngine.Object.Destroy(popupGO);
+
+    Canvas canvas = GetOrCreateCanvas();
+
+    popupGO = new GameObject("ModeSelectionPopup", typeof(RectTransform));
+    popupGO.transform.SetParent(canvas.transform, false);
+
+    Image bg = popupGO.AddComponent<Image>();
+    bg.color = new Color(1f, 1f, 1f, 0.1f);
+
+    RectTransform rt = popupGO.GetComponent<RectTransform>();
+    rt.anchorMin = Vector2.zero;
+    rt.anchorMax = Vector2.one;
+    rt.offsetMin = Vector2.zero;
+    rt.offsetMax = Vector2.zero;
+
+    // ----- Container -----
+    GameObject container = new GameObject("Container", typeof(RectTransform));
+    container.transform.SetParent(popupGO.transform, false);
+
+    RectTransform contRT = container.GetComponent<RectTransform>();
+    contRT.sizeDelta = new Vector2(430, 330);
+    contRT.anchorMin = new Vector2(0.5f, 0.5f);
+    contRT.anchorMax = new Vector2(0.5f, 0.5f);
+    contRT.pivot = new Vector2(0.5f, 0.5f);
+    contRT.anchoredPosition = Vector2.zero;
+
+    Image contBg = container.AddComponent<Image>();
+    contBg.color = new Color(1, 1, 1, 0.95f);
+    ApplyPopupBackground(contBg);
+
+    // ----- Titre -----
+    GameObject titleGO = new GameObject("Title", typeof(RectTransform));
+    titleGO.transform.SetParent(container.transform, false);
+
+    TextMeshProUGUI titleTxt = titleGO.AddComponent<TextMeshProUGUI>();
+    titleTxt.text = "Choisis ton mode";
+    titleTxt.fontSize = 20;
+    titleTxt.color = Color.black;
+    titleTxt.alignment = TextAlignmentOptions.Center;
+    UIBuilder.ApplyMontserratFont(titleTxt);
+
+    RectTransform titleRT = titleGO.GetComponent<RectTransform>();
+    titleRT.anchorMin = new Vector2(0, 0.60f);
+    titleRT.anchorMax = new Vector2(1, 0.95f);
+    titleRT.offsetMin = Vector2.zero;
+    titleRT.offsetMax = Vector2.zero;
+
+    GameObject modesRow = new GameObject("ModesRow", typeof(RectTransform));
+    modesRow.transform.SetParent(container.transform, false);
+
+    RectTransform rowRT = modesRow.GetComponent<RectTransform>();
+
+    rowRT.anchorMin = new Vector2(0.5f, 0.40f);
+    rowRT.anchorMax = new Vector2(0.5f, 0.45f);
+    rowRT.pivot = new Vector2(0.5f, 0.5f);
+
+    rowRT.sizeDelta = new Vector2(300, 80);
+
+    rowRT.anchoredPosition = new Vector2(-145f, 0f);
+    // Layout horizontal
+    HorizontalLayoutGroup hLayout = modesRow.AddComponent<HorizontalLayoutGroup>();
+    hLayout.childAlignment = TextAnchor.MiddleCenter;
+    hLayout.spacing = -220;
+    hLayout.childForceExpandWidth = false;
+    hLayout.childForceExpandHeight = false;
+    hLayout.childControlWidth = false;
+    hLayout.childControlHeight =false;
 
 
+    string selectedMode = null;
+
+    CreateModePrefabButton(modesRow.transform, lazyPrefab, "Lazy", () => selectedMode = "Lazy");
+    CreateModePrefabButton(modesRow.transform, easyPrefab, "Easy", () => selectedMode = "Easy");
+    CreateModePrefabButton(modesRow.transform, crazyPrefab, "Crazy", () => selectedMode = "Crazy");
+    
+    
+    GameObject validateGO = GameObject.Instantiate(validatePrefab, container.transform);
+    RectTransform validateRT = validateGO.GetComponent<RectTransform>();
+    validateRT.anchorMin = new Vector2(0.5f, 0.25f);
+    validateRT.anchorMax = new Vector2(0.5f, 0.25f);
+    validateRT.anchoredPosition = new Vector2(-10f, 0f);    
+
+
+    Button validateBtn = validateGO.GetComponent<Button>();
+    validateBtn.onClick.AddListener(() =>
+    {
+        if (selectedMode != null)
+        {
+            UnityEngine.Object.Destroy(popupGO);
+            popupGO = null;
+            onValidate?.Invoke(selectedMode);
+        }
+        else
+        {
+            Debug.LogWarning("Aucun mode sélectionné !");
+        }
+    });
+
+    CreateCloseButton(container.transform, popupGO);
+}
+
+
+
+private static void CreateModePrefabButton(Transform parent, GameObject prefab, string modeName, System.Action onSelect)
+{
+    GameObject btnGO = GameObject.Instantiate(prefab, parent);
+
+    TextMeshProUGUI txt = btnGO.GetComponentInChildren<TextMeshProUGUI>();
+    if (txt != null)
+        txt.text = modeName;
+
+    Button btn = btnGO.GetComponent<Button>();
+    btn.onClick.AddListener(() => onSelect());
+}
 
 }
 

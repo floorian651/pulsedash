@@ -47,15 +47,6 @@ public static class Bouton
 
         return button;
     }
-
-    public static Button CreateMusicButton(Transform parent)
-{   
-        Button btn = CreateButton(parent, "Jouer",new UnityEngine.Vector2(90,40), () => {}); 
-
-        MusicButton mb = btn.gameObject.AddComponent<MusicButton>(); 
-  
-        return btn;
-}   
     public static Button CreateButtonEditor(Transform parent, GameObject averageButtonPrefab, string text, UnityEngine.Events.UnityAction action){
         
         GameObject boutonGO = UnityEngine.Object.Instantiate(averageButtonPrefab,parent);

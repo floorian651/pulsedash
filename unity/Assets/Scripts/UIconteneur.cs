@@ -33,28 +33,6 @@ public static Transform CreateMiddleArea(Transform parent, float topBarHeight)
     return middleGO.transform;
 }
 
-public static Transform CreateCenterContainer(Transform parent)
-{
-    GameObject centerGO = new GameObject("Center", typeof(RectTransform));
-    centerGO.transform.SetParent(parent, false);
-
-    RectTransform rt = centerGO.GetComponent<RectTransform>();
-    rt.sizeDelta = new Vector2(400, 300);
-
-    VerticalLayoutGroup layout = centerGO.AddComponent<VerticalLayoutGroup>();
-    layout.spacing = 20;
-    layout.childAlignment = TextAnchor.MiddleCenter;
-    layout.childControlHeight = false;
-    layout.childForceExpandHeight = false;
-    layout.childControlWidth = false;
-    layout.childForceExpandWidth = false;
-
-    Image bg = centerGO.AddComponent<Image>();
-    // Fond transparent
-    bg.color = new Color32(0x80, 0x95, 0xFF, 0x00);
-
-    return centerGO.transform;
-}
 
 public static Transform CreateLeftContainer(Transform parent)
 {

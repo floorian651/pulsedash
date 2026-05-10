@@ -1,339 +1,232 @@
 using UnityEngine;
 using System.Collections;
 
+using UnityEngine;
+using System.Collections;
 
 public class Dragon : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-
-    public float fallSpeed = 20f;
-
+    public float moveSpeed = 1f;
     public float distanceSol = 3f;
-
-    public float distJoueur = 60f;
-
+    public float distJoueur = 10f;
     public Transform player;
-
     public Rigidbody fireball;
-
     public Rigidbody bonus;
-
     public bool modeStatic = true;
-
     public float timer_tir = 5f;
-
     public float positionX = 0;
-
+    
 
     Animator anim;
     Rigidbody rb;
 
     float xJ, yJ, zJ;
 
-    bool isGrounded = true; 
-    float direction = 1; // Vers la droite par défaut
+    bool isGrounded = true;
+    float direction = 1;
 
     bool estEnAttaque = false;
-
+    float timerAttaque = 0f;
+    float cooldownAttaque = 3f;
     bool estMort = false;
 
     float compt_frames = 0f;
     float positionDragon;
+
+    float timerReverse = 0f;
+    public float cooldownReverse = 0.25f;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
-        // Point de départ
-        if(modeStatic){
-            transform.position = new Vector3(positionX,distanceSol,0);
-            
-        }
-        else {
-            transform.position = new Vector3(0,distanceSol,0);
-        }
-             
+        GameObject p = GameObject.Find("Player");
 
-        // Forcer la position du dragon par rapport au sol
-        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        if(p != null)
+            player = p.transform;
+        else 
+            Debug.Log("Player null");
 
-        if(modeStatic){
-            rb.constraints |= RigidbodyConstraints.FreezePositionX;
-        
-        }
-
-        anim.SetBool("modeStatic",modeStatic);
-
+        anim.SetBool("modeStatic", modeStatic);
         positionDragon = transform.position.z;
-
     }
 
-
-     void Update()
-    {   
-        // incrémenter le compteur de frames
+    void Update()
+    {
         compt_frames += Time.deltaTime;
         positionDragon = transform.position.z;
 
-        if (!estMort && !modeStatic){
-            // Récupérer les coordonnées du Joueur 
+        if (!estMort && !modeStatic)
+        {
             RecupererCoordJoueur();
 
-            // Détecter la présence du sol
-            if (!DetecterSol()){
-                Pivoter();
-                Debug.Log("Changer direction");
-            }
-                
-            // Animation de vol
-            anim.SetTrigger("isFlying");
+            timerReverse -= Time.deltaTime;
 
-            if (JoueurDetecte() && !estEnAttaque)
-            {   
+            if (!DetecterSol() && timerReverse <= 0f)
+            {
+                Pivoter();
+                timerReverse = cooldownReverse;
+            }
+
+            //anim.SetTrigger("isFlying");
+            anim.SetBool("isFlying", true);
+
+            timerAttaque -= Time.deltaTime;
+
+            if (JoueurDetecte() && !estEnAttaque && timerAttaque <= 0f)
+            {
                 Debug.Log("Joueur détecté");
 
-                //LancerAttaque();
-
-                // Déplacer le dragon pour qu'il soit le plus possible face au joueur
-                MoveDragonAttaque();
-
-                LancerAttaque();            
+                RegarderJoueur();
+                LancerAttaque();
             }
-            else
+            else if(!estEnAttaque && !JoueurDetecte())
             {
-                // Avance automatique selon l'axe x
                 transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
-                Debug.Log("Je vole");
-            }}
-        else if (modeStatic && compt_frames>= timer_tir && !estMort){
-
+            }
+                        
+        }
+        else if (modeStatic && compt_frames >= timer_tir && !estMort)
+        {
             ModeStatic();
             compt_frames = 0f;
         }
-        else if (estMort)
-        {
-            Debug.Log("Dragon mort");
-            
-        }
-
-
-        
     }
 
     void LateUpdate()
-{
-    if (modeStatic)
     {
-        Vector3 cible = new Vector3(positionX, distanceSol, 0);
-        transform.position = Vector3.Lerp(transform.position, cible, 0.2f);
-    }
-}
-
-
-    public void ModeStatic(){
-
-        // Lancer l'animation d'attaque
-        anim.SetTrigger("isAttacking");
-        Debug.Log("Animation d'attaque");
-        StartCoroutine(TirerApresXFrame(25));    
-    }
-
-    IEnumerator TirerApresXFrame(float nombreFrame)
-    {
-        for (int i = 0; i < nombreFrame; i++) yield return null; // attendre 1 frame
-        float x, z;
-        // Créer une boule de feu
-        if(!modeStatic){
-            x =0;
-            z = -0.05f;
-        }
-        else {
-            x = 0.05f;
-            z = 0;
-        }
-        Rigidbody p = Instantiate(fireball, transform.position+ new Vector3(x,0.5f,z), transform.rotation);
-
-        p.linearVelocity = transform.forward * (moveSpeed+2f);
-        Debug.Log("Boule de feu tirée");
-    }
-
-    bool DetecterSol(){
-
-        // Prochaine position du dragon
-        Vector3 prochainePosition = transform.position + Vector3.right * direction;
-
-        // Infos de collision 
-        RaycastHit hit;
-
-        // Récupérer le layermask
-        LayerMask mask = LayerMask.GetMask("sol");
-
-        // Ray vers le sol 
-        bool solTouche = Physics.Raycast(prochainePosition, Vector3.down, out hit, distanceSol+20, mask);
-        Debug.DrawRay(prochainePosition, Vector3.down * (distanceSol+20), Color.yellow);
-        Debug.Log("Hit sol");
-
-        return solTouche;         
-
-    }
-
-    void Pivoter(){
-        rb.linearVelocity = Vector3.zero;
-
-        if (direction==1){
-            direction = -1; // Vers la gauche
-            transform.rotation = Quaternion.Euler(0,-90,0);}
-        else {
-            direction = 1; // Vers la droite
-            transform.rotation= Quaternion.Euler(0,90,0);}
-    }
-
-
-    void OnCollisionStay(Collision collision)
-    {
-        // Détection sol
-        if (collision.gameObject.CompareTag("sol"))
+        if (modeStatic)
         {
-            isGrounded = true;
-            anim.SetBool("isGrounded", isGrounded);
-
+            Vector3 cible = new Vector3(positionX, distanceSol, 0);
+            transform.position = Vector3.Lerp(transform.position, cible, 0.2f);
         }
     }
 
     void OnCollisionEnter(Collision collision)
-    {
-        // Mort si joueur
+    {   
+        positionDragon = transform.position.z;
 
-
-        if((collision.contacts[0].normal.y < -0.5) && collision.gameObject.CompareTag("Player"))
+        // Mort si le joueur tombe dessus (normal.y < -0.5)
+        if (!estMort &&
+            collision.gameObject.CompareTag("Player") &&
+            collision.contacts[0].normal.y < -0.5f)
         {
-            Debug.Log("Dragon doit mourir car ce prend quelque par le haut");
             Mourir();
         }
-
-        foreach (ContactPoint contact in collision.contacts)
-    {
-            Debug.Log("Point : " + contact.point);
-            Debug.Log("Normal : " + contact.normal);
     }
 
-    }
-
-    IEnumerator SupprimerCollider(){
-        // Enlever contrainte de distance par rapport au sol
-        rb.constraints = RigidbodyConstraints.None;
-        Debug.Log("Commencer la chute");
-        while(transform.position.y > 0.5f){
-            transform.position += new Vector3(0,-1,0) * Time.deltaTime * fallSpeed;
-            yield return null;}
-        Debug.Log("Suppression du collider");
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
-    }
-
-    public void Mourir()
-    {   
-        estMort = true; 
-        
-        StartCoroutine(SupprimerCollider());
-
-        anim.SetTrigger("mort");
-
-        // Mettre des bonus
-        for (int i = ((int) positionDragon); i < ((int) positionDragon)+ 5; i++){
-            Debug.Log(positionDragon);
-            Rigidbody p = Instantiate(bonus, new Vector3(0,5,10*i),  Quaternion.Euler(-90,0,0));
-        }
-    }
-
-    public void FinAttaque()
+    bool DetecterSol()
 {
-    estEnAttaque = false;
-    transform.rotation = Quaternion.Euler(0,90,0);
-    direction = 1; // Vers la droite
-    Debug.Log("FinAttaque!");
+    LayerMask mask = LayerMask.GetMask("sol");
+
+    //ol sous le dragon
+    bool solSousPieds = Physics.Raycast(transform.position, Vector3.down, distanceSol, mask);
+
+    // sol devant le dragon (détection de bord)
+    Vector3 front = transform.position + Vector3.right * direction * 1.5f;
+    //bool solDevant = Physics.Raycast(front, Vector3.down, distanceSol, mask);
+
+    Debug.DrawRay(transform.position, Vector3.down * distanceSol, Color.green);
+    //Debug.DrawRay(front, Vector3.down * distanceSol, Color.red);
+
+    // logique : on continue seulement si il y a du sol devant
+    return  solSousPieds; //solDevant &&
 }
 
-    public float Hypo()
+    void Pivoter()
     {
-        return (Mathf.Sqrt(Mathf.Pow(transform.position.x - xJ,2) +Mathf.Pow(transform.position.z - zJ,2)));
+        rb.linearVelocity = Vector3.zero;
+
+        direction *= -1;
+
+        if (direction == 1)
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        else
+            transform.rotation = Quaternion.Euler(0, -90, 0);
     }
 
-    public float Angle(float hyp)
-    {
-        float dz = transform.position.z - zJ;
-
-        return Mathf.Asin(dz/hyp)* Mathf.Rad2Deg;;
-    }
+    public void RegarderJoueur()
+{
+    transform.rotation = Quaternion.Euler(0, 180, 0);
+    // Stopper le mouvement immédiatement
+    rb.linearVelocity = Vector3.zero;
+    
+}
 
     public void LancerAttaque()
-    {   
-        // Récupérer la distance entre le joueur et le dragon
-        float hyp = Hypo();
+{
+    Debug.Log(gameObject.name + " attaque appelée");
 
-        // Pivoter le dragon de sorte qu'il soit orienté vers le joueur
-        if (direction == 1)
-        {   Debug.Log("Joueur à droite");
-            // Si le joueur est à droite sur l'écran
-            transform.rotation= Quaternion.Euler(0,90+ Angle(hyp),0);
-        }
-        else
-        {   
-            Debug.Log("Joueur à gauche");
-            // Si le joueur est à gauche sur l'écran
-            transform.rotation= Quaternion.Euler(0,90+ Angle(hyp)+90,0);
-        }
-        
-        Debug.Log("Dragon pivote de "+Angle(hyp));
+    anim.SetTrigger("isAttacking");
 
-        // Lancer l'animation d'attaque
-        anim.SetTrigger("isAttacking");
-        Debug.Log("Animation d'attaque");
+    estEnAttaque = true;
+    timerAttaque = cooldownAttaque;
 
-        estEnAttaque = true;
+    StartCoroutine(TirerApresXFrame(25));
+}
 
-        // Attendre 1000 frames pour créer les boules de feu
-        StartCoroutine(TirerApresXFrame(25));    
-
-        
-
-    }
-
-    public void MoveDragonAttaque()
+    IEnumerator TirerApresXFrame(float frames)
     {
+        for (int i = 0; i < frames; i++)
+            yield return null;
 
-            if(xJ > transform.position.x)
-            {   
-                Debug.Log("Vers la droite");
-                direction = 1;
-                transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
-            }
-            if(xJ < transform.position.x)
-            {   
-                Debug.Log("Vers la gauche");
-                direction = -1;
-                transform.position += Vector3.right * Time.deltaTime * moveSpeed * direction;
-            }
-        
+        Rigidbody p = Instantiate(
+            fireball,
+            transform.position + new Vector3(0, 0.5f, 0),
+            transform.rotation
+        );
+
+        p.linearVelocity = transform.forward * (moveSpeed + 2f);
+
+        estEnAttaque = false;
     }
 
-    void RecupererCoordJoueur(){
+    
+    void RecupererCoordJoueur()
+    {
         Vector3 pos = player.position;
         xJ = pos.x;
         yJ = pos.y;
         zJ = pos.z;
-
     }
 
     public bool JoueurDetecte()
-    {   
-        // Distance selon z entre le dragon et le joueur
+    {
         float dz = transform.position.z - zJ;
-
-        // Joueur est détecté si il n'a pas encore dépassé le dragon    
-        return dz>0 && dz< distJoueur;
+        Debug.Log("Joueur est à "+ dz);
+        return dz > 0 && dz < distJoueur;
     }
 
+    public void FinAttaque()
+    {
+        estEnAttaque = false;
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+        direction = 1;
+    }
 
+    void ModeStatic()
+    {
+        anim.SetTrigger("isAttacking");
+        StartCoroutine(TirerApresXFrame(25));
+    }
+
+    void Mourir()
+    {   
+    
+        estMort = true;
+
+        // Jouer l’animation de mort
+        anim.SetTrigger("mort");
+
+        // Désactiver le collider après la mort
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
+
+        // Mettre des bonus
+        for (int i = ((int) positionDragon)+5; i <= ((int) positionDragon)+ 55; i += 10){
+            Debug.Log(positionDragon);
+            Rigidbody p = Instantiate(bonus, new Vector3(0,0.7f,1*i),  Quaternion.Euler(-90,0,0));
+        }
+    }
 }
