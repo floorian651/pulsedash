@@ -8,6 +8,7 @@ public class SessionData : MonoBehaviour
     public string playerName;
     public string titre;
     public string scenePrecedente;
+    public GenerateurNiveau.Difficulty selectedDifficulty = GenerateurNiveau.Difficulty.Facile;
 
 
     void Awake()

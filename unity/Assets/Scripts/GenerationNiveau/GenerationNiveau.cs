@@ -32,6 +32,14 @@ public class GenerateurNiveau : MonoBehaviour
 
     public GameObject backToMenuPrefab;
 
+    public enum Difficulty
+    {
+        Facile, // 30% d'énergie en plus
+        Moyen, // 15% d'énergie en plus
+        Difficile // Pas de bonus d'énergie
+        }
+    public Difficulty difficulty = Difficulty.Facile; // Difficulté par défaut
+
     private int compt = 0;
 
     [SerializeField] private GameObject[] decosDroite;
@@ -45,6 +53,9 @@ public class GenerateurNiveau : MonoBehaviour
         UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
+        if (SessionData.Instance != null)
+            difficulty = SessionData.Instance.selectedDifficulty;
+        PreparePlayer();
         GenerateLevel();
     }
     //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
@@ -80,7 +91,32 @@ public class GenerateurNiveau : MonoBehaviour
             }
         }
     }
+
+    void PreparePlayer()
+    {
+        player.transform.position = new Vector3(0, 1, -5); // Position de départ du joueur
+        Player playerScript = player.GetComponent<Player>();
+        if (playerScript != null)
+        {
+            // On calcule l'énergie maximale du joueur en fonction de la durée de la musique, pour que le joueur puisse tenir toute la musique s'il ne prend pas de dégâts
+            float energieMax = GetMusicDuration() * playerScript.decreaseSpeed;
+            switch(difficulty)
+            {
+                case Difficulty.Facile:
+                    energieMax *= 1.3f; // Bonus de 30% d'énergie
+                    break;
+                case Difficulty.Moyen:
+                    energieMax *= 1.15f; // Bonus de 15% d'énergie
+                    break;
+                case Difficulty.Difficile:
+                    energieMax *= 1.05f; // Bonus de 5% d'énergie
+                    break;
+            }
+            playerScript.SetEnergyMax(energieMax);
+        }
+    }
     // A MODIFIER POUR LA BDD
+
     public float GetMusicDuration()
     {
         analyse_rythme = SessionData.Instance.titre;
@@ -88,6 +124,11 @@ public class GenerateurNiveau : MonoBehaviour
         data = JsonUtility.FromJson<MusicData>(jsonFile.text);
         UnityEngine.Debug.Log("Data duration " + data.duration);
         return data.duration;
+    }
+
+    public void SetDifficulty(Difficulty newDifficulty)
+    {
+        difficulty = newDifficulty;
     }
     
     public void GenerateLevel()
