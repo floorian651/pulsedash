@@ -105,7 +105,7 @@ public class GenerateurNiveau : MonoBehaviour
                     energieMax *= 1.15f; // Bonus de 15% d'énergie
                     break;
                 case Difficulty.Difficile:
-                    // Pas de bonus d'énergie
+                    energieMax *= 1.05f; // Bonus de 5% d'énergie
                     break;
             }
             playerScript.SetEnergyMax(energieMax);
