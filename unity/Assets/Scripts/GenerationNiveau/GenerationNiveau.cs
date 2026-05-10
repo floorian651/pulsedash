@@ -30,6 +30,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float lastGeneratedZ = 0f;
     private float generationDistance = 30f;
 
+    public GameObject backToMenuPrefab;
+
     private int compt = 0;
 
     [SerializeField] private GameObject[] decosDroite;
@@ -41,6 +43,7 @@ public class GenerateurNiveau : MonoBehaviour
    
     void Start(){
         UnityEngine.Debug.Log("Générer le niveau");
+        ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
         GenerateLevel();
     }

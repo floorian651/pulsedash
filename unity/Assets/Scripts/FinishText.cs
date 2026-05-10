@@ -7,6 +7,7 @@ public class FinishText : MonoBehaviour
     [SerializeField] private GameObject finishTextPrefab;
     [SerializeField] private Transform uiParent;
     string finishText;
+    public GameObject backToMenuPrefab;
     private TMPro.TextMeshProUGUI txt;
 
     void Awake()
@@ -30,6 +31,7 @@ public class FinishText : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {   
+        ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
         if (player != null)
         {   

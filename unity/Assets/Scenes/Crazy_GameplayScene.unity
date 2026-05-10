@@ -257,6 +257,7 @@ MonoBehaviour:
   obstacleLevel3: {fileID: 7003486705781667282, guid: fa19130731d49bae3b6f3b3d735a5b15, type: 3}
   obstacleLevel2: {fileID: 4322738609258709913, guid: 30adcfd473cf5b24ba7ceb320c7d975c, type: 3}
   obstacleLevel1: {fileID: 0}
+  backToMenuPrefab: {fileID: 0}
   decosDroite: []
   decosGauche: []
   pulser: {fileID: 0}
@@ -311,6 +312,7 @@ MonoBehaviour:
   obstacleLevel3: {fileID: 5811187828946444701, guid: 162dc82242b993549851c3ff3f4839f0, type: 3}
   obstacleLevel2: {fileID: 4078296400486125278, guid: b34507bebbc298347be8f04f454b464e, type: 3}
   obstacleLevel1: {fileID: 5517663320238159854, guid: 8c83a00df74cba04c86d37ff73263011, type: 3}
+  backToMenuPrefab: {fileID: 1483478919661330273, guid: c224afa5ad6e7b949ab256f5c29c74c4, type: 3}
   decosDroite:
   - {fileID: 5504237124445147975, guid: 01813f16d6714bf4dbf5a57b00a4515d, type: 3}
   - {fileID: 2052405765113701562, guid: 278da5114fcbbf348873354126d89b1c, type: 3}

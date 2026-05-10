@@ -5,6 +5,9 @@ using TMPro;
 
 public static class ReturnToMenuButton
 {
+
+    public static GameObject prefab;
+    
     public static void Create()
     {
         Canvas canvas = Object.FindObjectOfType<Canvas>();
@@ -18,21 +21,12 @@ public static class ReturnToMenuButton
         if (existing != null)
             return;
 
-        GameObject buttonGO = new GameObject("BackToMenuButton", typeof(RectTransform));
-        buttonGO.transform.SetParent(canvas.transform, false);
+        GameObject buttonGO = Object.Instantiate(prefab, canvas.transform);
+        buttonGO.name = "BackToMenuButton";
 
-        RectTransform rt = buttonGO.GetComponent<RectTransform>();
-        rt.anchorMin = new Vector2(0, 1);
-        rt.anchorMax = new Vector2(0, 1);
-        rt.pivot = new Vector2(0, 1);
-        rt.anchoredPosition = new Vector2(20, -20);
-        rt.sizeDelta = new Vector2(220, 40);
+        Button btn = buttonGO.GetComponent<Button>();
+        btn.onClick.RemoveAllListeners();
 
-        Image img = buttonGO.AddComponent<Image>();
-        img.color = new Color32(0x80, 0x95, 0xFF, 0xFF);
-
-        Button btn = buttonGO.AddComponent<Button>();
-        btn.targetGraphic = img;
         btn.onClick.AddListener(() =>
         {
             UnityEngine.GameObject obj = UnityEngine.GameObject.Find("Player");
