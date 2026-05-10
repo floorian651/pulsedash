@@ -51,12 +51,35 @@ public class ActionsBouton : MonoBehaviour
 
         // Envoyer à la BDD le nouveau compte utilisateur
         if (true){
+
             PopupManager.Show("Compte créé ! Connectez-vous !");
-            //Vider le champ mot de passe
-            inputMdp.text = "";
+
+            SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+            if (sceneloader != null)
+            {
+                sceneloader.LoadSceneByName("PageConnexion");
+            }
         }
 
     }
+
+    public void PageConnexion()
+    {
+        SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+        if (sceneloader != null)
+        {
+            sceneloader.LoadSceneByName("PageConnexion");
+        }
+    }
+    public void PageInscription()
+    {
+        SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+        if (sceneloader != null)
+        {
+            sceneloader.LoadSceneByName("PageInscription");
+        }
+    }
+
 
 
 }

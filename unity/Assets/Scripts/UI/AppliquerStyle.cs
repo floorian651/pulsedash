@@ -1,9 +1,11 @@
 using UnityEngine;
 using TMPro;
 
-public class PageConnexion : MonoBehaviour
+public class AppliquerStyle : MonoBehaviour
 {
-    void Awake()
+    public GameObject backToMenuPrefab;
+
+    void Start()
     {
         TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>(true);
 
@@ -12,5 +14,10 @@ public class PageConnexion : MonoBehaviour
             Debug.Log(txt);
             UIBuilder.ApplyMontserratFont(txt);
         }
+        if (backToMenuPrefab != null){
+            ReturnToMenuButton.prefab = backToMenuPrefab;
+            ReturnToMenuButton.Create();
+        }
+        
     }
 }

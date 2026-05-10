@@ -5,8 +5,11 @@ public class ForceBuildScript
 {
     // On déclare la liste des scènes une seule fois pour ne pas se répéter
     static string[] scenes = { 
+        "Assets/Scenes/Accueil.unity",
+        "Assets/Scenes/PageConnexion.unity",
+        "Assets/Scenes/PageInscription.unity",
         "Assets/Scenes/Platform_Streaming.unity",
-        "Assets/Scenes/GameplayScene.unity" 
+        "Assets/Scenes/Crazy_GameplayScene.unity" 
     };
 
     [MenuItem("PulseDash/🐧 FORCER LE BUILD LINUX")]

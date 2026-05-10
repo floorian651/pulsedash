@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SessionData : MonoBehaviour
 {
@@ -6,18 +7,58 @@ public class SessionData : MonoBehaviour
     public int score;
     public string playerName;
     public string titre;
+    public string scenePrecedente;
 
 
     void Awake()
     {
         Debug.Log("Session Data");
+
         if (Instance == null)
         {
             Instance = this;
-            
-            // A MODIFIER POUR LA BDD
+
             DontDestroyOnLoad(gameObject);
+
+            // écouter les changements de scène
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
-        else Destroy(gameObject); // Pour éviter les doublons de SessionData
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        string sceneActuelle = scene.name;
+
+        UpdateScenePrecedente(sceneActuelle);
+
+        Debug.Log("Scene actuelle : " + sceneActuelle);
+        Debug.Log("Scene précédente est : " + scenePrecedente);
+    }
+
+
+
+    void UpdateScenePrecedente(string scene)
+{
+    switch (scene)
+    {
+        case "Crazy_GamePlayScene":
+        case "FinishScene":
+            scenePrecedente = "Platform_Streaming";
+            break;
+
+        case "PageConnexion":
+        case "PageInscription":
+            scenePrecedente = "Accueil";
+            break;
+
+        default:
+            scenePrecedente = "Inconnue";
+            break;
+    }
+}
+
 }

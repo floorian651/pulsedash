@@ -29,12 +29,24 @@ public static class ReturnToMenuButton
 
         btn.onClick.AddListener(() =>
         {
-            UnityEngine.GameObject obj = UnityEngine.GameObject.Find("Player");
-            AudioSource src = obj.GetComponentInChildren<AudioSource>();
-            src.Stop();
-            //UnityEngine.Object.Destroy(obj);
+            /*UnityEngine.GameObject obj = UnityEngine.GameObject.Find("Player");
+            if (obj!=null){
+                AudioSource src = obj.GetComponentInChildren<AudioSource>(); // A enlever car on pourra récupérer les scores via SessionData
+                src.Stop();
+                //UnityEngine.Object.Destroy(obj);
+            }*/
+            
 
-            SceneManager.LoadScene("Platform_Streaming");
+            if (SessionData.Instance != null)
+            {
+                string scenePrecedente = SessionData.Instance.scenePrecedente;
+                Debug.Log("Scene précédente récupérée : "+ scenePrecedente);
+                SceneManager.LoadScene(scenePrecedente);
+            }
+            Debug.Log( "youou");
+
+
+            
         });
 
     }
