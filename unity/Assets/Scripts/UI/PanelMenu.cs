@@ -194,6 +194,8 @@ public class PanelMenu : MonoBehaviour
 
                     SessionData.Instance.titre = source.clip.name;
                     sceneloader.LoadSceneByName(mode + "_GameplayScene");
+                    //SessionData.Instance.mode = mode;
+                    //sceneloader.LoadSceneByName("GameplayScene");
                 });
 
             }
