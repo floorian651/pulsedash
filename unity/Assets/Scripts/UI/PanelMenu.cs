@@ -22,8 +22,6 @@ public class PanelMenu : MonoBehaviour
     public GameObject averageButtonTransparent;
     public GameObject creerPlaylistButton;
 
-
-    
     void Start()
     {   
         // Créer un gameobject AudioSource
@@ -193,7 +191,23 @@ public class PanelMenu : MonoBehaviour
                     PopupManager.Show("Le jeu va commencer!");
 
                     SessionData.Instance.titre = source.clip.name;
-                    sceneloader.LoadSceneByName(mode + "_GameplayScene");
+                    switch (mode)
+                    {
+                        case "Lazy":
+                            SessionData.Instance.selectedDifficulty = GenerateurNiveau.Difficulty.Facile;
+                            break;
+                        case "Easy":
+                            SessionData.Instance.selectedDifficulty = GenerateurNiveau.Difficulty.Moyen;
+                            break;
+                        case "Crazy":
+                            SessionData.Instance.selectedDifficulty = GenerateurNiveau.Difficulty.Difficile;
+                            break;
+                        default:
+                            Debug.LogWarning("Mode inconnu : " + mode);
+                            SessionData.Instance.selectedDifficulty = GenerateurNiveau.Difficulty.Facile;
+                            break;
+                    }
+                    sceneloader.LoadSceneByName("Crazy_GameplayScene");
                 });
 
             }

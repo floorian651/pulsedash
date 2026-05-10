@@ -53,6 +53,8 @@ public class GenerateurNiveau : MonoBehaviour
         UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
+        if (SessionData.Instance != null)
+            difficulty = SessionData.Instance.selectedDifficulty;
         PreparePlayer();
         GenerateLevel();
     }
