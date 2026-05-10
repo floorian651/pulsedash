@@ -30,6 +30,8 @@ public class GenerateurNiveau : MonoBehaviour
     private float lastGeneratedZ = 0f;
     private float generationDistance = 30f;
 
+    public GameObject backToMenuPrefab;
+
     public enum Difficulty
     {
         Facile, // 30% d'énergie en plus
@@ -49,6 +51,7 @@ public class GenerateurNiveau : MonoBehaviour
    
     void Start(){
         UnityEngine.Debug.Log("Générer le niveau");
+        ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
         PreparePlayer();
         GenerateLevel();
@@ -77,7 +80,7 @@ public class GenerateurNiveau : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
 
-            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol"))
+            if (child.CompareTag("Deco") || child.CompareTag("obstacle") || child.CompareTag("sol") || child.CompareTag("pulser"))
             {
                 if (child.position.z < limiteZ)
                 {
@@ -86,7 +89,6 @@ public class GenerateurNiveau : MonoBehaviour
             }
         }
     }
-
 
     void PreparePlayer()
     {
@@ -111,6 +113,8 @@ public class GenerateurNiveau : MonoBehaviour
             playerScript.SetEnergyMax(energieMax);
         }
     }
+    // A MODIFIER POUR LA BDD
+
     public float GetMusicDuration()
     {
         analyse_rythme = SessionData.Instance.titre;
@@ -136,6 +140,7 @@ public class GenerateurNiveau : MonoBehaviour
         offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
 
         // On récupère les données du fichier JSON
+        // A MODIFIER POUR LA BDD
         TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
             UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
@@ -166,6 +171,21 @@ public class GenerateurNiveau : MonoBehaviour
         loadChunks();
 
         generatePulsers(analyse_rythme);
+
+         // Génération de la ligne d'arrivée
+        if (FinishLinePrefab == null)
+        {
+            UnityEngine.Debug.LogError("FinishLinePrefab non assigné");
+            return;
+        }
+
+        Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, offsetZ + nbChunksGeneres * chunkSize);
+        // Vector3 posFinish = new Vector3(0, groundHeight + 1.5f, -10);    // FinishLine put at the beginning of the level for testing purposes
+        Quaternion rotFinish = Quaternion.Euler(0, -25, 0);
+
+        GameObject finishLine = Instantiate(FinishLinePrefab, posFinish, rotFinish);
+        finishLine.transform.localScale = new Vector3(6, 6, 6);
+        finishLine.transform.parent = this.transform;
 
     }
 

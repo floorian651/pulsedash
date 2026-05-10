@@ -26,6 +26,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FinishScene.unity
     guid: 9871c0e43ed6b5e8b82b41efa463f004
+  - enabled: 1
+    path: Assets/Scenes/Crazy_GameplayScene.unity
+    guid: 3f9d99513f76a184c8e88a003281f630
+  - enabled: 1
+    path: Assets/Scenes/PageConnexion.unity
+    guid: 10402a69c2931c0419b16944237e1e3f
+  - enabled: 1
+    path: Assets/Scenes/PageInscription.unity
+    guid: 081e370e481b50744bfeceb2311711cc
+  - enabled: 1
+    path: Assets/Scenes/Accueil.unity
+    guid: 1f775b03d5474e2419cdb62a72bd373a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

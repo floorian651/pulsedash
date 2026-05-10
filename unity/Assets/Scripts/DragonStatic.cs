@@ -14,6 +14,8 @@ public class DragonStatic : MonoBehaviour
 
     bool estMort = false;
 
+    float positionDragon;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -25,11 +27,13 @@ public class DragonStatic : MonoBehaviour
         // Lancer l’animation de vol
         anim.SetTrigger("isFlying");
 
-        
+        positionDragon = transform.position.z;
     }
 
     void OnCollisionEnter(Collision collision)
-    {
+    {   
+        positionDragon = transform.position.z;
+
         // Mort si le joueur tombe dessus (normal.y < -0.5)
         if (!estMort &&
             collision.gameObject.CompareTag("Player") &&
@@ -52,8 +56,9 @@ public class DragonStatic : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
 
         // Mettre des bonus
-        for (int i = 0; i < 5; i++){
-            Rigidbody p = Instantiate(bonus, new Vector3(0,1,20*i),  Quaternion.Euler(-90,0,0));
+        for (int i = ((int) positionDragon)+5; i <= ((int) positionDragon)+ 55; i += 10){
+            Debug.Log(positionDragon);
+            Rigidbody p = Instantiate(bonus, new Vector3(0,0.7f,1*i),  Quaternion.Euler(-90,0,0));
         }
     }
 }
