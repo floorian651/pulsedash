@@ -8,7 +8,7 @@ Les workflows GitHub Actions déclenchés sur `main` :
 |---|---|---|
 | Build docs | Push sur `main` | Compilation et publication MkDocs sur GitHub Pages |
 
-La documentation est publiée automatiquement sur [floorian651.github.io/wavr](https://floorian651.github.io/wavr/).
+La documentation est publiée automatiquement sur [floorian651.github.io/pulsedash](https://floorian651.github.io/pulsedash/).
 
 ## Backend
 

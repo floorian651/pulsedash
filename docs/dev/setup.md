@@ -14,12 +14,12 @@ Ce guide couvre la mise en place de l'environnement de développement pour le **
 
 ```bash
 # Via HTTPS
-git clone https://github.com/floorian651/wavr.git
-cd wavr
+git clone https://github.com/floorian651/pulsedash.git
+cd pulsedash
 
 # Via SSH
-git clone git@github.com:floorian651/wavr.git
-cd wavr
+git clone git@github.com:floorian651/pulsedash.git
+cd pulsedash
 ```
 
 ## Étape 2 — Ouvrir le projet dans Unity Hub

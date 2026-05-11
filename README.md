@@ -71,7 +71,7 @@ Créer un fichier `.env` à la racine du **dépôt backend** (après clonage, vo
 
 ## 5. Procédure d'Installation et de Démarrage
 
-Documentation complète : [https://floorian651.github.io/wavr/](https://floorian651.github.io/wavr/)
+Documentation complète : [https://floorian651.github.io/pulsedash/](https://floorian651.github.io/pulsedash/)
 
 ### 5.1 Frontend
 
