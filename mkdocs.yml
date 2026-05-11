@@ -1,8 +1,9 @@
-site_name: Wawe game
-site_description: Software project documentation
+
+site_name: PulseDash
+site_description: Documentation technique du projet PulseDash
 site_author: PuffinIT
 repo_url: https://github.com/floorian651/wavr
-repo_name: Wave
+repo_name: wavr
 
 theme:
   name: material
@@ -50,10 +51,11 @@ nav:
     - Contribution: dev/CONTRIBUTING.md
     - Installation: dev/setup.md
     - Architecture: dev/architecture.md
-    - Workflow Git: dev/gitconventions.md
+    - Schéma des données: dev/data-schema.md
+    - API: dev/api.md
     - CI/CD & Pipeline:
-      - Concepts CI/CD: dev/ci-cd.md
-      - Pipeline détails: dev/pipeline.md
+      - CI/CD: dev/ci-cd.md
+      - Pipeline audio: dev/pipeline.md
 
 markdown_extensions:
   - admonition
