@@ -22,8 +22,6 @@ public class PanelMenu : MonoBehaviour
     public GameObject averageButtonTransparent;
     public GameObject creerPlaylistButton;
 
-
-    
     void Start()
     {   
         // Créer un gameobject AudioSource
