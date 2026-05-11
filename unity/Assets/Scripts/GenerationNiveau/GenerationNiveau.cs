@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Diagnostics; // Pour List
+using System;
 
 public class GenerateurNiveau : MonoBehaviour
 {
@@ -34,11 +35,11 @@ public class GenerateurNiveau : MonoBehaviour
 
     public enum Difficulty
     {
-        Facile, // 30% d'énergie en plus
-        Moyen, // 15% d'énergie en plus
-        Difficile // Pas de bonus d'énergie
+        Lazy, // 30% d'énergie en plus
+        Easy, // 15% d'énergie en plus
+        Crazy // Pas de bonus d'énergie
         }
-    public Difficulty difficulty = Difficulty.Facile; // Difficulté par défaut
+    public Difficulty difficulty = Difficulty.Lazy; // Difficulté par défaut
 
     private int compt = 0;
 
@@ -50,16 +51,21 @@ public class GenerateurNiveau : MonoBehaviour
 
    
     void Start(){
-        UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
-        if (SessionData.Instance != null)
-            difficulty = SessionData.Instance.selectedDifficulty;
+        if (SessionData.Instance != null){
+
+            string mode = SessionData.Instance.mode;
+
+            difficulty = (Difficulty)Enum.Parse(
+            typeof(Difficulty),
+            mode,
+            true
+        );
+        }
         PreparePlayer();
         GenerateLevel();
     }
-    //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
-
 
     void Update()
     {
@@ -102,13 +108,13 @@ public class GenerateurNiveau : MonoBehaviour
             float energieMax = GetMusicDuration() * playerScript.decreaseSpeed;
             switch(difficulty)
             {
-                case Difficulty.Facile:
+                case Difficulty.Lazy:
                     energieMax *= 1.3f; // Bonus de 30% d'énergie
                     break;
-                case Difficulty.Moyen:
+                case Difficulty.Easy:
                     energieMax *= 1.15f; // Bonus de 15% d'énergie
                     break;
-                case Difficulty.Difficile:
+                case Difficulty.Crazy:
                     energieMax *= 1.05f; // Bonus de 5% d'énergie
                     break;
             }
@@ -284,6 +290,7 @@ public class GenerateurNiveau : MonoBehaviour
     }
 
     private System.Random random = new System.Random();
+    
 
     private void generatePulsers(string titreMusique){
         
@@ -331,8 +338,8 @@ public class GenerateurNiveau : MonoBehaviour
         int dureeMusique = (int)data.duration;
         //int tailleNiveau = (int)vitesse * dureeMusique;
 
-        int indexD = Random.Range(0, decosDroite.Length);
-        int indexG = Random.Range(0, decosGauche.Length);
+        int indexD = UnityEngine.Random.Range(0, decosDroite.Length);
+        int indexG = UnityEngine.Random.Range(0, decosGauche.Length);
             
         GameObject decoRandomD = decosDroite[indexD];
         GameObject decoRandomG = decosGauche[indexG];

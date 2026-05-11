@@ -9,7 +9,7 @@ public class ForceBuildScript
         "Assets/Scenes/PageConnexion.unity",
         "Assets/Scenes/PageInscription.unity",
         "Assets/Scenes/Platform_Streaming.unity",
-        "Assets/Scenes/Crazy_GameplayScene.unity" 
+        "Assets/Scenes/GameplayScene.unity" 
     };
 
     [MenuItem("PulseDash/🐧 FORCER LE BUILD LINUX")]
