@@ -51,7 +51,6 @@ public class GenerateurNiveau : MonoBehaviour
 
    
     void Start(){
-        UnityEngine.Debug.Log("Générer le niveau");
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
         if (SessionData.Instance != null){
@@ -64,11 +63,9 @@ public class GenerateurNiveau : MonoBehaviour
             true
         );
         }
-            PreparePlayer();
+        PreparePlayer();
         GenerateLevel();
     }
-    //[ContextMenu("Générer le Niveau")] // Permet de lancer via un clic droit sur le script
-
 
     void Update()
     {

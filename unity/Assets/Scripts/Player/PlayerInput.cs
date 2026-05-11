@@ -37,7 +37,8 @@ public class PlayerMovementE5 : MonoBehaviour
     {   
         
         if (energyBar.GetEnergy()==0){
-            Mourir();
+            StartCoroutine(Mourir());
+            
         }
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
@@ -105,10 +106,16 @@ public class PlayerMovementE5 : MonoBehaviour
         forwardSpeed = newSpeed;
     }
 
-    public void Mourir()
+    IEnumerator Mourir()
     {
         anim.SetTrigger("mort");
         forwardSpeed = 0;
         rb.linearVelocity = Vector3.zero;
+        yield return new WaitForSeconds(3f);
+        SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+            if (sceneloader != null)
+            {
+                sceneloader.LoadSceneByName("FinishScene");
+            }
     }
 }

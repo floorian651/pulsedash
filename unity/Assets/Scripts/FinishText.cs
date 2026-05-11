@@ -1,58 +1,51 @@
 using UnityEngine;
-using System;
+using TMPro;
 
 public class FinishText : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private GameObject finishTextPrefab;
     [SerializeField] private Transform uiParent;
-    string finishText;
     public GameObject backToMenuPrefab;
-    private TMPro.TextMeshProUGUI txt;
 
-    void Awake()
-    {
-        //player = FindObjectOfType<Player>();
-        //if (player != null)
-        //{
-            GameObject obj = Instantiate(finishTextPrefab, uiParent);
+    private TextMeshProUGUI txt;
 
-            txt = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-
-            if (txt != null)
-            {
-                txt.fontSize = 25;
-                UIBuilder.ApplyMontserratFont(txt);
-                txt.text = finishText;
-           }
-        //}
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {   
-        ReturnToMenuButton.prefab = backToMenuPrefab;
-        ReturnToMenuButton.Create();
-        //if (player != null)
-        //{   
-            // A MODIFIER POUR LA BDD récupérer le score du joueur via la BDD si possible
-            //float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
-            if (SessionData.Instance != null){
-                float scorePercentage = SessionData.Instance.score;
+    {
+        // Instanciation UI
+        GameObject obj = Instantiate(finishTextPrefab, uiParent);
 
-                finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
-                //Destroy(player.gameObject);
-                }
-            
-        /*}
+        txt = obj.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (txt == null)
+        {
+            Debug.LogError("TMP non trouvé dans le prefab !");
+            return;
+        }
+
+        txt.fontSize = 20;
+        UIBuilder.ApplyMontserratFont(txt);
+
+        //  Récupération score
+        float energy = 0;
+
+        if (SessionData.Instance != null)
+            energy = SessionData.Instance.score;
+
+        // Détermination du texte
+        if (energy > 0)
+        {
+            txt.text = "Bravo !\nNiveau réussi \nÉnergie restante : " + energy;
+        }
         else
         {
-            finishText = "Niveau terminé";
-        }*/
-        if (txt != null)
-            {
-                txt.text = finishText;
-            }
-        Debug.Log(finishText);
+            txt.text = "Échec \nPlus d'énergie";
+        }
+
+        // Bouton retour menu
+        ReturnToMenuButton.prefab = backToMenuPrefab;
+        ReturnToMenuButton.Create();
+
+        Debug.Log(txt.text);
     }
 }
