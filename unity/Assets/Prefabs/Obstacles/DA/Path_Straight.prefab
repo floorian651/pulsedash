@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7379140988085389257}
   - component: {fileID: 4720633224886891267}
   - component: {fileID: 5157896559719705724}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Path_Straight
   m_TagString: sol
   m_Icon: {fileID: 0}

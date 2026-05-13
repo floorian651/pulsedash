@@ -1,48 +1,51 @@
 using UnityEngine;
-using System;
+using TMPro;
 
 public class FinishText : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private GameObject finishTextPrefab;
     [SerializeField] private Transform uiParent;
-    string finishText;
-    private TMPro.TextMeshProUGUI txt;
+    public GameObject backToMenuPrefab;
 
-    void Awake()
-    {
-        player = FindObjectOfType<Player>();
-        if (player != null)
-        {
-            GameObject obj = Instantiate(finishTextPrefab, uiParent);
+    private TextMeshProUGUI txt;
 
-            txt = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-
-            if (txt != null)
-            {
-                txt.fontSize = 25;
-                UIBuilder.ApplyMontserratFont(txt);
-                txt.text = finishText;
-            }
-        }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (player != null)
+        // Instanciation UI
+        GameObject obj = Instantiate(finishTextPrefab, uiParent);
+
+        txt = obj.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (txt == null)
         {
-            float scorePercentage = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
-            finishText = "Bravo !\n Vous avez terminé le niveau avec \n"  + Mathf.Round(scorePercentage * 100.0f) * 0.01f + "% d'énergie restante";
+            Debug.LogError("TMP non trouvé dans le prefab !");
+            return;
+        }
+
+        txt.fontSize = 20;
+        UIBuilder.ApplyMontserratFont(txt);
+
+        //  Récupération score
+        float energy = 0;
+
+        if (SessionData.Instance != null)
+            energy = SessionData.Instance.score;
+
+        // Détermination du texte
+        if (energy > 0)
+        {
+            txt.text = "Bravo !\nNiveau réussi \nÉnergie restante : " + energy;
         }
         else
         {
-            finishText = "Niveau terminé";
+            txt.text = "Échec \nPlus d'énergie";
         }
-        if (txt != null)
-            {
-                txt.text = finishText;
-            }
-        Debug.Log(finishText);
+
+        // Bouton retour menu
+        ReturnToMenuButton.prefab = backToMenuPrefab;
+        ReturnToMenuButton.Create();
+
+        Debug.Log(txt.text);
     }
 }

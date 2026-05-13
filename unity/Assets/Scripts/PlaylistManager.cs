@@ -128,6 +128,7 @@ public class PlaylistManager : MonoBehaviour
         File.WriteAllText(savePath, json);
     }
 
+    // A MODIFIER POUR LA BDD
     // Récupérer la liste de playlist
     public void LoadPlaylists()
     {

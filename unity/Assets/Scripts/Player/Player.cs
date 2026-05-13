@@ -12,10 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] private EnergyBar energyBar;
     public OverlayEffect overlayEffect;
 
-    void Awake() {
+    /*void Awake() {
         DontDestroyOnLoad(transform.gameObject);
-    }
-
+    }*/
     void Start()
     {   
         energy = maxEnergy;
@@ -74,5 +73,17 @@ public class Player : MonoBehaviour
     public float GetMaxEnergyLevel()
     {
         return maxEnergy;
+    }
+
+    public float GetDecreaseSpeed()
+    {
+        return decreaseSpeed;
+    }
+
+    public void SetEnergyMax(float newMaxEnergy)
+    {
+        maxEnergy = newMaxEnergy;
+        energy = Mathf.Clamp(energy, minEnergy, maxEnergy);
+        energyBar.ResizeEnergyBar(maxEnergy);
     }
 }
