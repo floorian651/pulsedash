@@ -21,7 +21,7 @@ Le présent dépôt héberge exclusivement le **client Unity**. Le backend est m
 
 **[Pulsedash Backend](https://github.com/floorian651/pulsedash_backend)**
 
-## 3. Prérequis Système
+## 4. Prérequis Système
 
 ### Client Unity
 
@@ -41,11 +41,11 @@ Le présent dépôt héberge exclusivement le **client Unity**. Le backend est m
 | Git | 2.x | Contrôle de version |
 ---
 
-## 4. Configuration de l'Environnement Backend
+## 5. Configuration de l'Environnement Backend
 
 ### Backend — fichier `.env`
 
-Créer un fichier `.env` à la racine du **dépôt backend** (après clonage, voir section 5). Les services Python lisent ce fichier via `pydantic-settings` ; les outils CLI (`celery`, `alembic`) nécessitent un sourcing manuel dans chaque terminal :
+Créer un fichier `.env` à la racine du dépôt backend. Les services Python lisent ce fichier via `pydantic-settings` ; les outils CLI (`celery`, `alembic`) nécessitent un sourcing manuel dans chaque terminal :
 
 **Variables :**
 
@@ -53,9 +53,9 @@ Créer un fichier `.env` à la racine du **dépôt backend** (après clonage, vo
 |---|---|---|
 | `POSTGRES_HOST` | `db` | Nom du service PostgreSQL dans Docker Compose |
 | `POSTGRES_PORT` | `5432` | Port TCP de PostgreSQL |
-| `POSTGRES_DB` | `pulsedash` | Nom de la base de données |
-| `POSTGRES_USER` | `pulsedash` | Utilisateur PostgreSQL |
-| `POSTGRES_PASSWORD` | `pulsedash_secret` | Mot de passe PostgreSQL |
+| `POSTGRES_DB` | `wavr` | Nom de la base de données |
+| `POSTGRES_USER` | `wavr` | Utilisateur PostgreSQL |
+| `POSTGRES_PASSWORD` | `wavr_secret` | Mot de passe PostgreSQL |
 | `REDIS_HOST` | `redis` | Nom du service Redis dans Docker Compose |
 | `REDIS_PORT` | `6379` | Port TCP de Redis |
 | `REDIS_DB` | `0` | Index de la base Redis utilisée |
@@ -69,11 +69,11 @@ Créer un fichier `.env` à la racine du **dépôt backend** (après clonage, vo
 > Les variables `CELERY_BROKER_URL` et `CELERY_RESULT_BACKEND` ne doivent **pas** figurer dans `.env` ,elles sont construites par `celery_app.py` à partir des variables Redis individuelles (`REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`).
 > Voir .env projet backend si il y a besoin d'exposer l'api via le tunnel cloudflare.
 
-## 5. Procédure d'Installation et de Démarrage
+## 6. Procédure d'Installation et de Démarrage
 
-Documentation complète : [https://floorian651.github.io/pulsedash/](https://floorian651.github.io/pulsedash/)
+Documentation complète : [https://floorian651.github.io/pulsedash/](https://floorian651.github.io/wavr/)
 
-### 5.1 Frontend
+### 6.1 Frontend
 
 #### Ouvrir le projet dans Unity Hub
 
@@ -83,20 +83,15 @@ Documentation complète : [https://floorian651.github.io/pulsedash/](https://flo
 4. Vérifier que l'éditeur **6000.3.5f1** est installé dans Unity Hub.
 5. Ouvrir le projet — Unity importe les packages automatiquement (la première ouverture peut prendre plusieurs minutes).
 
-### 5.2 Backend
-
-#### 5.2.1 Cloner le dépôt backend
+### 6.2 Backend
+### 6.2.1 Copier les variables d'environnement
+```bash
+cp .env.example .env
+# Renseigner toutes les variables de la section 5
+```
+#### 6.2 Cloner le dépôt backend
 
 ```bash
 git clone https://github.com/floorian651/pulsedash_backend
 cd pulsedash_backend
 ```
-
-#### 5.2.2 Configurer les variables d'environnement
-
-```bash
-cp .env.example .env
-# Renseigner toutes les variables de la section 4
-```
-
-

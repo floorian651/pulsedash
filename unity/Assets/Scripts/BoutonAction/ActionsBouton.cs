@@ -1,39 +1,62 @@
 using UnityEngine;
-using UnityEngine.UI; //slider
-using System.Collections; // IEnumerator
-using TMPro;  // indispensable pour TextMeshProUGUI
-
+using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class ActionsBouton : MonoBehaviour
 {
-     public string pseudo;
-
-    public TMP_InputField inputPseudo;
+    public TMP_InputField inputEmail;
     public TMP_InputField inputMdp;
+    public TMP_InputField inputUsername; // inscription seulement (optionnel)
+
+    private UserDAO userDAO;
+
+    void Awake()
+    {
+        userDAO = GetComponent<UserDAO>();
+    }
 
     public void Connexion()
     {
-        string pseudo = inputPseudo.text;
-        string mdp = inputMdp.text;
-
-        Debug.Log(pseudo);
-        Debug.Log(mdp);
-
-        if (SessionData.Instance != null)
+        userDAO.Login(inputEmail.text, inputMdp.text, success =>
         {
-            SessionData.Instance.playerName = pseudo;
-        }
+            if (success)
+            {
+                if (SessionData.Instance != null)
+                    SessionData.Instance.playerName = inputEmail.text;
 
-        // Vérifier avec la BDD que le compte existe
-        if (true){
-            PopupManager.Show("Connexion réussie !");
-        }
+                PopupManager.Show("Connexion réussie !");
 
-        SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
-        if (sceneloader != null)
+                SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+                if (sceneloader != null)
+                    sceneloader.LoadSceneByName("Platform_Streaming");
+            }
+            else
+            {
+                PopupManager.Show("Email ou mot de passe incorrect.");
+            }
+        });
+    }
+
+    public void Inscription()
+    {
+        string username = inputUsername != null ? inputUsername.text : null;
+
+        userDAO.Register(inputEmail.text, inputMdp.text, username, success =>
         {
-            sceneloader.LoadSceneByName("Platform_Streaming");
-        }
+            if (success)
+            {
+                PopupManager.Show("Compte créé ! Connectez-vous !");
+
+                SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
+                if (sceneloader != null)
+                    sceneloader.LoadSceneByName("PageConnexion");
+            }
+            else
+            {
+                PopupManager.Show("Erreur lors de la création du compte.");
+            }
+        });
     }
 
     public void HideButton(GameObject button)
@@ -41,45 +64,17 @@ public class ActionsBouton : MonoBehaviour
         button.SetActive(false);
     }
 
-    public void Inscription()
-    {
-        string pseudo = inputPseudo.text;
-        string mdp = inputMdp.text;
-
-        Debug.Log(pseudo);
-        Debug.Log(mdp);
-
-        // Envoyer à la BDD le nouveau compte utilisateur
-        if (true){
-
-            PopupManager.Show("Compte créé ! Connectez-vous !");
-
-            SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
-            if (sceneloader != null)
-            {
-                sceneloader.LoadSceneByName("PageConnexion");
-            }
-        }
-
-    }
-
     public void PageConnexion()
     {
         SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
         if (sceneloader != null)
-        {
             sceneloader.LoadSceneByName("PageConnexion");
-        }
     }
+
     public void PageInscription()
     {
         SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
         if (sceneloader != null)
-        {
             sceneloader.LoadSceneByName("PageInscription");
-        }
     }
-
-
-
 }
