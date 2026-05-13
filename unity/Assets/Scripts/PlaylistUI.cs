@@ -98,14 +98,20 @@ public static class PlaylistUI
 
         }   
     
-    const float topPadding = 100f;
-    const float verticalGap = 50f;
-    float currentY = -topPadding;
+    RectTransform scrollContent = UIBuilder.CreateScrollContent(resultsContainer, clearMainContent: false);
+    if (scrollContent == null) return;
+
+    // Mettre le scroll derrière les autres boutons (ex: "Créer playlist", "Lancer jeu").
+    Transform scrollRoot = scrollContent.transform.parent != null ? scrollContent.transform.parent.parent : null;
+    if (scrollRoot != null)
+    {
+        scrollRoot.SetAsFirstSibling();
+    }
 
 	    // Parcourir la liste des playlist et afficher un bouton pour chaque playlist
 	    foreach (var playlist in toutesLesPlaylists)
 	    {
-	        GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, resultsContainer);
+	        GameObject boutonGO = UnityEngine.Object.Instantiate(playlistItemPrefab, scrollContent);
 	        UIBuilder.ApplyMontserratFontRecursive(boutonGO.transform);
 	        Button btn = boutonGO.GetComponent<Button>();
 
@@ -113,21 +119,21 @@ public static class PlaylistUI
 	            playlistItemPrefab != null &&
 	            playlistItemPrefab.name.IndexOf("AverageButtonTransparent", StringComparison.OrdinalIgnoreCase) >= 0;
 
-	        // Taille des items playlist
+	        // Taille des items playlist (via LayoutElement pour le VerticalLayoutGroup du scroll)
 	        RectTransform boutonRT = boutonGO.GetComponent<RectTransform>();
+	        if (boutonRT != null)
+	        {
+	            boutonRT.anchorMin = new Vector2(0, 1);
+	            boutonRT.anchorMax = new Vector2(1, 1);
+	            boutonRT.pivot = new Vector2(0.5f, 1f);
+	            boutonRT.sizeDelta = new Vector2(0, 200);
+	        }
 
-        boutonRT.anchorMin = new Vector2(0.5f, 1f);
-        boutonRT.anchorMax = new Vector2(0.5f, 1f);
-        //boutonRT.pivot = new Vector2(0.5f, 1f);
-        boutonRT.pivot = new Vector2(0.5f, 0.5f);
-
-
-        if (boutonRT != null)
-        {
-            boutonRT.sizeDelta = new Vector2(boutonRT.sizeDelta.x,200);
-            boutonRT.anchoredPosition = new Vector2(0f, currentY);
-        }
-	        currentY -=verticalGap;
+	        LayoutElement le = boutonGO.GetComponent<LayoutElement>();
+	        if (le == null) le = boutonGO.AddComponent<LayoutElement>();
+	        le.minHeight = 200;
+	        le.preferredHeight = 200;
+	        le.flexibleHeight = 0;
 
 	        Image background = boutonGO.GetComponent<Image>();
 	        if (background != null)

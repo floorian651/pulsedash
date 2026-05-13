@@ -148,7 +148,7 @@ public class GenerateurNiveau : MonoBehaviour
         offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
 
         // On récupère les données du fichier JSON
-        // A MODIFIER POUR LA BDD
+        // A MODIFIER POUR LA BDD -> il faut générer le json et le stocker dans le répertoire JSON OU SINON changer la ligne suivante
         TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
         if (jsonFile == null) {
             UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");

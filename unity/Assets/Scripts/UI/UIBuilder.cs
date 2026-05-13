@@ -553,12 +553,20 @@ public static TMP_InputField CreateSearchBar(Transform parent)
 
 public static RectTransform CreateScrollContent(Transform mainContent)
 {
-    foreach (Transform child in mainContent)
-    {
-        UnityEngine.Object.Destroy(child.gameObject);
-    }
+    return CreateScrollContent(mainContent, clearMainContent: true);
+}
 
-    // Conteneur principal pour la playlist
+public static RectTransform CreateScrollContent(Transform mainContent, bool clearMainContent)
+{
+    if (mainContent == null) return null;
+
+    if (clearMainContent)
+    {
+        foreach (Transform child in mainContent)
+        {
+            UnityEngine.Object.Destroy(child.gameObject);
+        }
+    }
 
     // ScrollRect
     GameObject scrollGO = new GameObject("Scroll", typeof(RectTransform), typeof(ScrollRect));
@@ -569,46 +577,43 @@ public static RectTransform CreateScrollContent(Transform mainContent)
     scrollRT.anchorMax = new Vector2(0.95f, 0.95f);
     scrollRT.offsetMin = Vector2.zero;
     scrollRT.offsetMax = Vector2.zero;
-    scrollRT.sizeDelta = new Vector2(250, 250);
-
+    scrollRT.sizeDelta = Vector2.zero;
 
     ScrollRect scroll = scrollGO.GetComponent<ScrollRect>();
     scroll.horizontal = false;
+    scroll.vertical = true;
+    scroll.movementType = ScrollRect.MovementType.Clamped;
 
     // Viewport
     GameObject viewportGO = new GameObject("Viewport", typeof(RectTransform), typeof(RectMask2D), typeof(Image));
     viewportGO.transform.SetParent(scrollGO.transform, false);
-    // Fond transparent
-    //viewportGO.GetComponent<Image>().color = new Color32(0x80, 0x95, 0xFF, 0x00);
 
     var img = viewportGO.GetComponent<Image>();
     img.color = new Color32(0x80, 0x95, 0xFF, 20); // léger alpha visible
-    img.raycastTarget = false;
-
+    // Doit être raycastTarget pour que la wheel/drag fonctionne aussi sur les zones "vides".
+    img.raycastTarget = true;
 
     RectTransform viewportRT = viewportGO.GetComponent<RectTransform>();
     viewportRT.anchorMin = Vector2.zero;
     viewportRT.anchorMax = Vector2.one;
     viewportRT.offsetMin = Vector2.zero;
     viewportRT.offsetMax = Vector2.zero;
-    
 
     // Content
     GameObject contentGO = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
     contentGO.transform.SetParent(viewportGO.transform, false);
 
-	VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
-	layout.childControlHeight = true;
-	layout.childForceExpandHeight = false;
-	layout.childControlWidth = true;
-	layout.childForceExpandWidth = true;
-	layout.spacing = 6;
-	layout.childAlignment = TextAnchor.UpperCenter;
+    VerticalLayoutGroup layout = contentGO.GetComponent<VerticalLayoutGroup>();
+    layout.childControlHeight = true;
+    layout.childForceExpandHeight = false;
+    layout.childControlWidth = true;
+    layout.childForceExpandWidth = true;
+    layout.spacing = 6;
+    layout.childAlignment = TextAnchor.UpperCenter;
 
     ContentSizeFitter fitter = contentGO.GetComponent<ContentSizeFitter>();
     fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-
 
     RectTransform contentRT = contentGO.GetComponent<RectTransform>();
     contentRT.anchorMin = new Vector2(0, 1);
@@ -616,11 +621,11 @@ public static RectTransform CreateScrollContent(Transform mainContent)
     contentRT.pivot = new Vector2(0.5f, 1);
     contentRT.anchoredPosition = Vector2.zero;
     contentRT.sizeDelta = new Vector2(0, 0);
-    
+
     scroll.content = contentRT;
     scroll.viewport = viewportRT;
-    ClearContainer(contentRT);
 
+    ClearContainer(contentRT);
     return contentRT;
 }
     public static GameObject InstantiateMusicItemRow(GameObject prefab, Transform parent, float rowHeight)
