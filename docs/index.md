@@ -6,9 +6,9 @@ title: PulseDash
 
 **PulseDash** est un jeu musical qui transforme vos morceaux en parcours dynamiques. Chaque piste devient une expérience unique : vous suivez la musique, réagissez aux battements et enchaînez les actions au bon moment.
 
-[Découvrir le jeu](#game){: .md-button .md-button--primary }
-[Suivre l'avancement](#changelog){: .md-button }
-[Contribuer](#CONTRIBUTING){: .md-button }
+[Découvrir le jeu](game.md){: .md-button .md-button--primary }
+[Suivre l'avancement](changelog.md){: .md-button }
+[Contribuer](dev/CONTRIBUTING.md){: .md-button }
 
 ## PulseDash
 

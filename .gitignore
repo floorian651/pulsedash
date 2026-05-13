@@ -1,8 +1,11 @@
-# Python (mkdocs)
+# Python (mkdocs / uv)
 __pycache__/
 *.py[codz]
 .cache
 *.log
+.venv/
+uv.lock
+site/
 
 # Environments
 .env
