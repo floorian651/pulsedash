@@ -74,7 +74,8 @@ public class PlayerCollision : MonoBehaviour
             if (player != null){
                 if (SessionData.Instance != null){
                 SessionData.Instance.score = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
-            }
+                SessionData.Instance.statut = "Gagne";
+                }
             }            
             // Loading the finish scene
             SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
