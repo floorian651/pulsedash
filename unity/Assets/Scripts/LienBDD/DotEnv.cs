@@ -25,4 +25,10 @@ public class DotEnv
         DotEnv dotEnv = new DotEnv();
         return dotEnv.GetVariable("API_URL");
     }
+
+    public static string GetWebSocketURL()
+    {
+        DotEnv dotEnv = new DotEnv();
+        return dotEnv.GetVariable("WEBSOCKET_URL");
+    }
 }
