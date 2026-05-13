@@ -800,6 +800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 639268612}
   - component: {fileID: 639268611}
+  - component: {fileID: 639268613}
   m_Layer: 0
   m_Name: ActionsButton
   m_TagString: Untagged
@@ -819,7 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03db41d148908e46b8f5fafd66552da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionsBouton
-  pseudo: 
   inputPseudo: {fileID: 843972635}
   inputMdp: {fileID: 1934253205}
 --- !u!4 &639268612
@@ -837,6 +837,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &639268613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639268610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab643a276711e58348402464c840e83a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserDAO
 --- !u!224 &828785420 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8852369092616136848, guid: 59c94351a225f394c895c4a4855a9a94, type: 3}
@@ -1189,6 +1201,7 @@ MonoBehaviour:
   score: 0
   playerName: 
   titre: 
+  mode: 
   scenePrecedente: 
 --- !u!4 &1016320932
 Transform:

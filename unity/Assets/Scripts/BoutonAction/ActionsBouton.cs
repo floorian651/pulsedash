@@ -6,7 +6,6 @@ using TMPro;  // indispensable pour TextMeshProUGUI
 
 public class ActionsBouton : MonoBehaviour
 {
-     public string pseudo;
 
     public TMP_InputField inputPseudo;
     public TMP_InputField inputMdp;
