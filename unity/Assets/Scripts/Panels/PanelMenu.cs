@@ -106,9 +106,6 @@ void InitMenu()
     // TOP BAR (barre de recherche)
     Transform topBar = UIBuilder.CreateTopBar(panel);
 
-    // CHARGEMENT MUSIQUES
-    audioCache.LoadAllMusicTestUtilisateur();
-
     // S'assurer que les playlists sont chargées avant d'afficher les boutons
     PlaylistManager pm = FindObjectOfType<PlaylistManager>();
     if (pm != null)

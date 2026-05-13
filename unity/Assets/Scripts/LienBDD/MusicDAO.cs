@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Networking;
 using System.IO;
+using System.Text.Json.Nodes;
 
 public class MusicDAO : MonoBehaviour
 {
@@ -55,6 +56,58 @@ public class MusicDAO : MonoBehaviour
             File.WriteAllBytes(filePath, data);
 
             Debug.Log("Musique téléchargée : " + filePath);
+        }
+    }
+
+
+
+
+
+    public JsonArray searchMusic(string query)
+    {
+        string url = DotEnv.GetURL() + "/api/v1/jamendo/search?q=" + UnityWebRequest.EscapeURL(query) + "&limit=10";
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            var operation = webRequest.SendWebRequest();
+
+            while (!operation.isDone)
+                ;
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur API : " + webRequest.error);
+                return null;
+            }
+
+            string json = webRequest.downloadHandler.text;
+
+            JsonArray results = JsonNode.Parse(json).AsArray();
+
+            return results;
+        }
+    }
+
+    public void charger(JsonObject music)
+    {
+        string url = DotEnv.GetURL() + "/api/v1/jamendo/import/" + music["id"].ToString();
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            var operation = webRequest.SendWebRequest();
+
+            while (!operation.isDone)
+                ;
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Erreur API : " + webRequest.error);
+                return;
+            }
+
+            string json = webRequest.downloadHandler.text;
+
+            Debug.Log("Musique importée : " + json);
         }
     }
 }

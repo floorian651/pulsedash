@@ -102,6 +102,8 @@ public List<AudioClip> LoadAllMusicTestLienBDD(){
         .Where(c => c.name.ToLower().Contains(nomTape))
         .ToList();
 
+    // var resultats = musicDAO.searchMusic(nomTape);
+
     if (musicItemPrefab == null)
     {
         Debug.LogError("musicItemPrefab n'est pas assigné dans SearchUI.Init()");
@@ -117,6 +119,7 @@ public List<AudioClip> LoadAllMusicTestLienBDD(){
 		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
 		        if (txt != null)
 		            txt.text = clip.name;
+                    // txt.text = clip["name"].ToString();
 	
 		        // La hauteur visible en liste est pilotée par le conteneur "row".
 	
@@ -148,6 +151,7 @@ public List<AudioClip> LoadAllMusicTestLienBDD(){
             if (Context != null && Context.TryGetAudioSource(out AudioSource source))
             {
                 source.clip = clip;
+                // musicDAO.charger(clip);
             }
 
             if (Context != null)
