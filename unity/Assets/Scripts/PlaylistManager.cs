@@ -22,6 +22,7 @@ public class PlaylistManager : MonoBehaviour
     void Awake()
     {
         // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
+        // Modifier pour la BDD 
         savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
         LoadPlaylists();
     }
@@ -58,8 +59,10 @@ public class PlaylistManager : MonoBehaviour
 
     public void AddTrackToPlaylist(string playlistName, string trackName)
     {   
-        // Récupérer la playlist
-        Playlist p = playlists.Find(x => x.name == playlistName);
+        // Modifier pour la BDD 
+
+        
+        Playlist p = GetPlaylist(playlistName); //playlists.Find(x => x.name == playlistName);
 
         // Si la playlist existe
 
@@ -77,6 +80,7 @@ public class PlaylistManager : MonoBehaviour
                 };
 
                 p.tracks.Add(track);
+                // Créer le track via la BDD aussi avec CreateTrack 
 
             }
             SavePlaylists();
@@ -84,6 +88,7 @@ public class PlaylistManager : MonoBehaviour
     }
 
     // Supprimer une musique d'une playlist
+    // Modifier pour la BDD 
     public void RemoveTrackFromPlaylist(string playlistName, string trackName)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
@@ -93,9 +98,11 @@ public class PlaylistManager : MonoBehaviour
             if (trackCherche != null)
             {
                 p.tracks.Remove(trackCherche);
+                // Enlever la musique via la BDD avec delete track qui prend en entrée l'id?
 
                 for (int i = 0; i < p.tracks.Count; i++)
                     p.tracks[i].order = i;
+                    // Update la playlist via la BDD avec Update Track 
                 
             SavePlaylists();
         }
@@ -111,13 +118,15 @@ public class PlaylistManager : MonoBehaviour
         }
 
         playlists.Remove(p);
+        // Modifier pour la BDD avec Delete Playlist
         SavePlaylists();
         return true;
     }
 
     // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
-    {
+    {   
+        // Récupérer la playlist dans la BDD selon son nom avec GetPlaylist
         return playlists.Find(x => x.name == playlistName);
     }
 
@@ -128,7 +137,7 @@ public class PlaylistManager : MonoBehaviour
         File.WriteAllText(savePath, json);
     }
 
-    // A MODIFIER POUR LA BDD
+    // A MODIFIER POUR LA BDD récupérer la liste des playlist et la réécrire dans le json ? avec List Playlist dans la BDD
     // Récupérer la liste de playlist
     public void LoadPlaylists()
     {
