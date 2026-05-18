@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class FinishText : MonoBehaviour
 {
@@ -37,7 +38,8 @@ public class FinishText : MonoBehaviour
 
         // Détermination du texte
         if (energy >= 0 && statut=="Gagne") 
-        {
+        {   
+            energy = (float)(Math.Truncate(energy * 10f) / 10f);
             txt.text = "Bravo !\nNiveau réussi \nÉnergie restante : " + energy + "%";
         }
 
