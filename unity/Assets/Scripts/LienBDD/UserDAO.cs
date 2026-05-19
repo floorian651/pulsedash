@@ -1,114 +1,77 @@
 using System;
-using System.Collections;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class UserDAO : MonoBehaviour
+public class UserDAO : ApiClient
 {
-    public static string AccessToken { get; private set; }
-    public static string RefreshToken { get; private set; }
-
-    public static void SetTokens(string access, string refresh)
+    void Awake()
     {
-        AccessToken = access;
-        RefreshToken = refresh;
+        TokenManager.Initialize();
     }
 
     public void Register(string email, string mdp, string username, Action<bool> onResult)
     {
-        StartCoroutine(RegisterCoroutine(email, mdp, username, onResult));
-    }
-
-    private IEnumerator RegisterCoroutine(string email, string mdp, string username, Action<bool> onResult)
-    {
-        string url = DotEnv.GetURL() + "/api/v1/auth/register";
-
-        string jsonBody = JsonUtility.ToJson(new RegisterRequest { email = email, password = mdp, username = username });
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
-
-        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
-        {
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if (request.result != UnityWebRequest.Result.Success)
+        StartCoroutine(PostRequest<RegisterResponse>(
+            ApiManager.REGISTER,
+            new RegisterRequest { email = email, password = mdp, username = username },
+            (response, success) =>
             {
-                Debug.LogError("Erreur register : " + request.error);
-                onResult?.Invoke(false);
-                yield break;
+                if (success)
+                    TokenManager.SetTokens(response.access_token, response.refresh_token);
+                onResult?.Invoke(success);
             }
-
-            RegisterResponse response = JsonUtility.FromJson<RegisterResponse>(request.downloadHandler.text);
-            SetTokens(response.access_token, response.refresh_token);
-            onResult?.Invoke(true);
-        }
+        ));
     }
 
     public void Login(string email, string mdp, Action<bool> onResult)
     {
-        StartCoroutine(LoginCoroutine(email, mdp, onResult));
-    }
-
-    private IEnumerator LoginCoroutine(string email, string mdp, Action<bool> onResult)
-    {
-        string url = DotEnv.GetURL() + "/api/v1/auth/login";
-
-        string jsonBody = JsonUtility.ToJson(new LoginRequest { email = email, password = mdp });
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
-
-        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
-        {
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if (request.result != UnityWebRequest.Result.Success)
+        StartCoroutine(PostRequest<LoginResponse>(
+            ApiManager.LOGIN,
+            new LoginRequest { email = email, password = mdp },
+            (response, success) =>
             {
-                Debug.LogError("Erreur login : " + request.error);
-                onResult?.Invoke(false);
-                yield break;
+                if (success)
+                    TokenManager.SetTokens(response.access_token, response.refresh_token);
+                onResult?.Invoke(success);
             }
-
-            LoginResponse response = JsonUtility.FromJson<LoginResponse>(request.downloadHandler.text);
-            SetTokens(response.access_token, response.refresh_token);
-            onResult?.Invoke(true);
-        }
+        ));
     }
-}
 
-[System.Serializable]
-public class RegisterRequest
-{
-    public string email;
-    public string password;
-    public string username;
-}
+    public void GetProfile(Action<UserProfile, bool> onResult)
+    {
+        StartCoroutine(GetRequest<UserProfile>(ApiManager.PROFILE, onResult));
+    }
 
-[System.Serializable]
-public class RegisterResponse
-{
-    public string access_token;
-    public string refresh_token;
-    public string token_type;
-}
+    public void RefreshAccessToken(Action<bool> onResult){
+    if (string.IsNullOrEmpty(TokenManager.RefreshToken))
+    {
+        Debug.LogWarning("Pas de refresh token!");
+        onResult?.Invoke(false);
+        return;
+    }
 
-[System.Serializable]
-public class LoginRequest
-{
-    public string email;
-    public string password;
+    StartCoroutine(PostRequest<RefreshResponse>(
+        ApiManager.REFRESH,
+        new RefreshRequest { refresh_token = TokenManager.RefreshToken },
+        (response, success) =>
+        {
+            if (success)
+            {
+                Debug.Log("Token rafraîchi!");
+                // Garder le même refresh token, juste mettre à jour l'access token
+                TokenManager.SetTokens(response.access_token, TokenManager.RefreshToken);
+                onResult?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogError("Refresh échoué - Déconnexion");
+                TokenManager.Clear();
+                onResult?.Invoke(false);
+            }
+        }
+    ));
 }
-
-[System.Serializable]
-public class LoginResponse
-{
-    public string access_token;
-    public string refresh_token;
-    public string token_type;
+    public static void Logout()
+    {
+        TokenManager.Clear();
+    }
 }
