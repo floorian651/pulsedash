@@ -10,6 +10,8 @@ public class PlaylistManager : MonoBehaviour
 
     [SerializeField] private PlaylistDAO playlistDAO;
 
+    public System.Action onLoaded;
+
     public bool forceNext = false;
     public bool forcePrevious = false;
     public bool stopCurrentTrack = false;
@@ -33,6 +35,7 @@ public class PlaylistManager : MonoBehaviour
             }
             playlists.Add(p);
         }
+        onLoaded?.Invoke();
     }
 
     private bool TryGetAudioSource(out AudioSource source)
@@ -51,12 +54,15 @@ public class PlaylistManager : MonoBehaviour
         return false;
     }
 
-    public void CreatePlaylist(string playlistName)
+    public void CreatePlaylist(string playlistName, System.Action onSuccess = null)
     {
         playlistDAO.CreatePlaylist(playlistName, (data, success) =>
         {
             if (success)
+            {
                 playlists.Add(new Playlist { name = data.name });
+                onSuccess?.Invoke();
+            }
             else
                 PopupManager.Show("Erreur lors de la création de la playlist.");
         });

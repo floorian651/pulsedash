@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics; // Pour List
 using System;
 
 public class GenerateurNiveau : MonoBehaviour
