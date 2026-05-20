@@ -613,6 +613,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705027676}
   - component: {fileID: 705027675}
+  - component: {fileID: 705027677}
   m_Layer: 0
   m_Name: PanelMenu
   m_TagString: Untagged
@@ -645,6 +646,7 @@ MonoBehaviour:
   PreviousButtonPrefab: {fileID: 1483478919661330273, guid: 46cdaef29ecd9e242ae040051561122e, type: 3}
   averageButtonTransparent: {fileID: 1483478919661330273, guid: fb4f0f232eeda744183377210ef62160, type: 3}
   creerPlaylistButton: {fileID: 2117360025801944245, guid: d8a06362529913d48b64ac1d2523ee96, type: 3}
+  musicDAO: {fileID: 705027677}
 --- !u!4 &705027676
 Transform:
   m_ObjectHideFlags: 0
@@ -660,6 +662,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &705027677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcc2b5588f3f514da7d85c807b25421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicDAO
 --- !u!1 &817960019
 GameObject:
   m_ObjectHideFlags: 0

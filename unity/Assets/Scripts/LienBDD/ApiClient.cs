@@ -10,7 +10,7 @@ public class ApiClient : MonoBehaviour
     {
         if (request.result == UnityWebRequest.Result.ConnectionError)
             PopupManager.Show("Serveur inaccessible, vérifiez votre connexion.");
-        Debug.LogError($"[{label}] {request.responseCode} — {request.error}");
+        Debug.LogError($"[{label}] {request.responseCode} — {request.error}\n{request.downloadHandler?.text}");
     }
 
     protected IEnumerator PostRequest<T>(string endpoint, object data, Action<T, bool> onResult)

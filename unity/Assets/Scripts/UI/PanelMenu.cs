@@ -22,6 +22,8 @@ public class PanelMenu : MonoBehaviour
     public GameObject averageButtonTransparent;
     public GameObject creerPlaylistButton;
 
+    [SerializeField] private MusicDAO musicDAO;
+
     void Start()
     {   
         // Créer un gameobject AudioSource
@@ -225,7 +227,7 @@ public class PanelMenu : MonoBehaviour
 
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab,averageButtonTransparent);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab, averageButtonTransparent, musicDAO);
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);
