@@ -256,7 +256,7 @@
 
 ---
 
-### [ ] T-13 — Ajouter un écran de chargement pendant le polling backend
+### [x] T-13 — Ajouter un écran de chargement pendant le polling backend
 
 **Objectif** : Pendant le polling de `JsonDAO`, afficher un spinner/loading screen au lieu de bloquer la scène.
 

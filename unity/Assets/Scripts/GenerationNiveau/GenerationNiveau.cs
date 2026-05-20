@@ -64,14 +64,18 @@ public class GenerateurNiveau : MonoBehaviour
             analyse_rythme = SessionData.Instance.titre;
         }
 
+        PopupManager.ShowLoading("Génération du niveau en cours...");
         jsonDAO.FetchLevelFromTitle(analyse_rythme, OnLevelReady);
     }
 
     void OnLevelReady(MusicData levelData)
     {
+        PopupManager.HideLoading();
+
         if (levelData == null)
         {
             Debug.LogError("Échec du chargement du niveau depuis le backend.");
+            PopupManager.Show("Erreur : impossible de charger le niveau.");
             return;
         }
         data = levelData;
