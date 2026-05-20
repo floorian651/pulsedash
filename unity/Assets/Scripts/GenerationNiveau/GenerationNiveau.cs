@@ -49,20 +49,31 @@ public class GenerateurNiveau : MonoBehaviour
 
     public GameObject pulser;
 
-   
-    void Start(){
+    [SerializeField] private JsonDAO jsonDAO;
+
+    void Start()
+    {
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
-        if (SessionData.Instance != null){
 
+        if (SessionData.Instance != null)
+        {
             string mode = SessionData.Instance.mode;
-
-            difficulty = (Difficulty)Enum.Parse(
-            typeof(Difficulty),
-            mode,
-            true
-        );
+            difficulty = (Difficulty)Enum.Parse(typeof(Difficulty), mode, true);
+            analyse_rythme = SessionData.Instance.titre;
         }
+
+        jsonDAO.FetchLevelFromTitle(analyse_rythme, OnLevelReady);
+    }
+
+    void OnLevelReady(MusicData levelData)
+    {
+        if (levelData == null)
+        {
+            Debug.LogError("Échec du chargement du niveau depuis le backend.");
+            return;
+        }
+        data = levelData;
         PreparePlayer();
         GenerateLevel();
     }
@@ -121,14 +132,8 @@ public class GenerateurNiveau : MonoBehaviour
             playerScript.SetEnergyMax(energieMax);
         }
     }
-    // A MODIFIER POUR LA BDD
-
     public float GetMusicDuration()
     {
-        analyse_rythme = SessionData.Instance.titre;
-        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
-        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
-        UnityEngine.Debug.Log("Data duration " + data.duration);
         return data.duration;
     }
 
@@ -138,23 +143,11 @@ public class GenerateurNiveau : MonoBehaviour
     }
     
     public void GenerateLevel()
-    {   
-        // On récupére le titre de la musique
-        analyse_rythme = SessionData.Instance.titre;
-
+    {
         // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
         offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
-
-        // On récupère les données du fichier JSON
-        // A MODIFIER POUR LA BDD
-        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
-        if (jsonFile == null) {
-            UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
-            return;
-        }
-        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
 
         // Permet de générer une graine aléatoire de facon déterministe
         randomSeed = (int)data.duration;

@@ -72,7 +72,7 @@
 
 ---
 
-### [ ] T-04 — Brancher `JsonDAO` dans `GenerationNiveau` pour charger le JSON depuis le backend
+### [x] T-04 — Brancher `JsonDAO` dans `GenerationNiveau` pour charger le JSON depuis le backend
 
 **Objectif** : `GenerationNiveau.cs` doit récupérer `level.json` via le pipeline backend (POST `/generate` + polling GET) au lieu de lire un fichier local.
 
@@ -96,7 +96,7 @@
 
 ---
 
-### [ ] T-05 — Corriger la désérialisation de `GenerateResult.level` en `MusicData`
+### [x] T-05 — Corriger la désérialisation de `GenerateResult.level` en `MusicData`
 
 **Objectif** : Le champ `level` dans `GenerateResult` est déclaré `string`, mais doit être une `MusicData` (ou désérialisé en deux étapes).
 

@@ -1,31 +1,19 @@
+using System;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Networking;
-using System.IO;
 
 public class JsonDAO : MonoBehaviour
 {
-    public void FetchLevelFromTitle(string title)
+    public void FetchLevelFromTitle(string title, Action<MusicData> onReady)
     {
-        StartCoroutine(GenerateLevel(title));
+        StartCoroutine(GenerateLevel(title, onReady));
     }
 
-    // Étape 1 : lancer la génération
-    IEnumerator GenerateLevel(string title)
+    IEnumerator GenerateLevel(string title, Action<MusicData> onReady)
     {
         string url = ApiManager.GetUrl(ApiManager.GENERATE);
-
         string jsonBody = "{\"track_id\":\"" + title + "\"}";
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 
@@ -40,82 +28,60 @@ public class JsonDAO : MonoBehaviour
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError("Erreur génération : " + request.error);
+                onReady?.Invoke(null);
                 yield break;
             }
 
-            string responseText = request.downloadHandler.text;
-            Debug.Log("Réponse génération : " + responseText);
-
-            // 👉 On récupère le job_id
-            GenerateJobResponse response = JsonUtility.FromJson<GenerateJobResponse>(responseText);
-
-            // Étape 2 : récupérer le niveau
-            StartCoroutine(GetLevel(response.id));
+            GenerateJobResponse response = JsonUtility.FromJson<GenerateJobResponse>(request.downloadHandler.text);
+            yield return StartCoroutine(PollLevel(response.id, onReady));
         }
     }
 
-    // Étape 2 : polling du résultat
-    IEnumerator GetLevel(string jobId)
+    IEnumerator PollLevel(string jobId, Action<MusicData> onReady)
     {
         string url = ApiManager.GetUrl($"{ApiManager.GENERATE}/{jobId}");
+        int maxRetries = 60;
 
-        while (true)
+        while (maxRetries-- > 0)
         {
-            using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+            using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
-                yield return webRequest.SendWebRequest();
+                yield return request.SendWebRequest();
 
-                if (webRequest.result != UnityWebRequest.Result.Success)
+                if (request.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogError("Erreur API : " + webRequest.error);
+                    Debug.LogError("Erreur polling : " + request.error);
+                    onReady?.Invoke(null);
                     yield break;
                 }
 
-                string json = webRequest.downloadHandler.text;
-
-                GenerateResult response = JsonUtility.FromJson<GenerateResult>(json);
-
-                Debug.Log("State : " + response.state);
+                GenerateResult response = JsonUtility.FromJson<GenerateResult>(request.downloadHandler.text);
 
                 if (response.state == "completed")
                 {
-                    SaveJson(json, jobId);
+                    onReady?.Invoke(response.level);
                     yield break;
                 }
             }
 
             yield return new WaitForSeconds(2f);
         }
-    }
 
-    // Sauvegarde
-    void SaveJson(string json, string jobId)
-    {
-        string path = Application.dataPath + "/Resources/JSON/";
-
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
-
-        string filePath = path + "level_" + jobId + ".json";
-
-        File.WriteAllText(filePath, json);
-
-        Debug.Log("Niveau sauvegardé : " + filePath);
+        Debug.LogError("Timeout : le niveau n'a pas été généré en 2 minutes.");
+        onReady?.Invoke(null);
     }
 }
 
-// 🔹 Réponse du POST /generate
 [System.Serializable]
 public class GenerateJobResponse
 {
     public string id;
 }
 
-// 🔹 Réponse du GET /generate/{job_id}
 [System.Serializable]
 public class GenerateResult
 {
     public string job_id;
     public string state;
-    public string level; // adapte si c’est un objet complexe
+    public MusicData level;
 }
