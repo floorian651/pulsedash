@@ -6,11 +6,17 @@ using UnityEngine.Networking;
 
 public class ApiClient : MonoBehaviour
 {
+    private static void HandleNetworkError(UnityWebRequest request, string label)
+    {
+        if (request.result == UnityWebRequest.Result.ConnectionError)
+            PopupManager.Show("Serveur inaccessible, vérifiez votre connexion.");
+        Debug.LogError($"[{label}] {request.responseCode} — {request.error}");
+    }
+
     protected IEnumerator PostRequest<T>(string endpoint, object data, Action<T, bool> onResult)
     {
         string url = ApiManager.GetUrl(endpoint);
-        string jsonBody = JsonUtility.ToJson(data);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
@@ -22,21 +28,19 @@ public class ApiClient : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"[POST {endpoint}] {request.responseCode} — {request.downloadHandler.text}");
+                HandleNetworkError(request, $"POST {endpoint}");
                 onResult?.Invoke(default, false);
                 yield break;
             }
 
-            T response = JsonUtility.FromJson<T>(request.downloadHandler.text);
-            onResult?.Invoke(response, true);
+            onResult?.Invoke(JsonUtility.FromJson<T>(request.downloadHandler.text), true);
         }
     }
 
     protected IEnumerator PostRequestAuth<T>(string endpoint, object data, Action<T, bool> onResult)
     {
         string url = ApiManager.GetUrl(endpoint);
-        string jsonBody = JsonUtility.ToJson(data);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
@@ -49,21 +53,19 @@ public class ApiClient : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"[POST {endpoint}] {request.responseCode} — {request.downloadHandler.text}");
+                HandleNetworkError(request, $"POST {endpoint}");
                 onResult?.Invoke(default, false);
                 yield break;
             }
 
-            T response = JsonUtility.FromJson<T>(request.downloadHandler.text);
-            onResult?.Invoke(response, true);
+            onResult?.Invoke(JsonUtility.FromJson<T>(request.downloadHandler.text), true);
         }
     }
 
     protected IEnumerator PatchRequest<T>(string endpoint, object data, Action<T, bool> onResult)
     {
         string url = ApiManager.GetUrl(endpoint);
-        string jsonBody = JsonUtility.ToJson(data);
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(data));
 
         using (UnityWebRequest request = new UnityWebRequest(url, "PATCH"))
         {
@@ -76,13 +78,12 @@ public class ApiClient : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"[PATCH {endpoint}] {request.responseCode} — {request.downloadHandler.text}");
+                HandleNetworkError(request, $"PATCH {endpoint}");
                 onResult?.Invoke(default, false);
                 yield break;
             }
 
-            T response = JsonUtility.FromJson<T>(request.downloadHandler.text);
-            onResult?.Invoke(response, true);
+            onResult?.Invoke(JsonUtility.FromJson<T>(request.downloadHandler.text), true);
         }
     }
 
@@ -98,7 +99,7 @@ public class ApiClient : MonoBehaviour
             if (request.responseCode == 401)
             {
                 UserDAO userDAO = FindObjectOfType<UserDAO>();
-                userDAO.RefreshAccessToken((success) =>
+                userDAO.RefreshAccessToken(success =>
                 {
                     if (success)
                         StartCoroutine(GetRequest<T>(endpoint, onResult));
@@ -110,13 +111,12 @@ public class ApiClient : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"[GET {endpoint}] {request.responseCode} — {request.error}");
+                HandleNetworkError(request, $"GET {endpoint}");
                 onResult?.Invoke(default, false);
                 yield break;
             }
 
-            T response = JsonUtility.FromJson<T>(request.downloadHandler.text);
-            onResult?.Invoke(response, true);
+            onResult?.Invoke(JsonUtility.FromJson<T>(request.downloadHandler.text), true);
         }
     }
 }

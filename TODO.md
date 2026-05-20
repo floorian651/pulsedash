@@ -158,7 +158,7 @@
 
 ---
 
-### [ ] T-08 — Implémenter gestion d'erreur réseau visible utilisateur
+### [x] T-08 — Implémenter gestion d'erreur réseau visible utilisateur
 
 **Objectif** : Quand une requête échoue (timeout, 5xx, pas de réseau), afficher un message clair à l'utilisateur au lieu d'un `Debug.LogError` silencieux.
 
