@@ -50,6 +50,7 @@ public class GenerateurNiveau : MonoBehaviour
     public GameObject pulser;
 
     [SerializeField] private JsonDAO jsonDAO;
+    [SerializeField] private GameSessionDAO gameSessionDAO;
 
     void Start()
     {
@@ -74,8 +75,17 @@ public class GenerateurNiveau : MonoBehaviour
             return;
         }
         data = levelData;
-        PreparePlayer();
-        GenerateLevel();
+
+        gameSessionDAO.StartSession(analyse_rythme, sessionId =>
+        {
+            if (sessionId != null && SessionData.Instance != null)
+                SessionData.Instance.sessionId = sessionId;
+            else
+                Debug.LogWarning("Session non créée — le score ne sera pas enregistré.");
+
+            PreparePlayer();
+            GenerateLevel();
+        });
     }
 
     void Update()

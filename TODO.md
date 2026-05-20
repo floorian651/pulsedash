@@ -114,7 +114,7 @@
 
 ---
 
-### [ ] T-06 — Envoyer le score final au backend
+### [x] T-06 — Envoyer le score final au backend
 
 **Objectif** : Après la collision avec la Finish Line, POST le score calculé vers l'API.
 

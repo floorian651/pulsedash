@@ -4,15 +4,16 @@ public class PlayerCollision : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private ScreenFlash screenFlash;
+    [SerializeField] private GameSessionDAO gameSessionDAO;
     [SerializeField] private bool allowTriggerCollisions = true;
 
     void Awake()
     {
         player = GetComponentInParent<Player>();
         if (screenFlash == null)
-        {
             screenFlash = FindObjectOfType<ScreenFlash>();
-        }
+        if (gameSessionDAO == null)
+            gameSessionDAO = FindObjectOfType<GameSessionDAO>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -20,12 +21,8 @@ public class PlayerCollision : MonoBehaviour
         if (collision.contacts.Length > 0)
         {
             Vector3 normal = collision.contacts[0].normal;
-
-            // Si la collision vient du dessus (le joueur tombe sur l'objet)
             if (Vector3.Dot(normal, Vector3.up) > 0.5f)
-            {
-                return; // ignore la collision
-            }
+                return;
         }
         HandleHit(collision.gameObject);
     }
@@ -52,13 +49,9 @@ public class PlayerCollision : MonoBehaviour
         {
             player.TakeDamage(5f);
             if (screenFlash == null)
-            {
                 Debug.LogError("ScreenFlash not found in scene or not assigned!");
-            }
             else
-            {
                 screenFlash.Flash();
-            }
         }
         else if (tag == "Bonus")
         {
@@ -66,25 +59,27 @@ public class PlayerCollision : MonoBehaviour
         }
         else if (tag == "Finish")
         {
-            Debug.Log("Collision finish");
-            // A MODIFIER POUR LA BDD faire en sorte d'envoyer à la BDD le score final du joueur calculé
-            // via son énergie voir la formule utilisée dans FinishText
-            
-            // Enregistrer le score dans SessionData
-            if (player != null){
-                if (SessionData.Instance != null){
-                SessionData.Instance.score = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100;
+            float score = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100f;
+
+            if (SessionData.Instance != null)
+                SessionData.Instance.score = score;
+
+            string sessionId = SessionData.Instance?.sessionId;
+
+            if (!string.IsNullOrEmpty(sessionId) && gameSessionDAO != null)
+            {
+                gameSessionDAO.EndSession(sessionId, score, false, success =>
+                {
+                    if (!success)
+                        Debug.LogWarning("Échec envoi score — session non terminée côté backend.");
+                });
             }
-            }            
-            // Loading the finish scene
+
             SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
             if (sceneloader != null)
-            {
                 sceneloader.LoadSceneByName("FinishScene");
-            }
         }
 
         Destroy(other.gameObject);
-        Debug.Log("objet détruit");
     }
 }
