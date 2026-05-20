@@ -23,13 +23,15 @@ public class PanelMenu : MonoBehaviour
     public GameObject creerPlaylistButton;
 
     [SerializeField] private MusicDAO musicDAO;
+    [SerializeField] private UserDAO _userDAO;
+    private TextMeshProUGUI _usernameLabel;
 
     void Start()
-    {   
+    {
         // Créer un gameobject AudioSource
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
-        
+
         Context = gameObject.GetComponent<Context>();
         if (Context == null)
         {
@@ -45,6 +47,18 @@ public class PanelMenu : MonoBehaviour
         }
 
         InitMenu();
+
+        if (_userDAO == null)
+            _userDAO = FindObjectOfType<UserDAO>();
+
+        if (_userDAO != null)
+            _userDAO.GetProfile((profile, success) =>
+            {
+                if (success && _usernameLabel != null)
+                    _usernameLabel.text = profile.username;
+            });
+        else
+            Debug.LogWarning("PanelMenu: aucun UserDAO trouvé dans la scène — profil non affiché.");
     }
 
     private bool EnsureReferences()
@@ -224,6 +238,21 @@ public class PanelMenu : MonoBehaviour
         }
     });
     
+
+    // LABEL PROFIL (username) — bas gauche du panel
+    GameObject labelGO = new GameObject("UsernameLabel");
+    labelGO.transform.SetParent(panel, false);
+    _usernameLabel = labelGO.AddComponent<TextMeshProUGUI>();
+    _usernameLabel.fontSize = 14;
+    _usernameLabel.color = Color.white;
+    _usernameLabel.alignment = TextAlignmentOptions.Left;
+    _usernameLabel.text = "...";
+    RectTransform labelRT = labelGO.GetComponent<RectTransform>();
+    labelRT.anchorMin = new Vector2(0, 0);
+    labelRT.anchorMax = new Vector2(0, 0);
+    labelRT.pivot = new Vector2(0, 0);
+    labelRT.sizeDelta = new Vector2(200, 30);
+    labelRT.anchoredPosition = new Vector2(10, 10);
 
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);

@@ -273,6 +273,17 @@
 
 ---
 
+### [x] T-15 — Afficher le profil utilisateur dans Platform_Streaming
+
+**Objectif** : Afficher le `username` de l'utilisateur connecté dans la top bar de `Platform_Streaming`.
+
+**Fichiers modifiés** :
+- `unity/Assets/Scripts/UI/PanelMenu.cs` (label TMP + appel `UserDAO.GetProfile`)
+
+**Contrainte Inspector** : `_userDAO` doit être assigné dans la scène `Platform_Streaming`.
+
+---
+
 ### [ ] T-14 — Sécuriser le stockage des tokens JWT
 
 **Objectif** : Les tokens JWT stockés en clair dans `PlayerPrefs` sont lisibles sur les plateformes non sécurisées.

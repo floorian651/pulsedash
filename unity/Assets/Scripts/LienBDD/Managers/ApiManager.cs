@@ -4,7 +4,7 @@ public static class ApiManager
     
     public const string LOGIN = "/api/v1/auth/login";
     public const string REGISTER = "/api/v1/auth/register";
-    public const string PROFILE = "/api/v1/profile";
+    public const string PROFILE = "/api/v1/profile/me";
     public const string REFRESH = "/api/v1/auth/refresh";
     public const string GENERATE     = "/api/v1/generate";
     public const string GAME_SESSIONS = "/api/v1/game-sessions";

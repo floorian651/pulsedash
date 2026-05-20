@@ -11,7 +11,10 @@ public class LoginRequest { public string email; public string password; }
 public class LoginResponse { public string access_token; public string refresh_token; }
 
 [System.Serializable]
-public class UserProfile { public int id; public string username; public string email; public bool is_active; }
+public class ProfileStats { public int total_games; public int completed_games; public int total_points; public float best_score; public float average_accuracy; }
+
+[System.Serializable]
+public class UserProfile { public string user_id; public string username; public string member_since; public ProfileStats stats; }
 
 [System.Serializable]
 public class RefreshRequest { public string refresh_token; } 
