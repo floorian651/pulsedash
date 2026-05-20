@@ -239,7 +239,7 @@
 
 ---
 
-### [ ] T-12 — Ajouter sélection de difficulté depuis l'UI
+### [x] T-12 — Ajouter sélection de difficulté depuis l'UI
 
 **Objectif** : Permettre au joueur de choisir Lazy/Easy/Crazy avant de lancer une musique.
 

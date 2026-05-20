@@ -205,13 +205,6 @@ public class PanelMenu : MonoBehaviour
     // TOP BAR (barre de recherche)
     Transform topBar = UIBuilder.CreateTopBar(panel);
 
-    // S'assurer que les playlists sont chargées avant d'afficher les boutons
-    PlaylistManager pm = FindObjectOfType<PlaylistManager>();
-    if (pm != null)
-    {
-        pm.LoadPlaylists();
-    }
-
         // PLAYLISTS À GAUCHE
     
     PlaylistUI.CreateButtonCreerPlaylist(creerPlaylistButton, leftContainer, playlistName =>
