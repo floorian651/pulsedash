@@ -140,7 +140,7 @@
 
 ---
 
-### [ ] T-07 — Corriger le bug `static maxEnergy` dans `Player`
+### [x] T-07 — Corriger le bug `static maxEnergy` dans `Player`
 
 **Objectif** : `maxEnergy` est `static` dans `Player.cs`, ce qui partage la valeur entre toutes les instances — comportement incorrect si jamais plus d'une instance est créée.
 
