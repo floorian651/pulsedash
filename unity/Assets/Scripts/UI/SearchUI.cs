@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 
-public class SearchUI : MonoBehaviour
+public class SearchUI
 {
     private const float MusicItemRowHeight = 80f;
 
@@ -17,7 +17,7 @@ public class SearchUI : MonoBehaviour
     private GameObject musicItemPrefab;
     private GameObject averageButtonTransparent;
 
-    [SerializeField] private MusicDAO musicDAO;
+    private MusicDAO musicDAO;
 
     public static SearchUI Create(Transform parent, Context context)
     {
@@ -34,11 +34,12 @@ public class SearchUI : MonoBehaviour
         return ui;
     }
 
-    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent, MusicDAO musicDAO = null)
     {
         musiques = clips;
         this.musicItemPrefab = musicItemPrefab;
         this.averageButtonTransparent = averageButtonTransparent;
+        this.musicDAO = musicDAO;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
@@ -72,7 +73,7 @@ public class SearchUI : MonoBehaviour
 
         // Résultats Jamendo
         if (musicDAO != null)
-            StartCoroutine(SearchJamendoAndDisplay(query, contentRT));
+            musicDAO.StartCoroutine(SearchJamendoAndDisplay(query, contentRT));
         else
             Debug.LogWarning("MusicDAO non assigné dans SearchUI.");
 
@@ -135,7 +136,7 @@ public class SearchUI : MonoBehaviour
         Transform playBtn = item.transform.Find("PlayButton");
         if (playBtn != null)
             playBtn.GetComponent<Button>().onClick.AddListener(() =>
-                StartCoroutine(ImportAndPlay(track)));
+                musicDAO.StartCoroutine(ImportAndPlay(track)));
     }
 
     IEnumerator ImportAndPlay(JamendoTrack track)
@@ -181,11 +182,11 @@ public class SearchUI : MonoBehaviour
         bool clipDone = false;
         AudioClip clip = null;
 
-        yield return StartCoroutine(musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", result =>
+        yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", result =>
         {
             clip = result;
             clipDone = true;
-        }));
+        });
 
         if (clip == null)
         {
