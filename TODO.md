@@ -196,7 +196,7 @@
 
 ---
 
-### [ ] T-10 — Synchroniser les playlists avec le backend
+### [x] T-10 — Synchroniser les playlists avec le backend
 
 **Objectif** : Remplacer la persistence locale (`playlists.json`) par des appels API CRUD.
 

@@ -30,3 +30,21 @@ public class EndSessionRequest { public float final_score; public bool abandoned
 
 [System.Serializable]
 public class EndSessionResponse { public string id; public string status; }
+
+[System.Serializable]
+public class CreatePlaylistRequest { public string name; public string description; }
+
+[System.Serializable]
+public class PlaylistData
+{
+    public string name;
+    public string description;
+    public string created_at;
+    public TrackData[] tracks;
+}
+
+[System.Serializable]
+public class TrackData { public int id; public string music_title; public int position; }
+
+[System.Serializable]
+public class AddTrackRequest { public string playlist_name; public string music_title; }

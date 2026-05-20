@@ -1,35 +1,38 @@
 using System.Collections.Generic;
 using System.Collections;
-
 using UnityEngine;
-using System.IO;
 using System.Linq;
 
 public class PlaylistManager : MonoBehaviour
 {
-    public List<Playlist> playlists = new List<Playlist>(); // Liste des playlist
+    public List<Playlist> playlists = new List<Playlist>();
     private Context Context;
 
-    private string savePath; //chemin
+    [SerializeField] private PlaylistDAO playlistDAO;
 
     public bool forceNext = false;
     public bool forcePrevious = false;
-
     public bool stopCurrentTrack = false;
-
-
-
-    void Awake()
-    {
-        // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
-        // Modifier pour la BDD 
-        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
-        LoadPlaylists();
-    }
 
     void Start()
     {
-        Debug.Log("PlaylistManager peut start!");
+        playlistDAO.GetAllPlaylists(OnPlaylistsLoaded);
+    }
+
+    void OnPlaylistsLoaded(List<PlaylistData> data)
+    {
+        if (data == null) return;
+        playlists.Clear();
+        foreach (PlaylistData pd in data)
+        {
+            Playlist p = new Playlist { name = pd.name };
+            if (pd.tracks != null)
+            {
+                foreach (TrackData td in pd.tracks)
+                    p.tracks.Add(new Track { id = td.id, title = td.music_title, order = td.position });
+            }
+            playlists.Add(p);
+        }
     }
 
     private bool TryGetAudioSource(out AudioSource source)
@@ -48,111 +51,72 @@ public class PlaylistManager : MonoBehaviour
         return false;
     }
 
-    // Créer une playlist
     public void CreatePlaylist(string playlistName)
     {
-        Playlist p = new Playlist();
-        p.name = playlistName; // donner un nom à la playlist créée
-        playlists.Add(p); //ajouter la nouvelle playlist à la liste des playlists
-        SavePlaylists();
+        playlistDAO.CreatePlaylist(playlistName, (data, success) =>
+        {
+            if (success)
+                playlists.Add(new Playlist { name = data.name });
+            else
+                PopupManager.Show("Erreur lors de la création de la playlist.");
+        });
     }
 
     public void AddTrackToPlaylist(string playlistName, string trackName)
-    {   
-        // Modifier pour la BDD 
+    {
+        Playlist p = GetPlaylist(playlistName);
+        if (p == null) return;
 
-        
-        Playlist p = GetPlaylist(playlistName); //playlists.Find(x => x.name == playlistName);
+        if (p.tracks.Any(tr => tr.title == trackName)) return;
 
-        // Si la playlist existe
-
-        if (p != null)
-        {   
-            bool dejaDansPlaylist = p.tracks.Any(tr => tr.title == trackName);
-        // Si la musique n'est pas déjà dans la playlist
-            if (!dejaDansPlaylist)
-            {
-                Track track = new Track
-                {
-                    title = trackName,
-                    order = p.tracks.Count
-
-                };
-
-                p.tracks.Add(track);
-                // Créer le track via la BDD aussi avec CreateTrack 
-
-            }
-            SavePlaylists();
-        }
+        playlistDAO.AddTrack(playlistName, trackName, (data, success) =>
+        {
+            if (success)
+                p.tracks.Add(new Track { id = data.id, title = data.music_title, order = data.position });
+            else
+                PopupManager.Show("Erreur lors de l'ajout de la musique.");
+        });
     }
 
-    // Supprimer une musique d'une playlist
-    // Modifier pour la BDD 
     public void RemoveTrackFromPlaylist(string playlistName, string trackName)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
-        if (p != null)
-        {   
-            Track trackCherche = p.tracks.FirstOrDefault(tr => tr.title == trackName);
-            if (trackCherche != null)
-            {
-                p.tracks.Remove(trackCherche);
-                // Enlever la musique via la BDD avec delete track qui prend en entrée l'id?
+        if (p == null) return;
 
+        Track track = p.tracks.FirstOrDefault(tr => tr.title == trackName);
+        if (track == null) return;
+
+        playlistDAO.RemoveTrack(track.id, success =>
+        {
+            if (success)
+            {
+                p.tracks.Remove(track);
                 for (int i = 0; i < p.tracks.Count; i++)
                     p.tracks[i].order = i;
-                    // Update la playlist via la BDD avec Update Track 
-                
-            SavePlaylists();
-        }
-    }}
+            }
+            else
+                PopupManager.Show("Erreur lors de la suppression de la musique.");
+        });
+    }
 
-    // Supprimer une playlist entière
     public bool RemovePlaylist(string playlistName)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
-        if (p == null)
-        {
-            return false;
-        }
+        if (p == null) return false;
 
-        playlists.Remove(p);
-        // Modifier pour la BDD avec Delete Playlist
-        SavePlaylists();
+        playlistDAO.DeletePlaylist(playlistName, success =>
+        {
+            if (success)
+                playlists.Remove(p);
+            else
+                PopupManager.Show("Erreur lors de la suppression de la playlist.");
+        });
         return true;
     }
 
-    // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
-    {   
-        // Récupérer la playlist dans la BDD selon son nom avec GetPlaylist
+    {
         return playlists.Find(x => x.name == playlistName);
-    }
-
-    // sauvegarder en json les playlists dans une fichier 
-    public void SavePlaylists()
-    {
-        string json = JsonUtility.ToJson(new Wrapper { playlists = this.playlists }, true);
-        File.WriteAllText(savePath, json);
-    }
-
-    // A MODIFIER POUR LA BDD récupérer la liste des playlist et la réécrire dans le json ? avec List Playlist dans la BDD
-    // Récupérer la liste de playlist
-    public void LoadPlaylists()
-    {
-        if (File.Exists(savePath))
-        {
-            string json = File.ReadAllText(savePath);
-            Wrapper w = JsonUtility.FromJson<Wrapper>(json);
-            playlists = w.playlists;
-        }
-    }
-
-    [System.Serializable]
-    private class Wrapper
-    {
-        public List<Playlist> playlists;
     }
 
     public void OnNextPressed()
