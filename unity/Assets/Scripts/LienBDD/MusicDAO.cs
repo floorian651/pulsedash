@@ -11,7 +11,7 @@ public class MusicDAO : MonoBehaviour
 {
     public IEnumerator GetMusic(string title)
     {
-        string url = DotEnv.GetURL() + "/api/v1/music/" + title + "/download";
+        string url = ApiManager.GetUrl($"/api/v1/music/{title}/download");
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {

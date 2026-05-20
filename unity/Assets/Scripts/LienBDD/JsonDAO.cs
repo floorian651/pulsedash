@@ -24,7 +24,7 @@ public class JsonDAO : MonoBehaviour
     // Étape 1 : lancer la génération
     IEnumerator GenerateLevel(string title)
     {
-        string url = DotEnv.GetURL() + "/api/v1/generate";
+        string url = ApiManager.GetUrl(ApiManager.GENERATE);
 
         string jsonBody = "{\"track_id\":\"" + title + "\"}";
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
@@ -57,7 +57,7 @@ public class JsonDAO : MonoBehaviour
     // Étape 2 : polling du résultat
     IEnumerator GetLevel(string jobId)
     {
-        string url = DotEnv.GetURL() + "/api/v1/generate/" + jobId;
+        string url = ApiManager.GetUrl($"{ApiManager.GENERATE}/{jobId}");
 
         while (true)
         {
