@@ -9,7 +9,7 @@
 
 ---
 
-### [ ] T-01 — Supprimer les Debug.Log contenant des données sensibles
+### [x] T-01 — Supprimer les Debug.Log contenant des données sensibles
 
 **Objectif** : Éliminer les logs qui exposent les tokens JWT et les corps de requêtes en clair.
 
@@ -27,7 +27,7 @@
 
 ---
 
-### [ ] T-02 — Supprimer tous les Debug.Log restants (hors logs d'erreur)
+### [ ] T-02 — Supprimer tous les Debug.Log restants (hors logs d'erreur) — reporté (utiles en debug)
 
 **Objectif** : Respecter la convention CLAUDE.md « remove all Debug.Log calls before merging to main ».
 
