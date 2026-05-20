@@ -16,6 +16,15 @@ public class ActionsBouton : MonoBehaviour
         userDAO = GetComponent<UserDAO>();
     }
 
+    void Start()
+    {
+        if (SessionData.Instance != null && !string.IsNullOrEmpty(SessionData.Instance.pendingMessage))
+        {
+            PopupManager.Show(SessionData.Instance.pendingMessage);
+            SessionData.Instance.pendingMessage = null;
+        }
+    }
+
     public void Connexion()
     {
         userDAO.Login(inputEmail.text, inputMdp.text, success =>

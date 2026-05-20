@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UserDAO : ApiClient
 {
@@ -65,6 +66,9 @@ public class UserDAO : ApiClient
             {
                 Debug.LogError("Refresh échoué - Déconnexion");
                 TokenManager.Clear();
+                if (SessionData.Instance != null)
+                    SessionData.Instance.pendingMessage = "Session expirée, veuillez vous reconnecter.";
+                SceneManager.LoadScene("PageConnexion");
                 onResult?.Invoke(false);
             }
         }

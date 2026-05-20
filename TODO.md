@@ -176,7 +176,7 @@
 
 ---
 
-### [ ] T-09 — Déconnexion automatique si refresh token expiré
+### [x] T-09 — Déconnexion automatique si refresh token expiré
 
 **Objectif** : Quand `RefreshAccessToken` échoue, rediriger vers `PageConnexion` au lieu de simplement logger l'erreur.
 

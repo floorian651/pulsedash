@@ -10,6 +10,7 @@ public class SessionData : MonoBehaviour
     public string mode;
     public string scenePrecedente;
     public string sessionId;
+    public string pendingMessage;
 
 
     void Awake()
