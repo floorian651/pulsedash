@@ -105,7 +105,7 @@ public class PlaylistManager : MonoBehaviour
         });
     }
 
-    public bool RemovePlaylist(string playlistName)
+    public bool RemovePlaylist(string playlistName, System.Action onSuccess = null)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
         if (p == null) return false;
@@ -113,7 +113,10 @@ public class PlaylistManager : MonoBehaviour
         playlistDAO.DeletePlaylist(playlistName, success =>
         {
             if (success)
+            {
                 playlists.Remove(p);
+                onSuccess?.Invoke();
+            }
             else
                 PopupManager.Show("Erreur lors de la suppression de la playlist.");
         });

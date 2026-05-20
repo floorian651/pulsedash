@@ -213,17 +213,13 @@ public static class PlaylistUI
                 },
                 () =>
                 {
-                    bool removed = pm.RemovePlaylist(playlist.name);
-                    if (removed)
+                    bool found = pm.RemovePlaylist(playlist.name, () =>
                     {
                         PopupManager.Show("Playlist supprimée : " + playlist.name);
-                    }
-                    else
-                    {
+                        AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
+                    });
+                    if (!found)
                         PopupManager.Show("Playlist introuvable");
-                    }
-
-                    AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
                 }
             );
         });
