@@ -48,3 +48,25 @@ public class TrackData { public int id; public string music_title; public int po
 
 [System.Serializable]
 public class AddTrackRequest { public string playlist_name; public string music_title; }
+
+[System.Serializable]
+public class JamendoTrack
+{
+    public string id;
+    public string name;
+    public string artist_name;
+    public int duration;
+    public string image;
+    public string audio;
+}
+
+[System.Serializable]
+public class JamendoImportResponse
+{
+    public string job_id;
+    public string music_title;
+    public string state;
+}
+
+[System.Serializable]
+public class JamendoTrackListWrapper { public JamendoTrack[] items; }

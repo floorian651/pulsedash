@@ -1,112 +1,112 @@
+using System;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using UnityEngine.Networking;
 using System.IO;
 
-public class MusicDAO : MonoBehaviour
+public class MusicDAO : ApiClient
 {
-    public IEnumerator GetMusic(string title)
+    [Serializable]
+    private class JamendoListWrapper { public JamendoTrack[] items; }
+
+    public void SearchJamendo(string query, Action<JamendoTrack[]> onResult)
     {
-        string url = ApiManager.GetUrl($"/api/v1/music/{title}/download");
+        StartCoroutine(FetchJamendoSearch(query, onResult));
+    }
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+    IEnumerator FetchJamendoSearch(string query, Action<JamendoTrack[]> onResult)
+    {
+        string url = ApiManager.GetUrl(ApiManager.JAMENDO_SEARCH)
+                     + "?q=" + UnityWebRequest.EscapeURL(query) + "&limit=10";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
-            yield return webRequest.SendWebRequest();
+            yield return request.SendWebRequest();
 
-            if (webRequest.result != UnityWebRequest.Result.Success)
+            if (request.result == UnityWebRequest.Result.ConnectionError)
+                PopupManager.Show("Serveur inaccessible, vérifiez votre connexion.");
+
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Erreur API : " + webRequest.error);
+                Debug.LogError($"[GET jamendo/search] {request.responseCode} — {request.error}");
+                onResult?.Invoke(null);
                 yield break;
             }
 
-            string downloadUrl = webRequest.downloadHandler.text;
-
-            Debug.Log("URL de téléchargement : " + downloadUrl);
-
-            yield return StartCoroutine(DownloadMP3(downloadUrl, title));
+            string wrapped = "{\"items\":" + request.downloadHandler.text + "}";
+            onResult?.Invoke(JsonUtility.FromJson<JamendoListWrapper>(wrapped).items);
         }
     }
 
-    IEnumerator DownloadMP3(string url, string title)
+    public void ImportTrack(string trackId, Action<JamendoImportResponse, bool> onResult)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
-        {
-            yield return webRequest.SendWebRequest();
+        StartCoroutine(PostRequestAuth<JamendoImportResponse>(
+            $"{ApiManager.JAMENDO_IMPORT}/{trackId}",
+            new object(),
+            onResult
+        ));
+    }
 
-            if (webRequest.result != UnityWebRequest.Result.Success)
+    public void GetMusicDownloadUrl(string musicTitle, Action<string> onUrl)
+    {
+        StartCoroutine(FetchDownloadUrl(musicTitle, onUrl));
+    }
+
+    IEnumerator FetchDownloadUrl(string musicTitle, Action<string> onUrl)
+    {
+        string url = ApiManager.GetUrl($"/api/v1/music/{UnityWebRequest.EscapeURL(musicTitle)}/download");
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Erreur téléchargement : " + webRequest.error);
+                Debug.LogError($"[GET music/download] {request.responseCode} — {request.error}");
+                onUrl?.Invoke(null);
                 yield break;
             }
 
-            byte[] data = webRequest.downloadHandler.data;
-
-            string path = Application.dataPath + "/Resources/Musique/";
-
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            string filePath = path + title + ".mp3";
-
-            File.WriteAllBytes(filePath, data);
-
-            Debug.Log("Musique téléchargée : " + filePath);
+            onUrl?.Invoke(request.downloadHandler.text.Trim('"'));
         }
     }
 
+    public IEnumerator DownloadAndCacheClip(string url, string fileName, Action<AudioClip> onClip)
+    {
+        string localPath = Path.Combine(Application.persistentDataPath, fileName);
 
+        if (File.Exists(localPath))
+        {
+            using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file://" + localPath, AudioType.MPEG))
+            {
+                yield return req.SendWebRequest();
+                if (req.result == UnityWebRequest.Result.Success)
+                {
+                    AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
+                    clip.name = Path.GetFileNameWithoutExtension(fileName);
+                    onClip?.Invoke(clip);
+                    yield break;
+                }
+            }
+        }
 
+        using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
+        {
+            yield return req.SendWebRequest();
 
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"Erreur téléchargement MP3 : {req.error}");
+                PopupManager.Show("Erreur lors du téléchargement de la musique.");
+                onClip?.Invoke(null);
+                yield break;
+            }
 
-    // public JsonArray searchMusic(string query)
-    // {
-    //     string url = DotEnv.GetURL() + "/api/v1/jamendo/search?q=" + UnityWebRequest.EscapeURL(query) + "&limit=10";
-
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
-    //     {
-    //         var operation = webRequest.SendWebRequest();
-
-    //         while (!operation.isDone)
-    //             ;
-
-    //         if (webRequest.result != UnityWebRequest.Result.Success)
-    //         {
-    //             Debug.LogError("Erreur API : " + webRequest.error);
-    //             return null;
-    //         }
-
-    //         string json = webRequest.downloadHandler.text;
-
-    //         JsonArray results = JsonNode.Parse(json).AsArray();
-
-    //         return results;
-    //     }
-    // }
-
-    // public void charger(JsonObject music)
-    // {
-    //     string url = DotEnv.GetURL() + "/api/v1/jamendo/import/" + music["id"].ToString();
-
-    //     using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
-    //     {
-    //         var operation = webRequest.SendWebRequest();
-
-    //         while (!operation.isDone)
-    //             ;
-
-    //         if (webRequest.result != UnityWebRequest.Result.Success)
-    //         {
-    //             Debug.LogError("Erreur API : " + webRequest.error);
-    //             return;
-    //         }
-
-    //         string json = webRequest.downloadHandler.text;
-
-    //         Debug.Log("Musique importée : " + json);
-    //     }
-    // }
+            AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
+            clip.name = Path.GetFileNameWithoutExtension(fileName);
+            File.WriteAllBytes(localPath, req.downloadHandler.data);
+            onClip?.Invoke(clip);
+        }
+    }
 }

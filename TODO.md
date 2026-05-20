@@ -217,7 +217,7 @@
 
 ---
 
-### [ ] T-11 — Réactiver la recherche musicale Jamendo
+### [x] T-11 — Réactiver la recherche musicale Jamendo
 
 **Objectif** : Débloquer `searchMusic` et `charger` dans `MusicDAO.cs` (actuellement commentés) pour permettre la recherche et l'import de musiques.
 
