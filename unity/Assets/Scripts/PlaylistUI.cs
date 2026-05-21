@@ -295,24 +295,31 @@ public static class PlaylistUI
             }
 
             Button playButton = playButtonTransform.GetComponent<Button>();
-
-            // Ajouter l'action Play
-            PanelMenu panelMenu = FindObjectOfType<PanelMenu>();
-                playButton.onClick.AddListener(() =>
-                {
-                if (panelMenu != null && panelMenu.Context.TryGetAudioSource(out AudioSource source))
-                {
-                    source.clip = clips.FirstOrDefault(c => c.name.ToLower().Contains(track.title.ToLower()));
-                }
-
-                if (panelMenu != null)
-                {
-                    panelMenu.Context.SetSliderVisible(true);
-                    panelMenu.Context.SetPlayPauseVisible(true);
-                }
-
-                PopupManager.Show("Musique sélectionnée : " + track.title);
+            playButton.onClick.AddListener(() =>
+            {
+                pm.PlayTrackWithFetch(track.title, clips);
             });
+
+            SceneLoader sceneLoader = UnityEngine.Object.FindObjectOfType<SceneLoader>();
+            Button itemBtn = item.GetComponent<Button>();
+            if (itemBtn != null)
+            {
+                itemBtn.onClick.AddListener(() =>
+                {
+                    PopupManager.ShowModeSelectionPopup(mode =>
+                    {
+                        if (SessionData.Instance != null)
+                        {
+                            SessionData.Instance.titre = track.title;
+                            SessionData.Instance.mode = mode;
+                        }
+                        if (sceneLoader != null)
+                            sceneLoader.LoadSceneByName("GameplayScene");
+                        else
+                            PopupManager.Show("SceneLoader introuvable");
+                    });
+                });
+            }
 	    }
 
 	    var containerRT = resultsContainer as RectTransform;

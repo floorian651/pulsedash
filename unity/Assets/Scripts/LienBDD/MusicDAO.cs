@@ -50,7 +50,7 @@ public class MusicDAO : ApiClient
 
     public string GetAudioDownloadUrl(string musicTitle)
     {
-        return ApiManager.GetUrl($"/api/v1/music/{UnityWebRequest.EscapeURL(musicTitle)}/download");
+        return ApiManager.GetUrl($"/api/v1/music/{Uri.EscapeDataString(musicTitle)}/download");
     }
 
     public IEnumerator DownloadAndCacheClip(string url, string fileName, Action<AudioClip> onClip)
@@ -59,7 +59,7 @@ public class MusicDAO : ApiClient
 
         if (File.Exists(localPath))
         {
-            using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file://" + localPath, AudioType.MPEG))
+            using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(new Uri(localPath).AbsoluteUri, AudioType.MPEG))
             {
                 yield return req.SendWebRequest();
                 if (req.result == UnityWebRequest.Result.Success)
@@ -72,15 +72,33 @@ public class MusicDAO : ApiClient
             }
         }
 
-        using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
             req.timeout = 60;
             yield return req.SendWebRequest();
 
+            Debug.Log($"[Download] url={url} result={req.result} code={req.responseCode} bytes={req.downloadHandler?.data?.Length}");
+
             if (req.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Erreur téléchargement MP3 : {req.error}");
+                Debug.LogError($"Erreur téléchargement MP3 : {req.error} ({req.responseCode})");
                 PopupManager.Show($"Erreur téléchargement ({req.responseCode})");
+                onClip?.Invoke(null);
+                yield break;
+            }
+
+            File.WriteAllBytes(localPath, req.downloadHandler.data);
+        }
+
+        using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(new Uri(localPath).AbsoluteUri, AudioType.MPEG))
+        {
+            yield return req.SendWebRequest();
+
+            Debug.Log($"[LoadFile] path={localPath} result={req.result}");
+
+            if (req.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"Erreur lecture fichier audio : {req.error}");
                 onClip?.Invoke(null);
                 yield break;
             }
@@ -93,7 +111,6 @@ public class MusicDAO : ApiClient
                 yield break;
             }
             clip.name = Path.GetFileNameWithoutExtension(fileName);
-            File.WriteAllBytes(localPath, req.downloadHandler.data);
             onClip?.Invoke(clip);
         }
     }

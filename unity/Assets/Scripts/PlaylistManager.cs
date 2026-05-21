@@ -174,6 +174,50 @@ public class PlaylistManager : MonoBehaviour
         });
     }
 
+    public void PlayTrackWithFetch(string musicTitle, List<AudioClip> clips)
+    {
+        StartCoroutine(FetchIfNeededThenPlay(musicTitle, clips));
+    }
+
+    IEnumerator FetchIfNeededThenPlay(string musicTitle, List<AudioClip> clips)
+    {
+        if (musicDAO == null) musicDAO = Object.FindObjectOfType<MusicDAO>();
+        bool alreadyCached = SearchUI.RechercherClip(musicTitle, clips) != null;
+        Debug.Log($"[Play] title='{musicTitle}' cached={alreadyCached} musicDAO={musicDAO != null} clips={clips.Count}");
+
+        if (!alreadyCached && musicDAO != null)
+        {
+            PopupManager.ShowLoading("Chargement...");
+            bool fetched = false;
+            StartCoroutine(AwaitFetch(musicTitle, clips, () => fetched = true));
+            float elapsed = 0f;
+            while (!fetched && elapsed < 20f)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            PopupManager.HideLoading();
+            if (!fetched)
+            {
+                PopupManager.Show("Téléchargement impossible.");
+                yield break;
+            }
+            Debug.Log($"[Play] après download: clips={clips.Count} found={SearchUI.RechercherClip(musicTitle, clips) != null}");
+        }
+        else if (!alreadyCached && musicDAO == null)
+        {
+            PopupManager.Show("MusicDAO non assigné — vérifier l'Inspector.");
+            yield break;
+        }
+        PlayTrack(new Track { title = musicTitle }, clips, true);
+    }
+
+    IEnumerator AwaitFetch(string musicTitle, List<AudioClip> clips, System.Action onDone)
+    {
+        yield return StartCoroutine(FetchAndCacheClip(musicTitle, clips));
+        onDone?.Invoke();
+    }
+
     IEnumerator RoutinePlaylist(Track trackActuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
     if (!TryGetAudioSource(out AudioSource source))
