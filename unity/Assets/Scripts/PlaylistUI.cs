@@ -269,10 +269,20 @@ public static class PlaylistUI
             if (subButtonTransform != null)
             {   Debug.Log("Bouton subutton créé");
                 Button subButton = subButtonTransform.GetComponent<Button>();
+                Button rootBtn = item.GetComponent<Button>();
                 subButton.onClick.AddListener(() =>
                 {
-                    pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
-                    PopupManager.Show("Musique supprimée : " + track.title);
+                    if (rootBtn != null) rootBtn.interactable = false;
+                    string trackTitle = track.title;
+                    pm.RemoveTrackFromPlaylist(nomplaylist, trackTitle,
+                        () =>
+                        {
+                            PopupManager.Show("Musique supprimée : " + trackTitle);
+                            foreach (Transform child in resultsContainer)
+                                UnityEngine.Object.Destroy(child.gameObject);
+                            AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, nomplaylist, resultsContainer);
+                        },
+                        () => { if (rootBtn != null) rootBtn.interactable = true; });
                 });
             }
 

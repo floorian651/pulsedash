@@ -17,6 +17,8 @@ public class PlaylistManager : MonoBehaviour
     public bool forcePrevious = false;
     public bool stopCurrentTrack = false;
 
+    private Coroutine _currentRoutine;
+
     void Start()
     {
         playlistDAO.GetAllPlaylists(OnPlaylistsLoaded);
@@ -85,7 +87,7 @@ public class PlaylistManager : MonoBehaviour
         });
     }
 
-    public void RemoveTrackFromPlaylist(string playlistName, string trackName)
+    public void RemoveTrackFromPlaylist(string playlistName, string trackName, System.Action onSuccess = null, System.Action onFailure = null)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
         if (p == null) return;
@@ -100,9 +102,13 @@ public class PlaylistManager : MonoBehaviour
                 p.tracks.Remove(track);
                 for (int i = 0; i < p.tracks.Count; i++)
                     p.tracks[i].order = i;
+                onSuccess?.Invoke();
             }
             else
+            {
                 PopupManager.Show("Erreur lors de la suppression de la musique.");
+                onFailure?.Invoke();
+            }
         });
     }
 
@@ -144,13 +150,19 @@ public class PlaylistManager : MonoBehaviour
     {   
         UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
 
+        if (_currentRoutine != null)
+            StopCoroutine(_currentRoutine);
+        forceNext = false;
+        forcePrevious = false;
+        stopCurrentTrack = false;
+
         if (trackactuel == null)
         {
             PopupManager.Show("Playlist vide");
             return;
-    }
+        }
 
-    StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
+        _currentRoutine = StartCoroutine(RoutinePlaylist(trackactuel, clips, new List<Track>(toutesLesMusiques)));
 }   
    
     IEnumerator FetchAndCacheClip(string musicTitle, List<AudioClip> clips)

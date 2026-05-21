@@ -212,6 +212,12 @@ public class SearchUI
             yield break;
         }
 
+        if (string.IsNullOrEmpty(importResponse.job_id))
+        {
+            PopupManager.Show("Ajouté avec le stockage serveur");
+            yield break;
+        }
+
         PopupManager.ShowPlaylistPopup(importResponse.music_title, averageButtonTransparent);
     }
 
