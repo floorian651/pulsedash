@@ -13,10 +13,10 @@
       
       
       
-        <link rel="prev" href="../architecture/">
+        <link rel="prev" href="../protocole/">
       
       
-        <link rel="next" href="../api/">
+        <link rel="next" href="../compte-rendu/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Schéma des données - PulseDash</title>
+        <title>Réalisation de sessions de test - PulseDash</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#schema-des-donnees" class="md-skip">
+        <a href="#realisation-de-sessions-de-tests" class="md-skip">
           Aller au contenu
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Schéma des données
+              Réalisation de sessions de test
             
           </span>
         </div>
@@ -305,13 +305,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../CONTRIBUTING/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../dev/CONTRIBUTING/" class="md-tabs__link">
           
   
   
@@ -327,11 +325,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../tests-utilisateurs/protocole/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../protocole/" class="md-tabs__link">
           
   
   
@@ -568,31 +568,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -610,7 +607,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -628,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../CONTRIBUTING/" class="md-nav__link">
+      <a href="../../dev/CONTRIBUTING/" class="md-nav__link">
         
   
   
@@ -656,7 +653,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../setup/" class="md-nav__link">
+      <a href="../../dev/setup/" class="md-nav__link">
         
   
   
@@ -684,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/" class="md-nav__link">
+      <a href="../../dev/architecture/" class="md-nav__link">
         
   
   
@@ -709,37 +706,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Schéma des données
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../dev/data-schema/" class="md-nav__link">
         
   
   
@@ -755,115 +725,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table des matières
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#niveau-genere-leveljson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Niveau généré (level.json)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Niveau généré (level.json)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exemple" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exemple
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contrat-api-endpoints-consommes-par-unity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contrat API — Endpoints consommés par Unity
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contrat API — Endpoints consommés par Unity">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#post-apiv1generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        POST /api/v1/generate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-apiv1jobsjob_id" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GET /api/v1/jobs/{job_id}
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stockage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stockage
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -876,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
+      <a href="../../dev/api/" class="md-nav__link">
         
   
   
@@ -910,13 +771,10 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
@@ -925,7 +783,7 @@
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
         
           
-          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
             
   
   
@@ -961,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ci-cd/" class="md-nav__link">
+      <a href="../../dev/ci-cd/" class="md-nav__link">
         
   
   
@@ -989,7 +847,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline/" class="md-nav__link">
+      <a href="../../dev/pipeline/" class="md-nav__link">
         
   
   
@@ -1029,28 +887,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -1068,7 +929,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1086,7 +947,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tests-utilisateurs/protocole/" class="md-nav__link">
+      <a href="../protocole/" class="md-nav__link">
         
   
   
@@ -1111,10 +972,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../tests-utilisateurs/realisation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1130,6 +1000,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1142,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tests-utilisateurs/compte-rendu/" class="md-nav__link">
+      <a href="../compte-rendu/" class="md-nav__link">
         
   
   
@@ -1170,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tests-utilisateurs/synthese/" class="md-nav__link">
+      <a href="../synthese/" class="md-nav__link">
         
   
   
@@ -1218,103 +1089,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table des matières
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#niveau-genere-leveljson" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Niveau généré (level.json)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Niveau généré (level.json)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exemple" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Exemple
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contrat-api-endpoints-consommes-par-unity" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Contrat API — Endpoints consommés par Unity
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Contrat API — Endpoints consommés par Unity">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#post-apiv1generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        POST /api/v1/generate
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#get-apiv1jobsjob_id" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        GET /api/v1/jobs/{job_id}
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#stockage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Stockage
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1333,140 +1107,15 @@
   
 
 
-<h1 id="schema-des-donnees">Schéma des données</h1>
-<p>Ce document décrit les formats de données produits par le backend et consommés par le client Unity.</p>
-<h2 id="niveau-genere-leveljson">Niveau généré (<code>level.json</code>)</h2>
-<p>Le pipeline d'analyse audio produit un fichier JSON pour chaque morceau traité. Ce fichier est stocké dans MinIO (bucket <code>levels</code>) et mis à disposition du client Unity via une URL présignée.</p>
-<h3 id="structure">Structure</h3>
-<table>
-<thead>
-<tr>
-<th>Champ</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>key</code></td>
-<td><code>string</code></td>
-<td>Tonalité détectée (ex. <code>A#</code>, <code>C</code>, <code>F#</code>)</td>
-</tr>
-<tr>
-<td><code>tempo</code></td>
-<td><code>number</code></td>
-<td>Tempo en BPM</td>
-</tr>
-<tr>
-<td><code>beats</code></td>
-<td><code>array</code></td>
-<td>Liste des beats détectés dans la piste</td>
-</tr>
-<tr>
-<td><code>beats[].timing</code></td>
-<td><code>number</code></td>
-<td>Timestamp du beat en secondes</td>
-</tr>
-<tr>
-<td><code>beats[].puissance</code></td>
-<td><code>number</code></td>
-<td>Intensité normalisée du beat (0–1)</td>
-</tr>
-<tr>
-<td><code>durée</code></td>
-<td><code>number</code></td>
-<td>Durée totale de la piste en secondes</td>
-</tr>
-</tbody>
-</table>
-<h3 id="exemple">Exemple</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A#&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;tempo&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">127.4</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;beats&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.48</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.32</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.96</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.41</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;timing&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.44</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;puissance&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.38</span><span class="w"> </span><span class="p">}</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p">],</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">&quot;durée&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">182.7</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
-</code></pre></div>
-<blockquote>
-<p>Les consommateurs Unity doivent ignorer les champs inconnus pour rester compatibles avec les évolutions futures du pipeline.</p>
-</blockquote>
-<h2 id="contrat-api-endpoints-consommes-par-unity">Contrat API — Endpoints consommés par Unity</h2>
-<h3 id="post-apiv1generate"><code>POST /api/v1/generate</code></h3>
-<p>Lance la génération d'un niveau à partir d'un identifiant de piste Jamendo.</p>
-<p><strong>Corps de la requête :</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;track_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1890&quot;</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-<p><strong>Réponse :</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pending&quot;</span><span class="w"> </span><span class="p">}</span>
-</code></pre></div>
-<h3 id="get-apiv1jobsjob_id"><code>GET /api/v1/jobs/{job_id}</code></h3>
-<p>Consulte l'état d'un job en cours ou terminé.</p>
-<p><strong>Réponse (job terminé) :</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;done&quot;</span><span class="p">,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;progress&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;result_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://minio:9000/levels/...?X-Amz-Signature=...&quot;</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="p">}</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Champ</th>
-<th>Valeurs possibles</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>state</code></td>
-<td><code>pending</code>, <code>running</code>, <code>done</code>, <code>failed</code></td>
-<td>État du job</td>
-</tr>
-<tr>
-<td><code>progress</code></td>
-<td><code>0</code>–<code>100</code></td>
-<td>Avancement en pourcentage</td>
-</tr>
-<tr>
-<td><code>result_url</code></td>
-<td>URL ou <code>null</code></td>
-<td>URL présignée MinIO du <code>level.json</code> (disponible si <code>state=done</code>)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="stockage">Stockage</h2>
-<table>
-<thead>
-<tr>
-<th>Bucket MinIO</th>
-<th>Contenu</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>audio</code></td>
-<td>Fichiers audio MP3 téléchargés depuis Jamendo</td>
-</tr>
-<tr>
-<td><code>levels</code></td>
-<td>Fichiers <code>level.json</code> générés par le pipeline</td>
-</tr>
-</tbody>
-</table>
+<h1 id="realisation-de-sessions-de-tests">Réalisation de sessions de tests</h1>
+<p>Les tests ont été réalisé lors de l'évènement F4G, le Samedi 4 et Dimanche 5 Avril 2026.
+<img alt="alt text" src="../Affiche_F4G.png" /></p>
 
 
 
 
 
 
-
-  
-  
 
 
 

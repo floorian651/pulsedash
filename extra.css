@@ -1,0 +1,22 @@
+.md-typeset table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: calc(70vh);
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+}
+
+.md-typeset table th,
+.md-typeset table td {
+  white-space: nowrap;
+}
+
+.md-typeset table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--md-default-foreground);
+  z-index: 1;
+}
