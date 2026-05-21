@@ -48,28 +48,9 @@ public class MusicDAO : ApiClient
         ));
     }
 
-    public void GetMusicDownloadUrl(string musicTitle, Action<string> onUrl)
+    public string GetAudioDownloadUrl(string musicTitle)
     {
-        StartCoroutine(FetchDownloadUrl(musicTitle, onUrl));
-    }
-
-    IEnumerator FetchDownloadUrl(string musicTitle, Action<string> onUrl)
-    {
-        string url = ApiManager.GetUrl($"/api/v1/music/{UnityWebRequest.EscapeURL(musicTitle)}/download");
-
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
-        {
-            yield return request.SendWebRequest();
-
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError($"[GET music/download] {request.responseCode} — {request.error}");
-                onUrl?.Invoke(null);
-                yield break;
-            }
-
-            onUrl?.Invoke(request.downloadHandler.text.Trim('"'));
-        }
+        return ApiManager.GetUrl($"/api/v1/music/{UnityWebRequest.EscapeURL(musicTitle)}/download");
     }
 
     public IEnumerator DownloadAndCacheClip(string url, string fileName, Action<AudioClip> onClip)
@@ -93,17 +74,24 @@ public class MusicDAO : ApiClient
 
         using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.MPEG))
         {
+            req.timeout = 60;
             yield return req.SendWebRequest();
 
             if (req.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError($"Erreur téléchargement MP3 : {req.error}");
-                PopupManager.Show("Erreur lors du téléchargement de la musique.");
+                PopupManager.Show($"Erreur téléchargement ({req.responseCode})");
                 onClip?.Invoke(null);
                 yield break;
             }
 
             AudioClip clip = DownloadHandlerAudioClip.GetContent(req);
+            if (clip == null)
+            {
+                PopupManager.Show("Erreur création audio.");
+                onClip?.Invoke(null);
+                yield break;
+            }
             clip.name = Path.GetFileNameWithoutExtension(fileName);
             File.WriteAllBytes(localPath, req.downloadHandler.data);
             onClip?.Invoke(clip);

@@ -155,13 +155,7 @@ public class PlaylistManager : MonoBehaviour
    
     IEnumerator FetchAndCacheClip(string musicTitle, List<AudioClip> clips)
     {
-        bool urlDone = false;
-        string downloadUrl = null;
-        musicDAO.GetMusicDownloadUrl(musicTitle, url => { downloadUrl = url; urlDone = true; });
-        yield return new WaitUntil(() => urlDone);
-
-        if (string.IsNullOrEmpty(downloadUrl)) yield break;
-
+        string downloadUrl = musicDAO.GetAudioDownloadUrl(musicTitle);
         yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", clip =>
         {
             if (clip != null) clips.Add(clip);
