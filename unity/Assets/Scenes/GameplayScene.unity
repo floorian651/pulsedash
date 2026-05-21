@@ -262,6 +262,8 @@ MonoBehaviour:
   decosDroite: []
   decosGauche: []
   pulser: {fileID: 0}
+  jsonDAO: {fileID: 0}
+  gameSessionDAO: {fileID: 0}
 --- !u!1 &220633269
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +275,7 @@ GameObject:
   - component: {fileID: 220633272}
   - component: {fileID: 220633271}
   - component: {fileID: 220633270}
+  - component: {fileID: 220633273}
   m_Layer: 0
   m_Name: GenerateurNiveau
   m_TagString: Untagged
@@ -324,6 +327,8 @@ MonoBehaviour:
   - {fileID: 1009685052748669806, guid: 54ea986480136d34a842fe244768efe5, type: 3}
   - {fileID: 3073733250756936658, guid: 0e76b02306bcf484ab9de2711be4b315, type: 3}
   pulser: {fileID: 4070396160462701413, guid: b8b5d834f1f33de46836b763be289319, type: 3}
+  jsonDAO: {fileID: 0}
+  gameSessionDAO: {fileID: 0}
 --- !u!4 &220633272
 Transform:
   m_ObjectHideFlags: 0
@@ -339,6 +344,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &220633273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220633269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5f1c000ce505343bbf09236d797a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JsonDAO
 --- !u!1001 &236691566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -659,6 +676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCollision
   player: {fileID: 236691570}
   screenFlash: {fileID: 795425250}
+  gameSessionDAO: {fileID: 0}
   allowTriggerCollisions: 1
 --- !u!114 &236691572
 MonoBehaviour:

@@ -12,7 +12,13 @@ public class Trigger : MonoBehaviour
 
     void OnEnable()
     {
-        if (!musicStarted)
+        if (musicSource == null)
+            musicSource = GetComponent<AudioSource>();
+
+        if (musicSource == null)
+            musicSource = gameObject.AddComponent<AudioSource>();
+
+        if (!musicStarted && musicSource != null)
         {
             titre_musique = SessionData.Instance != null ? SessionData.Instance.titre : "";
             StartCoroutine(LoadClip());
