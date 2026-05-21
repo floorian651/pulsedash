@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Object;
 using UnityEngine.UI;
 using TMPro;
 using System;
@@ -286,39 +285,28 @@ public static class PlaylistUI
                 });
             }
 
-            // Récupérer le bouton Play du prefab
-            Transform playButtonTransform = item.transform.Find("PlayButton");
-            if (playButtonTransform == null)
-            {
-                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
-                continue;
-            }
-
-            Button playButton = playButtonTransform.GetComponent<Button>();
-            playButton.onClick.AddListener(() =>
-            {
-                pm.PlayTrackWithFetch(track.title, clips);
-            });
-
-            SceneLoader sceneLoader = UnityEngine.Object.FindObjectOfType<SceneLoader>();
+            // Root button → sélectionne + joue la musique
             Button itemBtn = item.GetComponent<Button>();
             if (itemBtn != null)
             {
                 itemBtn.onClick.AddListener(() =>
                 {
-                    PopupManager.ShowModeSelectionPopup(mode =>
-                    {
-                        if (SessionData.Instance != null)
-                        {
-                            SessionData.Instance.titre = track.title;
-                            SessionData.Instance.mode = mode;
-                        }
-                        if (sceneLoader != null)
-                            sceneLoader.LoadSceneByName("GameplayScene");
-                        else
-                            PopupManager.Show("SceneLoader introuvable");
-                    });
+                    pm.PlayTrackWithFetch(track.title, clips);
                 });
+            }
+
+            // PlayButton → joue la musique
+            Transform playButtonTransform = item.transform.Find("PlayButton");
+            if (playButtonTransform != null)
+            {
+                Button playButton = playButtonTransform.GetComponent<Button>();
+                if (playButton != null)
+                {
+                    playButton.onClick.AddListener(() =>
+                    {
+                        pm.PlayTrackWithFetch(track.title, clips);
+                    });
+                }
             }
 	    }
 

@@ -284,6 +284,19 @@
 
 ---
 
+### [x] T-16 — Brancher GET /music/{title}/level pour charger le niveau depuis MinIO
+
+**Objectif** : Remplacer le POST /generate + polling par un GET direct sur le niveau pré-généré stocké dans MinIO.
+
+**Fichiers modifiés** :
+- `unity/Assets/Scripts/LienBDD/Managers/ApiManager.cs` (constante `MUSIC_LEVEL`)
+- `unity/Assets/Scripts/LienBDD/JsonDAO.cs` (étend `ApiClient`, flux 2 GET)
+- `unity/Assets/Scripts/GenerationNiveau/MusicData.cs` (champ `durée` + propriété `duration`)
+
+**Contrainte Inspector** : `jsonDAO` doit être assigné dans la scène `GameplayScene`.
+
+---
+
 ### [ ] T-14 — Sécuriser le stockage des tokens JWT
 
 **Objectif** : Les tokens JWT stockés en clair dans `PlayerPrefs` sont lisibles sur les plateformes non sécurisées.
@@ -297,3 +310,11 @@
 
 **Critères de validation** :
 - Les tokens ne sont plus lisibles en clair dans le registre Windows ou les plist iOS.
+
+---
+
+### [x] T-UI-01 — Fix sélection musique dans playlist (bouton racine + hitbox Lancer le jeu)
+
+**Fichiers modifiés** :
+- `unity/Assets/Scripts/PlaylistUI.cs` — root button joue la musique (PopupManager + PlayTrackWithFetch), PlayButton lance le jeu
+- `unity/Assets/Scripts/UI/PanelMenu.cs` — contrainte hauteur 70px sur launchGameGO (LayoutElement + sizeDelta) pour éviter l'overlap

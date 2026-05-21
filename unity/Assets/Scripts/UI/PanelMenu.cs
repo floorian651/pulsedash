@@ -182,6 +182,11 @@ public class PanelMenu : MonoBehaviour
         else
         {
 	        GameObject launchGameGO = Instantiate(launchGameButtonPrefab, bottomBar);
+	        // Contraindre la hauteur pour éviter que la hitbox déborde sur la liste de musiques
+	        LayoutElement launchLE = launchGameGO.GetComponent<LayoutElement>() ?? launchGameGO.AddComponent<LayoutElement>();
+	        launchLE.preferredHeight = 70f;
+	        RectTransform launchRT = launchGameGO.GetComponent<RectTransform>();
+	        if (launchRT != null) launchRT.sizeDelta = new Vector2(launchRT.sizeDelta.x, 70f);
 	        Button launchGameBtn = launchGameGO.GetComponent<Button>();
 	        if (launchGameBtn == null)
 	        {
