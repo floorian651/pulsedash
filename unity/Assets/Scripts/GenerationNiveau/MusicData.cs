@@ -9,13 +9,60 @@ public class Beat
 }
 
 [System.Serializable]
+public class ApiHit
+{
+    public float time;
+    public int lane;
+    public string type;
+    public float strength;
+}
+
+[System.Serializable]
+public class ApiMeta
+{
+    public float bpm;
+    public string key;
+    public float duration;
+}
+
+[System.Serializable]
+public class LevelApiResponse
+{
+    public ApiMeta meta;
+    public ApiHit[] hits;
+    
+    public MusicData ToMusicData()
+    {
+        MusicData data = new MusicData();
+        data.tempo = (int)meta.bpm;
+        data.key = meta.key;
+        data.duration = meta.duration;
+        
+        if (hits != null)
+        {
+            data.beats = new Beat[hits.Length];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                data.beats[i] = new Beat
+                {
+                    timing = hits[i].time,
+                    puissance = hits[i].strength
+                };
+            }
+        }
+        
+        return data;
+    }
+}
+
+[System.Serializable]
 public class MusicData
 {
     public int tempo;
     public string key;
     public Beat[] beats;
-    public float durée;
-    public float duration => durée;
+    public float duration;
+    public float durée => duration;
 
     public List<Beat> getBeatsInInterval(float start, float end)
     {

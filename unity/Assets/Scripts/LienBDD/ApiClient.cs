@@ -90,6 +90,7 @@ public class ApiClient : MonoBehaviour
     protected IEnumerator GetRequest<T>(string endpoint, Action<T, bool> onResult)
     {
         string url = ApiManager.GetUrl(endpoint);
+        Debug.Log($"[API GetRequest] {url}");
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -111,11 +112,12 @@ public class ApiClient : MonoBehaviour
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                HandleNetworkError(request, $"GET {endpoint}");
+                Debug.LogError($"[API GetRequest] ERREUR {request.responseCode}: {request.error}\nURL: {url}\nRéponse: {request.downloadHandler?.text}");
                 onResult?.Invoke(default, false);
                 yield break;
             }
 
+            Debug.Log($"[API GetRequest] SUCCESS {request.responseCode}\nRéponse ({request.downloadHandler.text.Length} chars): {request.downloadHandler.text}");
             onResult?.Invoke(JsonUtility.FromJson<T>(request.downloadHandler.text), true);
         }
     }

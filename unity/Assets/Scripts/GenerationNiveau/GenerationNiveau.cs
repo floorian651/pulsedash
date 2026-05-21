@@ -63,8 +63,18 @@ public class GenerateurNiveau : MonoBehaviour
             analyse_rythme = SessionData.Instance.titre;
         }
 
+        if (jsonDAO == null)
+            jsonDAO = FindObjectOfType<JsonDAO>();
+
+        if (gameSessionDAO == null)
+            gameSessionDAO = FindObjectOfType<GameSessionDAO>();
+
         PopupManager.ShowLoading("Génération du niveau en cours...");
-        jsonDAO.FetchLevelFromTitle(analyse_rythme, OnLevelReady);
+
+        if (jsonDAO != null)
+            jsonDAO.FetchLevelFromTitle(analyse_rythme, OnLevelReady);
+        else
+            Debug.LogError("JsonDAO not found in scene");
     }
 
     void OnLevelReady(MusicData levelData)
@@ -77,7 +87,24 @@ public class GenerateurNiveau : MonoBehaviour
             PopupManager.Show("Erreur : impossible de charger le niveau.");
             return;
         }
+        
+        if (levelData.beats == null || levelData.beats.Length == 0)
+        {
+            Debug.LogError("Données du niveau invalides : beats manquants");
+            PopupManager.Show("Erreur : données du niveau incomplètes.");
+            return;
+        }
+        
         data = levelData;
+        Debug.Log($"[GenerateurNiveau] Niveau reçu: durée={data.duration}s, beats={data.beats.Length}, tempo={data.tempo}");
+
+        if (gameSessionDAO == null)
+        {
+            Debug.LogError("gameSessionDAO est null ! Impossible de créer la session.");
+            PreparePlayer();
+            GenerateLevel();
+            return;
+        }
 
         gameSessionDAO.StartSession(analyse_rythme, sessionId =>
         {
@@ -93,7 +120,7 @@ public class GenerateurNiveau : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null || data == null) return;
 
         float playerZ = player.transform.position.z;
 
@@ -124,25 +151,35 @@ public class GenerateurNiveau : MonoBehaviour
 
     void PreparePlayer()
     {
-        player.transform.position = new Vector3(0, 1, -5); // Position de départ du joueur
+        if (player == null)
+        {
+            Debug.LogError("[PreparePlayer] player est null!");
+            return;
+        }
+        
+        player.transform.position = new Vector3(0, 1, -5);
         Player playerScript = player.GetComponent<Player>();
         if (playerScript != null)
         {
-            // On calcule l'énergie maximale du joueur en fonction de la durée de la musique, pour que le joueur puisse tenir toute la musique s'il ne prend pas de dégâts
             float energieMax = GetMusicDuration() * playerScript.decreaseSpeed;
             switch(difficulty)
             {
                 case Difficulty.Lazy:
-                    energieMax *= 1.3f; // Bonus de 30% d'énergie
+                    energieMax *= 1.3f;
                     break;
                 case Difficulty.Easy:
-                    energieMax *= 1.15f; // Bonus de 15% d'énergie
+                    energieMax *= 1.15f;
                     break;
                 case Difficulty.Crazy:
-                    energieMax *= 1.05f; // Bonus de 5% d'énergie
+                    energieMax *= 1.05f;
                     break;
             }
             playerScript.SetEnergyMax(energieMax);
+            Debug.Log($"[PreparePlayer] Player configuré. Énergie max={energieMax}");
+        }
+        else
+        {
+            Debug.LogWarning("[PreparePlayer] Player script non trouvé");
         }
     }
     public float GetMusicDuration()
@@ -157,18 +194,25 @@ public class GenerateurNiveau : MonoBehaviour
     
     public void GenerateLevel()
     {
-        // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
+        if (data == null || data.beats == null || data.beats.Length == 0)
+        {
+            Debug.LogError("[GenerateLevel] Données du niveau invalides!");
+            return;
+        }
+        
+        if (player == null)
+        {
+            Debug.LogError("[GenerateLevel] player est null!");
+            return;
+        }
+
         vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
         chunkSize = vitesse * 0.25f;
-        offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
+        offsetZ = vitesse * 2.0f;
 
-        // Permet de générer une graine aléatoire de facon déterministe
         randomSeed = (int)data.duration;
-
-        // On nettoie le niveau avant de générer les nouveaux éléments
         ClearLevel();
-
-        // Générer le sol avant de -10 à 0 en amont du niveau 
+        Debug.Log($"[GenerateLevel] Début. Vitesse={vitesse}, ChunkSize={chunkSize}, Offset={offsetZ}");
 
 
         for (float z = -20; z <= 0; z += 2)
