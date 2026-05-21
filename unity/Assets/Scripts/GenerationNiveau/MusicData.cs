@@ -14,7 +14,8 @@ public class MusicData
     public int tempo;
     public string key;
     public Beat[] beats;
-    public float duration;
+    public float durée;
+    public float duration => durée;
 
     public List<Beat> getBeatsInInterval(float start, float end)
     {

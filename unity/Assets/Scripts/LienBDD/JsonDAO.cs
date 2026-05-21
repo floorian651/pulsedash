@@ -1,87 +1,50 @@
 using System;
 using System.Collections;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class JsonDAO : MonoBehaviour
+public class JsonDAO : ApiClient
 {
     public void FetchLevelFromTitle(string title, Action<MusicData> onReady)
     {
-        StartCoroutine(GenerateLevel(title, onReady));
+        StartCoroutine(FetchLevel(title, onReady));
     }
 
-    IEnumerator GenerateLevel(string title, Action<MusicData> onReady)
+    IEnumerator FetchLevel(string title, Action<MusicData> onReady)
     {
-        string url = ApiManager.GetUrl(ApiManager.GENERATE);
-        string jsonBody = "{\"track_id\":\"" + title + "\"}";
-        byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
+        string endpoint = $"{ApiManager.MUSIC_LEVEL}/{Uri.EscapeDataString(title)}/level";
 
-        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+        LevelUrlResponse urlResp = null;
+        yield return StartCoroutine(GetRequest<LevelUrlResponse>(endpoint, (resp, ok) =>
         {
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
+            if (ok) urlResp = resp;
+        }));
 
+        if (urlResp == null || string.IsNullOrEmpty(urlResp.url))
+        {
+            Debug.LogError("Impossible de récupérer l'URL du niveau.");
+            onReady?.Invoke(null);
+            yield break;
+        }
+
+        using (UnityWebRequest request = UnityWebRequest.Get(urlResp.url))
+        {
             yield return request.SendWebRequest();
 
             if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Erreur génération : " + request.error);
+                Debug.LogError("Erreur téléchargement niveau : " + request.error);
                 onReady?.Invoke(null);
                 yield break;
             }
 
-            GenerateJobResponse response = JsonUtility.FromJson<GenerateJobResponse>(request.downloadHandler.text);
-            yield return StartCoroutine(PollLevel(response.id, onReady));
+            onReady?.Invoke(JsonUtility.FromJson<MusicData>(request.downloadHandler.text));
         }
-    }
-
-    IEnumerator PollLevel(string jobId, Action<MusicData> onReady)
-    {
-        string url = ApiManager.GetUrl($"{ApiManager.GENERATE}/{jobId}");
-        int maxRetries = 60;
-
-        while (maxRetries-- > 0)
-        {
-            using (UnityWebRequest request = UnityWebRequest.Get(url))
-            {
-                yield return request.SendWebRequest();
-
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    Debug.LogError("Erreur polling : " + request.error);
-                    onReady?.Invoke(null);
-                    yield break;
-                }
-
-                GenerateResult response = JsonUtility.FromJson<GenerateResult>(request.downloadHandler.text);
-
-                if (response.state == "completed")
-                {
-                    onReady?.Invoke(response.level);
-                    yield break;
-                }
-            }
-
-            yield return new WaitForSeconds(2f);
-        }
-
-        Debug.LogError("Timeout : le niveau n'a pas été généré en 2 minutes.");
-        onReady?.Invoke(null);
     }
 }
 
 [System.Serializable]
-public class GenerateJobResponse
+public class LevelUrlResponse
 {
-    public string id;
-}
-
-[System.Serializable]
-public class GenerateResult
-{
-    public string job_id;
-    public string state;
-    public MusicData level;
+    public string url;
 }

@@ -112,8 +112,11 @@ public class SearchUI
 
         Transform addBtn = item.transform.Find("AddToPlaylistButton");
         if (addBtn != null)
+        {
+            addBtn.gameObject.SetActive(true);
             addBtn.GetComponent<Button>().onClick.AddListener(() =>
                 PopupManager.ShowPlaylistPopup(clip.name, averageButtonTransparent));
+        }
 
         Transform playBtn = item.transform.Find("PlayButton");
         if (playBtn != null)
@@ -129,17 +132,21 @@ public class SearchUI
         TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
         if (txt != null) txt.text = $"{track.name} — {track.artist_name} [Jamendo]";
 
-        // Pas d'ajout playlist avant import
         Transform addBtn = item.transform.Find("AddToPlaylistButton");
-        if (addBtn != null) addBtn.gameObject.SetActive(false);
+        if (addBtn != null)
+        {
+            addBtn.gameObject.SetActive(true);
+            addBtn.GetComponent<Button>().onClick.AddListener(() =>
+                musicDAO.StartCoroutine(ImportAndAddToPlaylist(track)));
+        }
 
         Transform playBtn = item.transform.Find("PlayButton");
         if (playBtn != null)
             playBtn.GetComponent<Button>().onClick.AddListener(() =>
-                musicDAO.StartCoroutine(ImportAndPlay(track)));
+                musicDAO.StartCoroutine(ImportAndPlay(track, addBtn)));
     }
 
-    IEnumerator ImportAndPlay(JamendoTrack track)
+    IEnumerator ImportAndPlay(JamendoTrack track, Transform addBtn = null)
     {
         PopupManager.Show("Import en cours...");
 
@@ -196,11 +203,46 @@ public class SearchUI
 
         musiques?.Add(clip);
 
+        if (addBtn != null)
+        {
+            addBtn.gameObject.SetActive(true);
+            addBtn.GetComponent<Button>().onClick.AddListener(() =>
+                PopupManager.ShowPlaylistPopup(musicTitle, averageButtonTransparent));
+        }
+
         if (SessionData.Instance != null)
             SessionData.Instance.titre = musicTitle;
 
         PlayClip(clip);
         PopupManager.Show("Lecture : " + musicTitle);
+    }
+
+    IEnumerator ImportAndAddToPlaylist(JamendoTrack track)
+    {
+        PopupManager.Show("Import en cours...");
+
+        bool done = false;
+        JamendoImportResponse importResponse = null;
+        musicDAO.ImportTrack(track.id, (resp, ok) => { importResponse = ok ? resp : null; done = true; });
+        yield return new WaitUntil(() => done);
+
+        if (importResponse == null) { PopupManager.Show("Échec de l'import."); yield break; }
+        string musicTitle = importResponse.music_title;
+
+        bool urlDone = false;
+        string downloadUrl = null;
+        musicDAO.GetMusicDownloadUrl(musicTitle, url => { downloadUrl = url; urlDone = true; });
+        yield return new WaitUntil(() => urlDone);
+
+        if (string.IsNullOrEmpty(downloadUrl)) { PopupManager.Show("Impossible de récupérer la musique."); yield break; }
+
+        AudioClip clip = null;
+        yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", result => { clip = result; });
+
+        if (clip == null) { PopupManager.Show("Erreur lors du chargement audio."); yield break; }
+
+        musiques?.Add(clip);
+        PopupManager.ShowPlaylistPopup(musicTitle, averageButtonTransparent);
     }
 
     private void PlayClip(AudioClip clip)

@@ -9,6 +9,7 @@ public class PlaylistManager : MonoBehaviour
     private Context Context;
 
     [SerializeField] private PlaylistDAO playlistDAO;
+    [SerializeField] private MusicDAO musicDAO;
 
     public System.Action onLoaded;
 
@@ -152,6 +153,21 @@ public class PlaylistManager : MonoBehaviour
     StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
 }   
    
+    IEnumerator FetchAndCacheClip(string musicTitle, List<AudioClip> clips)
+    {
+        bool urlDone = false;
+        string downloadUrl = null;
+        musicDAO.GetMusicDownloadUrl(musicTitle, url => { downloadUrl = url; urlDone = true; });
+        yield return new WaitUntil(() => urlDone);
+
+        if (string.IsNullOrEmpty(downloadUrl)) yield break;
+
+        yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", clip =>
+        {
+            if (clip != null) clips.Add(clip);
+        });
+    }
+
     IEnumerator RoutinePlaylist(Track trackActuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
     if (!TryGetAudioSource(out AudioSource source))
@@ -162,10 +178,13 @@ public class PlaylistManager : MonoBehaviour
 
     while (trackActuel != null)
     {
+        if (SearchUI.RechercherClip(trackActuel.title, clips) == null && musicDAO != null)
+            yield return StartCoroutine(FetchAndCacheClip(trackActuel.title, clips));
+
         PlayTrack(trackActuel, clips, true);
 
         // Attendre fin réelle OU action utilisateur (ne pas avancer si pause)
-        while (!stopCurrentTrack && (source.isPlaying || source.time < source.clip.length - 0.01f))
+        while (!stopCurrentTrack && source.clip != null && (source.isPlaying || source.time < source.clip.length - 0.01f))
             yield return null;
 
         source.Stop();
