@@ -56,6 +56,11 @@ nav:
     - CI/CD & Pipeline:
       - CI/CD: dev/ci-cd.md
       - Pipeline audio: dev/pipeline.md
+  - Tests utilisateurs:
+    - Protocole de test: tests-utilisateurs/protocole.md
+    - Réalisation de sessions de test: tests-utilisateurs/realisation.md
+    - Compte rendu détaillé des sessions: tests-utilisateurs/compte-rendu.md
+    - Document de synthèse: tests-utilisateurs/synthese.md
 
 markdown_extensions:
   - admonition
@@ -87,4 +92,5 @@ plugins:
   - awesome-pages
 
 extra_css:
+  - extra.css
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
