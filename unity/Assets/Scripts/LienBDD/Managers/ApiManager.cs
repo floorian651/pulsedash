@@ -13,6 +13,7 @@ public static class ApiManager
     public const string JAMENDO_SEARCH = "/api/v1/jamendo/search";
     public const string JAMENDO_IMPORT = "/api/v1/jamendo/import";
     public const string MUSIC_LEVEL    = "/api/v1/music";
+    public const string JOBS           = "/api/v1/jobs";
     
     public static string GetUrl(string endpoint) => $"{BaseUrl}{endpoint}";
 }

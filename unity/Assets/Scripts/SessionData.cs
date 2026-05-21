@@ -11,6 +11,7 @@ public class SessionData : MonoBehaviour
     public string scenePrecedente;
     public string sessionId;
     public string pendingMessage;
+    public MusicData levelData;
 
 
     void Awake()

@@ -17,6 +17,7 @@ public class PopupManager : MonoBehaviour
     private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
     private static GameObject loadingGO;
+    private static TextMeshProUGUI loadingText;
 
     private void Start(){
         crazyPrefab = Resources.Load<GameObject>("UI/Crazy");
@@ -156,6 +157,7 @@ public class PopupManager : MonoBehaviour
         txt.color = Color.white;
         txt.alignment = TextAlignmentOptions.Center;
         UIBuilder.ApplyMontserratFont(txt);
+        loadingText = txt;
 
         RectTransform textRT = textGO.GetComponent<RectTransform>();
         textRT.anchorMin = new Vector2(0.5f, 0.5f);
@@ -165,12 +167,19 @@ public class PopupManager : MonoBehaviour
         textRT.anchoredPosition = Vector2.zero;
     }
 
+    public static void UpdateLoading(string message)
+    {
+        if (loadingText != null)
+            loadingText.text = message;
+    }
+
     public static void HideLoading()
     {
         if (loadingGO != null)
         {
             Object.Destroy(loadingGO);
             loadingGO = null;
+            loadingText = null;
         }
     }
 

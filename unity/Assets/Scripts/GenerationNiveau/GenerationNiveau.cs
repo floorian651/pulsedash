@@ -69,12 +69,19 @@ public class GenerateurNiveau : MonoBehaviour
         if (gameSessionDAO == null)
             gameSessionDAO = FindObjectOfType<GameSessionDAO>();
 
-        PopupManager.ShowLoading("Génération du niveau en cours...");
-
-        if (jsonDAO != null)
-            jsonDAO.FetchLevelFromTitle(analyse_rythme, OnLevelReady);
+        if (SessionData.Instance?.levelData != null)
+        {
+            OnLevelReady(SessionData.Instance.levelData);
+        }
         else
-            Debug.LogError("JsonDAO not found in scene");
+        {
+            // Fallback si on arrive ici sans niveau pré-chargé
+            PopupManager.ShowLoading("Génération du niveau en cours...");
+            if (jsonDAO != null)
+                jsonDAO.FetchLevelFromTitle(analyse_rythme, null, OnLevelReady);
+            else
+                Debug.LogError("JsonDAO not found in scene");
+        }
     }
 
     void OnLevelReady(MusicData levelData)

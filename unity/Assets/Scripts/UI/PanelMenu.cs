@@ -24,6 +24,7 @@ public class PanelMenu : MonoBehaviour
 
     [SerializeField] private MusicDAO musicDAO;
     [SerializeField] private UserDAO _userDAO;
+    [SerializeField] private JsonDAO _jsonDAO;
     private TextMeshProUGUI _usernameLabel;
 
     void Start()
@@ -202,24 +203,38 @@ public class PanelMenu : MonoBehaviour
                 return;
             }
 
-            if (SessionData.Instance != null)
+            if (SessionData.Instance == null) return;
+
+            PopupManager.ShowModeSelectionPopup(mode =>
             {
-                //PopupManager.Show("Le jeu va commencer!");
+                SessionData.Instance.titre = source.clip.name;
+                SessionData.Instance.mode = mode;
+                SessionData.Instance.levelData = null;
 
-                PopupManager.ShowModeSelectionPopup(mode =>
+                if (_jsonDAO == null)
+                    _jsonDAO = FindObjectOfType<JsonDAO>();
+
+                if (_jsonDAO == null)
                 {
-                    Debug.Log("Mode choisi : " + mode);
-                    PopupManager.Show("Le jeu va commencer!");
+                    PopupManager.Show("Erreur : JsonDAO introuvable dans la scène.");
+                    return;
+                }
 
-                    SessionData.Instance.titre = source.clip.name;
-                    //sceneloader.LoadSceneByName(mode + "_GameplayScene");
-                    SessionData.Instance.mode = mode;
-                    sceneloader.LoadSceneByName("GameplayScene");
-                });
+                PopupManager.ShowLoading("Génération du niveau... 0%");
 
-            }
-	
-	    });
+                _jsonDAO.FetchLevelFromTitle(
+                    source.clip.name,
+                    progress => PopupManager.UpdateLoading($"Génération du niveau... {progress}%"),
+                    levelData =>
+                    {
+                        PopupManager.HideLoading();
+                        if (levelData == null) return;
+                        SessionData.Instance.levelData = levelData;
+                        sceneloader.LoadSceneByName("GameplayScene");
+                    }
+                );
+            });
+        });
         }
 	}
 

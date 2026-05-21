@@ -56,6 +56,19 @@ public class LevelApiResponse
 }
 
 [System.Serializable]
+public class JobStatus
+{
+    public string id;          // certains endpoints retournent "id"
+    public string job_id;      // certains retournent "job_id"
+    public string state;       // "pending", "processing", "completed", "failed"
+    public int progress;
+    public string result_url;
+    public string error;
+
+    public string EffectiveId => !string.IsNullOrEmpty(job_id) ? job_id : id;
+}
+
+[System.Serializable]
 public class MusicData
 {
     public int tempo;
