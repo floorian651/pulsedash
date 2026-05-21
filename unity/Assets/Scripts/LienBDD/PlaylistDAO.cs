@@ -46,7 +46,7 @@ public class PlaylistDAO : ApiClient
 
     public void DeletePlaylist(string name, Action<bool> onResult)
     {
-        StartCoroutine(DeleteAuth($"{ApiManager.PLAYLISTS}/{UnityWebRequest.EscapeURL(name)}", onResult));
+        StartCoroutine(DeleteAuth($"{ApiManager.PLAYLISTS}/{name}", onResult));
     }
 
     public void AddTrack(string playlistName, string musicTitle, Action<TrackData, bool> onResult)
