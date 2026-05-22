@@ -186,12 +186,46 @@ public class SearchUI
 
         musiques?.Add(clip);
 
+        // Sélection du mode
+        string selectedMode = null;
+        PopupManager.ShowModeSelectionPopup(mode => { selectedMode = mode; });
+        yield return new WaitUntil(() => selectedMode != null);
+
         if (SessionData.Instance != null)
         {
             SessionData.Instance.titre = musicTitle;
-            if (string.IsNullOrEmpty(SessionData.Instance.mode))
-                SessionData.Instance.mode = "Lazy";
+            SessionData.Instance.mode = selectedMode;
+            SessionData.Instance.levelData = null;
         }
+
+        // Génération + polling du niveau avant de lancer la scène
+        JsonDAO jsonDAO = musicDAO.GetComponent<JsonDAO>() ?? Object.FindObjectOfType<JsonDAO>();
+        if (jsonDAO == null)
+        {
+            PopupManager.Show("Erreur : JsonDAO introuvable.");
+            yield break;
+        }
+
+        PopupManager.ShowLoading("Génération du niveau... 0%");
+
+        MusicData levelData = null;
+        bool levelReady = false;
+
+        jsonDAO.FetchLevelFromTitle(
+            musicTitle,
+            progress => PopupManager.UpdateLoading($"Génération du niveau... {progress}%"),
+            data => { levelData = data; levelReady = true; }
+        );
+
+        yield return new WaitUntil(() => levelReady);
+
+        PopupManager.HideLoading();
+
+        if (levelData == null) yield break;
+
+        if (SessionData.Instance != null)
+            SessionData.Instance.levelData = levelData;
+
         SceneManager.LoadScene("GameplayScene");
     }
 
