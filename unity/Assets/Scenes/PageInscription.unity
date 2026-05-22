@@ -224,8 +224,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -816,7 +816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03db41d148908e46b8f5fafd66552da, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ActionsBouton
-  inputEmail: {fileID: 843972635}
+  inputEmail: {fileID: 0}
   inputMdp: {fileID: 1934253205}
   inputUsername: {fileID: 0}
 --- !u!4 &639268612
@@ -864,7 +864,7 @@ GameObject:
   - component: {fileID: 843972636}
   - component: {fileID: 843972635}
   m_Layer: 5
-  m_Name: InputFieldPseudo (TMP)
+  m_Name: InputFieldEmail (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -947,7 +947,7 @@ MonoBehaviour:
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
   m_RegexValue: 
-  m_GlobalPointSize: 14
+  m_GlobalPointSize: 10
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -1198,7 +1198,16 @@ MonoBehaviour:
   score: 0
   playerName: 
   titre: 
+  mode: 
   scenePrecedente: 
+  sessionId: 
+  pendingMessage: 
+  levelData:
+    tempo: 0
+    key: 
+    beats: []
+    duration: 0
+  statut: 
 --- !u!4 &1016320932
 Transform:
   m_ObjectHideFlags: 0
@@ -1951,8 +1960,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
