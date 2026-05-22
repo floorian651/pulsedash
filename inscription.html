@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, #5f7bff 0%, #162046 45%, #090b16 100%);
+            color: #f5f7ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            padding: 32px;
+            border-radius: 24px;
+            backdrop-filter: blur(18px);
+            background: rgba(15, 24, 52, 0.82);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.33);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            font-size: clamp(1.9rem, 2.4vw, 2.4rem);
+            letter-spacing: 0.03em;
+            text-align: center;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-size: 0.95rem;
+            color: #c7d2ff;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #eef2ff;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #7c91ff;
+            transform: translateY(-1px);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7c91ff, #4f67ff);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(79, 103, 255, 0.25);
+        }
+
+        #message {
+            margin-top: 18px;
+            font-size: 0.95rem;
+            min-height: 2.2em;
+            text-align: left;
+            word-break: break-word;
+            padding: 14px 16px;
+            border-radius: 16px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .message-info {
+            background: rgba(255, 255, 255, 0.06);
+            color: #dbe9ff;
+        }
+
+        .message-success {
+            background: rgba(94, 234, 212, 0.15);
+            color: #d2fff8;
+        }
+
+        .message-error {
+            background: rgba(255, 108, 117, 0.16);
+            color: #ffe4e6;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<main>
+    <section class="card">
+        <h1>Inscrivez-vous sur PulseDash</h1>
+        <form id="register-form">
+            <div class="field">
+                <label for="email">E-Mail</label>
+                <input type="email" id="email" name="email" required />
+            </div>
+
+            <div class="field">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+
+            <div class="field">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+        <div id="message" role="status" aria-live="polite" class="message-info">Remplissez le formulaire pour démarrer.</div>
+        <p style="margin-top: 14px; font-size:0.88rem; color:#aab8ff; text-align:center;">Si l'API ne renvoie pas d'en-tête CORS, la requête est bloquée par le navigateur.</p>
+    </section>
+
+    <script>
+        const form = document.getElementById('register-form');
+        const message = document.getElementById('message');
+        const apiUrl = 'https://pulsedashapi.floabd.app/api/v1/auth/register';
+
+        const setMessage = (html, type = 'info') => {
+            message.innerHTML = html;
+            message.className = '';
+            message.classList.add(`message-${type}`);
+        };
+
+        const formatValidationErrors = (detail) => {
+            if (!Array.isArray(detail) || detail.length === 0) {
+                return '<p>Erreur inconnue de validation.</p>';
+            }
+
+            const items = detail.map((error) => {
+                const path = Array.isArray(error.loc) ? error.loc.join(' → ') : error.loc;
+                return `<li><strong>${path}</strong> : ${error.msg}</li>`;
+            }).join('');
+
+            return `<p>Erreur(s) de validation :</p><ul style="margin: 8px 0 0 18px; text-align:left;">${items}</ul>`;
+        };
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            setMessage('Envoi en cours…', 'info');
+
+            const payload = {
+                email: document.getElementById('email').value.trim(),
+                username: document.getElementById('username').value.trim(),
+                password: document.getElementById('password').value,
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    setMessage(`Inscription réussie !<br>Token access_token : <code style="color:#d4fcff; word-break: break-all;">${data.access_token}</code>`, 'success');
+                } else if (data.detail) {
+                    setMessage(formatValidationErrors(data.detail), 'error');
+                } else {
+                    setMessage(`<p>Erreur : ${response.status} ${response.statusText}</p><pre style="margin:8px 0 0; text-align:left; color:#f8d7da;">${JSON.stringify(data, null, 2)}</pre>`, 'error');
+                }
+            } catch (error) {
+                if (error.message && error.message.toLowerCase().includes('failed to fetch')) {
+                    setMessage('Erreur CORS : le navigateur bloque l\'accès à l\'API. Le serveur doit renvoyer Access-Control-Allow-Origin ou utiliser un proxy côté serveur.', 'error');
+                } else {
+                    setMessage(`Erreur réseau : ${error.message}`, 'error');
+                }
+            }
+        });
+    </script>
+</main>
+</body>
+</html>
