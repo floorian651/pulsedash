@@ -21,13 +21,27 @@ Le projet repose sur une architecture qui contient deux composants indépendants
 
 ---
 
-## 2. Architecture Système
+## 2. Comment jouer
+
+PulseDash se distribue sous forme de binaire compilé depuis Unity. Téléchargez la dernière version, extrayez l'archive et lancez l'exécutable. Aucune installation supplémentaire n'est requise.
+
+1. Téléchargez l'exécutable correspondant à votre système d'exploitation dans Releases.
+2. Dans le dossier que vous venez de télécharger, lancez PulseDash. Vous êtes maintenant sur le jeu !
+3. Depuis l'écran d'accueil, créez vous un compte puis connectez-vous à ce compte (ou autre compte préalablement existant).
+4. Sélectionnez un morceau depuis la barre de recherche puis lancez le jeu.
+5. Choisissez un mode de jeu.
+6. Le backend génère le niveau à partir de l'analyse audio, patientez quelques secondes.
+7. Le niveau se charge et la partie commence.
+8. Le personnage avance automatiquement  déplacez-vous latéralement et sautez sur les pulsers (dragons).
+9. À la fin du parcours, votre score est affiché.
+
+## 3. Architecture Système
 
 Le présent dépôt héberge exclusivement le **client Unity**. Le backend est maintenu dans un dépôt dédié :
 
 **[Pulsedash Backend](https://github.com/floorian651/pulsedash_backend)**
 
-## 3. Prérequis Système
+## 4. Prérequis Système
 
 ### Client Unity
 
@@ -47,7 +61,7 @@ Le présent dépôt héberge exclusivement le **client Unity**. Le backend est m
 | Git | 2.x | Contrôle de version |
 ---
 
-## 4. Configuration de l'Environnement Backend
+## 5. Configuration de l'Environnement Backend
 
 ### Backend — fichier `.env`
 
@@ -75,11 +89,11 @@ Créer un fichier `.env` à la racine du **dépôt backend** (après clonage, vo
 > Les variables `CELERY_BROKER_URL` et `CELERY_RESULT_BACKEND` ne doivent **pas** figurer dans `.env` ,elles sont construites par `celery_app.py` à partir des variables Redis individuelles (`REDIS_HOST`, `REDIS_PORT`, `REDIS_DB`).
 > Voir .env projet backend si il y a besoin d'exposer l'api via le tunnel cloudflare.
 
-## 5. Procédure d'Installation et de Démarrage
+## 6. Procédure d'Installation et de Démarrage
 
 Documentation complète : [https://floorian651.github.io/pulsedash/](https://floorian651.github.io/pulsedash/)
 
-### 5.1 Frontend
+### 6.1 Frontend
 
 #### Ouvrir le projet dans Unity Hub
 
@@ -89,25 +103,25 @@ Documentation complète : [https://floorian651.github.io/pulsedash/](https://flo
 4. Vérifier que l'éditeur **6000.3.5f1** est installé dans Unity Hub.
 5. Ouvrir le projet — Unity importe les packages automatiquement (la première ouverture peut prendre plusieurs minutes).
 
-### 5.2 Backend
+### 6.2 Backend
 
-#### 5.2.1 Cloner le dépôt backend
+#### 6.2.1 Cloner le dépôt backend
 
 ```bash
 git clone https://github.com/floorian651/pulsedash_backend
 cd pulsedash_backend
 ```
 
-#### 5.2.2 Configurer les variables d'environnement
+#### 6.2.2 Configurer les variables d'environnement
 
 ```bash
 cp .env.example .env
 # Renseigner toutes les variables de la section 4
 ```
 
-## 6. Crédits
+## 7. Crédits
 
-### Assets récupérés sur poly.pizza
+### 7.1 Assets récupérés sur poly.pizza
 - **Ligne d’arrivée** : 034 by Daisuke Takeoka [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/67FjFVyAxq0)
 - **Joueur** : Animated Platformer Character by Quaternius (https://poly.pizza/m/kKtL4zvS3n)
 - **Pulsers (dragons)** : Dragon by Quaternius (https://poly.pizza/m/VBvzjFIYws)
@@ -119,17 +133,17 @@ cp .env.example .env
 - **Cerfs hémiones** : Mule deer by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/e6mV6AYvIrE)
 
 
-### Autres assets
+### 7.2 Autres assets
 - **Forêt** : KayKit - Forest Nature Pack - by Kay Lousberg (https://kaylousberg.itch.io/kaykit-forest)
 - **Assets médievaux pour l’image de fond de la plateforme de streaming** : KayKit - Medieval Hexagon Pack  - by Kay Lousberg (https://kaylousberg.itch.io/kaykit-medieval-hexagon)
 
 
-### Images
+### 7.3 Images
 - **Image de fond pour les crédits** : Image trouvée sur Canva (https://www.canva.com/s/templates?query=beige+and+black+vintage+sketch)
 - **Images des boutons et autres éléments de l’interface utilisateur** : Images trouvées sur Canva (https://www.canva.com)
 
 
-### Équipe de développement
+### 7.4 Équipe de développement
 - Florian ABADIE (https://github.com/floorian651)
 - Chloé AUBRY (https://github.com/Chlaubry)
 - Arthur BLAMART (https://github.com/Arthur-Blamart)
