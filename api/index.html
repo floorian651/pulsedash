@@ -16,7 +16,7 @@
         <link rel="prev" href="../game/">
       
       
-        <link rel="next" href="../user/getting-started/">
+        <link rel="next" href="architecture/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Changelog - PulseDash</title>
+        <title>Vue d'ensemble - PulseDash</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#changelog" class="md-skip">
+        <a href="#pulsedash-api" class="md-skip">
           Aller au contenu
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Changelog
+              Vue d'ensemble
             
           </span>
         </div>
@@ -269,33 +269,14 @@
     
   
   
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Changelog
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
     
     
-      <li class="md-tabs__item">
-        <a href="../user/getting-started/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
-  Guide utilisateur
+  API
 
         </a>
       </li>
@@ -311,7 +292,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../dev/CONTRIBUTING/" class="md-tabs__link">
+        <a href="../dev/ci-cd/" class="md-tabs__link">
           
   
   
@@ -476,6 +457,63 @@
   
   
   
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -491,7 +529,7 @@
   <span class="md-ellipsis">
     
   
-    Changelog
+    Vue d'ensemble
   
 
     
@@ -509,7 +547,7 @@
   <span class="md-ellipsis">
     
   
-    Changelog
+    Vue d'ensemble
   
 
     
@@ -535,120 +573,612 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#non-publie" class="md-nav__link">
+  <a href="#informations-generales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Non publié]
+        Informations générales
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[Non publié]">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#en-cours" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        En cours
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#020-2026-05-11" class="md-nav__link">
+  <a href="#healthcheck" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.2.0] - 2026-05-11
+        Healthcheck
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[0.2.0] - 2026-05-11">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#modifie" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modifié
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#010-2026-02-02" class="md-nav__link">
+  <a href="#authentification-rapide" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.1.0] - 2026-02-02
+        Authentification rapide
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[0.1.0] - 2026-02-02">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ajoute" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajouté
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#001-initialisation" class="md-nav__link">
+  <a href="#limites-de-debit-rate-limiting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.0.1] - Initialisation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="[0.0.1] - Initialisation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ajoute_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajouté
+        Limites de débit (Rate Limiting)
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-de-la-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ressources de la documentation
+      
+    </span>
+  </a>
   
 </li>
       
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Endpoints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Endpoints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/auth/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/music/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Musiques
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/generate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Génération
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jobs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/jamendo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jamendo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/playlists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Playlists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/tracks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tracks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/scores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/game-sessions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sessions de jeu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="endpoints/profile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Profil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Modèles de données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="websocket/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebSocket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codes d'erreur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Réseau (iptables)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -686,7 +1216,7 @@
   <span class="md-ellipsis">
     
   
-    Guide utilisateur
+    Développement
   
 
     
@@ -702,7 +1232,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Guide utilisateur
+    Développement
   
 
           </label>
@@ -715,14 +1245,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../user/getting-started/" class="md-nav__link">
+      <a href="../dev/ci-cd/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Premiers pas
+    CI/CD
   
 
     
@@ -775,7 +1305,7 @@
   <span class="md-ellipsis">
     
   
-    Développement
+    Gestion de projet
   
 
     
@@ -788,325 +1318,6 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Développement
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/CONTRIBUTING/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Contribution
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/setup/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Installation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/architecture/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Architecture
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/data-schema/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Schéma des données
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/api/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    API
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CI/CD & Pipeline
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    CI/CD & Pipeline
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/ci-cd/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CI/CD
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dev/pipeline/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Pipeline audio
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Gestion de projet
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1229,10 +1440,10 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
             
   
   
@@ -1250,8 +1461,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_7">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1407,114 +1618,57 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#non-publie" class="md-nav__link">
+  <a href="#informations-generales" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Non publié]
+        Informations générales
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[Non publié]">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#en-cours" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        En cours
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#020-2026-05-11" class="md-nav__link">
+  <a href="#healthcheck" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.2.0] - 2026-05-11
+        Healthcheck
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[0.2.0] - 2026-05-11">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#modifie" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modifié
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#010-2026-02-02" class="md-nav__link">
+  <a href="#authentification-rapide" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.1.0] - 2026-02-02
+        Authentification rapide
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="[0.1.0] - 2026-02-02">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ajoute" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajouté
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#001-initialisation" class="md-nav__link">
+  <a href="#limites-de-debit-rate-limiting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [0.0.1] - Initialisation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="[0.0.1] - Initialisation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ajoute_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Ajouté
+        Limites de débit (Rate Limiting)
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#ressources-de-la-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ressources de la documentation
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1538,50 +1692,147 @@
   
 
 
-<h1 id="changelog">Changelog</h1>
-<p>Toutes les modifications notables du projet PulseDash sont documentées ici.</p>
-<h2 id="non-publie">[Non publié]</h2>
-<h3 id="en-cours">En cours</h3>
-<ul>
-<li>Intégration complète du pipeline audio côté backend</li>
-<li>Notifications WebSocket vers Unity à la fin des jobs</li>
-<li>Tests d'intégration des endpoints API</li>
-</ul>
-<h2 id="020-2026-05-11">[0.2.0] - 2026-05-11</h2>
-<h3 id="modifie">Modifié</h3>
-<ul>
-<li>Séparation du projet en deux dépôts indépendants : client Unity (présent dépôt) et backend (<a href="https://github.com/floorian651/pulsedash_backend">floorian651/pulsedash_backend</a>)</li>
-<li>Suppression du backend (API, Celery, Redis, MinIO, pipeline, tests) de ce dépôt</li>
-<li>Mise à jour de la documentation pour refléter l'architecture découplée</li>
-</ul>
-<h2 id="010-2026-02-02">[0.1.0] - 2026-02-02</h2>
-<h3 id="ajoute">Ajouté</h3>
-<ul>
-<li>Architecture backend avec FastAPI et Celery</li>
-<li>Pipeline d'analyse rythmique avec librosa (tempo, beats, tonalité)</li>
-<li>Export JSON des résultats d'analyse (<code>level.json</code>)</li>
-<li>Infrastructure Docker Compose (Redis, PostgreSQL, MinIO)</li>
-<li>Intégration Jamendo API (téléchargement MP3)</li>
-<li>Documentation MkDocs Material</li>
-<li>Guide de contribution Git Flow</li>
-<li>Dev Container avec Python 3.12</li>
-</ul>
-<h2 id="001-initialisation">[0.0.1] - Initialisation</h2>
-<h3 id="ajoute_1">Ajouté</h3>
-<ul>
-<li>Structure initiale du projet Unity</li>
-<li>Configuration de base</li>
-<li>Documentation préliminaire</li>
-</ul>
+<h1 id="pulsedash-api">PulseDash API</h1>
+<p><strong>PulseDash</strong> est une API REST développée avec <a href="https://fastapi.tiangolo.com/">FastAPI</a> qui constitue le backend d'un jeu de rythme. Elle orchestre la gestion des utilisateurs, le catalogue musical, la génération automatique de niveaux de jeu à partir d'un fichier audio, ainsi que le suivi des scores et sessions de jeu.</p>
+<hr />
+<h2 id="informations-generales">Informations générales</h2>
+<table>
+<thead>
+<tr>
+<th>Propriété</th>
+<th>Valeur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>URL de base</strong></td>
+<td><code>https://pulsedashapi.floabd.app</code></td>
+</tr>
+<tr>
+<td><strong>Préfixe API</strong></td>
+<td><code>/api/v1</code></td>
+</tr>
+<tr>
+<td><strong>Format</strong></td>
+<td>JSON (application/json)</td>
+</tr>
+<tr>
+<td><strong>Authentification</strong></td>
+<td>JWT</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>1.0.0</td>
+</tr>
+</tbody>
+</table>
+<p>Toutes les routes API sont accessibles sous le préfixe <code>/api/v1</code>. Exemple :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>GET https://pulsedashapi.floabd.app/api/v1/music
+</code></pre></div>
+<hr />
+<h2 id="healthcheck">Healthcheck</h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Requête</label><label for="__tabbed_1_2">Réponse 200</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="err">GET /</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;app&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PulseDash API&quot;</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<hr />
+<h2 id="authentification-rapide">Authentification rapide</h2>
+<p>L'API utilise des tokens JWT. Pour accéder aux routes protégées, inclure le token dans l'en-tête HTTP :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="err">Authorization: Bearer &lt;access_token&gt;</span>
+</code></pre></div>
+<blockquote>
+<p>Voir la section <a href="authentication/">Authentification</a> pour le détail du cycle de vie des tokens.</p>
+</blockquote>
+<hr />
+<h2 id="limites-de-debit-rate-limiting">Limites de débit (Rate Limiting)</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Limite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST /auth/register</code></td>
+<td>5 / minute</td>
+</tr>
+<tr>
+<td><code>POST /auth/login</code></td>
+<td>10 / minute</td>
+</tr>
+<tr>
+<td><code>POST /auth/refresh</code></td>
+<td>10 / minute</td>
+</tr>
+<tr>
+<td><code>GET /jamendo/search</code></td>
+<td>30 / minute</td>
+</tr>
+<tr>
+<td><code>POST /jamendo/import</code></td>
+<td>10 / minute</td>
+</tr>
+<tr>
+<td><code>POST /generate</code></td>
+<td>10 / minute</td>
+</tr>
+</tbody>
+</table>
+<p>En cas de dépassement, l'API retourne <code>429 Too Many Requests</code>.</p>
+<hr />
+<h2 id="ressources-de-la-documentation">Ressources de la documentation</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="architecture/">Architecture</a></td>
+<td>Vue d'ensemble technique, flux de données, infrastructure</td>
+</tr>
+<tr>
+<td><a href="authentication/">Authentification</a></td>
+<td>JWT, refresh tokens, blacklist</td>
+</tr>
+<tr>
+<td><a href="endpoints/auth/">Endpoints</a></td>
+<td>Référence complète de chaque route</td>
+</tr>
+<tr>
+<td><a href="models/">Modèles de données</a></td>
+<td>Schémas Pydantic et modèles SQLAlchemy</td>
+</tr>
+<tr>
+<td><a href="websocket/">WebSocket</a></td>
+<td>Suivi temps réel des jobs de génération</td>
+</tr>
+<tr>
+<td><a href="errors/">Codes d'erreur</a></td>
+<td>Référence des codes HTTP retournés</td>
+</tr>
+</tbody>
+</table>
 
 
 
 
 
 
-
-  
-  
 
 
 

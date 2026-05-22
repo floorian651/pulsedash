@@ -1,0 +1,66 @@
+flowchart TB
+    subgraph Clients["Clients"]
+        UNITY["🎮 Unity (jeu)"]
+        WEB["🌐 Frontend Web"]
+    end
+
+    subgraph Edge["Edge"]
+        CF["☁️ Cloudflare Tunnel"]
+    end
+
+    subgraph API["FastAPI  ·  :9050"]
+        direction TB
+        REST["REST API\n/api/v1/..."]
+        WS["WebSocket\n/ws/jobs/{id}"]
+
+        subgraph Routers["Routers"]
+            R_AUTH["auth"]
+            R_MUSIC["music · playlists · tracks"]
+            R_JAM["jamendo"]
+            R_GEN["generate"]
+            R_JOBS["jobs"]
+            R_SCORES["scores · game_sessions"]
+            R_PROFILE["profile"]
+        end
+    end
+
+    subgraph Async["Traitement asynchrone"]
+        REDIS["🗄️ Redis\nBroker + Pub/Sub"]
+        CELERY["⚙️ Celery Worker\ngenerate_level"]
+        PIPELINE["🎵 Pipeline Librosa\nBPM · Key · Hits · Sections"]
+    end
+
+    subgraph Storage["Stockage"]
+        PG[("🐘 PostgreSQL\nUsers · Tracks · Playlists\nScores · GameSessions · Jobs")]
+        MINIO[("🪣 MinIO\nbucket: music\nbucket: levels")]
+    end
+
+    subgraph External["Externe"]
+        JAMENDO["🎶 Jamendo API"]
+    end
+
+    Clients -->|"HTTPS"| CF
+    CF -->|"HTTP"| API
+
+    REST --> Routers
+    WS <-->|"Pub/Sub"| REDIS
+
+    Routers --> PG
+    Routers -->|"Enqueue task"| REDIS
+    Routers <-->|"Presigned URL"| MINIO
+    R_JAM <-->|"Search / Download"| JAMENDO
+
+    REDIS -->|"Task queue"| CELERY
+    CELERY --> PIPELINE
+    CELERY <-->|"Download / Upload"| MINIO
+    CELERY -->|"Publish progress"| REDIS
+    CELERY --> PG
+
+    PIPELINE -->|"level.json"| CELERY
+
+    style Clients fill:#1e3a5f,color:#fff,stroke:#4a9eff
+    style Edge fill:#2d1b4e,color:#fff,stroke:#9b59b6
+    style API fill:#1a3a2a,color:#fff,stroke:#2ecc71
+    style Async fill:#3a2000,color:#fff,stroke:#f39c12
+    style Storage fill:#2a1a1a,color:#fff,stroke:#e74c3c
+    style External fill:#1a2a3a,color:#fff,stroke:#3498db
