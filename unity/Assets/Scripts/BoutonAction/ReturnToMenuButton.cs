@@ -30,16 +30,13 @@ public static class ReturnToMenuButton
 
         btn.onClick.AddListener(() =>
         {
-
             if (SessionData.Instance != null)
             {
+                SessionData.Instance.mode = null;
+                SessionData.Instance.levelData = null;
                 string scenePrecedente = SessionData.Instance.scenePrecedente;
-                Debug.Log("Scene précédente récupérée : "+ scenePrecedente);
                 SceneManager.LoadScene(scenePrecedente);
             }
-
-
-            
         });
 
     }
