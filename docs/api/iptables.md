@@ -3,7 +3,7 @@
 ## Vue d'ensemble
 Expose les services PostgreSQL et MinIO via le VPN Tailscale grâce à des règles NAT iptables.
 
-> Note : le nom du bridge en production est fixé à `pulsedash-br` et le sous-réseau/IPs sont définis dans [podman-compose.yml](podman-compose.yml). Les adresses ci-dessous sont les assignations stables utilisées pour les règles DNAT Tailscale.
+> Note : le nom du bridge en production est fixé à `pulsedash-br` et le sous-réseau/IPs sont définis dans [podman-compose.yml](podman-compose.yml). Les adresses ci-dessous sont les ip fixes utilisées pour les règles DNAT Tailscale.
 
 ---
 
