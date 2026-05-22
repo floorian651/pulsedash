@@ -54,11 +54,7 @@ public class ActionsBouton : MonoBehaviour
 
             PopupManager.Show("Compte créé ! Connectez-vous !");
 
-            SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
-            if (sceneloader != null)
-            {
-                sceneloader.LoadSceneByName("PageConnexion");
-            }
+            PageConnexion();
         }
 
     }
