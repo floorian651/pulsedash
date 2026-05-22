@@ -49,7 +49,9 @@ public class ActionsBouton : MonoBehaviour
 
     public void Inscription()
     {
-        string username = inputUsername != null ? inputUsername.text : null;
+        string username = (inputUsername != null && !string.IsNullOrEmpty(inputUsername.text))
+            ? inputUsername.text
+            : inputEmail.text;
 
         userDAO.Register(inputEmail.text, inputMdp.text, username, success =>
         {
