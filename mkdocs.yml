@@ -63,6 +63,7 @@ nav:
     - Modèles de données: api/models.md
     - WebSocket: api/websocket.md
     - Codes d'erreur: api/errors.md
+    - Réseau (iptables): api/iptables.md
   - Développement:
     - CI/CD: dev/ci-cd.md
 
