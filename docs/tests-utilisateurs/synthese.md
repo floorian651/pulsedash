@@ -60,14 +60,14 @@ xychart-beta
     bar [0, 1, 8, 7, 1]
 ```
 
-Ce que l’utilisateur à moins apprécié:
+Ce que l’utilisateur a moins apprécié:
 
 - Les bugs
 - L’interface
 - Manque de dynamisme du jeu
 - Caméra
 
-Ce que l’utilisateur à apprécié:
+Ce que l’utilisateur a apprécié:
 
 - Le concept/principe
 - Le gameplay/jeu
