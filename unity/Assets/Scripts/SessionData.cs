@@ -9,6 +9,9 @@ public class SessionData : MonoBehaviour
     public string titre;
     public string mode;
     public string scenePrecedente;
+    public string sessionId;
+    public string pendingMessage;
+    public MusicData levelData;
     public string statut;
 
 

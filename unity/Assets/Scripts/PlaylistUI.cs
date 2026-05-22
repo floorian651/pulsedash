@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Object;
 using UnityEngine.UI;
 using TMPro;
 using System;
@@ -213,17 +212,13 @@ public static class PlaylistUI
                 },
                 () =>
                 {
-                    bool removed = pm.RemovePlaylist(playlist.name);
-                    if (removed)
+                    bool found = pm.RemovePlaylist(playlist.name, () =>
                     {
                         PopupManager.Show("Playlist supprimée : " + playlist.name);
-                    }
-                    else
-                    {
+                        AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
+                    });
+                    if (!found)
                         PopupManager.Show("Playlist introuvable");
-                    }
-
-                    AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, clips, resultsContainer, containerListeMusique, playlistItemPrefab, onClick);
                 }
             );
         });
@@ -273,40 +268,46 @@ public static class PlaylistUI
             if (subButtonTransform != null)
             {   Debug.Log("Bouton subutton créé");
                 Button subButton = subButtonTransform.GetComponent<Button>();
+                Button rootBtn = item.GetComponent<Button>();
                 subButton.onClick.AddListener(() =>
                 {
-                    pm.RemoveTrackFromPlaylist(nomplaylist, track.title);
-                    PopupManager.Show("Musique supprimée : " + track.title);
+                    if (rootBtn != null) rootBtn.interactable = false;
+                    string trackTitle = track.title;
+                    pm.RemoveTrackFromPlaylist(nomplaylist, trackTitle,
+                        () =>
+                        {
+                            PopupManager.Show("Musique supprimée : " + trackTitle);
+                            foreach (Transform child in resultsContainer)
+                                UnityEngine.Object.Destroy(child.gameObject);
+                            AfficherMusiquesParPlaylist(averageButtonPrefab, musicItemPrefab, clips, nomplaylist, resultsContainer);
+                        },
+                        () => { if (rootBtn != null) rootBtn.interactable = true; });
                 });
             }
 
-            // Récupérer le bouton Play du prefab
-            Transform playButtonTransform = item.transform.Find("PlayButton");
-            if (playButtonTransform == null)
+            // Root button → sélectionne + joue la musique
+            Button itemBtn = item.GetComponent<Button>();
+            if (itemBtn != null)
             {
-                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
-                continue;
+                itemBtn.onClick.AddListener(() =>
+                {
+                    pm.PlayTrackWithFetch(track.title, clips);
+                });
             }
 
-            Button playButton = playButtonTransform.GetComponent<Button>();
-
-            // Ajouter l'action Play
-            PanelMenu panelMenu = FindObjectOfType<PanelMenu>();
-                playButton.onClick.AddListener(() =>
+            // PlayButton → joue la musique
+            Transform playButtonTransform = item.transform.Find("PlayButton");
+            if (playButtonTransform != null)
+            {
+                Button playButton = playButtonTransform.GetComponent<Button>();
+                if (playButton != null)
                 {
-                if (panelMenu != null && panelMenu.Context.TryGetAudioSource(out AudioSource source))
-                {
-                    source.clip = clips.FirstOrDefault(c => c.name.ToLower().Contains(track.title.ToLower()));
+                    playButton.onClick.AddListener(() =>
+                    {
+                        pm.PlayTrackWithFetch(track.title, clips);
+                    });
                 }
-
-                if (panelMenu != null)
-                {
-                    panelMenu.Context.SetSliderVisible(true);
-                    panelMenu.Context.SetPlayPauseVisible(true);
-                }
-
-                PopupManager.Show("Musique sélectionnée : " + track.title);
-            });
+            }
 	    }
 
 	    var containerRT = resultsContainer as RectTransform;

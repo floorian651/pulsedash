@@ -1,30 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class SearchUI
 {
     private const float MusicItemRowHeight = 80f;
-    private const float MusicItemRowScale = 4f;
 
-	public List<AudioClip> musiques;
-	private Context Context;
-	    // Zone pour afficher les résultats du menu déroulant 
-	private Transform resultsContainer;
-	    // ScrollView créé sous la barre de recherche (peut bloquer les clics si on affiche les résultats ailleurs)
-	private ScrollRect builtScrollRect;
+    public List<AudioClip> musiques;
+    private Context Context;
+    private Transform resultsContainer;
+    private ScrollRect builtScrollRect;
 
-    private GameObject playlistItemPrefab;
     private GameObject musicItemPrefab;
     private GameObject averageButtonTransparent;
-    
+
+    private MusicDAO musicDAO;
+
     public static SearchUI Create(Transform parent, Context context)
     {
-        // Conteneur vertical 
         Transform searchContainer = UIBuilder.CreateSearchContainer(parent);
-
         TMP_InputField searchBar = UIBuilder.CreateSearchBar(searchContainer);
         Transform scroll = UIBuilder.CreateScrollView(searchContainer);
 
@@ -32,138 +30,255 @@ public class SearchUI
         ui.resultsContainer = scroll;
         ui.builtScrollRect = scroll != null ? scroll.GetComponentInParent<ScrollRect>() : null;
         ui.Context = context;
-        // Soumission (Entrée) pour l'affichage long
         searchBar.onSubmit.AddListener(ui.OnSearchSubmit);
-        //searchBar.onValueChanged.AddListener(ui.OnSearch); il faudra le remettre pour MenuGenerator
 
         return ui;
     }
 
-    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent)
+    public void Init(List<AudioClip> clips, GameObject playlistItemPrefab, GameObject musicItemPrefab, GameObject averageButtonTransparent, MusicDAO musicDAO = null)
     {
         musiques = clips;
-        this.playlistItemPrefab = playlistItemPrefab;
         this.musicItemPrefab = musicItemPrefab;
         this.averageButtonTransparent = averageButtonTransparent;
+        this.musicDAO = musicDAO;
     }
 
     public static AudioClip RechercherClip(string nomMusique, List<AudioClip> musiques)
-{
-    return musiques.FirstOrDefault(c => c.name.ToLower().Contains(nomMusique.ToLower()));
-}
-
-// Pour l'utiliser il faut créer un prefab avec plusieurs attribut (titre, bouton play, ajouter à une playlist, etc) 
-	//BEAUCOUP à MODIFIER
-
-	private void OnSearchSubmit(string nomTape)
-	{   
-        RectTransform contentRT = UIBuilder.CreateScrollContent(resultsContainer);
-
-
-		    // Le container du middle area doit empiler des items de façon compacte.
-		    var vlg = contentRT.GetComponent<VerticalLayoutGroup>();
-		    if (vlg != null)
-		    {
-		        vlg.childControlHeight = true;
-		        vlg.childForceExpandHeight = false;
-		        vlg.childControlWidth = true;
-		        vlg.childForceExpandWidth = true;
-		        vlg.spacing = 6;
-		        vlg.childAlignment = TextAnchor.UpperCenter;
-		    }
-
-	    if (string.IsNullOrWhiteSpace(nomTape))
-	        return;
-
-    nomTape = nomTape.ToLower();
-
-    var resultats = musiques
-        .Where(c => c.name.ToLower().Contains(nomTape))
-        .ToList();
-
-    if (musicItemPrefab == null)
     {
-        Debug.LogError("musicItemPrefab n'est pas assigné dans SearchUI.Init()");
-        return;
+        return musiques.FirstOrDefault(c => c.name.ToLower().Contains(nomMusique.ToLower()));
     }
 
-		    foreach (var clip in resultats)
-		    {
-		        // Créer une "ligne" de liste, puis mettre le prefab dedans sans le redimensionner (asset inchangé).
-		        GameObject item = UIBuilder.InstantiateMusicItemRow(musicItemPrefab, contentRT, MusicItemRowHeight);
+    private void OnSearchSubmit(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query)) return;
 
-		        // Mettre le nom de la musique
-		        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
-		        if (txt != null)
-		            txt.text = clip.name;
-	
-		        // La hauteur visible en liste est pilotée par le conteneur "row".
-	
-	
-	        // Récupérer le bouton + du prefab
-	        Transform addButtonTransform = item.transform.Find("AddToPlaylistButton");
-            if (addButtonTransform != null)
-            {
-                Button addButton = addButtonTransform.GetComponent<Button>();
-                addButton.onClick.AddListener(() =>
-                {
-                    PopupManager.ShowPlaylistPopup(clip.name,averageButtonTransparent);
-                });
-            }
+        RectTransform contentRT = UIBuilder.CreateScrollContent(resultsContainer);
+        var vlg = contentRT.GetComponent<VerticalLayoutGroup>();
+        if (vlg != null)
+        {
+            vlg.childControlHeight = true;
+            vlg.childForceExpandHeight = false;
+            vlg.childControlWidth = true;
+            vlg.childForceExpandWidth = true;
+            vlg.spacing = 6;
+            vlg.childAlignment = TextAnchor.UpperCenter;
+        }
 
-            // Récupérer le bouton Play du prefab
-            Transform playButtonTransform = item.transform.Find("PlayButton");
-            if (playButtonTransform == null)
-            {
-                Debug.LogError("PlayButton introuvable dans le prefab MusicItem !");
-                continue;
-            }
+        // Résultats locaux
+        var localResults = musiques?
+            .Where(c => c.name.ToLower().Contains(query.ToLower()))
+            .ToList() ?? new List<AudioClip>();
 
-            Button playButton = playButtonTransform.GetComponent<Button>();
+        foreach (AudioClip clip in localResults)
+            AddLocalMusicItem(contentRT, clip);
 
-        // Ajouter l'action Play
-	        playButton.onClick.AddListener(() =>
-	        {
-            if (Context != null && Context.TryGetAudioSource(out AudioSource source))
-            {
-                source.clip = clip;
-            }
+        // Résultats Jamendo
+        if (musicDAO != null)
+            musicDAO.StartCoroutine(SearchJamendoAndDisplay(query, contentRT));
+        else
+            Debug.LogWarning("MusicDAO non assigné dans SearchUI.");
 
-            if (Context != null)
-            {
-                Context.SetSliderVisible(true);
-                Context.SetPlayPauseVisible(true);
-            }
-
-            PopupManager.Show("Musique sélectionnée : " + clip.name);
-
-	            
-	        });
-	    }
-
-	    var containerRT = contentRT as RectTransform;
-		    if (containerRT != null)
-		    {
-		        LayoutRebuilder.ForceRebuildLayoutImmediate(containerRT);
-		    }
-		}
-
-		
-
-
-	public void SetResultsContainer(Transform container)
-	    {
-	        this.resultsContainer = container;
-	        // Si on affiche les résultats dans un autre container (ex: CenterRight), on désactive le ScrollView
-	        // créé sous la barre de recherche pour éviter qu'il capture les raycasts au-dessus des boutons.
-	        if (builtScrollRect != null)
-	        {
-	            bool useBuiltScroll =
-	                container == builtScrollRect.content ||
-	                container == builtScrollRect.transform ||
-	                (container != null && container.IsChildOf(builtScrollRect.transform));
-	            builtScrollRect.gameObject.SetActive(useBuiltScroll);
-	        }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
     }
 
+    IEnumerator SearchJamendoAndDisplay(string query, RectTransform contentRT)
+    {
+        bool done = false;
+        JamendoTrack[] tracks = null;
+
+        musicDAO.SearchJamendo(query, results =>
+        {
+            tracks = results;
+            done = true;
+        });
+
+        yield return new WaitUntil(() => done);
+
+        if (tracks == null || tracks.Length == 0) yield break;
+
+        foreach (JamendoTrack track in tracks)
+            AddJamendoMusicItem(contentRT, track);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(contentRT);
+    }
+
+    private void AddLocalMusicItem(RectTransform contentRT, AudioClip clip)
+    {
+        if (musicItemPrefab == null) return;
+
+        GameObject item = UIBuilder.InstantiateMusicItemRow(musicItemPrefab, contentRT, MusicItemRowHeight);
+
+        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+        if (txt != null) txt.text = clip.name;
+
+        Transform addBtn = item.transform.Find("AddToPlaylistButton");
+        if (addBtn != null)
+        {
+            addBtn.gameObject.SetActive(true);
+            addBtn.GetComponent<Button>().onClick.AddListener(() =>
+                PopupManager.ShowPlaylistPopup(clip.name, averageButtonTransparent));
+        }
+
+        Transform playBtn = item.transform.Find("PlayButton");
+        if (playBtn != null)
+            playBtn.GetComponent<Button>().onClick.AddListener(() => PlayClip(clip));
+    }
+
+    private void AddJamendoMusicItem(RectTransform contentRT, JamendoTrack track)
+    {
+        if (musicItemPrefab == null) return;
+
+        GameObject item = UIBuilder.InstantiateMusicItemRow(musicItemPrefab, contentRT, MusicItemRowHeight);
+
+        TMP_Text txt = item.GetComponentInChildren<TMP_Text>();
+        if (txt != null) txt.text = $"{track.name} — {track.artist_name} [Jamendo]";
+
+        Transform addBtn = item.transform.Find("AddToPlaylistButton");
+        if (addBtn != null)
+        {
+            addBtn.gameObject.SetActive(true);
+            addBtn.GetComponent<Button>().onClick.AddListener(() =>
+                musicDAO.StartCoroutine(ImportAndAddToPlaylist(track)));
+        }
+
+        Transform playBtn = item.transform.Find("PlayButton");
+        if (playBtn != null)
+            playBtn.GetComponent<Button>().onClick.AddListener(() =>
+                musicDAO.StartCoroutine(ImportAndPlay(track, addBtn)));
+    }
+
+    IEnumerator ImportAndPlay(JamendoTrack track, Transform addBtn = null)
+    {
+        PopupManager.ShowLoading("Import en cours...");
+
+        bool done = false;
+        JamendoImportResponse importResponse = null;
+
+        musicDAO.ImportTrack(track.id, (response, success) =>
+        {
+            importResponse = success ? response : null;
+            done = true;
+        });
+
+        yield return new WaitUntil(() => done);
+
+        if (importResponse == null)
+        {
+            PopupManager.HideLoading();
+            PopupManager.Show("Échec de l'import.");
+            yield break;
+        }
+
+        string musicTitle = importResponse.music_title;
+        PopupManager.ShowLoading("Téléchargement...");
+
+        string downloadUrl = musicDAO.GetAudioDownloadUrl(musicTitle);
+        AudioClip clip = null;
+        yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", result => { clip = result; });
+
+        PopupManager.HideLoading();
+
+        if (clip == null)
+        {
+            PopupManager.Show("Erreur lors du chargement audio.");
+            yield break;
+        }
+
+        musiques?.Add(clip);
+
+        // Sélection du mode
+        string selectedMode = null;
+        PopupManager.ShowModeSelectionPopup(mode => { selectedMode = mode; });
+        yield return new WaitUntil(() => selectedMode != null);
+
+        if (SessionData.Instance != null)
+        {
+            SessionData.Instance.titre = musicTitle;
+            SessionData.Instance.mode = selectedMode;
+            SessionData.Instance.levelData = null;
+        }
+
+        // Génération + polling du niveau avant de lancer la scène
+        JsonDAO jsonDAO = musicDAO.GetComponent<JsonDAO>() ?? Object.FindObjectOfType<JsonDAO>();
+        if (jsonDAO == null)
+        {
+            PopupManager.Show("Erreur : JsonDAO introuvable.");
+            yield break;
+        }
+
+        PopupManager.ShowLoading("Génération du niveau... 0%");
+
+        MusicData levelData = null;
+        bool levelReady = false;
+
+        jsonDAO.FetchLevelFromTitle(
+            musicTitle,
+            progress => PopupManager.UpdateLoading($"Génération du niveau... {progress}%"),
+            data => { levelData = data; levelReady = true; }
+        );
+
+        yield return new WaitUntil(() => levelReady);
+
+        PopupManager.HideLoading();
+
+        if (levelData == null) yield break;
+
+        if (SessionData.Instance != null)
+            SessionData.Instance.levelData = levelData;
+
+        SceneManager.LoadScene("GameplayScene");
+    }
+
+    IEnumerator ImportAndAddToPlaylist(JamendoTrack track)
+    {
+        PopupManager.ShowLoading("Import en cours...");
+
+        bool done = false;
+        JamendoImportResponse importResponse = null;
+        musicDAO.ImportTrack(track.id, (resp, ok) => { importResponse = ok ? resp : null; done = true; });
+        yield return new WaitUntil(() => done);
+
+        PopupManager.HideLoading();
+
+        if (importResponse == null)
+        {
+            PopupManager.Show("Échec de l'import.");
+            yield break;
+        }
+
+        if (string.IsNullOrEmpty(importResponse.job_id))
+        {
+            PopupManager.Show("Ajouté avec le stockage serveur");
+            yield break;
+        }
+
+        PopupManager.ShowPlaylistPopup(importResponse.music_title, averageButtonTransparent);
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        if (Context != null && Context.TryGetAudioSource(out AudioSource source))
+        {
+            source.clip = clip;
+            source.Play();
+        }
+        if (Context != null)
+        {
+            Context.SetSliderVisible(true);
+            Context.SetPlayPauseVisible(true);
+        }
+    }
+
+    public void SetResultsContainer(Transform container)
+    {
+        resultsContainer = container;
+        if (builtScrollRect != null)
+        {
+            bool useBuiltScroll =
+                container == builtScrollRect.content ||
+                container == builtScrollRect.transform ||
+                (container != null && container.IsChildOf(builtScrollRect.transform));
+            builtScrollRect.gameObject.SetActive(useBuiltScroll);
+        }
+    }
 }

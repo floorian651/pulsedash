@@ -22,12 +22,17 @@ public class PanelMenu : MonoBehaviour
     public GameObject averageButtonTransparent;
     public GameObject creerPlaylistButton;
 
+    [SerializeField] private MusicDAO musicDAO;
+    [SerializeField] private UserDAO _userDAO;
+    [SerializeField] private JsonDAO _jsonDAO;
+    private TextMeshProUGUI _usernameLabel;
+
     void Start()
-    {   
+    {
         // Créer un gameobject AudioSource
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.playOnAwake = false;
-        
+
         Context = gameObject.GetComponent<Context>();
         if (Context == null)
         {
@@ -43,6 +48,18 @@ public class PanelMenu : MonoBehaviour
         }
 
         InitMenu();
+
+        if (_userDAO == null)
+            _userDAO = FindObjectOfType<UserDAO>();
+
+        if (_userDAO != null)
+            _userDAO.GetProfile((profile, success) =>
+            {
+                if (success && _usernameLabel != null)
+                    _usernameLabel.text = profile.username;
+            });
+        else
+            Debug.LogWarning("PanelMenu: aucun UserDAO trouvé dans la scène — profil non affiché.");
     }
 
     private bool EnsureReferences()
@@ -166,6 +183,11 @@ public class PanelMenu : MonoBehaviour
         else
         {
 	        GameObject launchGameGO = Instantiate(launchGameButtonPrefab, bottomBar);
+	        // Contraindre la hauteur pour éviter que la hitbox déborde sur la liste de musiques
+	        LayoutElement launchLE = launchGameGO.GetComponent<LayoutElement>() ?? launchGameGO.AddComponent<LayoutElement>();
+	        launchLE.preferredHeight = 70f;
+	        RectTransform launchRT = launchGameGO.GetComponent<RectTransform>();
+	        if (launchRT != null) launchRT.sizeDelta = new Vector2(launchRT.sizeDelta.x, 70f);
 	        Button launchGameBtn = launchGameGO.GetComponent<Button>();
 	        if (launchGameBtn == null)
 	        {
@@ -181,39 +203,43 @@ public class PanelMenu : MonoBehaviour
                 return;
             }
 
-            if (SessionData.Instance != null)
+            if (SessionData.Instance == null) return;
+
+            PopupManager.ShowModeSelectionPopup(mode =>
             {
-                //PopupManager.Show("Le jeu va commencer!");
+                SessionData.Instance.titre = source.clip.name;
+                SessionData.Instance.mode = mode;
+                SessionData.Instance.levelData = null;
 
-                PopupManager.ShowModeSelectionPopup(mode =>
+                if (_jsonDAO == null)
+                    _jsonDAO = FindObjectOfType<JsonDAO>();
+
+                if (_jsonDAO == null)
                 {
-                    Debug.Log("Mode choisi : " + mode);
-                    PopupManager.Show("Le jeu va commencer!");
+                    PopupManager.Show("Erreur : JsonDAO introuvable dans la scène.");
+                    return;
+                }
 
-                    SessionData.Instance.titre = source.clip.name;
-                    //sceneloader.LoadSceneByName(mode + "_GameplayScene");
-                    SessionData.Instance.mode = mode;
-                    sceneloader.LoadSceneByName("GameplayScene");
-                });
+                PopupManager.ShowLoading("Génération du niveau... 0%");
 
-            }
-	
-	    });
+                _jsonDAO.FetchLevelFromTitle(
+                    source.clip.name,
+                    progress => PopupManager.UpdateLoading($"Génération du niveau... {progress}%"),
+                    levelData =>
+                    {
+                        PopupManager.HideLoading();
+                        if (levelData == null) return;
+                        SessionData.Instance.levelData = levelData;
+                        sceneloader.LoadSceneByName("GameplayScene");
+                    }
+                );
+            });
+        });
         }
 	}
 
     // TOP BAR (barre de recherche)
     Transform topBar = UIBuilder.CreateTopBar(panel);
-
-    // CHARGEMENT MUSIQUES
-    audioCache.LoadAllMusicTestUtilisateur();
-
-    // S'assurer que les playlists sont chargées avant d'afficher les boutons
-    PlaylistManager pm = FindObjectOfType<PlaylistManager>();
-    if (pm != null)
-    {
-        pm.LoadPlaylists();
-    }
 
         // PLAYLISTS À GAUCHE
     
@@ -222,28 +248,48 @@ public class PanelMenu : MonoBehaviour
         PlaylistManager pm = FindObjectOfType<PlaylistManager>();
         if (pm != null)
         {
-            pm.CreatePlaylist(playlistName);
-
-            PlaylistUI.AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, playlistName =>
+            pm.CreatePlaylist(playlistName, () =>
             {
-                UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
+                PlaylistUI.AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, pName =>
+                {
+                    UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, playlistmusicItemPrefab, audioCache.clips, pName, centerRightContainer);
+                });
             });
         }
     });
     
 
+    // LABEL PROFIL (username) — bas gauche du panel
+    GameObject labelGO = new GameObject("UsernameLabel");
+    labelGO.transform.SetParent(panel, false);
+    _usernameLabel = labelGO.AddComponent<TextMeshProUGUI>();
+    _usernameLabel.fontSize = 14;
+    _usernameLabel.color = Color.white;
+    _usernameLabel.alignment = TextAlignmentOptions.Left;
+    _usernameLabel.text = "...";
+    RectTransform labelRT = labelGO.GetComponent<RectTransform>();
+    labelRT.anchorMin = new Vector2(0, 0);
+    labelRT.anchorMax = new Vector2(0, 0);
+    labelRT.pivot = new Vector2(0, 0);
+    labelRT.sizeDelta = new Vector2(200, 30);
+    labelRT.anchoredPosition = new Vector2(10, 10);
+
     // BARRE DE RECHERCHE
     SearchUI searchUI = SearchUI.Create(topBar, Context);
-    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab,averageButtonTransparent);
+    searchUI.Init(audioCache.clips, playlistItemPrefab, musicItemPrefab, averageButtonTransparent, musicDAO);
 
     // Les résultats de recherche vont dans centerRightContainer
     searchUI.SetResultsContainer(centerRightContainer);
 
 
-    PlaylistUI.AfficherBoutonPlaylist( PreviousButtonPrefab,  NextButtonPrefab, averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab,playlistmusicItemPrefab, playlistName =>
+    PlaylistManager pm = FindObjectOfType<PlaylistManager>();
+    if (pm != null)
     {
-        UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab,playlistmusicItemPrefab, audioCache.clips, playlistName, centerRightContainer);
-    });
+        pm.onLoaded += () => PlaylistUI.AfficherBoutonPlaylist(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, audioCache.clips, leftContainer, centerRightContainer, playlistItemPrefab, playlistmusicItemPrefab, pName =>
+        {
+            UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab, averageButtonPrefab, playlistmusicItemPrefab, audioCache.clips, pName, centerRightContainer);
+        });
+    }
 
     // Appliquer Montserrat à tout ce qui existe déjà dans l'UI (labels de prefabs inclus).
     UIBuilder.ApplyMontserratFontRecursive(panel);

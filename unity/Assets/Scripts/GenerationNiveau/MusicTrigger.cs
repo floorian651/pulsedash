@@ -1,40 +1,50 @@
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
+using System.IO;
 
 public class Trigger : MonoBehaviour
 {
-    public AudioSource musicSource; // Source audio de la musique
+    public AudioSource musicSource;
     private bool musicStarted = false;
     public float delaiAvantMusique = 2.0f;
     public string titre_musique;
 
+    void OnEnable()
+    {
+        if (musicSource == null)
+            musicSource = GetComponent<AudioSource>();
 
-    // A MODIFIER POUR LA BDD
-    void OnEnable(){
-        
-         if (!musicStarted){
-            titre_musique = SessionData.Instance.titre;
-            Debug.Log("Récupérer la musique!");
-            musicSource.clip = Resources.Load<AudioClip>("Musique/" + titre_musique);
-         }
-       
+        if (musicSource == null)
+            musicSource = gameObject.AddComponent<AudioSource>();
+
+        if (!musicStarted && musicSource != null)
+        {
+            titre_musique = SessionData.Instance != null ? SessionData.Instance.titre : "";
+            StartCoroutine(LoadClip());
+        }
+    }
+
+    IEnumerator LoadClip()
+    {
+        string path = Path.Combine(Application.persistentDataPath, titre_musique + ".mp3");
+        using (UnityWebRequest req = UnityWebRequestMultimedia.GetAudioClip("file://" + path, AudioType.MPEG))
+        {
+            yield return req.SendWebRequest();
+            if (req.result == UnityWebRequest.Result.Success)
+                musicSource.clip = DownloadHandlerAudioClip.GetContent(req);
+            else
+                Debug.LogError("MusicTrigger: impossible de charger " + path + " — " + req.error);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!musicStarted && other.CompareTag("Player"))
+        if (!musicStarted && musicSource.clip != null && other.CompareTag("Player"))
         {
             musicStarted = true;
-
-            // On lit l'heure exacte de la carte son au moment du déclenchement
-            double heureActuelle = AudioSettings.dspTime;
-
-            // On calcule l'heure exacte à laquelle la musique DOIT démarrer
-            double heureDepartMusique = heureActuelle + delaiAvantMusique;
-            // Récupérer l'audio source 
-            
-            // On donne l'ordre à l'AudioSource de se lancer pile à cette heure-là
+            double heureDepartMusique = AudioSettings.dspTime + delaiAvantMusique;
             musicSource.PlayScheduled(heureDepartMusique);
-
         }
     }
 }

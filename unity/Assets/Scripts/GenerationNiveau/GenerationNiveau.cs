@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Diagnostics; // Pour List
 using System;
 
 public class GenerateurNiveau : MonoBehaviour
@@ -49,27 +48,86 @@ public class GenerateurNiveau : MonoBehaviour
 
     public GameObject pulser;
 
-   
-    void Start(){
+    [SerializeField] private JsonDAO jsonDAO;
+    [SerializeField] private GameSessionDAO gameSessionDAO;
+
+    void Start()
+    {
         ReturnToMenuButton.prefab = backToMenuPrefab;
         ReturnToMenuButton.Create();
-        if (SessionData.Instance != null){
 
+        if (SessionData.Instance != null)
+        {
             string mode = SessionData.Instance.mode;
-
-            difficulty = (Difficulty)Enum.Parse(
-            typeof(Difficulty),
-            mode,
-            true
-        );
+            difficulty = (Difficulty)Enum.Parse(typeof(Difficulty), mode, true);
+            analyse_rythme = SessionData.Instance.titre;
         }
-        PreparePlayer();
-        GenerateLevel();
+
+        if (jsonDAO == null)
+            jsonDAO = FindObjectOfType<JsonDAO>();
+
+        if (gameSessionDAO == null)
+            gameSessionDAO = FindObjectOfType<GameSessionDAO>();
+
+        if (SessionData.Instance?.levelData != null)
+        {
+            OnLevelReady(SessionData.Instance.levelData);
+        }
+        else
+        {
+            // Fallback si on arrive ici sans niveau pré-chargé
+            PopupManager.ShowLoading("Génération du niveau en cours...");
+            if (jsonDAO != null)
+                jsonDAO.FetchLevelFromTitle(analyse_rythme, null, OnLevelReady);
+            else
+                Debug.LogError("JsonDAO not found in scene");
+        }
+    }
+
+    void OnLevelReady(MusicData levelData)
+    {
+        PopupManager.HideLoading();
+
+        if (levelData == null)
+        {
+            Debug.LogError("Échec du chargement du niveau depuis le backend.");
+            PopupManager.Show("Erreur : impossible de charger le niveau.");
+            return;
+        }
+        
+        if (levelData.beats == null || levelData.beats.Length == 0)
+        {
+            Debug.LogError("Données du niveau invalides : beats manquants");
+            PopupManager.Show("Erreur : données du niveau incomplètes.");
+            return;
+        }
+        
+        data = levelData;
+        Debug.Log($"[GenerateurNiveau] Niveau reçu: durée={data.duration}s, beats={data.beats.Length}, tempo={data.tempo}");
+
+        if (gameSessionDAO == null)
+        {
+            Debug.LogError("gameSessionDAO est null ! Impossible de créer la session.");
+            PreparePlayer();
+            GenerateLevel();
+            return;
+        }
+
+        gameSessionDAO.StartSession(analyse_rythme, sessionId =>
+        {
+            if (sessionId != null && SessionData.Instance != null)
+                SessionData.Instance.sessionId = sessionId;
+            else
+                Debug.LogWarning("Session non créée — le score ne sera pas enregistré.");
+
+            PreparePlayer();
+            GenerateLevel();
+        });
     }
 
     void Update()
     {
-        if (player == null) return;
+        if (player == null || data == null) return;
 
         float playerZ = player.transform.position.z;
 
@@ -100,35 +158,39 @@ public class GenerateurNiveau : MonoBehaviour
 
     void PreparePlayer()
     {
-        player.transform.position = new Vector3(0, 1, -5); // Position de départ du joueur
+        if (player == null)
+        {
+            Debug.LogError("[PreparePlayer] player est null!");
+            return;
+        }
+        
+        player.transform.position = new Vector3(0, 1, -5);
         Player playerScript = player.GetComponent<Player>();
         if (playerScript != null)
         {
-            // On calcule l'énergie maximale du joueur en fonction de la durée de la musique, pour que le joueur puisse tenir toute la musique s'il ne prend pas de dégâts
             float energieMax = GetMusicDuration() * playerScript.decreaseSpeed;
             switch(difficulty)
             {
                 case Difficulty.Lazy:
-                    energieMax *= 1.3f; // Bonus de 30% d'énergie
+                    energieMax *= 1.3f;
                     break;
                 case Difficulty.Easy:
-                    energieMax *= 1.15f; // Bonus de 15% d'énergie
+                    energieMax *= 1.15f;
                     break;
                 case Difficulty.Crazy:
-                    energieMax *= 1.05f; // Bonus de 5% d'énergie
+                    energieMax *= 1.05f;
                     break;
             }
             playerScript.SetEnergyMax(energieMax);
+            Debug.Log($"[PreparePlayer] Player configuré. Énergie max={energieMax}");
+        }
+        else
+        {
+            Debug.LogWarning("[PreparePlayer] Player script non trouvé");
         }
     }
-    // A MODIFIER POUR LA BDD
-
     public float GetMusicDuration()
     {
-        analyse_rythme = SessionData.Instance.titre;
-        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
-        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
-        UnityEngine.Debug.Log("Data duration " + data.duration);
         return data.duration;
     }
 
@@ -138,31 +200,26 @@ public class GenerateurNiveau : MonoBehaviour
     }
     
     public void GenerateLevel()
-    {   
-        // On récupére le titre de la musique
-        analyse_rythme = SessionData.Instance.titre;
-
-        // On récupère la vitesse du joueur, nécessaire à la synchro musique/obstacles
-        vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
-        chunkSize = vitesse * 0.25f;
-        offsetZ = vitesse * 2.0f; // Il y a 2 secondes de pauses avant le début de la musique
-
-        // On récupère les données du fichier JSON
-        // A MODIFIER POUR LA BDD
-        TextAsset jsonFile = Resources.Load<TextAsset>("JSON/"+analyse_rythme);
-        if (jsonFile == null) {
-            UnityEngine.Debug.LogError("Il manque le fichier JSON dans le dossier Resources !");
+    {
+        if (data == null || data.beats == null || data.beats.Length == 0)
+        {
+            Debug.LogError("[GenerateLevel] Données du niveau invalides!");
             return;
         }
-        data = JsonUtility.FromJson<MusicData>(jsonFile.text);
+        
+        if (player == null)
+        {
+            Debug.LogError("[GenerateLevel] player est null!");
+            return;
+        }
 
-        // Permet de générer une graine aléatoire de facon déterministe
+        vitesse = player.GetComponent<PlayerMovementE5>().GetSpeed();
+        chunkSize = vitesse * 0.25f;
+        offsetZ = vitesse * 2.0f;
+
         randomSeed = (int)data.duration;
-
-        // On nettoie le niveau avant de générer les nouveaux éléments
         ClearLevel();
-
-        // Générer le sol avant de -10 à 0 en amont du niveau 
+        Debug.Log($"[GenerateLevel] Début. Vitesse={vitesse}, ChunkSize={chunkSize}, Offset={offsetZ}");
 
 
         for (float z = -20; z <= 0; z += 2)

@@ -65,6 +65,8 @@ public class MusicButton : MonoBehaviour
             if (!source.isPlaying){
                 Debug.Log("Jouer le son!");
 
+                if (source.clip == null) return;
+
                 // Si la musique avait déjà commencé on reprend où elle avait été arrêtée
                 if (source.time > 0f){
                     source.UnPause();}   

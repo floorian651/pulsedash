@@ -16,6 +16,8 @@ public class PopupManager : MonoBehaviour
     private static string PopupBackground="Images/Popup1";
     private static string imgCloseButton = "Images/Croix1";
     private static GameObject popupGO;
+    private static GameObject loadingGO;
+    private static TextMeshProUGUI loadingText;
 
     private void Start(){
         crazyPrefab = Resources.Load<GameObject>("UI/Crazy");
@@ -127,6 +129,60 @@ public class PopupManager : MonoBehaviour
     }
 
     
+    public static void ShowLoading(string message = "Chargement...")
+    {
+        if (loadingGO != null)
+            Object.Destroy(loadingGO);
+
+        Canvas canvas = GetOrCreateCanvas();
+
+        loadingGO = new GameObject("LoadingOverlay");
+        loadingGO.transform.SetParent(canvas.transform, false);
+
+        RectTransform rt = loadingGO.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        Image bg = loadingGO.AddComponent<Image>();
+        bg.color = new Color(0f, 0f, 0f, 0.65f);
+
+        GameObject textGO = new GameObject("LoadingText");
+        textGO.transform.SetParent(loadingGO.transform, false);
+
+        TextMeshProUGUI txt = textGO.AddComponent<TextMeshProUGUI>();
+        txt.text = message;
+        txt.fontSize = 24;
+        txt.color = Color.white;
+        txt.alignment = TextAlignmentOptions.Center;
+        UIBuilder.ApplyMontserratFont(txt);
+        loadingText = txt;
+
+        RectTransform textRT = textGO.GetComponent<RectTransform>();
+        textRT.anchorMin = new Vector2(0.5f, 0.5f);
+        textRT.anchorMax = new Vector2(0.5f, 0.5f);
+        textRT.pivot = new Vector2(0.5f, 0.5f);
+        textRT.sizeDelta = new Vector2(400, 60);
+        textRT.anchoredPosition = Vector2.zero;
+    }
+
+    public static void UpdateLoading(string message)
+    {
+        if (loadingText != null)
+            loadingText.text = message;
+    }
+
+    public static void HideLoading()
+    {
+        if (loadingGO != null)
+        {
+            Object.Destroy(loadingGO);
+            loadingGO = null;
+            loadingText = null;
+        }
+    }
+
     public static void ShowInput(string message, System.Action<string> onConfirm)
     {
         // Supprimer l'ancien popup s'il existe

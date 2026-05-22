@@ -518,6 +518,8 @@ MonoBehaviour:
   titre: 
   mode: 
   scenePrecedente: 
+  sessionId: 
+  pendingMessage: 
 --- !u!1 &572241376
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +657,9 @@ GameObject:
   m_Component:
   - component: {fileID: 705027676}
   - component: {fileID: 705027675}
+  - component: {fileID: 705027677}
+  - component: {fileID: 705027678}
+  - component: {fileID: 705027679}
   m_Layer: 0
   m_Name: PanelMenu
   m_TagString: Untagged
@@ -687,6 +692,8 @@ MonoBehaviour:
   PreviousButtonPrefab: {fileID: 1483478919661330273, guid: 46cdaef29ecd9e242ae040051561122e, type: 3}
   averageButtonTransparent: {fileID: 1483478919661330273, guid: fb4f0f232eeda744183377210ef62160, type: 3}
   creerPlaylistButton: {fileID: 2117360025801944245, guid: d8a06362529913d48b64ac1d2523ee96, type: 3}
+  musicDAO: {fileID: 705027677}
+  _userDAO: {fileID: 705027678}
 --- !u!4 &705027676
 Transform:
   m_ObjectHideFlags: 0
@@ -702,6 +709,42 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &705027677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcc2b5588f3f514da7d85c807b25421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicDAO
+--- !u!114 &705027678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab643a276711e58348402464c840e83a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UserDAO
+--- !u!114 &705027679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705027674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5f1c000ce505343bbf09236d797a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JsonDAO
 --- !u!1 &817960019
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,6 +872,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1181156316}
   - component: {fileID: 1181156315}
+  - component: {fileID: 1181156317}
+  - component: {fileID: 1181156318}
   m_Layer: 0
   m_Name: PlaylilstManager
   m_TagString: Untagged
@@ -849,6 +894,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaylistManager
   playlists: []
+  playlistDAO: {fileID: 1181156317}
+  musicDAO: {fileID: 1181156318}
   forceNext: 0
   forcePrevious: 0
   stopCurrentTrack: 0
@@ -867,6 +914,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1181156317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181156314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc3ad518bf73c5c585ebc4b0e1380bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaylistDAO
+--- !u!114 &1181156318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181156314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcc2b5588f3f514da7d85c807b25421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicDAO
 --- !u!1 &1189834870
 GameObject:
   m_ObjectHideFlags: 0
