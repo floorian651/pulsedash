@@ -11,7 +11,7 @@
 | Génération de niveau par la musique | 0 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 |  | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 |
 
-## Organiqation de l'équipe
+## Organisation de l'équipe
 
 ```mermaid
 graph TD

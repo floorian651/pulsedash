@@ -74,3 +74,28 @@ Le mode pour les joueurs expérimentés. Les obstacles sont denses et surviennen
 - Énergie de départ : réduite
 
 ---
+### Lazy
+
+Le mode pour découvrir la musique sans pression. Les obstacles sont rares et espacés, les timings d'évitement des obstacles sont larges. Idéal pour explorer de nouveaux morceaux ou s'échauffer.
+
+- Densité d'obstacles : faible
+- Tolérance au timing : large
+- Énergie de départ : maximale
+
+### Easy
+
+Le mode standard. Les obstacles suivent fidèlement les beats du morceau, les marges de timing restent confortables. Recommandé pour la majorité des parties.
+
+- Densité d'obstacles : modérée
+- Tolérance au timing : normale
+- Énergie de départ : maximale
+
+### Crazy
+
+Le mode pour les joueurs expérimentés. Les obstacles sont denses et surviennent sur chaque subdivision rythmique,et les marges de timing sont serrées.
+
+- Densité d'obstacles : élevée
+- Tolérance au timing : stricte
+- Énergie de départ : réduite
+
+---

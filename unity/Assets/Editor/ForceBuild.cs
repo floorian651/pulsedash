@@ -18,7 +18,7 @@ public class ForceBuildScript
         Debug.Log("Lancement du build forcé pour Linux...");
         
         // Exporte dans Builds/Linux/
-        BuildPipeline.BuildPlayer(scenes, "Builds/Linux/PulseRunner.x86_64", BuildTarget.StandaloneLinux64, BuildOptions.None);
+        BuildPipeline.BuildPlayer(scenes, "Builds/Linux/PulseDash.x86_64", BuildTarget.StandaloneLinux64, BuildOptions.None);
         
         Debug.Log("Build Linux terminé ! Allez voir dans le dossier Builds/Linux.");
     }
@@ -29,7 +29,7 @@ public class ForceBuildScript
         Debug.Log("Lancement du build forcé pour Windows...");
         
         // Exporte dans Builds/Windows/ avec l'extension .exe
-        BuildPipeline.BuildPlayer(scenes, "Builds/Windows/PulseRunner.exe", BuildTarget.StandaloneWindows64, BuildOptions.None);
+        BuildPipeline.BuildPlayer(scenes, "Builds/Windows/PulseDash.exe", BuildTarget.StandaloneWindows64, BuildOptions.None);
         
         Debug.Log("Build Windows terminé ! Allez voir dans le dossier Builds/Windows.");
     }
