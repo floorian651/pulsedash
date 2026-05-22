@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+wavr.egg-info/PKG-INFO
+wavr.egg-info/SOURCES.txt
+wavr.egg-info/dependency_links.txt
+wavr.egg-info/requires.txt
+wavr.egg-info/top_level.txt

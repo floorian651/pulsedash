@@ -8,6 +8,18 @@ title: PulseDash
 
 PulseDash est un jeu de rythme dans lequel vous contrôlez un personnage à travers des niveaux générés automatiquement à partir de vos morceaux de musique préférés. Chaque chanson devient un parcours unique avec des obstacles, des collectibles et des défis synchronisés sur les temps forts.
 
+## Comment jouer
+
+PulseDash se distribue sous forme de binaire compilé depuis Unity. Téléchargez la dernière version, extrayez l'archive et lancez l'exécutable. Aucune installation supplémentaire n'est requise.
+
+1. Depuis l'écran d'accueil, créez un compte ou connectez-vous.
+2. Sélectionnez un morceau dans la bibliothèque Jamendo.
+3. Choisissez un mode de jeu.
+4. Le backend génère le niveau à partir de l'analyse audio, patientez quelques secondes.
+5. Le niveau se charge et la partie commence.
+6. Le personnage avance automatiquement  déplacez-vous latéralement et sautez sur les pulsers.
+7. À la fin du parcours, votre score est enregistré et affiché dans le classement.
+
 ## Gameplay
 
 ### Mécaniques principales
@@ -35,9 +47,28 @@ Chaque morceau de musique génère un niveau unique basé sur :
 
 ## Modes de jeu
 
-## Progression
+### Lazy
 
-- **Scores** : classement local et personnel
-- **Statistiques** : suivez votre précision, vos combos et votre évolution
+Le mode pour découvrir la musique sans pression. Les obstacles sont rares et espacés, les timings d'évitement des obstacles sont larges. Idéal pour explorer de nouveaux morceaux ou s'échauffer.
 
-## Contrôles
+- Densité d'obstacles : faible
+- Tolérance au timing : large
+- Énergie de départ : maximale
+
+### Easy
+
+Le mode standard. Les obstacles suivent fidèlement les beats du morceau, les marges de timing restent confortables. Recommandé pour la majorité des parties.
+
+- Densité d'obstacles : modérée
+- Tolérance au timing : normale
+- Énergie de départ : maximale
+
+### Crazy
+
+Le mode pour les joueurs expérimentés. Les obstacles sont denses et surviennent sur chaque subdivision rythmique,et les marges de timing sont serrées.
+
+- Densité d'obstacles : élevée
+- Tolérance au timing : stricte
+- Énergie de départ : réduite
+
+---

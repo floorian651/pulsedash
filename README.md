@@ -1,6 +1,12 @@
 # PulseDash
 
-Documentation de référence technique du projet.
+**PulseDash** est un jeu de rythme 3D où les niveaux sont générés automatiquement à partir de l'analyse audio de tes morceaux. Importe une chanson, et le jeu construit un parcours d'obstacles synchronisé sur la musique — tempo, énergie, beats.
+
+Le projet se compose d'un client Unity et d'un backend FastAPI qui pilote l'analyse audio (Celery + Redis) et le stockage (PostgreSQL + MinIO).
+
+- Client Unity : [`Pulsedash`](https://github.com/floorian651/wavr) (ce dépôt)
+- Backend : [`pulsedash_backend`](https://github.com/floorian651/pulsedash_backend)
+- Documentation : [floorian651.github.io/pulsedash](https://floorian651.github.io/pulsedash/)
 
 ---
 
@@ -99,4 +105,35 @@ cp .env.example .env
 # Renseigner toutes les variables de la section 4
 ```
 
+## 6. Crédits
 
+### Assets récupérés sur poly.pizza
+- **Ligne d’arrivée** : 034 by Daisuke Takeoka [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/67FjFVyAxq0)
+- **Joueur** : Animated Platformer Character by Quaternius (https://poly.pizza/m/kKtL4zvS3n)
+- **Pulsers (dragons)** : Dragon by Quaternius (https://poly.pizza/m/VBvzjFIYws)
+- **Sol** : Path Straight by Quaternius (https://poly.pizza/m/ZuRHRsKWoz)
+- **Lapins** : Rabbit by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/dyeBDJxhDwP)
+- **Cerfs** : Deer by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/fUo4AIcd8XR)
+- **Ratons laveurs** : Raccoon by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/2iYORwFng3_)
+- **Loups** : Wolf by Quaternius (https://poly.pizza/m/P1gU3Qkr9r)
+- **Cerfs hémiones** : Mule deer by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/e6mV6AYvIrE)
+
+
+### Autres assets
+- **Forêt** : KayKit - Forest Nature Pack - by Kay Lousberg (https://kaylousberg.itch.io/kaykit-forest)
+- **Assets médievaux pour l’image de fond de la plateforme de streaming** : KayKit - Medieval Hexagon Pack  - by Kay Lousberg (https://kaylousberg.itch.io/kaykit-medieval-hexagon)
+
+
+### Images
+- **Image de fond pour les crédits** : Image trouvée sur Canva (https://www.canva.com/s/templates?query=beige+and+black+vintage+sketch)
+- **Images des boutons et autres éléments de l’interface utilisateur** : Images trouvées sur Canva (https://www.canva.com)
+
+
+### Équipe de développement
+- Florian ABADIE (https://github.com/floorian651)
+- Chloé AUBRY (https://github.com/Chlaubry)
+- Arthur BLAMART (https://github.com/Arthur-Blamart)
+- Quentin BRULÉ (https://github.com/QuentinBrule)
+- Sothaline HUOT
+- Clément JOURDIN (https://github.com/Fanchoir302)
+- Victor ROUET (https://github.com/Gyro25720)

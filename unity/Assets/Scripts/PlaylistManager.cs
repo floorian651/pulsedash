@@ -1,34 +1,44 @@
 using System.Collections.Generic;
 using System.Collections;
-
 using UnityEngine;
-using System.IO;
 using System.Linq;
 
 public class PlaylistManager : MonoBehaviour
 {
-    public List<Playlist> playlists = new List<Playlist>(); // Liste des playlist
+    public List<Playlist> playlists = new List<Playlist>();
     private Context Context;
 
-    private string savePath; //chemin
+    [SerializeField] private PlaylistDAO playlistDAO;
+    [SerializeField] private MusicDAO musicDAO;
+
+    public System.Action onLoaded;
 
     public bool forceNext = false;
     public bool forcePrevious = false;
-
     public bool stopCurrentTrack = false;
 
-
-
-    void Awake()
-    {
-        // Préparer le chemin et charger tôt pour éviter les problèmes d'ordre d'exécution
-        savePath = Path.Combine(Application.persistentDataPath, "playlists.json");
-        LoadPlaylists();
-    }
+    private Coroutine _currentRoutine;
 
     void Start()
     {
-        Debug.Log("PlaylistManager peut start!");
+        playlistDAO.GetAllPlaylists(OnPlaylistsLoaded);
+    }
+
+    void OnPlaylistsLoaded(List<PlaylistData> data)
+    {
+        if (data == null) return;
+        playlists.Clear();
+        foreach (PlaylistData pd in data)
+        {
+            Playlist p = new Playlist { name = pd.name };
+            if (pd.tracks != null)
+            {
+                foreach (TrackData td in pd.tracks)
+                    p.tracks.Add(new Track { id = td.id, title = td.music_title, order = td.position });
+            }
+            playlists.Add(p);
+        }
+        onLoaded?.Invoke();
     }
 
     private bool TryGetAudioSource(out AudioSource source)
@@ -47,103 +57,82 @@ public class PlaylistManager : MonoBehaviour
         return false;
     }
 
-    // Créer une playlist
-    public void CreatePlaylist(string playlistName)
+    public void CreatePlaylist(string playlistName, System.Action onSuccess = null)
     {
-        Playlist p = new Playlist();
-        p.name = playlistName; // donner un nom à la playlist créée
-        playlists.Add(p); //ajouter la nouvelle playlist à la liste des playlists
-        SavePlaylists();
+        playlistDAO.CreatePlaylist(playlistName, (data, success) =>
+        {
+            if (success)
+            {
+                playlists.Add(new Playlist { name = data.name });
+                onSuccess?.Invoke();
+            }
+            else
+                PopupManager.Show("Erreur lors de la création de la playlist.");
+        });
     }
 
     public void AddTrackToPlaylist(string playlistName, string trackName)
-    {   
-        // Récupérer la playlist
-        Playlist p = playlists.Find(x => x.name == playlistName);
+    {
+        Playlist p = GetPlaylist(playlistName);
+        if (p == null) return;
 
-        // Si la playlist existe
+        if (p.tracks.Any(tr => tr.title == trackName)) return;
 
-        if (p != null)
-        {   
-            bool dejaDansPlaylist = p.tracks.Any(tr => tr.title == trackName);
-        // Si la musique n'est pas déjà dans la playlist
-            if (!dejaDansPlaylist)
-            {
-                Track track = new Track
-                {
-                    title = trackName,
-                    order = p.tracks.Count
-
-                };
-
-                p.tracks.Add(track);
-
-            }
-            SavePlaylists();
-        }
+        playlistDAO.AddTrack(playlistName, trackName, (data, success) =>
+        {
+            if (success)
+                p.tracks.Add(new Track { id = data.id, title = data.music_title, order = data.position });
+            else
+                PopupManager.Show("Erreur lors de l'ajout de la musique.");
+        });
     }
 
-    // Supprimer une musique d'une playlist
-    public void RemoveTrackFromPlaylist(string playlistName, string trackName)
+    public void RemoveTrackFromPlaylist(string playlistName, string trackName, System.Action onSuccess = null, System.Action onFailure = null)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
-        if (p != null)
-        {   
-            Track trackCherche = p.tracks.FirstOrDefault(tr => tr.title == trackName);
-            if (trackCherche != null)
-            {
-                p.tracks.Remove(trackCherche);
+        if (p == null) return;
 
+        Track track = p.tracks.FirstOrDefault(tr => tr.title == trackName);
+        if (track == null) return;
+
+        playlistDAO.RemoveTrack(track.id, success =>
+        {
+            if (success)
+            {
+                p.tracks.Remove(track);
                 for (int i = 0; i < p.tracks.Count; i++)
                     p.tracks[i].order = i;
-                
-            SavePlaylists();
-        }
-    }}
+                onSuccess?.Invoke();
+            }
+            else
+            {
+                PopupManager.Show("Erreur lors de la suppression de la musique.");
+                onFailure?.Invoke();
+            }
+        });
+    }
 
-    // Supprimer une playlist entière
-    public bool RemovePlaylist(string playlistName)
+    public bool RemovePlaylist(string playlistName, System.Action onSuccess = null)
     {
         Playlist p = playlists.Find(x => x.name == playlistName);
-        if (p == null)
-        {
-            return false;
-        }
+        if (p == null) return false;
 
-        playlists.Remove(p);
-        SavePlaylists();
+        playlistDAO.DeletePlaylist(playlistName, success =>
+        {
+            if (success)
+            {
+                playlists.Remove(p);
+                onSuccess?.Invoke();
+            }
+            else
+                PopupManager.Show("Erreur lors de la suppression de la playlist.");
+        });
         return true;
     }
 
-    // récupérer une playlist en fonction de son nom
     public Playlist GetPlaylist(string playlistName)
     {
         return playlists.Find(x => x.name == playlistName);
-    }
-
-    // sauvegarder en json les playlists dans une fichier 
-    public void SavePlaylists()
-    {
-        string json = JsonUtility.ToJson(new Wrapper { playlists = this.playlists }, true);
-        File.WriteAllText(savePath, json);
-    }
-
-    // A MODIFIER POUR LA BDD
-    // Récupérer la liste de playlist
-    public void LoadPlaylists()
-    {
-        if (File.Exists(savePath))
-        {
-            string json = File.ReadAllText(savePath);
-            Wrapper w = JsonUtility.FromJson<Wrapper>(json);
-            playlists = w.playlists;
-        }
-    }
-
-    [System.Serializable]
-    private class Wrapper
-    {
-        public List<Playlist> playlists;
     }
 
     public void OnNextPressed()
@@ -161,15 +150,74 @@ public class PlaylistManager : MonoBehaviour
     {   
         UIBuilder.ShowMusiquesPlaylistInContainer(PreviousButtonPrefab, NextButtonPrefab,averageButtonPrefab, musicItemPrefab, clips, playlistName, centerRightContainer);
 
+        if (_currentRoutine != null)
+            StopCoroutine(_currentRoutine);
+        forceNext = false;
+        forcePrevious = false;
+        stopCurrentTrack = false;
+
         if (trackactuel == null)
         {
             PopupManager.Show("Playlist vide");
             return;
-    }
+        }
 
-    StartCoroutine(RoutinePlaylist( trackactuel, clips, toutesLesMusiques));
+        _currentRoutine = StartCoroutine(RoutinePlaylist(trackactuel, clips, new List<Track>(toutesLesMusiques)));
 }   
    
+    IEnumerator FetchAndCacheClip(string musicTitle, List<AudioClip> clips)
+    {
+        string downloadUrl = musicDAO.GetAudioDownloadUrl(musicTitle);
+        yield return musicDAO.DownloadAndCacheClip(downloadUrl, musicTitle + ".mp3", clip =>
+        {
+            if (clip != null) clips.Add(clip);
+        });
+    }
+
+    public void PlayTrackWithFetch(string musicTitle, List<AudioClip> clips)
+    {
+        StartCoroutine(FetchIfNeededThenPlay(musicTitle, clips));
+    }
+
+    IEnumerator FetchIfNeededThenPlay(string musicTitle, List<AudioClip> clips)
+    {
+        if (musicDAO == null) musicDAO = Object.FindObjectOfType<MusicDAO>();
+        bool alreadyCached = SearchUI.RechercherClip(musicTitle, clips) != null;
+        Debug.Log($"[Play] title='{musicTitle}' cached={alreadyCached} musicDAO={musicDAO != null} clips={clips.Count}");
+
+        if (!alreadyCached && musicDAO != null)
+        {
+            PopupManager.ShowLoading("Chargement...");
+            bool fetched = false;
+            StartCoroutine(AwaitFetch(musicTitle, clips, () => fetched = true));
+            float elapsed = 0f;
+            while (!fetched && elapsed < 20f)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            PopupManager.HideLoading();
+            if (!fetched)
+            {
+                PopupManager.Show("Téléchargement impossible.");
+                yield break;
+            }
+            Debug.Log($"[Play] après download: clips={clips.Count} found={SearchUI.RechercherClip(musicTitle, clips) != null}");
+        }
+        else if (!alreadyCached && musicDAO == null)
+        {
+            PopupManager.Show("MusicDAO non assigné — vérifier l'Inspector.");
+            yield break;
+        }
+        PlayTrack(new Track { title = musicTitle }, clips, true);
+    }
+
+    IEnumerator AwaitFetch(string musicTitle, List<AudioClip> clips, System.Action onDone)
+    {
+        yield return StartCoroutine(FetchAndCacheClip(musicTitle, clips));
+        onDone?.Invoke();
+    }
+
     IEnumerator RoutinePlaylist(Track trackActuel, List<AudioClip> clips, List<Track> toutesLesMusiques)
 {
     if (!TryGetAudioSource(out AudioSource source))
@@ -180,10 +228,13 @@ public class PlaylistManager : MonoBehaviour
 
     while (trackActuel != null)
     {
+        if (SearchUI.RechercherClip(trackActuel.title, clips) == null && musicDAO != null)
+            yield return StartCoroutine(FetchAndCacheClip(trackActuel.title, clips));
+
         PlayTrack(trackActuel, clips, true);
 
         // Attendre fin réelle OU action utilisateur (ne pas avancer si pause)
-        while (!stopCurrentTrack && (source.isPlaying || source.time < source.clip.length - 0.01f))
+        while (!stopCurrentTrack && source.clip != null && (source.isPlaying || source.time < source.clip.length - 0.01f))
             yield return null;
 
         source.Stop();

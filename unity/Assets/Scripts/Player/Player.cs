@@ -4,8 +4,8 @@ public class Player : MonoBehaviour
 {   
     Animator anim;
 
-    public static float minEnergy = 0f;
-    public static float maxEnergy = 500f;
+    private const float minEnergy = 0f;
+    private float maxEnergy = 500f;
     public float decreaseSpeed = 1f;
     [SerializeField] public float energy;
 
