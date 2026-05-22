@@ -62,7 +62,10 @@ public class PlayerCollision : MonoBehaviour
             float score = (player.GetEnergyLevel() / player.GetMaxEnergyLevel()) * 100f;
 
             if (SessionData.Instance != null)
+            {
                 SessionData.Instance.score = score;
+                SessionData.Instance.statut = "Gagne";
+            }
 
             string sessionId = SessionData.Instance?.sessionId;
 
@@ -74,7 +77,6 @@ public class PlayerCollision : MonoBehaviour
                         Debug.LogWarning("Échec envoi score — session non terminée côté backend.");
                 });
             }
-
             SceneLoader sceneloader = FindObjectOfType<SceneLoader>();
             if (sceneloader != null)
                 sceneloader.LoadSceneByName("FinishScene");

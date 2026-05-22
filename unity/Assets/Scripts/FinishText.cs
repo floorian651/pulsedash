@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class FinishText : MonoBehaviour
 {
@@ -29,14 +30,19 @@ public class FinishText : MonoBehaviour
         //  Récupération score
         float energy = 0;
 
+        string statut;
+
         if (SessionData.Instance != null)
             energy = SessionData.Instance.score;
+            statut = SessionData.Instance.statut;
 
         // Détermination du texte
-        if (energy > 0)
-        {
-            txt.text = "Bravo !\nNiveau réussi \nÉnergie restante : " + energy;
+        if (energy >= 0 && statut=="Gagne") 
+        {   
+            energy = (float)(Math.Truncate(energy * 10f) / 10f);
+            txt.text = "Bravo !\nNiveau réussi \nÉnergie restante : " + energy + "%";
         }
+
         else
         {
             txt.text = "Échec \nPlus d'énergie";

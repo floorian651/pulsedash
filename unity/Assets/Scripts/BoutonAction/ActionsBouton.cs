@@ -73,6 +73,7 @@ public class ActionsBouton : MonoBehaviour
         button.SetActive(false);
     }
 
+
     public void PageConnexion()
     {
         SceneLoader sceneloader = FindObjectOfType<SceneLoader>();

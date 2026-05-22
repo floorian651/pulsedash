@@ -12,6 +12,7 @@ public class SessionData : MonoBehaviour
     public string sessionId;
     public string pendingMessage;
     public MusicData levelData;
+    public string statut;
 
 
     void Awake()

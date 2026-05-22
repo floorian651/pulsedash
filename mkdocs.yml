@@ -66,6 +66,15 @@ nav:
     - Réseau (iptables): api/iptables.md
   - Développement:
     - CI/CD: dev/ci-cd.md
+  - Gestion de projet:
+    - Documentation de projet: gestion-projet/documentation.md
+    - Gestion du suivi client: gestion-projet/suivi-client.md
+    - Liste des ressources: gestion-projet/ressources.md
+  - Tests utilisateurs:
+    - Protocole de test: tests-utilisateurs/protocole.md
+    - Réalisation de sessions de test: tests-utilisateurs/realisation.md
+    - Compte rendu détaillé des sessions: tests-utilisateurs/compte-rendu.md
+    - Document de synthèse: tests-utilisateurs/synthese.md
 
 markdown_extensions:
   - admonition
@@ -97,4 +106,5 @@ plugins:
   - awesome-pages
 
 extra_css:
+  - extra.css
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
