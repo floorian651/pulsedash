@@ -1,9 +1,9 @@
 # Synthèse des tests utilisateurs
 ## Profil et veille concurentielle
 
-![alt text](images-synthese/0.png)
-![alt text](images-synthese/0(1).png)
-![alt text](images-synthese/0(2).png)
+![Diagramme camembert utilisation d'une plateforme de streaming](images-synthese/0.png)
+![Diagramme camembert utilisation d'un jeu vidéo](images-synthese/01.png)
+![Diagramme camembert utilisation d'un jeu de rythme](images-synthese/02.png)
 
 Jeux de rythmes connus: GeometryDash, JustDance, Piano tiles, Osu...
 
@@ -15,8 +15,8 @@ Mais il y a quelques différences notables:
 - Pas de plateforme de streaming
 
 ## Déroulé du test
-![alt text](images-synthese/0(3).png)
-![alt text](images-synthese/0(4).png)
+![Diagramme baton intuitivité de la plateforme](images-synthese/03.png)
+![Diagramme baton intuitivité de la prise en main des commandes](images-synthese/04.png)
 
 La plateforme de streaming et le jeu ne sont pas assez intuitifs
 
@@ -25,7 +25,7 @@ La plateforme de streaming et le jeu ne sont pas assez intuitifs
 
 
 ## Ressentis de l'utilisateur
-![alt text](images-synthese/0(5).png)
+![Diagramme appréciation du jeu](images-synthese/05.png)
 
 Ce que l’utilisateur à moins apprécié:
 
