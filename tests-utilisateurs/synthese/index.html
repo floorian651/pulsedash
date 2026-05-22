@@ -1645,9 +1645,15 @@
 
 <h1 id="synthese-des-tests-utilisateurs">Synthèse des tests utilisateurs</h1>
 <h2 id="profil-et-veille-concurentielle">Profil et veille concurentielle</h2>
-<p><img alt="alt text" src="../images-synthese/0.png" />
-<img alt="alt text" src="../images-synthese/0%281%29.png" />
-<img alt="alt text" src="../images-synthese/0%282%29.png" /></p>
+<pre class="mermaid"><code>pie title Avez-vous déjà utilisé une plateforme de streaming musicale ?
+    "Oui" : 15
+    "Non" : 2</code></pre>
+<pre class="mermaid"><code>pie title Avez-vous déjà joué à un jeu vidéo ?
+    "Oui" : 17
+    "Non" : 0</code></pre>
+<pre class="mermaid"><code>pie title Avez-vous déjà joué à un jeu de rythme ?
+    "Oui" : 13
+    "Non" : 4</code></pre>
 <p>Jeux de rythmes connus: GeometryDash, JustDance, Piano tiles, Osu...</p>
 <p>Concurrent potentiel: GeometryDash</p>
 <p>Mais il y a quelques différences notables:</p>
@@ -1656,23 +1662,35 @@
 <li>Pas de plateforme de streaming</li>
 </ul>
 <h2 id="deroule-du-test">Déroulé du test</h2>
-<p><img alt="alt text" src="../images-synthese/0%283%29.png" />
-<img alt="alt text" src="../images-synthese/0%284%29.png" /></p>
+<pre class="mermaid"><code>xychart-beta
+    title "Est-ce que notre plateforme de streaming est intuitive ?"
+    x-axis ["1", "2", "3", "4"]
+    y-axis "Nombre de réponses" 0 --&gt; 8
+    bar [3, 8, 3, 3]</code></pre>
+<pre class="mermaid"><code>xychart-beta
+    title "Est-ce que la prise en main des commandes du jeu est intuitive ?"
+    x-axis ["1", "2", "3", "4", "5"]
+    y-axis "Nombre de réponses" 0 --&gt; 6
+    bar [5, 4, 4, 3, 1]</code></pre>
 <p>La plateforme de streaming et le jeu ne sont pas assez intuitifs</p>
 <ul>
 <li>Rendre l’interface de la plateforme de streaming plus claire</li>
 <li>Ajouter une explication des contrôles au début du niveau</li>
 </ul>
 <h2 id="ressentis-de-lutilisateur">Ressentis de l'utilisateur</h2>
-<p><img alt="alt text" src="../images-synthese/0%285%29.png" /></p>
-<p>Ce que l’utilisateur à moins apprécié:</p>
+<pre class="mermaid"><code>xychart-beta
+    title "Sur une échelle de 1 à 4, comment avez vous apprecié ce test?"
+    x-axis ["1", "2", "3", "4", "5"]
+    y-axis "Nombre de réponses" 0 --&gt; 8
+    bar [0, 1, 8, 7, 1]</code></pre>
+<p>Ce que l’utilisateur a moins apprécié:</p>
 <ul>
 <li>Les bugs</li>
 <li>L’interface</li>
 <li>Manque de dynamisme du jeu</li>
 <li>Caméra</li>
 </ul>
-<p>Ce que l’utilisateur à apprécié:</p>
+<p>Ce que l’utilisateur a apprécié:</p>
 <ul>
 <li>Le concept/principe</li>
 <li>Le gameplay/jeu</li>

@@ -1752,7 +1752,34 @@
 </tbody>
 </table>
 <h2 id="organisation-de-lequipe">Organisation de l'équipe</h2>
-<p><img alt="Organisation de l'équipe" src="../Equipe.png" /></p>
+<pre class="mermaid"><code>graph TD
+    %% Titre principal
+    T["&lt;b&gt;EQUIPE&lt;/b&gt;"]
+    style T fill:none,stroke:none,font-size:36px,color:#000,margin-bottom:40px
+
+    %% Ligne 1 : Management
+    QB("Quentin Brulé&lt;br/&gt;&lt;b&gt;Scrum Master&lt;/b&gt;")
+    AB("Arthur Blamart&lt;br/&gt;&lt;b&gt;Product Owner&lt;/b&gt;")
+
+    %% Ligne 2 : Développement
+    FA("Florian Abadie&lt;br/&gt;&lt;i&gt;Développeur&lt;br/&gt;et Git Master&lt;/i&gt;")
+    CA("Chloé Aubry&lt;br/&gt;&lt;i&gt;Développeuse&lt;/i&gt;")
+    SH("Sothaline Huot&lt;br/&gt;&lt;i&gt;Développeuse et&lt;br/&gt;Responsable UX/UI&lt;/i&gt;")
+
+    %% Ligne 3 : Développement
+    CJ("Clem Jourdin&lt;br/&gt;&lt;i&gt;Développeur&lt;/i&gt;")
+    VR("Victor Rouet&lt;br/&gt;&lt;i&gt;Développeur&lt;/i&gt;")
+
+    %% Liens invisibles pour forcer le placement visuel
+    T ~~~ QB &amp; AB
+    QB ~~~ FA
+    AB ~~~ SH
+    FA ~~~ CA ~~~ SH
+    CA ~~~ CJ &amp; VR
+
+    %% Style global des bulles
+    classDef member fill:#ffbd4a,stroke:none,color:#111,rx:25,ry:25,padding:15px;
+    class QB,AB,FA,CA,SH,CJ,VR member;</code></pre>
 
 
 
