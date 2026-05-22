@@ -12,13 +12,16 @@ PulseDash est un jeu de rythme dans lequel vous contrôlez un personnage à trav
 
 PulseDash se distribue sous forme de binaire compilé depuis Unity. Téléchargez la dernière version, extrayez l'archive et lancez l'exécutable. Aucune installation supplémentaire n'est requise.
 
-1. Depuis l'écran d'accueil, créez un compte ou connectez-vous.
-2. Sélectionnez un morceau dans la bibliothèque Jamendo.
-3. Choisissez un mode de jeu.
-4. Le backend génère le niveau à partir de l'analyse audio, patientez quelques secondes.
-5. Le niveau se charge et la partie commence.
-6. Le personnage avance automatiquement  déplacez-vous latéralement et sautez sur les pulsers.
-7. À la fin du parcours, votre score est enregistré et affiché dans le classement.
+1. Créez vous un compte utilisateur depuis le site suivant : 
+2. Téléchargez l'exécutable : Depuis la racine du projet, allez dans unity/Builds puis téléchargez le fichier correspondant à votre système d'exploitation.
+3. Dans le dossier que vous venez de télécharger, lancez PulseDash. Vous êtes maintenant sur le jeu !
+4. Depuis l'écran d'accueil, connectez-vous avec le compte créé à l'étape 1 (ou autre compte préalablement existant).
+5. Sélectionnez un morceau depuis la barre de recherche puis lancez le jeu.
+6. Choisissez un mode de jeu.
+7. Le backend génère le niveau à partir de l'analyse audio, patientez quelques secondes.
+8. Le niveau se charge et la partie commence.
+9. Le personnage avance automatiquement  déplacez-vous latéralement et sautez sur les pulsers (dragons).
+10. À la fin du parcours, votre score est affiché.
 
 ## Gameplay
 
