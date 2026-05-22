@@ -44,18 +44,27 @@ theme:
 nav:
   - Accueil: index.md
   - PulseDash: game.md
-  - Changelog: changelog.md
-  - Guide utilisateur:
-    - Premiers pas: user/getting-started.md
+  - API:
+    - Vue d'ensemble: api/index.md
+    - Architecture: api/architecture.md
+    - Authentification: api/authentication.md
+    - Endpoints:
+      - Vue d'ensemble: api/endpoints/index.md
+      - Auth: api/endpoints/auth.md
+      - Musiques: api/endpoints/music.md
+      - Génération: api/endpoints/generate.md
+      - Jobs: api/endpoints/jobs.md
+      - Jamendo: api/endpoints/jamendo.md
+      - Playlists: api/endpoints/playlists.md
+      - Tracks: api/endpoints/tracks.md
+      - Scores: api/endpoints/scores.md
+      - Sessions de jeu: api/endpoints/game-sessions.md
+      - Profil: api/endpoints/profile.md
+    - Modèles de données: api/models.md
+    - WebSocket: api/websocket.md
+    - Codes d'erreur: api/errors.md
   - Développement:
-    - Contribution: dev/CONTRIBUTING.md
-    - Installation: dev/setup.md
-    - Architecture: dev/architecture.md
-    - Schéma des données: dev/data-schema.md
-    - API: dev/api.md
-    - CI/CD & Pipeline:
-      - CI/CD: dev/ci-cd.md
-      - Pipeline audio: dev/pipeline.md
+    - CI/CD: dev/ci-cd.md
 
 markdown_extensions:
   - admonition

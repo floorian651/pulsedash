@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant C as 🎮 Client
+    participant API as ⚡ FastAPI
+    participant RD as 🗄️ Redis
+    participant CL as ⚙️ Celery
+    participant JAM as 🎶 Jamendo
+    participant MN as 🪣 MinIO
+    participant PL as 🎵 Pipeline
+
+    C->>API: POST /api/v1/generate {track_id}
+    API->>RD: Enqueue generate_level
+    API-->>C: {job_id}
+
+    C->>API: WS /ws/jobs/{job_id}
+    API->>RD: SUBSCRIBE job:{job_id}
+
+    RD->>CL: Dispatch task
+    CL->>JAM: Download MP3
+    CL->>MN: Upload audio (bucket: music)
+    Note over CL: progress 40%
+    RD-->>API: {state: running, progress: 40}
+    API-->>C: {state: running, progress: 40}
+
+    CL->>PL: Analyse audio (librosa)
+    Note over PL: BPM · Key · Hits · Sections
+    Note over CL: progress 85%
+    RD-->>API: {state: running, progress: 85}
+    API-->>C: {state: running, progress: 85}
+
+    CL->>MN: Upload level.json (bucket: levels)
+    Note over CL: progress 100%
+    RD-->>API: {state: completed, progress: 100}
+    API-->>C: {state: completed, progress: 100}
+
+    C->>API: GET /api/v1/jobs/{job_id}/result
+    API->>MN: Presigned URL (level.json)
+    API-->>C: level.json
